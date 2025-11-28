@@ -1,6 +1,6 @@
-# What's Widgets Directory?
+# What's Global Widgets Directory?
 
-- The `widgets` directory contains reusable widgets that are shared across multiple screens.
+- The `global widgets` directory contains reusable widgets that are shared across multiple screens.
 
 ## - How it works?
 This directory can contain anything from simple custom buttons and text fields to more complex composite widgets. 

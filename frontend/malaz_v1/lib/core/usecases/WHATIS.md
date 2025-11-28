@@ -13,7 +13,7 @@ This approach, central to Clean Architecture, we use `usecases` in UI's and cubi
 A use case typically has a single public method (`call`) that is executed by the presentation layer. This method coordinates with repositories to get the job done and returns a result, usually as an `Either<Failure, SuccessType>` to handle both success and error states gracefully.
 
 * **Example:**
-```dart
+```
 
 LoginButton -> LoginUseCase -> LoginRepo -> LoginDataSource -> backend
 
