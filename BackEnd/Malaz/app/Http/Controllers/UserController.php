@@ -2,13 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Database\Eloquent\Casts\Json;
 
 class UserController extends Controller
 {
+    public function info()
+    {
+        return response()->json(
+            [
+                'data' => User::all(),
+                'message' => 'all user',
+                'status' => 1,
+            ]
+        );
+    }
+
+    public function sendOtp(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
+        ]);
+
+        $otp = rand(100000, 999999);
+        Cache::put('otp_' . $request->phone, $otp, now()->addMinutes(5));
+
+        app('greenapi')->sendMessage($request->phone, "Verification code: {$otp}");
+
+        return response()->json(['message' => 'OTP sent']);
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
+            'otp' => 'required|integer'
+        ]);
+
+        $cachedOtp = Cache::get('otp_' . $request->phone);
+
+        if (!$cachedOtp) {
+            return response()->json(['message' => 'OTP expired or not found'], 400);
+        }
+
+        if ($cachedOtp != $request->otp) {
+            return response()->json(['message' => 'Invalid OTP','otp' => $cachedOtp], 400);
+        }
+
+        Cache::forget('otp_' . $request->phone);
+
+        $user = User::where('phone', $request->phone)->first();
+        if ($user) {
+            $user->update(['phone_verified_at' => now()]);
+        }
+
+        return response()->json(['message' => 'Phone verified']);
+    }
+
     public function register(RegisterRequest $request)
     {
         $user = User::create([
@@ -17,21 +73,16 @@ class UserController extends Controller
             'phone' => $request->phone,
             'password' => bcrypt($request->password),
             'identity_card_image' => $request->identity_card_image,
-            'birth_date' => $request->birth_date,
+            'date_of_birth' => $request->date_of_birth,
         ]);
-
+        $user->fresh();
         return response()->json(['message' => 'User created Wait until it is approved by the officials', 'data' => $user], 201);
 
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'phone' => 'required|digits_between:9,15',
-            'password' => 'required',
-        ]);
-
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('phone', 'password'))) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
@@ -39,6 +90,11 @@ class UserController extends Controller
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 500);
+        }
+
+        if ($user->role === 'PENDING') {
+            return response()->json(['message' => 'Wait until it is approved by the officials'], 500);
+
         }
 
         try {

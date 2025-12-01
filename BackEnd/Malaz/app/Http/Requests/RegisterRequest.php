@@ -20,7 +20,7 @@ class RegisterRequest extends FormRequest
             'last_name' => 'required|string',
             'password' => 'required|string|min:6',
             'identity_card_image' => 'required|string',
-            'birth_date' => [
+            'date_of_birth' => [
                 'date',
                 'before:' . Carbon::now()->subYears(6)->toDateString(),
             ],
@@ -38,7 +38,9 @@ class RegisterRequest extends FormRequest
             'password.required' => 'password is required',
             'password.min' => 'password is too short',
             'identity_card_image.required' => 'identity card image is required',
-            'birth_date.before' => 'how some one has less than 6 years to get here',
+            'date_of_birth.before' => 'how some one has less than 6 years to get here',
+            'date_of_birth.date' => 'date_of_birth should be a date',
+
         ];
     }
 }

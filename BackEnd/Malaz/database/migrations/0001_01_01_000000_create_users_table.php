@@ -19,8 +19,6 @@ return new class extends Migration {
             $table->date('date_of_birth')->nullable();
             $table->longText('profile_image')->nullable();
             $table->longText('identity_card_image');
-            // $table->foreignId('profile_image_id')->default(1)->constrained('images')->references('id')->onDelete(action: 'cascade')->cascadeOnUpdate();
-            // $table->foreignId('identity_card_id')->constrained('images')->references('id')->onDelete('cascade')->cascadeOnUpdate();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
