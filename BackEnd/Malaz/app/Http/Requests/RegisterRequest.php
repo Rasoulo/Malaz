@@ -15,7 +15,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|digits_between:9,15|unique:users,phone',
+            'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'password' => 'required|string|min:6',
@@ -30,15 +30,15 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'phone.required' => 'الرقم مطلوب.',
-            'phone.digits_between' => 'الرقم لازم يكون بين 9 و 15 خانة.',
-            'phone.unique' => 'الرقم مستخدم بالفعل.',
-            'first_name.required' => 'الاسم الأول مطلوب.',
-            'last_name.required' => 'الاسم الأخير مطلوب.',
-            'password.required' => 'كلمة السر مطلوبة.',
-            'password.min' => 'كلمة السر لازم تكون على الأقل 6 خانات.',
-            'identity_card_image.required' => 'صورة الهوية مطلوبة.',
-            'birth_date.before' => 'تاريخ الميلاد لازم يكون قبل 6 سنوات من الآن.',
+            'phone.required' => 'phone number is required',
+            'phone.regex' => 'wrong format with phone number should be only digit or an "+" as the first char',
+            'phone.unique' => 'phone number is already exists',
+            'first_name.required' => 'first name is required',
+            'last_name.required' => 'last name is required',
+            'password.required' => 'password is required',
+            'password.min' => 'password is too short',
+            'identity_card_image.required' => 'identity card image is required',
+            'birth_date.before' => 'how some one has less than 6 years to get here',
         ];
     }
 }
