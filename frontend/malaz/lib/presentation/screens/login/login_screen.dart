@@ -1,5 +1,6 @@
 // file: lib/screens/auth/login_screen.dart
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../core/config/theme_config.dart';
 import '../../global widgets/build_branding.dart';
 import '../../global widgets/custom_button.dart';
@@ -34,13 +35,13 @@ class LoginScreen extends StatelessWidget {
                     const Text('Welcome Back', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppColors.primary)),
                     const SizedBox(height: 8),
                     const Text('Login to continue your search', style: TextStyle(color: AppColors.textSecondary)),
-                    const SizedBox(height: 150),
+                    const SizedBox(height: 135),
         
-                    // Inputs
+                    // Inputs & verificationCodeButton
                     _buildTextField('Mobile Number', Icons.phone),
-                    const SizedBox(height: 16),
-                    _buildTextField('Verification Code', Icons.lock_outline),
                     _buildVerficationCodeButton(),
+                    const SizedBox(height: 8),
+                    _buildPinCodeTextField(),
                     const SizedBox(height: 70),
                     CustomButton(
                       text: 'Login',
@@ -79,11 +80,79 @@ class LoginScreen extends StatelessWidget {
     return TextField(
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: AppColors.textSecondary),
-        prefixIcon: Icon(icon, color: AppColors.primary),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(8),bottomLeft: Radius.circular(8),bottomRight: Radius.circular(30)), borderSide: BorderSide(color: AppColors.primary)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(8),bottomLeft: Radius.circular(8),bottomRight: Radius.circular(30)), borderSide: const BorderSide(color: AppColors.primary)),
+        labelStyle: TextStyle(
+          color: AppColors.textSecondary,
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: AppColors.primary,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: AppColors.primary,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(8),
+            bottomLeft: Radius.circular(8),
+            bottomRight: Radius.circular(30),
+          ),
+          borderSide: BorderSide(
+            color: AppColors.primary,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(8),
+            bottomLeft: Radius.circular(8),
+            bottomRight: Radius.circular(30),
+          ),
+          borderSide: const BorderSide(
+            color: AppColors.primary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _buildPinCodeTextField extends StatelessWidget {
+  const _buildPinCodeTextField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PinCodeTextField(
+      mainAxisAlignment: MainAxisAlignment.center,
+      appContext: context,
+      textStyle: TextStyle(
+        color: AppColors.textPrimary,
+        fontSize: 18,
+        fontWeight: FontWeight.normal,
+      ),
+      length: 5,
+      onChanged: (value) {},
+      onCompleted: (value) {},
+      pinTheme: PinTheme(
+        selectedBorderWidth: 2,
+        inactiveBorderWidth: 2,
+        activeBorderWidth: 2,
+        borderWidth: 2,
+        shape: PinCodeFieldShape.box,
+        fieldOuterPadding: EdgeInsets.symmetric(horizontal: 8),
+        borderRadius: BorderRadius.circular(16),
+        fieldHeight: 50,
+        fieldWidth: 40,
+        activeFillColor: AppColors.primary,
+        inactiveColor: AppColors.primary,
+        selectedColor: AppColors.secondary,
+        selectedFillColor: AppColors.primary,
+        activeColor: AppColors.primary,
       ),
     );
   }
