@@ -1,7 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../../../core/config/theme_config.dart';
 
 class BuildCard extends StatelessWidget {
   const BuildCard({super.key});
@@ -10,7 +10,9 @@ class BuildCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 350,
-      decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/icons/card_box.png'),fit: BoxFit.fill)),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/icons/card_box.png'), fit: BoxFit.fill)),
     );
   }
 }
@@ -22,11 +24,13 @@ class BuildPincodeTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return PinCodeTextField(
       mainAxisAlignment: MainAxisAlignment.center,
       appContext: context,
       textStyle: TextStyle(
-        color: AppColors.textPrimary,
+        color: colorScheme.onSurface,
         fontSize: 18,
         fontWeight: FontWeight.normal,
       ),
@@ -39,15 +43,15 @@ class BuildPincodeTextfield extends StatelessWidget {
         activeBorderWidth: 2,
         borderWidth: 2,
         shape: PinCodeFieldShape.box,
-        fieldOuterPadding: EdgeInsets.symmetric(horizontal: 8),
+        fieldOuterPadding: const EdgeInsets.symmetric(horizontal: 8),
         borderRadius: BorderRadius.circular(16),
         fieldHeight: 50,
         fieldWidth: 40,
-        activeFillColor: AppColors.primary,
-        inactiveColor: AppColors.primary,
-        selectedColor: AppColors.secondary,
-        selectedFillColor: AppColors.primary,
-        activeColor: AppColors.primary,
+        activeFillColor: colorScheme.primary,
+        inactiveColor: colorScheme.primary.withOpacity(0.5),
+        selectedColor: colorScheme.secondary,
+        selectedFillColor: colorScheme.primary,
+        activeColor: colorScheme.primary,
       ),
     );
   }
@@ -58,15 +62,22 @@ class BuildRegisterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Don\'t have an account ? ',style: TextStyle(color: AppColors.textSecondary),),
+        Text(
+          'Don\'t have an account ? ',
+          style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6)),
+        ),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             //Navigator.pushNamed(context, RegisterPage.id);
           },
-          child: const Text('Register',style: TextStyle(color: AppColors.primary),),
+          child: Text(
+            'Register',
+            style: TextStyle(color: colorScheme.primary),
+          ),
         ),
       ],
     );
@@ -82,7 +93,7 @@ class BuildRibbon extends StatelessWidget {
       height: 200,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage(
+          image: AssetImage(
             'assets/icons/ribbon.png',
           ),
           fit: BoxFit.fill,
@@ -94,47 +105,50 @@ class BuildRibbon extends StatelessWidget {
 
 class BuildTextfield extends StatelessWidget {
   final String label;
-  IconData icon;
-  BuildTextfield({super.key,required this.label ,required this.icon});
+  final IconData icon;
+  const BuildTextfield({super.key, required this.label, required this.icon});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return TextField(
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: AppColors.textSecondary,
+          color: colorScheme.onSurface.withOpacity(0.6),
         ),
         prefixIcon: Icon(
           icon,
-          color: AppColors.primary,
+          color: colorScheme.primary,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: AppColors.primary,
+          borderSide: BorderSide(
+            color: colorScheme.primary,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(8),
             bottomLeft: Radius.circular(8),
             bottomRight: Radius.circular(30),
           ),
           borderSide: BorderSide(
-            color: AppColors.primary,
+            color: colorScheme.primary,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(8),
             bottomLeft: Radius.circular(8),
             bottomRight: Radius.circular(30),
           ),
-          borderSide: const BorderSide(
-            color: AppColors.primary,
+          borderSide: BorderSide(
+            color: colorScheme.primary,
+            width: 2,
           ),
         ),
       ),
@@ -147,12 +161,15 @@ class BuildVerficationCodeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Align(
       alignment: Alignment.centerLeft,
       child: TextButton.icon(
         onPressed: () {},
-        icon: const Icon(Icons.send, color: AppColors.primary),
-        label: const Text('Send verification code', style: TextStyle(color: AppColors.primary)),
+        icon: Icon(Icons.send, color: colorScheme.primary),
+        label: Text('Send verification code',
+            style: TextStyle(color: colorScheme.primary)),
       ),
     );
   }

@@ -1,23 +1,25 @@
-// file: lib/screens/details_screen.dart
+
 import 'package:flutter/material.dart';
-import '../../../core/config/theme_config.dart';
 import '../../../domain/entities/apartment.dart';
 import '../../global widgets/custom_button.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Apartment apartment;
 
-  const DetailsScreen({Key? key, required this.apartment}) : super(key: key);
+  const DetailsScreen({super.key, required this.apartment});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
+      backgroundColor: colorScheme.background,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
-            backgroundColor: AppColors.primary,
+            backgroundColor: colorScheme.primary,
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: apartment.id,
@@ -26,9 +28,9 @@ class DetailsScreen extends StatelessWidget {
             ),
             leading: IconButton(
               icon: Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                child: Icon(Icons.arrow_back, color: Colors.black, size: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: colorScheme.surface, shape: BoxShape.circle),
+                child: Icon(Icons.arrow_back, color: colorScheme.onSurface, size: 20),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -36,9 +38,9 @@ class DetailsScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(24),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+              decoration: BoxDecoration(
+                color: colorScheme.background,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,15 +48,23 @@ class DetailsScreen extends StatelessWidget {
                   // Title & Price
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Text(apartment.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          apartment.title,
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colorScheme.onBackground),
+                        ),
                       ),
+                      const SizedBox(width: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text('\$${apartment.price.toInt()}', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primary)),
-                          const Text('/month', style: TextStyle(color: Colors.grey)),
+                          Text(
+                            '\$${apartment.price.toInt()}',
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                          ),
+                          Text('/month', style: TextStyle(color: colorScheme.onBackground.withOpacity(0.6))),
                         ],
                       )
                     ],
@@ -65,18 +75,30 @@ class DetailsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildStatBadge(Icons.bed, '${apartment.bedrooms} Beds', Colors.greenAccent.shade100, Colors.greenAccent),
-                      _buildStatBadge(Icons.bathtub, '${apartment.bathrooms} Baths', Colors.teal.shade50, Colors.teal),
-                      _buildStatBadge(Icons.square_foot, '${apartment.areaSqft} sqft', Colors.blue.shade50, Colors.blue),
+                      _StatBadge(
+                        icon: Icons.bed,
+                        label: '${apartment.bedrooms} Beds',
+                        color: Colors.green,
+                      ),
+                      _StatBadge(
+                        icon: Icons.bathtub,
+                        label: '${apartment.bathrooms} Baths',
+                        color: Colors.blue,
+                      ),
+                      _StatBadge(
+                        icon: Icons.square_foot,
+                        label: '${apartment.areaSqft} sqft',
+                        color: Colors.purple,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 24),
 
-                  const Text('Description', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text('Description', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorScheme.onBackground)),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     'Beautiful modern apartment in the heart of downtown. This stunning unit features high ceilings, hardwood floors, and floor-to-ceiling windows.',
-                    style: TextStyle(color: Colors.grey, height: 1.5),
+                    style: TextStyle(color: colorScheme.onBackground.withOpacity(0.6), height: 1.5),
                   ),
 
                   const SizedBox(height: 32),
@@ -87,18 +109,16 @@ class DetailsScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.primary),
+                          border: Border.all(color: colorScheme.primary),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Icon(Icons.favorite_border, color: AppColors.primary),
+                        child: Icon(Icons.favorite_border, color: colorScheme.primary),
                       ),
                       const SizedBox(width: 16),
-                      Expanded(
+                      const Expanded(
                         child: CustomButton(
                           text: 'Book Now',
-                          onPressed: () {
-                            // Navigate to Booking Form
-                          },
+                          onPressed: null, // Deactivated for now
                         ),
                       ),
                     ],
@@ -112,16 +132,31 @@ class DetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildStatBadge(IconData icon, String label, Color bg, Color color) {
+class _StatBadge extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  const _StatBadge({required this.icon, required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Column(
         children: [
           Icon(icon, color: color, size: 28),
           const SizedBox(height: 8),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
+          Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onBackground),
+          ),
         ],
       ),
     );

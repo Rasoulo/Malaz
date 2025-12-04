@@ -1,6 +1,6 @@
-// file: lib/screens/main_wrapper.dart
+
 import 'package:flutter/material.dart';
-import '../../../core/config/theme_config.dart';
+import '../../../l10n/app_localizations.dart';
 import '../booking/booking_screen.dart';
 import '../chats/chats_screen.dart';
 import '../favorites/favorites_screen.dart';
@@ -16,7 +16,6 @@ class MainWrapper extends StatefulWidget {
 class _MainWrapperState extends State<MainWrapper> {
   int _currentIndex = 0;
 
-  // قائمة الشاشات للتنقل بينها
   final List<Widget> _screens = [
     HomeScreen(),
     const ChatsScreen(),
@@ -26,6 +25,10 @@ class _MainWrapperState extends State<MainWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -33,20 +36,22 @@ class _MainWrapperState extends State<MainWrapper> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20)],
+          border: Border(top: BorderSide(color: isDarkMode ? Colors.white.withOpacity(0.1) : Colors.transparent, width: 0.5)),
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: Colors.grey,
+          backgroundColor: colorScheme.surface,
+          selectedItemColor: colorScheme.primary,
+          unselectedItemColor: colorScheme.onSurface.withOpacity(0.6),
           showUnselectedLabels: true,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), activeIcon: Icon(Icons.chat_bubble), label: 'Chats'),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite_border), activeIcon: Icon(Icons.favorite), label: 'Favorites'),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined), activeIcon: Icon(Icons.calendar_today), label: 'Bookings'),
+          elevation: 8.0,
+          items: [
+            BottomNavigationBarItem(icon: const Icon(Icons.home_outlined), activeIcon: const Icon(Icons.home), label: tr.home),
+            BottomNavigationBarItem(icon: const Icon(Icons.chat_bubble_outline), activeIcon: const Icon(Icons.chat_bubble), label: tr.chats),
+            BottomNavigationBarItem(icon: const Icon(Icons.favorite_border), activeIcon: const Icon(Icons.favorite), label: tr.favorites),
+            BottomNavigationBarItem(icon: const Icon(Icons.calendar_today_outlined), activeIcon: const Icon(Icons.calendar_today), label: tr.bookings),
           ],
         ),
       ),

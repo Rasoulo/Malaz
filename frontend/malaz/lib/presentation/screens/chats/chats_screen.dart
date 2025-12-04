@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-import '../../../core/config/theme_config.dart';
 
-// Simple Model for Chat (يفضل نقله لمجلد models)
+import 'package:flutter/material.dart';
+
 class ChatModel {
   final String name;
   final String message;
@@ -17,6 +16,8 @@ class ChatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     // Mock Data
     final List<ChatModel> chats = [
       ChatModel(name: 'Sarah Johnson', message: 'Yes, the apartment is still available...', time: '2 min ago', unreadCount: 2, imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&fit=crop'),
@@ -24,13 +25,13 @@ class ChatsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.background,
       appBar: AppBar(
         title: const Text('Messages', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: false,
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: colorScheme.onSurface,
       ),
       body: ListView.separated(
         padding: const EdgeInsets.all(20),
@@ -41,20 +42,17 @@ class ChatsScreen extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))],
             ),
             child: Row(
               children: [
-                // Avatar with Status Indicator (Optional)
                 CircleAvatar(
                   radius: 30,
                   backgroundImage: NetworkImage(chat.imageUrl),
                 ),
                 const SizedBox(width: 16),
-
-                // Text Content
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,8 +60,8 @@ class ChatsScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(chat.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                          Text(chat.time, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                          Text(chat.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: colorScheme.onSurface)),
+                          Text(chat.time, style: TextStyle(fontSize: 12, color: colorScheme.onSurface.withOpacity(0.6))),
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -72,21 +70,22 @@ class ChatsScreen extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: chat.unreadCount > 0 ? AppColors.textPrimary : AppColors.textSecondary,
+                          color: chat.unreadCount > 0 ? colorScheme.onSurface : colorScheme.onSurface.withOpacity(0.6),
                           fontWeight: chat.unreadCount > 0 ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                // Unread Badge
                 if (chat.unreadCount > 0) ...[
                   const SizedBox(width: 12),
                   Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-                    child: Text(chat.unreadCount.toString(), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                    decoration: BoxDecoration(color: colorScheme.primary, shape: BoxShape.circle),
+                    child: Text(
+                      chat.unreadCount.toString(),
+                      style: TextStyle(color: colorScheme.onPrimary, fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ]
               ],

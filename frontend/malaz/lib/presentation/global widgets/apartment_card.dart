@@ -1,8 +1,8 @@
+
 import 'package:flutter/material.dart';
-import '../../core/config/theme_config.dart';
+import '../../core/config/color/app_color.dart';
 import '../../domain/entities/apartment.dart';
 
-/// بطاقة عرض الشقة المستخدمة في القوائم
 class ApartmentCard extends StatelessWidget {
   final Apartment apartment;
   final VoidCallback onTap;
@@ -11,12 +11,16 @@ class ApartmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 24),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
@@ -49,16 +53,16 @@ class ApartmentCard extends StatelessWidget {
                 children: [
                   Text(
                     apartment.title,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colorScheme.onSurface),
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, color: AppColors.primary, size: 16),
+                      Icon(Icons.location_on, color: colorScheme.primary, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         apartment.location,
-                        style: const TextStyle(color: AppColors.textSecondary),
+                        style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6)),
                       ),
                     ],
                   ),
@@ -67,9 +71,9 @@ class ApartmentCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildAmenity(Icons.bed, '${apartment.bedrooms} Beds'),
-                      _buildAmenity(Icons.bathtub, '${apartment.bathrooms} Baths'),
-                      _buildAmenity(Icons.square_foot, '${apartment.areaSqft} sqft'),
+                      _Amenity(icon: Icons.bed, text: '${apartment.bedrooms} Beds'),
+                      _Amenity(icon: Icons.bathtub, text: '${apartment.bathrooms} Baths'),
+                      _Amenity(icon: Icons.square_foot, text: '${apartment.areaSqft} sqft'),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -78,12 +82,12 @@ class ApartmentCard extends StatelessWidget {
                     children: [
                       Text(
                         '\$${apartment.price.toInt()}',
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primaryDark),
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colorScheme.primary),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          gradient: AppColors.primaryGradient,
+                          gradient: isDarkMode ? AppColors.primaryGradientDark : AppColors.primaryGradientLight,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Text('View', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -98,14 +102,30 @@ class ApartmentCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildAmenity(IconData icon, String text) {
+class _Amenity extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  const _Amenity({required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppColors.secondary),
+        Icon(icon, size: 16, color: colorScheme.secondary),
         const SizedBox(width: 4),
-        Text(text, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onSurface.withOpacity(0.6),
+          ),
+        ),
       ],
     );
   }
 }
+

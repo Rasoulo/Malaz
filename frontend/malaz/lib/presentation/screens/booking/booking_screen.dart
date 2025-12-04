@@ -1,8 +1,8 @@
+
 import 'package:flutter/material.dart';
-import '../../../core/config/theme_config.dart';
 
+import '../../../l10n/app_localizations.dart';
 
-// Enum لضمان التعامل الآمن مع الحالات
 enum BookingStatus { accepted, pending, cancelled }
 
 class BookingModel {
@@ -15,8 +15,13 @@ class BookingModel {
   final String imageUrl;
 
   BookingModel({
-    required this.id, required this.title, required this.location,
-    required this.date, required this.price, required this.status, required this.imageUrl
+    required this.id,
+    required this.title,
+    required this.location,
+    required this.date,
+    required this.price,
+    required this.status,
+    required this.imageUrl,
   });
 }
 
@@ -25,6 +30,9 @@ class BookingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final tr = AppLocalizations.of(context)!;
+
     final bookings = [
       BookingModel(id: 'BK-001', title: 'Modern Downtown Apartment', location: 'Downtown', date: 'Jan 15, 2024', price: 1200, status: BookingStatus.accepted, imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=200&fit=crop'),
       BookingModel(id: 'BK-002', title: 'Luxury Penthouse', location: 'Uptown', date: 'Feb 1, 2024', price: 2500, status: BookingStatus.pending, imageUrl: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&fit=crop'),
@@ -32,12 +40,12 @@ class BookingsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.background,
       appBar: AppBar(
-        title: const Text('My Bookings', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
+        title: Text(tr.my_bookings, style: const TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: colorScheme.surface,
         elevation: 0,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: colorScheme.onSurface,
       ),
       body: ListView.separated(
         padding: const EdgeInsets.all(20),
@@ -51,7 +59,6 @@ class BookingsScreen extends StatelessWidget {
   }
 }
 
-// Private Widget specialized for this screen
 class _BookingCard extends StatelessWidget {
   final BookingModel booking;
 
@@ -59,7 +66,8 @@ class _BookingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // تحديد الألوان والنصوص بناءً على الحالة
+    final colorScheme = Theme.of(context).colorScheme;
+
     Color statusColor;
     Color statusBg;
     String statusText;
@@ -68,7 +76,7 @@ class _BookingCard extends StatelessWidget {
       case BookingStatus.accepted:
         statusColor = Colors.green.shade700;
         statusBg = Colors.green.shade50;
-        statusText = 'Accepted';
+        statusText = 'Accepted'; // These should be translated too if needed
         break;
       case BookingStatus.pending:
         statusColor = Colors.orange.shade700;
@@ -76,18 +84,17 @@ class _BookingCard extends StatelessWidget {
         statusText = 'Pending';
         break;
       case BookingStatus.cancelled:
-        statusColor = Colors.red.shade700;
-        statusBg = Colors.red.shade50;
+        statusColor = colorScheme.error;
+        statusBg = colorScheme.error.withOpacity(0.1);
         statusText = 'Cancelled';
         break;
     }
 
-    // تقليل الشفافية إذا كان ملغياً (كما في التصميم الأصلي)
     return Opacity(
       opacity: booking.status == BookingStatus.cancelled ? 0.6 : 1.0,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))],
         ),
@@ -95,7 +102,6 @@ class _BookingCard extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              // Header: Status Badge & ID
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,12 +110,10 @@ class _BookingCard extends StatelessWidget {
                     decoration: BoxDecoration(color: statusBg, borderRadius: BorderRadius.circular(10)),
                     child: Text(statusText, style: TextStyle(color: statusColor, fontWeight: FontWeight.bold, fontSize: 12)),
                   ),
-                  Text('#${booking.id}', style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                  Text('#${booking.id}', style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 12)),
                 ],
               ),
               const SizedBox(height: 16),
-
-              // Content: Image & Details
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -122,30 +126,28 @@ class _BookingCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(booking.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(booking.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: colorScheme.onSurface), maxLines: 1, overflow: TextOverflow.ellipsis),
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Icon(Icons.location_on, size: 14, color: AppColors.primary),
+                            Icon(Icons.location_on, size: 14, color: colorScheme.primary),
                             const SizedBox(width: 4),
-                            Text(booking.location, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                            Text(booking.location, style: TextStyle(fontSize: 12, color: colorScheme.onSurface.withOpacity(0.6))),
                           ],
                         ),
                         const SizedBox(height: 8),
-                        Text('Check-in: ${booking.date}', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontWeight: FontWeight.w500)),
+                        Text('Check-in: ${booking.date}', style: TextStyle(fontSize: 12, color: colorScheme.onSurface.withOpacity(0.6), fontWeight: FontWeight.w500)),
                       ],
                     ),
                   ),
                   Column(
                     children: [
-                      Text('\$${booking.price.toInt()}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AppColors.primary)),
-                      const Text('/mo', style: TextStyle(fontSize: 10, color: Colors.grey)),
+                      Text('\$${booking.price.toInt()}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: colorScheme.primary)),
+                      Text('/mo', style: TextStyle(fontSize: 10, color: Colors.grey.shade400)),
                     ],
                   )
                 ],
               ),
-
-              // Action Buttons (Only if not cancelled)
               if (booking.status != BookingStatus.cancelled) ...[
                 const SizedBox(height: 20),
                 Row(
@@ -154,10 +156,10 @@ class _BookingCard extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: () {},
                         icon: const Icon(Icons.remove_red_eye, size: 16),
-                        label: const Text('Details'),
+                        label: const Text('Details'), // This should be translated
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.primary,
-                          side: BorderSide(color: AppColors.primary),
+                          foregroundColor: colorScheme.primary,
+                          side: BorderSide(color: colorScheme.primary),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                       ),
@@ -167,10 +169,10 @@ class _BookingCard extends StatelessWidget {
                       child: ElevatedButton.icon(
                         onPressed: () {},
                         icon: const Icon(Icons.chat, size: 16),
-                        label: const Text('Chat'),
+                        label: const Text('Chat'), // This should be translated
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade50,
-                          foregroundColor: Colors.blue,
+                          backgroundColor: Colors.blue.withOpacity(0.1),
+                          foregroundColor: Colors.blue.shade700,
                           elevation: 0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),

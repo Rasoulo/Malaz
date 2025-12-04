@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BuildBranding extends StatelessWidget {
+  const BuildBranding({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Align(

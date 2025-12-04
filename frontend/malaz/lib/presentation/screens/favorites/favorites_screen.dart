@@ -1,30 +1,31 @@
+
 import 'package:flutter/material.dart';
-import '../../../core/config/theme_config.dart';
 import '../../../data/source/apartments/apartments_source.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../global widgets/apartment_card.dart';
 
-
 class FavoritesScreen extends StatelessWidget {
-  const FavoritesScreen({Key? key}) : super(key: key);
+  const FavoritesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Filter logic would happen here in a real app
-    final favorites = mockApartments; // Assuming all mocks are favorites for demo
+    final colorScheme = Theme.of(context).colorScheme;
+    final tr = AppLocalizations.of(context)!;
+
+    final favorites = mockApartments;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.background,
       appBar: AppBar(
-        title: const Text('My Favorites', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
+        title: Text(tr.my_favorites, style: const TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: colorScheme.surface,
         elevation: 0,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: colorScheme.onSurface,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(20),
         itemCount: favorites.length,
         itemBuilder: (context, index) {
-          // يمكننا هنا وضع ApartmentCard داخل Stack لإضافة زر حذف مخصص
           return Stack(
             children: [
               ApartmentCard(
@@ -39,10 +40,10 @@ class FavoritesScreen extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.red.shade50,
+                    color: colorScheme.error.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.favorite, color: Colors.red),
+                  child: Icon(Icons.favorite, color: colorScheme.error),
                 ),
               )
             ],
