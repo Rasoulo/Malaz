@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../../l10n/app_localizations.dart';
 import '../booking/booking_screen.dart';
@@ -34,27 +33,80 @@ class _MainWrapperState extends State<MainWrapper> {
         index: _currentIndex,
         children: _screens,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: isDarkMode ? Colors.white.withOpacity(0.1) : Colors.transparent, width: 0.5)),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: colorScheme.surface,
-          selectedItemColor: colorScheme.primary,
-          unselectedItemColor: colorScheme.onSurface.withOpacity(0.6),
-          showUnselectedLabels: true,
-          elevation: 8.0,
-          items: [
-            BottomNavigationBarItem(icon: const Icon(Icons.home_outlined), activeIcon: const Icon(Icons.home), label: tr.home),
-            BottomNavigationBarItem(icon: const Icon(Icons.chat_bubble_outline), activeIcon: const Icon(Icons.chat_bubble), label: tr.chats),
-            BottomNavigationBarItem(icon: const Icon(Icons.favorite_border), activeIcon: const Icon(Icons.favorite), label: tr.favorites),
-            BottomNavigationBarItem(icon: const Icon(Icons.calendar_today_outlined), activeIcon: const Icon(Icons.calendar_today), label: tr.bookings),
-          ],
-        ),
+      // هنا دمجنا الـ Padding لرفع الشريط
+      
+      bottomNavigationBar: Padding(
+  padding: const EdgeInsets.only(bottom: 0), // يرفع الشريط عن الأرض
+  child: SizedBox(
+    height: 110, // هون بتحدد الارتفاع اللي بدك إياه
+    child: ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(35),
+        topRight: Radius.circular(35),
+
       ),
-    );
-  }
-}
+      child: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() => _currentIndex = index),
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: colorScheme.surface,
+        selectedItemColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.onSurface.withOpacity(0.6),
+        showUnselectedLabels: true,
+        elevation: 5.0,
+        items: [
+          BottomNavigationBarItem(
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(scale: animation, child: child);
+              },
+              child: _currentIndex == 0
+                  ? const Icon(Icons.home, key: ValueKey('home_filled'))
+                  : const Icon(Icons.home_outlined, key: ValueKey('home_outlined')),
+            ),
+            label: tr.home,
+          ),
+
+          BottomNavigationBarItem(
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(scale: animation, child: child);
+              },
+              child: _currentIndex == 1
+                  ? const Icon(Icons.chat_bubble, key: ValueKey('chat_filled'))
+                  : const Icon(Icons.chat_bubble_outline, key: ValueKey('chat_outlined')),
+            ),
+            label: tr.chats,
+          ),
+          BottomNavigationBarItem(
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(scale: animation, child: child);
+              },
+              child: _currentIndex == 2
+                  ? const Icon(Icons.favorite, key: ValueKey('fav_filled'))
+                  : const Icon(Icons.favorite_border, key: ValueKey('fav_outlined')),
+            ),
+            label: tr.favorites,
+          ),
+          BottomNavigationBarItem(
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(scale: animation, child: child);
+              },
+              child: _currentIndex == 3
+                  ? const Icon(Icons.calendar_today, key: ValueKey('cal_filled'))
+                  : const Icon(Icons.calendar_today_outlined, key: ValueKey('cal_outlined')),
+            ),
+            label: tr.bookings,
+          ),
+        ],
+      ),
+    ),
+  ),
+));
+  }}
