@@ -59,7 +59,7 @@ class PropertyController extends Controller
         $property = Property::create(
             collect($validated)->except('images')->toArray()
         );
-
+        
         $property->image()->createMany(
             collect($validated['images'])->map(fn($image) => ['image' => $image])->toArray()
         );
@@ -106,6 +106,7 @@ class PropertyController extends Controller
         if (!empty($validated['erase'])) {
             $property->images()->whereIn('id', $validated['erase'])->delete();
         }
+        
         $property->refresh();
         return response()->json([
             'property' => $property,

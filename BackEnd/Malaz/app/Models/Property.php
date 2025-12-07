@@ -10,7 +10,7 @@ class Property extends Model
     /** @use HasFactory<\Database\Factories\PropertyFactory> */
     use HasFactory;
 
-    public function image()
+    public function images()
     {
         return $this->hasMany(Image::class, 'property_id', 'id');
     }

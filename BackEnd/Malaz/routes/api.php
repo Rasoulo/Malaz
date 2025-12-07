@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\ConversationController;
-use App\Http\Controllers\EditRequestController;
-use App\Http\Controllers\MessageController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\EditRequestController;
+use App\Http\Controllers\ConversationController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();

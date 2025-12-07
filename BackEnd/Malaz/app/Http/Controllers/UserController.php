@@ -40,7 +40,7 @@ class UserController extends Controller
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            'phone' => 'required|regex:/^\+?\d{9,15}$/|exists:users,phone',
+            'phone' => 'required|regex:/^\+?\d{9,15}$/',
             'otp' => 'required|integer'
         ]);
 

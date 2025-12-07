@@ -29,6 +29,8 @@ class UpdatePropertyRequest extends FormRequest
             'images.*' => 'string',
             'erase' => 'nullable|array',
             'erase.*' => 'integer',
+            'type' => 'string|in:Apartment,Farm,Villa,Restaurant,Travel Rest Stop,Residential Tower,Country Estate',
+            'number_of_rooms' => 'min:0|integer'
         ];
     }
 
@@ -45,6 +47,10 @@ class UpdatePropertyRequest extends FormRequest
                 'images.*.string' => 'Each image must be a valid string (Base64).',
                 'erase.array' => 'Erase must be provided as an array of IDs.',
                 'erase.*.integer' => 'Each erase item must be a valid integer ID.',
+                'type.string' => 'Property type must be a valid string.',
+                'type.in' => 'Invalid property type. Allowed values: Apartment, Farm, Villa, Restaurant, Travel Rest Stop, Residential Tower, Country Estate.',
+                'number_of_rooms.integer' => 'Number of rooms must be an integer.',
+                'number_of_rooms.min' => 'Number of rooms must be zero or greater.',
             ];
     }
 }

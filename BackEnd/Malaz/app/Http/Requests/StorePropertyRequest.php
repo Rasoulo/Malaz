@@ -26,11 +26,13 @@ class StorePropertyRequest extends FormRequest
             'city' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'governorate' => 'required|string|max:255',
-            'latitude' => 'numeric',
-            'longitude' => 'numeric',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'description' => 'nullable|string|max:1000',
             'images' => 'nullable|array',
-            'imager.*' => 'string'
+            'images.*' => 'string',
+            'type' => 'required|string|in:Apartment,Farm,Villa,Restaurant,Travel Rest Stop,Residential Tower,Country Estate',
+            'number_of_rooms' => 'required|min:0|integer'
         ];
     }
 
@@ -39,29 +41,36 @@ class StorePropertyRequest extends FormRequest
         return [
             'price.required' => 'Price is required.',
             'price.integer' => 'Price must be an integer.',
-            'price.min' => 'Price must be greater than or equal to 0.',
+            'price.min' => 'Price must be zero or greater.',
 
-            'city.required' => 'City name is required.',
-            'city.string' => 'City name must be a string.',
-            'city.max' => 'City name must not exceed 255 characters.',
+            'city.required' => 'City is required.',
+            'city.string' => 'City must be a valid string.',
+            'city.max' => 'City must not exceed 255 characters.',
 
             'address.required' => 'Address is required.',
-            'address.string' => 'Address must be a string.',
+            'address.string' => 'Address must be a valid string.',
             'address.max' => 'Address must not exceed 255 characters.',
 
             'governorate.required' => 'Governorate is required.',
-            'governorate.string' => 'Governorate must be a string.',
+            'governorate.string' => 'Governorate must be a valid string.',
             'governorate.max' => 'Governorate must not exceed 255 characters.',
 
             'latitude.numeric' => 'Latitude must be a numeric value.',
             'longitude.numeric' => 'Longitude must be a numeric value.',
 
-            'description.string' => 'Description must be a string.',
+            'description.string' => 'Description must be a valid string.',
             'description.max' => 'Description must not exceed 1000 characters.',
 
             'images.array' => 'Images must be an array.',
+            'images.*.string' => 'Each image must be a valid string.',
 
-            'imager.*.string' => 'Each image must be a string (path or URL).',
+            'type.required' => 'Property type is required.',
+            'type.string' => 'Property type must be a valid string.',
+            'type.in' => 'Invalid property type. Allowed values: Apartment, Farm, Villa, Restaurant, Travel Rest Stop, Residential Tower, Country Estate.',
+
+            'number_of_rooms.required' => 'Number of rooms is required.',
+            'number_of_rooms.integer' => 'Number of rooms must be an integer.',
+            'number_of_rooms.min' => 'Number of rooms must be zero or greater.',
         ];
     }
 }

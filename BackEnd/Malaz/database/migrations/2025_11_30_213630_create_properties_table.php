@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->string('description')->nullable();
             $table->string('laititude')->nullable();
             $table->string('longitude')->nullable();
+            $table->string('type')->default('flat');
+            $table->integer('number_of_rooms')->default(0);
             $table->timestamps();
         });
     }
