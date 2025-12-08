@@ -1,67 +1,79 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:malaz/data/datasources/remote/apartment_remote_data_source.dart';
-import 'package:malaz/data/repositories/apartment_repository_impl.dart';
-import 'package:malaz/domain/usecases/get_apartments_usecase.dart';
-import 'package:malaz/l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:malaz/presentation/cubits/home/home_cubit.dart';
 import 'package:malaz/presentation/cubits/language/language_cubit.dart';
 import 'package:malaz/presentation/cubits/theme/theme_cubit.dart';
+
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/config/theme/app_theme.dart';
 
+import 'core/service_locator/service_locator.dart';
+import 'l10n/app_localizations.dart';
+
+
 /// [main]
-/// here i will elaborate everything about main function :)
 ///
-/// [WidgetsFlutterBinding.ensureInitialized() => make sure every thing need to
-/// initialized is actually initialized, why ? search for it
+/// - `WidgetsFlutterBinding.ensureInitialized():` Ensures that the Flutter framework is initialized.
+///   This is required before calling native Flutter functions (like `runApp`).
 ///
-/// [SharedPreferences] => with this class we can storage in memory, we use this
-/// for storaging selected theme mode and language
+/// - `await setUpServices()`: Calls an asynchronous function to set up and initialize
+///   the application's services, such as dependency injection using `get_it`.
 ///
-/// [A] => a relative for service_locator, i have no idea if we will use this
-/// approach or service_locator approach each has it's weakness points
+/// - `runApp(const RentalApp())`: Starts the application by displaying the root widget `RentalApp`.
 ///
-/// [note] => something ambiguous ? ask on the group :D
+/// [RentalApp] is a StatelessWidget that serves as the application's root.
+///
+/// - [MultiBlocProvider]: Provides multiple BLoC states to the widget tree.
+///   This allows descendant widgets to access `ThemeCubit`, `LanguageCubit`, and `HomeCubit`.
+///   Each Cubit is created using `sl<T>()`, which fetches the registered service instance
+///   from the service locator.
+///
+/// - `child: const RentalAppView()`: Renders [RentalAppView] as its child widget.
+///
+/// [RentalAppView] is a StatelessWidget that builds the main UI of the app.
+///
+/// - `context.watch<ThemeCubit>().state` & `context.watch<LanguageCubit>().state`:
+///   These lines listen for changes in [ThemeCubit] and [LanguageCubit].
+///   When the state of either cubit changes, Flutter rebuilds this widget.
+///
+/// - [MaterialApp]: The main widget that wraps a number of widgets required for
+///   Material Design applications.
+///   - [title]: The app title used by the operating system.
+///   - [debugShowCheckedModeBanner]: Hides the "Debug" banner in the top-right corner.
+///   - [theme] & [darkTheme]: Define the light and dark themes for the app.
+///   - [themeMode]: Controls which theme to use (light, dark, or system) based on the `ThemeCubit`'s state.
+///   - [locale]: Sets the app's current language based on the `LanguageCubit`'s state.
+///   - [supportedLocales]: A list of languages supported by the app.
+///   - [localizationsDelegates]: Provides translations and localized content for the app.
+///   - [localeResolutionCallback]: Logic to determine the best supported locale based on the device's locale.
+///   - [routes]: Defines the named navigation routes in the app, allowing navigation to screens
+///     like [LoginScreen], [HomeRegisterScreen], and [SettingsScreen].
+///   - [home]: The widget displayed when the app starts, which is `SplashScreen` here.
+///
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
 
-  /// [A]
-  final ApartmentRemoteDataSource apartmentRemoteDataSource = ApartmentRemoteDataSourceImpl();
-  final ApartmentRepositoryImpl apartmentRepository = ApartmentRepositoryImpl(remoteDataSource: apartmentRemoteDataSource);
-  final GetApartmentsUseCase getApartmentsUseCase = GetApartmentsUseCase(apartmentRepository);
+  await setUpServices();
 
-  runApp(RentalApp(
-    prefs: prefs,
-    getApartmentsUseCase: getApartmentsUseCase,
-  ));
+  runApp(const RentalApp());
 }
 
 class RentalApp extends StatelessWidget {
-  final SharedPreferences prefs;
-  final GetApartmentsUseCase getApartmentsUseCase;
-
-  const RentalApp({
-    super.key,
-    required this.prefs,
-    required this.getApartmentsUseCase,
-  });
+  const RentalApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ThemeCubit(prefs)),
-        BlocProvider(create: (context) => LanguageCubit(prefs)),
-        BlocProvider(create: (context) => HomeCubit(getApartmentsUseCase: getApartmentsUseCase)),
+        BlocProvider(create: (context) => sl<ThemeCubit>()),
+        BlocProvider(create: (context) => sl<LanguageCubit>()),
+        BlocProvider(create: (context) => sl<HomeCubit>()),
       ],
       child: const RentalAppView(),
     );
