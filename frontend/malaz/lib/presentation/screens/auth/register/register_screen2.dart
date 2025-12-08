@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:malaz/core/config/color/app_color.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../global widgets/build_branding.dart';
-import '../shared widgets/shared_widgets.dart';
+import '../../../global_widgets/build_branding.dart';
+import '../shared_widgets/shared_widgets.dart';
 
 class RegisterScreen2 extends StatelessWidget {
   const RegisterScreen2({super.key});

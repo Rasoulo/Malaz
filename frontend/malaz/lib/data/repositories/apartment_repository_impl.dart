@@ -1,5 +1,5 @@
 
-import 'package:malaz/data/datasources/apartment_remote_data_source.dart';
+import 'package:malaz/data/datasources/remote/apartment_remote_data_source.dart';
 import 'package:malaz/domain/entities/apartment.dart';
 import 'package:malaz/domain/repositories/apartment_repository.dart';
 

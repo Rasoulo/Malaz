@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/config/color/app_color.dart';
-import 'package:malaz/presentation/global%20widgets/custom_button.dart';
+import 'package:malaz/presentation/global_widgets/custom_button.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../global widgets/build_branding.dart';
+import '../../../global_widgets/build_branding.dart';
 
 class WelcomeAndAddProfilephoto extends StatelessWidget {
   const WelcomeAndAddProfilephoto({super.key});

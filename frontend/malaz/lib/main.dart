@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:malaz/data/datasources/apartment_remote_data_source.dart';
+import 'package:malaz/data/datasources/remote/apartment_remote_data_source.dart';
 import 'package:malaz/data/repositories/apartment_repository_impl.dart';
 import 'package:malaz/domain/usecases/get_apartments_usecase.dart';
 import 'package:malaz/l10n/app_localizations.dart';
@@ -11,7 +11,7 @@ import 'package:malaz/presentation/cubits/theme/theme_cubit.dart';
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
-import 'package:malaz/presentation/screens/splash%20screen/splash_screen.dart';
+import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -26,8 +26,8 @@ import 'core/config/theme/app_theme.dart';
 /// [SharedPreferences] => with this class we can storage in memory, we use this
 /// for storaging selected theme mode and language
 ///
-/// [A] => a relative for service allocator, i have no idea if we will use this
-/// approach or service allocator approach each has it's weakness points
+/// [A] => a relative for service_locator, i have no idea if we will use this
+/// approach or service_locator approach each has it's weakness points
 ///
 /// [note] => something ambiguous ? ask on the group :D
 Future<void> main() async {

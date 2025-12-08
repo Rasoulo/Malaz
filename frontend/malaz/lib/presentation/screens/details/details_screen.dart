@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import '../../../domain/entities/apartment.dart';
-import '../../global widgets/custom_button.dart';
+import '../../global_widgets/custom_button.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Apartment apartment;

@@ -1,5 +1,5 @@
 
-import '../../domain/entities/apartment.dart';
+import '../../../domain/entities/apartment.dart';
 
 // This is the contract for our data source
 abstract class ApartmentRemoteDataSource {

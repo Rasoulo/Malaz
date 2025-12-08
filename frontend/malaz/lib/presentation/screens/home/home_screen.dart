@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/presentation/cubits/home/home_cubit.dart';
 import '../../../domain/entities/apartment.dart';
-import '../../global widgets/apartment_card.dart';
+import '../../global_widgets/apartment_card.dart';
 import '../details/details_screen.dart';
-import '../side drawer/app_drawer.dart';
+import '../side_drawer/app_drawer.dart';
 
 
 /// [HomeScreen]

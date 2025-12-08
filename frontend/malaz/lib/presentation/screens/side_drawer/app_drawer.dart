@@ -10,12 +10,12 @@ enum ThemeOption { light, dark, system }
 /// [AppDrawer]
 /// a huge mass here it needs to be cleaned up :(
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({Key? key}) : super(key: key);
+  const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+      final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
     final tr = AppLocalizations.of(context)!;
 
@@ -63,7 +63,7 @@ class AppDrawer extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10),
               children: [
                 _buildDrawerItem(context, Icons.person_outline, tr.my_profile,
-                    () {}), // Not translated yet
+                    () {}), // ?
                 _buildDrawerItem(context, Icons.palette_outlined, tr.theme, () {
                   Navigator.pop(context);
                   _showThemeBottomSheet(context);
@@ -74,7 +74,7 @@ class AppDrawer extends StatelessWidget {
                 }),
                 const Divider(),
                 _buildDrawerItem(context, Icons.apartment, tr.become_a_renter,
-                    () {}), // Not translated yet
+                    () {}), // ?
                 _buildDrawerItem(context, Icons.settings_outlined, tr.settings,
                     () {
                   Navigator.pop(context);
@@ -96,7 +96,7 @@ class AppDrawer extends StatelessWidget {
                     style: TextStyle(
                         color: colorScheme.error, fontWeight: FontWeight.bold)),
                 onTap: () {
-                  Navigator.pop(context); // Close drawer
+                  Navigator.pop(context);
                   Navigator.pushNamed(context, '/login');
                 },
               ),
@@ -157,7 +157,7 @@ class AppDrawer extends StatelessWidget {
     final tr = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Allow bottom sheet to be bigger
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -230,7 +230,7 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
-// ... (Theme switcher widgets remain the same)
+// ... (theme switcher widgets remain the same)
 class _ThemeSwitcher extends StatelessWidget {
   final ThemeMode currentThemeMode;
   const _ThemeSwitcher({required this.currentThemeMode});

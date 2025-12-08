@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:malaz/core/config/color/app_color.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../global widgets/build_branding.dart';
-import '../../../global widgets/custom_button.dart';
-import '../../main wrapper/main_wrapper.dart';
-import '../shared widgets/shared_widgets.dart';
+import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/custom_button.dart';
+import '../../main_wrapper/main_wrapper.dart';
+import '../shared_widgets/shared_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

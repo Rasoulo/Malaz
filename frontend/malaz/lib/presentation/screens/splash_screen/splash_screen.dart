@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../global widgets/build_branding.dart';
+import '../../global_widgets/build_branding.dart';
 
 /// [SplashScreen]
 ///
-/// An animated splash screen that displays a logo and branding
+/// An animated splash_screen that displays a logo and branding
 /// before transitioning to the main application.
 /// the main purpose of this screen is to load vital data from the server
 /// moreover, it impacts an awesome user experience
