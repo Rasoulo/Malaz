@@ -55,6 +55,8 @@ class _HomeRegisterScreenState extends State<HomeRegisterScreen> {
     return !isFormValid;
   }
 
+
+  
   void _onPageChanged(int newPage) {
     if (myConditionCheck()) {
       _controller.animateToPage(
