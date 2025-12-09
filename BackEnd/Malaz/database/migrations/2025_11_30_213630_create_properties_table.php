@@ -13,7 +13,6 @@ return new class extends Migration {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->foreignId('owner_id')->constrained('users')->references('id');
-            $table->boolean('is_rented')->default(false);
             $table->integer('price')->default(0);
             $table->string('governorate');
             $table->string('city');
@@ -23,6 +22,8 @@ return new class extends Migration {
             $table->string('longitude')->nullable();
             $table->string('type')->default('flat');
             $table->integer('number_of_rooms')->default(0);
+            $table->integer('number_of_baths')->default(0);
+            $table->integer('area')->default(0);
             $table->timestamps();
         });
     }

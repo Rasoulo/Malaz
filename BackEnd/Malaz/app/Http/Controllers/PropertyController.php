@@ -15,26 +15,48 @@ class PropertyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function my_properties()
+    public function my_properties(Request $request)
     {
         $user = auth()->user();
-        $properties = $user->property()->with('image')->get();
+        $perPage = (int) $request->input('per_page', 20);
+
+        $properties = $user->property()
+            ->with('images')
+            ->orderBy('id', 'desc')
+            ->cursorPaginate($perPage);
+        ;
         return response()->json(
             [
-                'data' => $properties,
+                'data' => $properties->items(),
                 'message' => 'here all your properties',
+                'meta' => [
+                    'next_cursor' => $properties->nextCursor()?->encode(),
+                    'prev_cursor' => $properties->previousCursor()?->encode(),
+                    'per_page' => $properties->perPage(),
+                ],
                 'status' => 200,
             ]
         );
     }
 
-    public function all_properties()
+    public function all_properties(Request $request)
     {
-        $properties = Property::with('image')->get();
+
+        $perPage = (int) $request->input('per_page', 20);
+
+        $properties = Property::with('images')
+            ->orderBy('id', 'desc')
+            ->cursorPaginate($perPage);
+        ;
         return response()->json(
             [
-                'data' => $properties,
+                'data' => $properties->items(),
                 'message' => 'here all properties',
+                'meta' => [
+                    'next_cursor' => $properties->nextCursor()?->encode(),
+                    'prev_cursor' => $properties->previousCursor()?->encode(),
+                    'per_page' => $properties->perPage(),
+                ],
                 'status' => 200,
             ]
         );
@@ -60,9 +82,11 @@ class PropertyController extends Controller
             collect($validated)->except('images')->toArray()
         );
 
-        $property->image()->createMany(
-            collect($validated['images'])->map(fn($image) => ['image' => $image])->toArray()
-        );
+        if (!empty($validated->images)) {
+            $property->images()->createMany(
+                collect($validated['images'])->map(fn($image) => ['image' => $image])->toArray()
+            );
+        }
 
         return response()->json([
             'data' => $property,
@@ -110,7 +134,7 @@ class PropertyController extends Controller
         $this->authorize('update', $property);
         $validated = $request->validated();
         $property->update($validated);
-        if (!empty($validated['images'])) {
+        if (!empty($validated['images']) && $validated->has('images')) {
             $property->images()->createMany(
                 collect($validated['images'])->map(fn($image) => ['image' => $image])->toArray()
             );

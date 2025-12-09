@@ -47,7 +47,7 @@ Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTE
     Route::get('{property}', 'show')->name('properties.show');
     Route::get('{property}/favorites', 'favonwho')->name('properties.favonwho');
     Route::middleware('role:ADMIN,OWNER')->group(function () {
-        Route::get('my', 'my_properties')->name('properties.my');
+        Route::get('all/my', 'my_properties')->name('properties.my');
         Route::post('/', 'store')->name('properties.store');
         Route::put('{property}', 'update')->name('properties.update');
         Route::delete('{property}', 'destroy')->name('properties.destroy');

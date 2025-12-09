@@ -29,7 +29,7 @@ class UserController extends Controller
         $user = auth()->user();
         $user->favorites()->attach($propertyId);
 
-         return response()->json([
+        return response()->json([
             'message' => 'added to favorite completed',
             'status' => 200,
         ]);
@@ -40,7 +40,7 @@ class UserController extends Controller
         $user = auth()->user();
         $user->favorites()->detach($propertyId);
 
-         return response()->json([
+        return response()->json([
             'message' => 'removed from favorite completed',
             'status' => 200,
         ]);
@@ -86,7 +86,7 @@ class UserController extends Controller
         }
 
         if ($cachedOtp != $request->otp) {
-            return response()->json(['message' => 'Invalid OTP' ], 400);
+            return response()->json(['message' => 'Invalid OTP'], 400);
         }
 
         Cache::forget('otp_' . $request->phone);
@@ -139,12 +139,14 @@ class UserController extends Controller
             'profile_image' => $request->profile_image,
             'date_of_birth' => $request->date_of_birth,
         ]);
+        $data = $request->validated();
+        $data['role'] = 'OWNER';
 
         $user->refresh();
         $editrequest = EditRequest::create([
             'user_id' => $user->id,
             'old_data' => collect($user->toArray())->except(['password']),
-            'new_data' => collect($request->validated())->except(['password']),
+            'new_data' => collect($data)->except(['password']),
             'status' => 'PENDING',
         ]);
 

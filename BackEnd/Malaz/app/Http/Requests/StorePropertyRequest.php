@@ -30,9 +30,11 @@ class StorePropertyRequest extends FormRequest
             'longitude' => 'nullable|numeric',
             'description' => 'nullable|string|max:1000',
             'images' => 'nullable|array',
-            'images.*' => 'string',
+            'images.*' => 'nullable|string',
             'type' => 'required|string|in:Apartment,Farm,Villa,Restaurant,Travel Rest Stop,Residential Tower,Country Estate',
-            'number_of_rooms' => 'required|min:0|integer'
+            'number_of_rooms' => 'required|min:0|integer',
+            'number_of_baths' => 'required|min:0|integer',
+            'area' => 'required|min:0',
         ];
     }
 
@@ -71,6 +73,13 @@ class StorePropertyRequest extends FormRequest
             'number_of_rooms.required' => 'Number of rooms is required.',
             'number_of_rooms.integer' => 'Number of rooms must be an integer.',
             'number_of_rooms.min' => 'Number of rooms must be zero or greater.',
+
+            'number_of_baths.required' => 'The number of baths field is required.',
+            'number_of_baths.integer' => 'The number of baths must be an integer.',
+            'number_of_baths.min' => 'The number of baths cannot be less than 0.',
+
+            'area.required' => 'The area field is required.',
+            'area.min' => 'The area must be greater than or equal to 0.',
         ];
     }
 }

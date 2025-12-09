@@ -16,7 +16,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
-            'role' => 'required|string|in:RENTER,OWNER,ADMIN',
+            // 'role' => 'required|string|in:RENTER,OWNER,ADMIN',
+            'role' => '',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'password' => 'required|string|min:6|confirmed',
@@ -57,9 +58,9 @@ class RegisterRequest extends FormRequest
             'date_of_birth.date' => 'Date of birth must be a valid date.',
             'date_of_birth.before' => 'You must be at least 6 years old.',
 
-            'role.required' => 'The role field is required and cannot be empty.',
-            'role.string' => 'The role must be a valid string.',
-            'role.in' => 'The selected role is invalid. Allowed values are: RENTER, OWNER, ADMIN.',
+            // 'role.required' => 'The role field is required and cannot be empty.',
+            // 'role.string' => 'The role must be a valid string.',
+            // 'role.in' => 'The selected role is invalid. Allowed values are: RENTER, OWNER, ADMIN.',
         ];
     }
 }

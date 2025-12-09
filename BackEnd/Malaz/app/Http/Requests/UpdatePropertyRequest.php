@@ -22,7 +22,6 @@ class UpdatePropertyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_rented' => 'boolean',
             'price' => 'integer|min:0',
             'description' => 'nullable|string|max:1000',
             'images' => 'nullable|array',
@@ -38,7 +37,6 @@ class UpdatePropertyRequest extends FormRequest
     {
         return
             [
-                'is_rented.boolean' => 'The rented field must be true or false.',
                 'price.integer' => 'The price must be a valid integer.',
                 'price.min' => 'The price cannot be less than zero.',
                 'description.string' => 'The description must be a valid string.',
