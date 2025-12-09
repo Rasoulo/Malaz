@@ -1,0 +1,3253 @@
+{
+	"info": {
+		"_postman_id": "f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2",
+		"name": "Malaz",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50107412",
+		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107412"
+	},
+	"item": [
+		{
+			"name": "UserAPI",
+			"item": [
+				{
+					"name": "Admins",
+					"item": [
+						{
+							"name": "Get All Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|aDK71XYuDmJmbeWfQvSRruGs22sdYCqAO4samRd744ca8052",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update A Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|aDK71XYuDmJmbeWfQvSRruGs22sdYCqAO4samRd744ca8052",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/edit-requests/2?status=APPROVE",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"edit-requests",
+										"2"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "APPROVE"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "fail : status should be APPROVED or REJECTED",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/edit-requests/2?status=APPROVE",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"edit-requests",
+												"2"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "APPROVE"
+												}
+											]
+										}
+									},
+									"status": "Unprocessable Content",
+									"code": 422,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 09 Dec 2025 05:08:44 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"The selected status is invalid.\",\n    \"errors\": {\n        \"status\": [\n            \"The selected status is invalid.\"\n        ]\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Update A Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|aDK71XYuDmJmbeWfQvSRruGs22sdYCqAO4samRd744ca8052",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/edit-requests/1?status=APPROVED",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"edit-requests",
+										"1"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "APPROVED"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|aDK71XYuDmJmbeWfQvSRruGs22sdYCqAO4samRd744ca8052",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/1?first_name=Super&last_name=Admin&date_of_birth=hello",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"1"
+									],
+									"query": [
+										{
+											"key": "first_name",
+											"value": "Super"
+										},
+										{
+											"key": "last_name",
+											"value": "Admin"
+										},
+										{
+											"key": "date_of_birth",
+											"value": "hello"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Update User",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/users/1?first_name=wasim&last_name=alahmed",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"users",
+												"1"
+											],
+											"query": [
+												{
+													"key": "first_name",
+													"value": "wasim"
+												},
+												{
+													"key": "last_name",
+													"value": "alahmed"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 08 Dec 2025 21:35:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"first_name\": \"wasim\",\n        \"last_name\": \"alahmed\",\n        \"phone\": \"0999999999\",\n        \"role\": \"ADMIN\",\n        \"date_of_birth\": \"1990-01-01\",\n        \"profile_image\": \"default_admin_profile.png\",\n        \"identity_card_image\": \"default_admin_id.png\",\n        \"phone_verified_at\": \"2025-12-09T00:35:07.000000Z\",\n        \"created_at\": \"2025-12-08T20:01:15.000000Z\",\n        \"updated_at\": \"2025-12-08T21:35:07.000000Z\"\n    },\n    \"message\": \"user update completed\",\n    \"status\": 200\n}"
+								},
+								{
+									"name": "fail",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/users/1?first_name=Super&last_name=Admin&date_of_birth=hello",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"users",
+												"1"
+											],
+											"query": [
+												{
+													"key": "first_name",
+													"value": "Super"
+												},
+												{
+													"key": "last_name",
+													"value": "Admin"
+												},
+												{
+													"key": "date_of_birth",
+													"value": "hello"
+												}
+											]
+										}
+									},
+									"status": "Unprocessable Content",
+									"code": 422,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 09 Dec 2025 05:07:56 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Date of birth must be a valid date.\",\n    \"errors\": {\n        \"date_of_birth\": [\n            \"Date of birth must be a valid date.\"\n        ]\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Return All Edit Requests",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/edit-requests/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"edit-requests",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Return Pending Edit Requests",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/edit-requests/pending",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"edit-requests",
+										"pending"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unknown Method",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/bookings/all",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"bookings",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update A Booking",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/bookings/update/1?status=confirmed&payment_status=paid",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"bookings",
+										"update",
+										"1"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "confirmed"
+										},
+										{
+											"key": "payment_status",
+											"value": "paid"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unknown Method",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/bookings/force-cancel/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"bookings",
+										"force-cancel",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Registered User",
+					"item": [
+						{
+							"name": "Request Update",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/request-update?first_name=almalek&last_name=poteto",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"request-update"
+									],
+									"query": [
+										{
+											"key": "first_name",
+											"value": "almalek"
+										},
+										{
+											"key": "last_name",
+											"value": "poteto"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/change-password?current_password=12345678&new_password=123123123&new_password_confirmation=123123123",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"change-password"
+									],
+									"query": [
+										{
+											"key": "current_password",
+											"value": "12345678"
+										},
+										{
+											"key": "new_password",
+											"value": "123123123"
+										},
+										{
+											"key": "new_password_confirmation",
+											"value": "123123123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LogOut",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/logout",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "My Info",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/me",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add A property to my favorite",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/favorites/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"favorites",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove A Property From My Favorite",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/favorites/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"favorites",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All My Favorite Property",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/favorites",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111111&role=OWNER&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"register"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "+1111111111"
+								},
+								{
+									"key": "role",
+									"value": "OWNER"
+								},
+								{
+									"key": "first_name",
+									"value": "Maher"
+								},
+								{
+									"key": "last_name",
+									"value": "Alnouri"
+								},
+								{
+									"key": "password",
+									"value": "12345678"
+								},
+								{
+									"key": "identity_card_image",
+									"value": "123"
+								},
+								{
+									"key": "profile_image",
+									"value": "123"
+								},
+								{
+									"key": "date_of_birth",
+									"value": "1-1-1"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111111&role=OWNER&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"register"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+1111111111"
+										},
+										{
+											"key": "role",
+											"value": "OWNER"
+										},
+										{
+											"key": "first_name",
+											"value": "Maher"
+										},
+										{
+											"key": "last_name",
+											"value": "Alnouri"
+										},
+										{
+											"key": "password",
+											"value": "12345678"
+										},
+										{
+											"key": "identity_card_image",
+											"value": "123"
+										},
+										{
+											"key": "profile_image",
+											"value": "123"
+										},
+										{
+											"key": "date_of_birth",
+											"value": "1-1-1"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "12345678"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 08 Dec 2025 21:26:05 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User created Wait until it is approved by the officials\",\n    \"data\": {\n        \"id\": 2,\n        \"first_name\": \"Maher\",\n        \"last_name\": \"Alnouri\",\n        \"phone\": \"1111111111\",\n        \"role\": \"PENDING\",\n        \"date_of_birth\": \"0001-01-01\",\n        \"profile_image\": \"123\",\n        \"identity_card_image\": \"123\",\n        \"phone_verified_at\": \"2025-12-09T00:26:05.000000Z\",\n        \"created_at\": \"2025-12-08T21:26:05.000000Z\",\n        \"updated_at\": \"2025-12-08T21:26:05.000000Z\"\n    }\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/register?phone=+11&role=&first_name=&last_name=&password=123456&identity_card_image=&profile_image=&date_of_birth=1-1-&password_confirmation=12345678",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"register"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+11"
+										},
+										{
+											"key": "role",
+											"value": ""
+										},
+										{
+											"key": "first_name",
+											"value": ""
+										},
+										{
+											"key": "last_name",
+											"value": ""
+										},
+										{
+											"key": "password",
+											"value": "123456"
+										},
+										{
+											"key": "identity_card_image",
+											"value": ""
+										},
+										{
+											"key": "profile_image",
+											"value": ""
+										},
+										{
+											"key": "date_of_birth",
+											"value": "1-1-"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "12345678"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 08 Dec 2025 21:27:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Phone number must be a valid format (9–15 digits, may start with +). (and 7 more errors)\",\n    \"errors\": {\n        \"phone\": [\n            \"Phone number must be a valid format (9–15 digits, may start with +).\"\n        ],\n        \"role\": [\n            \"The role field is required and cannot be empty.\"\n        ],\n        \"first_name\": [\n            \"First name is required.\"\n        ],\n        \"last_name\": [\n            \"Last name is required.\"\n        ],\n        \"password\": [\n            \"The password field confirmation does not match.\"\n        ],\n        \"identity_card_image\": [\n            \"Identity card image is required.\"\n        ],\n        \"profile_image\": [\n            \"Profile image is required.\"\n        ],\n        \"date_of_birth\": [\n            \"Date of birth must be a valid date.\"\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Register Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111112&role=OWNER&first_name=Pixel&last_name=Master&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=2-2-2&password_confirmation=12345678",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"register"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "+1111111112"
+								},
+								{
+									"key": "role",
+									"value": "OWNER"
+								},
+								{
+									"key": "first_name",
+									"value": "Pixel"
+								},
+								{
+									"key": "last_name",
+									"value": "Master"
+								},
+								{
+									"key": "password",
+									"value": "12345678"
+								},
+								{
+									"key": "identity_card_image",
+									"value": "123"
+								},
+								{
+									"key": "profile_image",
+									"value": "123"
+								},
+								{
+									"key": "date_of_birth",
+									"value": "2-2-2"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogIn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/login?phone=+1111111111&password=12345678",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "+1111111111"
+								},
+								{
+									"key": "password",
+									"value": "12345678"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/login?phone=+1111111111&password=12345678",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"login"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+1111111111"
+										},
+										{
+											"key": "password",
+											"value": "12345678"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 08 Dec 2025 21:28:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Wait until it is approved by the officials\"\n}"
+						},
+						{
+							"name": "Wrong number",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/login?phone=+111111111&password=12345678",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"login"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+111111111"
+										},
+										{
+											"key": "password",
+											"value": "12345678"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 08 Dec 2025 21:29:03 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"This phone number does not exist in our records.\",\n    \"errors\": {\n        \"phone\": [\n            \"This phone number does not exist in our records.\"\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "LogIn Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/login?phone=+1111111112&password=12345678",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "+1111111112"
+								},
+								{
+									"key": "password",
+									"value": "12345678"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogIn Copy 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/login?phone=0999999999&password=Admin@123",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "0999999999"
+								},
+								{
+									"key": "password",
+									"value": "Admin@123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send OPT Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/send-otp?phone=+963966047371",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"send-otp"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "+963966047371"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/send-otp?phone=",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"send-otp"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 05:24:59 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"The phone field is required.\",\n    \"errors\": {\n        \"phone\": [\n            \"The phone field is required.\"\n        ]\n    }\n}"
+						},
+						{
+							"name": "fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/send-otp?phone=das",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"send-otp"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "das"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 05:25:28 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"The phone field format is invalid.\",\n    \"errors\": {\n        \"phone\": [\n            \"The phone field format is invalid.\"\n        ]\n    }\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/send-otp?phone=+96381226535",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"send-otp"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+96381226535"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 05:25:55 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"message\": \"OTP sent\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify OPT Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/verify-otp?phone=+963981226535&otp=931581",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"verify-otp"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "+963981226535"
+								},
+								{
+									"key": "otp",
+									"value": "931581"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/verify-otp?phone=+963981226535&otp=931518",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"verify-otp"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+963981226535"
+										},
+										{
+											"key": "otp",
+											"value": "931518"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 05:28:44 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"message\": \"Phone verified\"\n}"
+						},
+						{
+							"name": "Verify OPT Code",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/verify-otp?phone=+963981226535&otp=931581",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"verify-otp"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+963981226535"
+										},
+										{
+											"key": "otp",
+											"value": "931581"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 05:30:16 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid OTP\"\n}"
+						},
+						{
+							"name": "phone not found or an expired otp",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/verify-otp?phone=+963981226535&otp=931581",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"verify-otp"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+963981226535"
+										},
+										{
+											"key": "otp",
+											"value": "931581"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 05:33:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"OTP expired or not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Send OPT Code",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/send-otp?phone=+96381226535",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"send-otp"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "+96381226535"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ReviewsAPI",
+			"item": [
+				{
+					"name": "Get My Reviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make A Reviews",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/properties/1?rating=4&body=hello world",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"properties",
+								"1"
+							],
+							"query": [
+								{
+									"key": "rating",
+									"value": "4"
+								},
+								{
+									"key": "body",
+									"value": "hello world"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update A Reviews",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/1?rating=1&body=world hello",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"1"
+							],
+							"query": [
+								{
+									"key": "rating",
+									"value": "1"
+								},
+								{
+									"key": "body",
+									"value": "world hello"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update A Reviews",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/1?rating=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"1"
+							],
+							"query": [
+								{
+									"key": "rating",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete A Reviews",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "conversations",
+			"item": [
+				{
+					"name": "Get My Conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/conversations/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"conversations",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/conversations/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"conversations",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 05:44:01 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"conversations\": [],\n    \"meta\": {\n        \"next_cursor\": null,\n        \"prev_cursor\": null,\n        \"per_page\": 20\n    },\n    \"status\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Get A Conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/conversations/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"conversations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get The Message From A Conversation",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/conversations/1/message",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"conversations",
+								"1",
+								"message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete A Conversation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/conversations/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"conversations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make A Conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/conversations/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"conversations",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/conversations/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"conversations",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 06:01:30 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Conversation created successfully\",\n    \"conversation\": {\n        \"user_one_id\": 2,\n        \"user_two_id\": 3,\n        \"updated_at\": \"2025-12-09T06:01:30.000000Z\",\n        \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n        \"id\": 1\n    },\n    \"status\": 201\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "MessageAPI",
+			"item": [
+				{
+					"name": "Make A Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/conversations/1/messages/?body=Welcome back",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"conversations",
+								"1",
+								"messages",
+								""
+							],
+							"query": [
+								{
+									"key": "body",
+									"value": "Welcome back"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/conversations/1/messages/?body=Welcome back",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"conversations",
+										"1",
+										"messages",
+										""
+									],
+									"query": [
+										{
+											"key": "body",
+											"value": "Welcome back"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 06:04:34 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Message created successfully\",\n    \"data\": {\n        \"sender_id\": 3,\n        \"conversation_id\": 1,\n        \"body\": \"Welcome back\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"id\": 1,\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 201\n}"
+						}
+					]
+				},
+				{
+					"name": "Show A Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/messages/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"messages",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/messages/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"messages",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 06:09:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message_data\": {\n        \"id\": 1,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": null,\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"info\": \"Message retrieved successfully\",\n    \"status\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Update A Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/messages/1?body=ELO",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"messages",
+								"1"
+							],
+							"query": [
+								{
+									"key": "body",
+									"value": "ELO"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/messages/1?body=ELO",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"messages",
+										"1"
+									],
+									"query": [
+										{
+											"key": "body",
+											"value": "ELO"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 06:10:03 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"message updated\",\n    \"status\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Update A Message",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/message/1?body=ELO",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"message",
+								"1"
+							],
+							"query": [
+								{
+									"key": "body",
+									"value": "ELO"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete A Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/messages/34",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"messages",
+								"34"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/messages/7",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"messages",
+										"7"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 06:15:14 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"message deleted successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Mark A Message As A Read One",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6|clQcEAr2m4xfDG8oIz3X6MpkD2l4tv2KzYiJ4dTP75b68434",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/messages/8/read",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"messages",
+								"8",
+								"read"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/messages/8/read",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"messages",
+										"8",
+										"read"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 09 Dec 2025 06:18:09 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Message marked as read\",\n    \"data\": {\n        \"id\": 8,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": \"2025-12-09T06:18:09.330360Z\",\n        \"created_at\": \"2025-12-09T06:15:07.000000Z\",\n        \"updated_at\": \"2025-12-09T06:18:09.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 200\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "BookingAPI",
+			"item": [
+				{
+					"name": "Get All Bookings From The User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/bookings/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"bookings",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show My Booking Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/bookings/show/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"bookings",
+								"show",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete My Booking",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/bookings/cancel/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"bookings",
+								"cancel",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make A Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/store?property_id=1&check_in=2030-1-1&check_out=2030-1-2&total_price=100&currency=432",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"store"
+							],
+							"query": [
+								{
+									"key": "property_id",
+									"value": "1"
+								},
+								{
+									"key": "check_in",
+									"value": "2030-1-1"
+								},
+								{
+									"key": "check_out",
+									"value": "2030-1-2"
+								},
+								{
+									"key": "total_price",
+									"value": "100"
+								},
+								{
+									"key": "currency",
+									"value": "432"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

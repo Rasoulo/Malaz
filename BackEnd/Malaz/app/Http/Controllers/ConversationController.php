@@ -30,7 +30,7 @@ class ConversationController extends Controller
             ->cursorPaginate($perPage);
 
         return response()->json([
-            'conversations' => $conversations,
+            'conversations' => $conversations->items(),
             'meta' => [
                 'next_cursor' => $conversations->nextCursor()?->encode(),
                 'prev_cursor' => $conversations->previousCursor()?->encode(),
@@ -50,8 +50,9 @@ class ConversationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(User $owner)
+    public function store($userId)
     {
+        $owner = User::findOrFail($userId);
         $user = auth()->user();
         if ($owner->id === $user->id) {
             return response()->json(['error' => 'You cannot start a conversation with yourself'], 400);

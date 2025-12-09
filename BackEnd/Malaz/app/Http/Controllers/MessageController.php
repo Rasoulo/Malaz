@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageDelete;
 use App\Models\Message;
 use App\Events\MessageRead;
 use App\Events\MessageSent;
@@ -88,7 +89,7 @@ class MessageController extends Controller
         }
 
         return response()->json([
-            'message_data' => $message->load(['sender', 'conversation.property', 'conversation.userOne', 'conversation.userTwo']),
+            'message_data' => $message->load(['sender', 'conversation']),
             'info' => 'Message retrieved successfully',
             'status' => 200,
         ]);
@@ -123,9 +124,14 @@ class MessageController extends Controller
                 'status' => 200,
             ]);
         }
+
+        return response()->json([
+            'message' => 'you are not the sender',
+            'status' => 200,
+        ]);
     }
 
-    public function readnow(Request $request, Message $message)
+    public function readnow(Message $message)
     {
         $user = auth()->user();
 
@@ -165,8 +171,13 @@ class MessageController extends Controller
         }
 
         try {
+
+            broadcast(new MessageDelete($message))->toOthers();
             $message->delete();
-            return response()->json(null, 204);
+            return response()->json([
+                'message' => 'message deleted successfully',
+            ], 200);
+
         } catch (\Exception $e) {
             return response()->json(
                 [

@@ -17,7 +17,6 @@ class UpdateUserRequest extends FormRequest
         return [
             'first_name' => 'string',
             'last_name' => 'string',
-            'password' => 'string|min:6',
             'identity_card_image' => 'string',
             'date_of_birth' => [
                 'date',

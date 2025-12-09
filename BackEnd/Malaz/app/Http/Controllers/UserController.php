@@ -86,7 +86,7 @@ class UserController extends Controller
         }
 
         if ($cachedOtp != $request->otp) {
-            return response()->json(['message' => 'Invalid OTP', 'otp' => $cachedOtp], 400);
+            return response()->json(['message' => 'Invalid OTP' ], 400);
         }
 
         Cache::forget('otp_' . $request->phone);

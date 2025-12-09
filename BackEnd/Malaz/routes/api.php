@@ -56,7 +56,7 @@ Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTE
 
 Route::prefix('conversations')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(ConversationController::class)->group(function () {
     Route::get('/', 'index')->name('conversations.index');
-    Route::post('/', 'store')->name('conversations.store');
+    Route::post('/{user}', 'store')->name('conversations.store');
     Route::get('{conversation}', 'show')->name('conversations.show');
     Route::delete('{conversation}', 'destroy')->name('conversations.destroy');
     Route::get('{conversation}/messages', 'showmessage')->name('conversations.messages');
