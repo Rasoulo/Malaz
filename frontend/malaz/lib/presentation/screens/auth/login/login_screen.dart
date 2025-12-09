@@ -5,6 +5,7 @@ import 'package:malaz/core/config/color/app_color.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../global_widgets/build_branding.dart';
 import '../../../global_widgets/custom_button.dart';
+import '../../main_wrapper/main_wrapper.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -46,9 +47,9 @@ class LoginScreen extends StatelessWidget {
                     child: Text(
                         tr.welcome_back, // Using getter
                         style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.yellow,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.yellow,
                         )
                     ),
                   ),
@@ -56,10 +57,10 @@ class LoginScreen extends StatelessWidget {
                   ShaderMask(
                     shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
                     child: Text(
-                        tr.login_to_continue, // Using getter
-                        style: TextStyle(
-                            color: Colors.grey.shade600
-                        ),
+                      tr.login_to_continue, // Using getter
+                      style: TextStyle(
+                          color: Colors.grey.shade600
+                      ),
                     ),
                   ),
                   const SizedBox(height: 135),

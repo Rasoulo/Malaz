@@ -11,7 +11,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class HomeRegisterScreen extends StatefulWidget {
-  const HomeRegisterScreen({super.key});
+  HomeRegisterScreen({super.key});
 
   @override
   State<HomeRegisterScreen> createState() => _HomeRegisterScreenState();
@@ -55,8 +55,6 @@ class _HomeRegisterScreenState extends State<HomeRegisterScreen> {
     return !isFormValid;
   }
 
-
-  
   void _onPageChanged(int newPage) {
     if (myConditionCheck()) {
       _controller.animateToPage(

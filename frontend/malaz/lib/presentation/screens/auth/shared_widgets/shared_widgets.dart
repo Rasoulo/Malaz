@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
-import 'package:malaz/presentation/screens/auth/register/register_screen1.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/config/color/app_color.dart';
@@ -26,7 +24,8 @@ class BuildCard extends StatelessWidget {
 }
 
 class BuildPincodeTextfield extends StatefulWidget {
-  const BuildPincodeTextfield({super.key});
+  final GlobalKey<BuildPincodeTextfieldState>? pinKey;
+  const BuildPincodeTextfield({super.key, this.pinKey});
 
   @override
   State<BuildPincodeTextfield> createState() => BuildPincodeTextfieldState();
@@ -35,8 +34,10 @@ class BuildPincodeTextfield extends StatefulWidget {
 class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  late final GlobalKey<BuildPincodeTextfieldState> _pinKey;
   bool _showError = false;
   String? _errorMessage;
+
 
   @override
   void initState() {
@@ -50,8 +51,8 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
 
   @override
   void dispose() {
-    _focusNode.dispose();
-    _pinController.dispose();
+    // _focusNode.dispose();
+    // _pinController.dispose();
     super.dispose();
   }
 
@@ -87,6 +88,7 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
         mainAxisSize: MainAxisSize.min,
         children: [
           PinCodeTextField(
+            key: widget.pinKey,
             appContext: context,
             length: 6,
             controller: _pinController,
@@ -271,19 +273,19 @@ class _BuildTextfieldState extends State<BuildTextfield> {
         },
         readOnly: _onPressedForDate == true ? true : false,
         obscureText: _obscureText,
-          onTap: () async {
-            if (_onPressedForDate) {
-              DateTime? pickedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-              );
-              if (pickedDate != null) {
-                _controller.text = "${pickedDate.toLocal()}".split(' ')[0];
-              }
+        onTap: () async {
+          if (_onPressedForDate) {
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+            );
+            if (pickedDate != null) {
+              _controller.text = "${pickedDate.toLocal()}".split(' ')[0];
             }
-          },
+          }
+        },
         decoration: InputDecoration(
           labelText: widget.label,
           labelStyle: TextStyle(
@@ -299,11 +301,11 @@ class _BuildTextfieldState extends State<BuildTextfield> {
           suffixIcon: _haveSuffixEyeIcon == true ? ShaderMask(
             shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
             child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
+              onTap: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
               child: Icon(
                 _obscureText ? Icons.remove_red_eye_outlined : Icons.remove_red_eye,
                 color: Colors.yellow,
@@ -382,9 +384,9 @@ class BuildVerficationCodeButton extends StatelessWidget {
       child: TextButton.icon(
         onPressed: () {},
         icon: ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-            child: Icon(Icons.send, color: colorScheme.primary
-            ),
+          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+          child: Icon(Icons.send, color: colorScheme.primary
+          ),
         ),
         label: ShaderMask(
           shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),

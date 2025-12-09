@@ -136,20 +136,20 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
       child: DottedBox(
         child: _image == null
             ? Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 36, color: Colors.yellow),
-                  const SizedBox(height: 8),
-                  Text(label,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.yellow)),
-                  if (sub != null) ...[
-                    const SizedBox(height: 6),
-                    Text(sub,
-                        style: TextStyle(fontSize: 12, color: Colors.yellow)),
-                  ],
-                ],
-              )
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 36, color: Colors.yellow),
+            const SizedBox(height: 8),
+            Text(label,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, color: Colors.yellow)),
+            if (sub != null) ...[
+              const SizedBox(height: 6),
+              Text(sub,
+                  style: TextStyle(fontSize: 12, color: Colors.yellow)),
+            ],
+          ],
+        )
             : Image.file(_image!, fit: BoxFit.cover),
       ),
     );
