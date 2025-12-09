@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
+import 'package:malaz/presentation/screens/auth/register/register_screen1.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/config/color/app_color.dart';
@@ -23,8 +26,7 @@ class BuildCard extends StatelessWidget {
 }
 
 class BuildPincodeTextfield extends StatefulWidget {
-  final GlobalKey<BuildPincodeTextfieldState>? pinKey;
-  const BuildPincodeTextfield({super.key, this.pinKey});
+  const BuildPincodeTextfield({super.key});
 
   @override
   State<BuildPincodeTextfield> createState() => BuildPincodeTextfieldState();
@@ -33,10 +35,8 @@ class BuildPincodeTextfield extends StatefulWidget {
 class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  late final GlobalKey<BuildPincodeTextfieldState> _pinKey;
   bool _showError = false;
   String? _errorMessage;
-
 
   @override
   void initState() {
@@ -50,8 +50,8 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
 
   @override
   void dispose() {
-    // _focusNode.dispose();
-    // _pinController.dispose();
+    _focusNode.dispose();
+    _pinController.dispose();
     super.dispose();
   }
 
@@ -87,7 +87,6 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
         mainAxisSize: MainAxisSize.min,
         children: [
           PinCodeTextField(
-            key: widget.pinKey,
             appContext: context,
             length: 6,
             controller: _pinController,
@@ -154,10 +153,7 @@ class BuildRegisterRow extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => HomeRegisterScreen()));
+            context.go('/home_register');
           },
           child: ShaderMask(
             shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
@@ -192,10 +188,7 @@ class BuildLoginRow extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => LoginScreen()));
+            context.go('/login');
           },
           child: ShaderMask(
             shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),

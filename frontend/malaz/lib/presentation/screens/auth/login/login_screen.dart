@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:malaz/core/config/color/app_color.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../global_widgets/build_branding.dart';
 import '../../../global_widgets/custom_button.dart';
-import '../../main_wrapper/main_wrapper.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -72,12 +72,7 @@ class LoginScreen extends StatelessWidget {
                     text: tr.login,
                     onPressed: () {
                       if(formKey.currentState!.validate()){
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const MainWrapper(),
-                            )
-                        );
+                        context.go('/home');
                       } else {
 
                       }

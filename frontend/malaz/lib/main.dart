@@ -16,6 +16,7 @@ import 'package:malaz/presentation/screens/auth/register/register_screen5.dart';
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
 
+import 'core/config/routes/app_routes.dart';
 import 'core/config/theme/app_theme.dart';
 
 import 'core/service_locator/service_locator.dart';
@@ -25,17 +26,17 @@ import 'l10n/app_localizations.dart';
 /// [main]
 ///
 /// - `WidgetsFlutterBinding.ensureInitialized():` Ensures that the Flutter framework is initialized.
-///   This is required before calling native Flutter functions (like `runApp`).
+///   This is required before calling native Flutter functions (like [runApp]).
 ///
 /// - `await setUpServices()`: Calls an asynchronous function to set up and initialize
-///   the application's services, such as dependency injection using `get_it`.
+///   the application's services, such as dependency injection using [get_it].
 ///
-/// - `runApp(const RentalApp())`: Starts the application by displaying the root widget `RentalApp`.
+/// - `runApp(const RentalApp())`: Starts the application by displaying the root widget [RentalApp].
 ///
 /// [RentalApp] is a StatelessWidget that serves as the application's root.
 ///
 /// - [MultiBlocProvider]: Provides multiple BLoC states to the widget tree.
-///   This allows descendant widgets to access `ThemeCubit`, `LanguageCubit`, and `HomeCubit`.
+///   This allows descendant widgets to access [ThemeCubit], [LanguageCubit], and [HomeCubit].
 ///   Each Cubit is created using `sl<T>()`, which fetches the registered service instance
 ///   from the service locator.
 ///
@@ -52,14 +53,14 @@ import 'l10n/app_localizations.dart';
 ///   - [title]: The app title used by the operating system.
 ///   - [debugShowCheckedModeBanner]: Hides the "Debug" banner in the top-right corner.
 ///   - [theme] & [darkTheme]: Define the light and dark themes for the app.
-///   - [themeMode]: Controls which theme to use (light, dark, or system) based on the `ThemeCubit`'s state.
-///   - [locale]: Sets the app's current language based on the `LanguageCubit`'s state.
+///   - [themeMode]: Controls which theme to use (light, dark, or system) based on the [ThemeCubit]'s state.
+///   - [locale]: Sets the app's current language based on the [LanguageCubit]'s state.
 ///   - [supportedLocales]: A list of languages supported by the app.
 ///   - [localizationsDelegates]: Provides translations and localized content for the app.
 ///   - [localeResolutionCallback]: Logic to determine the best supported locale based on the device's locale.
 ///   - [routes]: Defines the named navigation routes in the app, allowing navigation to screens
 ///     like [LoginScreen], [HomeRegisterScreen], and [SettingsScreen].
-///   - [home]: The widget displayed when the app starts, which is `SplashScreen` here.
+///   - [home]: The widget displayed when the app starts, which is [SplashScreen] here.
 ///
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,7 +94,7 @@ class RentalAppView extends StatelessWidget {
     final themeState = context.watch<ThemeCubit>().state;
     final languageState = context.watch<LanguageCubit>().state;
 
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Malaz Rental',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
@@ -115,12 +116,7 @@ class RentalAppView extends StatelessWidget {
         }
         return supportedLocales.first;
       },
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/home_register': (context) => HomeRegisterScreen(),
-        '/settings': (context) => const SettingsScreen(),
-      },
-      home: const SplashScreen(),
+      routerConfig: appRouter,
     );
   }
 }

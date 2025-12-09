@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/language/language_cubit.dart';
@@ -77,8 +78,7 @@ class AppDrawer extends StatelessWidget {
                     () {}), // ?
                 _buildDrawerItem(context, Icons.settings_outlined, tr.settings,
                     () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/settings');
+                  context.push('/settings');
                 }),
               ],
             ),
@@ -96,7 +96,7 @@ class AppDrawer extends StatelessWidget {
                     style: TextStyle(
                         color: colorScheme.error, fontWeight: FontWeight.bold)),
                 onTap: () {
-                  Navigator.pushNamed(context, '/login');
+                  context.go('/login');
                 },
               ),
             ),

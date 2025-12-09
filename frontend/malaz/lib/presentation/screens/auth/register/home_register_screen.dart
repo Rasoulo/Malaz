@@ -11,7 +11,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class HomeRegisterScreen extends StatefulWidget {
-  HomeRegisterScreen({super.key});
+  const HomeRegisterScreen({super.key});
 
   @override
   State<HomeRegisterScreen> createState() => _HomeRegisterScreenState();
