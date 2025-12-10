@@ -21,7 +21,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "1|k1arjwx028tZWYdpbaAShnPdhomguUlp9Mgznro9e930258b",
+											"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
 											"type": "string"
 										}
 									]
@@ -540,47 +540,6 @@
 							"response": []
 						},
 						{
-							"name": "Update A Booking",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "http://127.0.0.1:8000/api/bookings/update/1?status=confirmed&payment_status=paid",
-									"protocol": "http",
-									"host": [
-										"127",
-										"0",
-										"0",
-										"1"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"bookings",
-										"update",
-										"1"
-									],
-									"query": [
-										{
-											"key": "status",
-											"value": "confirmed"
-										},
-										{
-											"key": "payment_status",
-											"value": "paid"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Unknown Method",
 							"request": {
 								"method": "DELETE",
@@ -592,7 +551,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/bookings/force-cancel/1",
+									"raw": "http://127.0.0.1:8000/api/bookings/force-cancel/2",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -605,7 +564,7 @@
 										"api",
 										"bookings",
 										"force-cancel",
-										"1"
+										"2"
 									]
 								}
 							},
@@ -1469,6 +1428,46 @@
 					"response": []
 				},
 				{
+					"name": "LogIn Copy 3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/users/login?phone=3016870906&password=password",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "3016870906"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Send OPT Code",
 					"request": {
 						"method": "POST",
@@ -2028,6 +2027,57 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update A Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/bookings/update/3?status=completed&payment_status=paid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"bookings",
+								"update",
+								"3"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "completed"
+								},
+								{
+									"key": "payment_status",
+									"value": "paid"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2037,6 +2087,16 @@
 				{
 					"name": "Get My Reviews",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -2067,6 +2127,16 @@
 				{
 					"name": "Make A Reviews",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|dLXMAIVANqjTj6FMLmYqQ3fhfnks87JBi15D1gud3721dacf",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -2108,6 +2178,16 @@
 				{
 					"name": "Update A Reviews",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -2148,6 +2228,16 @@
 				{
 					"name": "Update A Reviews",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [
 							{
@@ -2184,6 +2274,16 @@
 				{
 					"name": "Delete A Reviews",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|dLXMAIVANqjTj6FMLmYqQ3fhfnks87JBi15D1gud3721dacf",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -2193,7 +2293,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/reviews/1",
+							"raw": "http://127.0.0.1:8000/api/reviews/3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2205,7 +2305,7 @@
 							"path": [
 								"api",
 								"reviews",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -2224,7 +2324,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
 									"type": "string"
 								}
 							]
@@ -2364,6 +2464,16 @@
 				{
 					"name": "Get The Message From A Conversation",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -2373,7 +2483,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/conversations/1/message",
+							"raw": "http://127.0.0.1:8000/api/conversations/3/messages",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2385,8 +2495,8 @@
 							"path": [
 								"api",
 								"conversations",
-								"1",
-								"message"
+								"3",
+								"messages"
 							]
 						}
 					},
@@ -2430,7 +2540,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
 									"type": "string"
 								}
 							]
@@ -2444,7 +2554,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/conversations/2",
+							"raw": "http://127.0.0.1:8000/api/conversations/3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2456,7 +2566,14 @@
 							"path": [
 								"api",
 								"conversations",
-								"2"
+								"3"
+							],
+							"query": [
+								{
+									"key": "body",
+									"value": "hello world",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -2540,7 +2657,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
 									"type": "string"
 								}
 							]
@@ -2554,7 +2671,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/conversations/1/messages/?body=Welcome back",
+							"raw": "http://127.0.0.1:8000/api/conversations/3/messages/?body=Welcome back",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2566,7 +2683,7 @@
 							"path": [
 								"api",
 								"conversations",
-								"1",
+								"3",
 								"messages",
 								""
 							],
@@ -2661,7 +2778,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
 									"type": "string"
 								}
 							]
@@ -2675,7 +2792,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/messages/1",
+							"raw": "http://127.0.0.1:8000/api/messages/752",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2687,7 +2804,7 @@
 							"path": [
 								"api",
 								"messages",
-								"1"
+								"752"
 							]
 						}
 					},
@@ -2766,7 +2883,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
 									"type": "string"
 								}
 							]
@@ -2780,7 +2897,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/messages/43?body=ELO",
+							"raw": "http://127.0.0.1:8000/api/messages/752?body=ELO",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2792,7 +2909,7 @@
 							"path": [
 								"api",
 								"messages",
-								"43"
+								"752"
 							],
 							"query": [
 								{
@@ -2919,7 +3036,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "2|0HfFQx1nvPQg98QTeZQ4eMjqBovOHtGnnxxW7celd3d8c198",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
 									"type": "string"
 								}
 							]
@@ -2933,7 +3050,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/messages/43",
+							"raw": "http://127.0.0.1:8000/api/messages/752",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2945,7 +3062,7 @@
 							"path": [
 								"api",
 								"messages",
-								"43"
+								"752"
 							]
 						}
 					},
@@ -3024,7 +3141,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "6|clQcEAr2m4xfDG8oIz3X6MpkD2l4tv2KzYiJ4dTP75b68434",
+									"value": "3|EbIT5JjoA7Um1IjD0gESyEj74ku9xwSmyL92S5AM3939053d",
 									"type": "string"
 								}
 							]
@@ -3038,7 +3155,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/messages/8/read",
+							"raw": "http://127.0.0.1:8000/api/messages/751/read",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -3050,7 +3167,7 @@
 							"path": [
 								"api",
 								"messages",
-								"8",
+								"751",
 								"read"
 							]
 						}
@@ -3131,6 +3248,16 @@
 				{
 					"name": "Get All Bookings From The User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|dLXMAIVANqjTj6FMLmYqQ3fhfnks87JBi15D1gud3721dacf",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -3223,6 +3350,16 @@
 				{
 					"name": "Make A Booking",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|dLXMAIVANqjTj6FMLmYqQ3fhfnks87JBi15D1gud3721dacf",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -3232,7 +3369,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/store?property_id=1&check_in=2030-1-1&check_out=2030-1-2&total_price=100&currency=432",
+							"raw": "http://127.0.0.1:8000/api/bookings/store?property_id=1&check_in=2030-1-5&check_out=2030-1-6&total_price=100&currency=432",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -3243,6 +3380,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"bookings",
 								"store"
 							],
 							"query": [
@@ -3252,11 +3390,11 @@
 								},
 								{
 									"key": "check_in",
-									"value": "2030-1-1"
+									"value": "2030-1-5"
 								},
 								{
 									"key": "check_out",
-									"value": "2030-1-2"
+									"value": "2030-1-6"
 								},
 								{
 									"key": "total_price",
@@ -3284,15 +3422,21 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "6|clQcEAr2m4xfDG8oIz3X6MpkD2l4tv2KzYiJ4dTP75b68434",
+									"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/all",
+							"raw": "http://127.0.0.1:8000/api/properties/all?per_page=300&cursor=null",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -3305,6 +3449,16 @@
 								"api",
 								"properties",
 								"all"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "300"
+								},
+								{
+									"key": "cursor",
+									"value": "null"
+								}
 							]
 						}
 					},
@@ -3467,7 +3621,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
+									"value": "3|pI2UF9UaLWK8Jk9j5AePLcDL19jtshVX2rhN0UnWcca719e4",
 									"type": "string"
 								}
 							]
@@ -3711,7 +3865,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/all/my",
+									"raw": "http://127.0.0.1:8000/api/properties/all/my?per_page=300&cursor=null",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -3725,6 +3879,16 @@
 										"properties",
 										"all",
 										"my"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "300"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										}
 									]
 								}
 							},
@@ -4054,7 +4218,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "6|clQcEAr2m4xfDG8oIz3X6MpkD2l4tv2KzYiJ4dTP75b68434",
+									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
 									"type": "string"
 								}
 							]
@@ -4062,7 +4226,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/1",
+							"raw": "http://127.0.0.1:8000/api/properties/1?price=300",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -4075,6 +4239,12 @@
 								"api",
 								"properties",
 								"1"
+							],
+							"query": [
+								{
+									"key": "price",
+									"value": "300"
+								}
 							]
 						}
 					},
@@ -4153,7 +4323,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "6|clQcEAr2m4xfDG8oIz3X6MpkD2l4tv2KzYiJ4dTP75b68434",
+									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
 									"type": "string"
 								}
 							]
@@ -4161,7 +4331,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/1",
+							"raw": "http://127.0.0.1:8000/api/properties/2",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -4173,7 +4343,7 @@
 							"path": [
 								"api",
 								"properties",
-								"1"
+								"2"
 							]
 						}
 					},

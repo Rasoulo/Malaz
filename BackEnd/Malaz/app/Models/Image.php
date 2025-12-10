@@ -14,4 +14,6 @@ class Image extends Model
     {
         return $this->belongsTo(Property::class);
     }
+        protected $guarded = [];
+
 }

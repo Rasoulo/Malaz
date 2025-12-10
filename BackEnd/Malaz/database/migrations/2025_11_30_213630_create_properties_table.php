@@ -24,6 +24,8 @@ return new class extends Migration {
             $table->integer('number_of_rooms')->default(0);
             $table->integer('number_of_baths')->default(0);
             $table->integer('area')->default(0);
+            $table->integer('rating')->default(0);
+            $table->integer('number_of_reviews')->default(0);
             $table->timestamps();
         });
     }

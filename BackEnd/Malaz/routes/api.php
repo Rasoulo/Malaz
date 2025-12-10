@@ -82,14 +82,14 @@ Route::prefix('edit-requests')->middleware(['auth:sanctum', 'role:ADMIN'])->cont
     Route::patch('{editRequest}', 'update');
 });
 
-Route::prefix('bookings')->middleware('auth:sanctum')->controller(BookingController::class)->group(function () {
+Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(BookingController::class)->group(function () {
     Route::get('/', 'index')->name('bookings.index');
     Route::post('store', 'store')->name('bookings.store');
     Route::get('show/{booking}', 'show')->name('bookings.show');
     Route::delete('cancel/{booking}', 'destroy')->name('bookings.cancel');
+    Route::patch('update/{booking}', 'update')->name('bookings.update');
     Route::middleware('role:ADMIN')->group(function () {
         Route::get('all', 'all')->name('bookings.all');
-        Route::patch('update/{booking}', 'update')->name('bookings.update');
         Route::delete('force-cancel/{booking}', 'forceCancel')->name('bookings.forceCancel');
     });
 });

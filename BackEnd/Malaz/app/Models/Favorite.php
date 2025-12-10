@@ -9,5 +9,7 @@ class Favorite extends Model
 {
     /** @use HasFactory<\Database\Factories\FavoriteFactory> */
     use HasFactory;
+        protected $guarded = [];
+
 
 }

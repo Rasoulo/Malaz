@@ -12,11 +12,13 @@ class Review extends Model
 
     public function user()
     {
-        return $this->belongsTo('users', 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function property()
     {
-        return $this->belongsTo('properties', 'property_id', 'id');
+        return $this->belongsTo(Property::class, 'property_id', 'id');
     }
+        protected $guarded = [];
+
 }

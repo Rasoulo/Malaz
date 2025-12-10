@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function reviews()
     {
-        return $this->hasMany('reviews');
+        return $this->hasMany(Review::class);
     }
 
     protected $guarded = ['role'];

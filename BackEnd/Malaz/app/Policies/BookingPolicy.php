@@ -32,7 +32,8 @@ class BookingPolicy
     {
         // Users can update their own bookings (e.g., cancel),
         // Admins can update any booking
-        return $user->id === $booking->user_id || $user->role === 'ADMIN';
+
+        return $user->id === $booking->property->owner_id || $user->role === 'ADMIN';
     }
 
     /**

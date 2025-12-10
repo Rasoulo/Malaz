@@ -47,6 +47,17 @@ class ReviewController extends Controller
             ->where('status', 'completed')
             ->exists();
 
+        $alreadyReviewed = Review::where('user_id', $user->id)
+            ->where('property_id', $propertyId)
+            ->exists();
+
+        if ($alreadyReviewed) {
+            return response()->json([
+                'message' => 'You have already reviewed this property.',
+                'status' => 400,
+            ]);
+        }
+
         if ($exists) {
             $review = Review::create([
                 'user_id' => $user->id,
@@ -54,6 +65,12 @@ class ReviewController extends Controller
                 'rating' => $request->rating,
                 'body' => $request->body,
             ]);
+
+            $property = $review->property;
+            $property->rating += $request->rating;
+            $property->number_of_reviews += 1;
+            $property->save();
+
 
             return response()->json([
                 'review' => $review,
@@ -111,6 +128,12 @@ if ($alreadyReviewed) {
             'body' => 'sometimes|string|max:255',
         ]);
 
+        if ($request->filled('rating')) {
+            $property = $review->property;
+            $property->rating += $request->rating - $review->rating;
+            $property->save();
+        }
+
         $review->update($request->only(['rating', 'body']));
 
         return response()->json([
@@ -128,6 +151,12 @@ if ($alreadyReviewed) {
         if ($review->user_id !== auth()->id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
+
+        $property = $review->property;
+        $property->rating -= $review->rating;
+        $property->number_of_reviews -= 1;
+
+        $property->save();
 
         $review->delete();
         return response()->json([
