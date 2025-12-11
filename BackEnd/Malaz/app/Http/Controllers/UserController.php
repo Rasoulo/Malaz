@@ -64,11 +64,11 @@ class UserController extends Controller
             'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
         ]);
 
-        //$otp = rand(100000, 999999);
-        $otp = 111111;
+        $otp = rand(100000, 999999);
+        //$otp = 111111;
         Cache::put('otp_' . $request->phone, $otp, now()->addMinutes(5));
 
-        //app('greenapi')->sendMessage($request->phone, "Verification code: {$otp}");
+        app('greenapi')->sendMessage($request->phone, "Verification code: {$otp}");
 
         return response()->json(['message' => 'OTP sent']);
     }

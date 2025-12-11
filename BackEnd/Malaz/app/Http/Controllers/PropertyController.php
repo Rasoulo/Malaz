@@ -104,9 +104,11 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
+        $rate = round($property->rating / $property->number_of_reviews);
         return response()->json([
             'data' => $property,
             'images' => $property->images()->get(),
+            'rate' => $rate,
             'message' => 'Property returned successfully',
         ], 200);
     }
