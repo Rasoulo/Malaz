@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:malaz/presentation/cubits/home/home_cubit.dart';
 import '../../../domain/entities/apartment.dart';
 import '../../global_widgets/apartment_card.dart';
 import '../details/details_screen.dart';
+import '../property/add_property.dart';
 import '../side_drawer/app_drawer.dart';
 
 
@@ -16,6 +15,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // تم حذف .read() واستخدام .watch() أو .select() إذا كان Cubit يحتاج استماع
+    // ولكن الطريقة الحالية جيدة إذا كان .read() يعطي instance جاهز
     return BlocProvider(
       create: (context) => context.read<HomeCubit>()..fetchApartments(),
       child: const HomeView(),
@@ -28,6 +29,7 @@ class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
+
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -36,6 +38,23 @@ class HomeView extends StatelessWidget {
         key: scaffoldKey,
         backgroundColor: colorScheme.background,
         drawer: const AppDrawer(),
+        floatingActionButton: _FabAnimationWrapper(
+          child: FloatingActionButton(
+            heroTag: 'add_property_fab',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  // استدعاء الكلاس الذي أنشأناه سابقاً
+                  builder: (context) => const AddProperty(),
+                ),
+              );
+            },
+            backgroundColor: colorScheme.primary,
+            child: Icon(Icons.add, color: colorScheme.onPrimary, size: 30),
+            shape: const CircleBorder(),
+          ),
+        ),
         body: SafeArea(
           child: Column(
             children: [
@@ -62,6 +81,11 @@ class HomeView extends StatelessWidget {
           ),
         ));
   }
+  // ... بقية الـ Widgets الأخرى تبقى كما هي ...
+
+  // Widget _buildHeader(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey) {...}
+  // Widget _buildFilterChips(BuildContext context) {...}
+  // Widget _buildApartmentList(BuildContext context, List<Apartment> apartments) {...}
 
   Widget _buildHeader(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -78,7 +102,7 @@ class HomeView extends StatelessWidget {
           Expanded(
             child: Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: colorScheme.surface,
                 borderRadius: BorderRadius.circular(16),
@@ -137,7 +161,12 @@ class HomeView extends StatelessWidget {
         return ApartmentCard(
           apartment: apartment,
           onTap: () {
-            context.pushNamed('/details');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => DetailsScreen(apartment: apartment),
+              ),
+            );
           },
         );
       },
@@ -145,7 +174,69 @@ class HomeView extends StatelessWidget {
   }
 }
 
+// الكلاس الجديد في نهاية ملف HomeScreen.dart
 
+class _FabAnimationWrapper extends StatefulWidget {
+  final Widget child;
+  const _FabAnimationWrapper({required this.child});
+
+  @override
+  State<_FabAnimationWrapper> createState() => _FabAnimationWrapperState();
+}
+
+class _FabAnimationWrapperState extends State<_FabAnimationWrapper>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _opacityAnimation;
+  late final Animation<Offset> _slideAnimation; // NEW: لتأثير الحركة
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000), // مدة التحريك
+    );
+
+    // 1. تحريك الشفافية (Fade In)
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+
+    // 2. تحريك الموضع (Slide Up)
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 1.0), // يبدأ من أسفل موضعه الأصلي
+      end: Offset.zero, // ينتهي في موضعه الأصلي (0.0, 0.0)
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
+    );
+
+    // يبدأ التحريك بعد 300 مللي ثانية
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      if (mounted) {
+        _controller.forward();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // دمج التحريكين
+    return SlideTransition(
+      position: _slideAnimation, // الحركة
+      child: FadeTransition(
+        opacity: _opacityAnimation, // الظهور التدريجي
+        child: widget.child,
+      ),
+    );
+  }
+}
 class _IconBtn extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
@@ -185,7 +276,9 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme
+        .of(context)
+        .colorScheme;
 
     return Container(
       margin: const EdgeInsets.only(right: 12),
@@ -196,9 +289,11 @@ class _FilterChip extends StatelessWidget {
         border: Border.all(
           color: isSelected
               ? colorScheme.primary
-              : (Theme.of(context).brightness == Brightness.dark
-                  ? Colors.transparent
-                  : Colors.grey.shade300),
+              : (Theme
+              .of(context)
+              .brightness == Brightness.dark
+              ? Colors.transparent
+              : Colors.grey.shade300),
         ),
       ),
       child: Text(
