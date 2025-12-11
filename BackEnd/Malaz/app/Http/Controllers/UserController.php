@@ -141,15 +141,15 @@ class UserController extends Controller
             'date_of_birth' => $request->date_of_birth,
         ]);
         $data = $request->validated();
-        $data['role'] = 'OWNER';
+        $data['role'] = 'USER';
 
         $user->refresh();
-        $editrequest = EditRequest::create([
-            'user_id' => $user->id,
-            'old_data' => collect($user->toArray())->except(['password']),
-            'new_data' => collect($data)->except(['password']),
-            'status' => 'PENDING',
-        ]);
+        // $editrequest = EditRequest::create([
+        //     'user_id' => $user->id,
+        //     'old_data' => collect($user->toArray())->except(['password']),
+        //     'new_data' => collect($data)->except(['password']),
+        //     'status' => 'PENDING',
+        // ]);
 
         return response()->json(['message' => 'User created Wait until it is approved by the officials', 'data' => $user], 201);
     }

@@ -18,7 +18,7 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
         Route::get('/', 'index')->name('users.index');
         Route::put('{user}', 'update')->name('users.update');
     });
-    Route::middleware(['auth:sanctum', 'role:ADMIN,RENTER,OWNER'])->group(function () {
+    Route::middleware(['auth:sanctum', 'role:ADMIN,USER'])->group(function () {
         Route::post('request-update', 'request_update')->name('users.requestUpdate');
         Route::post('change-password', 'changepassword')->name('users.changePassword');
         Route::post('logout', 'logout')->name('users.logout');
@@ -33,7 +33,7 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::post('verify-otp', 'verifyOtp')->name('users.verifyOtp');
 });
 
-Route::prefix('reviews')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(ReviewController::class)->group(function () {
+Route::prefix('reviews')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(ReviewController::class)->group(function () {
     Route::get('/', 'index')->name('reviews.index');
     Route::post('/properties/{property}', 'store')->name('reviews.store');
     Route::get('{review}', 'show')->name('reviews.show');
@@ -42,11 +42,11 @@ Route::prefix('reviews')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER']
     Route::delete('{review}', 'destroy')->name('reviews.destroy');
 });
 
-Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(PropertyController::class)->group(function () {
+Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(PropertyController::class)->group(function () {
     Route::get('all', 'all_properties')->name('properties.all');
     Route::get('{property}', 'show')->name('properties.show');
     Route::get('{property}/favorites', 'favonwho')->name('properties.favonwho');
-    Route::middleware('role:ADMIN,OWNER')->group(function () {
+    Route::middleware('role:ADMIN,USER')->group(function () {
         Route::get('all/my', 'my_properties')->name('properties.my');
         Route::post('/', 'store')->name('properties.store');
         Route::put('{property}', 'update')->name('properties.update');
@@ -54,7 +54,7 @@ Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTE
     });
 });
 
-Route::prefix('conversations')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(ConversationController::class)->group(function () {
+Route::prefix('conversations')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(ConversationController::class)->group(function () {
     Route::get('/', 'index')->name('conversations.index');
     Route::post('/{user}', 'store')->name('conversations.store');
     Route::get('{conversation}', 'show')->name('conversations.show');
@@ -62,12 +62,12 @@ Route::prefix('conversations')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RE
     Route::get('{conversation}/messages', 'showmessage')->name('conversations.messages');
 });
 
-Route::prefix('conversations/{conversation}/messages')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(MessageController::class)->group(function () {
+Route::prefix('conversations/{conversation}/messages')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(MessageController::class)->group(function () {
     Route::get('/', 'index')->name('messages.index');
     Route::post('/', 'store')->name('messages.store');
 });
 
-Route::prefix('messages')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(MessageController::class)->group(function () {
+Route::prefix('messages')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(MessageController::class)->group(function () {
     Route::get('{message}', 'show')->name('messages.show');
     Route::put('{message}', 'update')->name('messages.update');
     Route::patch('{message}', 'update');
@@ -82,7 +82,7 @@ Route::prefix('edit-requests')->middleware(['auth:sanctum', 'role:ADMIN'])->cont
     Route::patch('{editRequest}', 'update');
 });
 
-Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,OWNER,RENTER'])->controller(BookingController::class)->group(function () {
+Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(BookingController::class)->group(function () {
     Route::get('/', 'index')->name('bookings.index');
     Route::post('store', 'store')->name('bookings.store');
     Route::get('show/{booking}', 'show')->name('bookings.show');

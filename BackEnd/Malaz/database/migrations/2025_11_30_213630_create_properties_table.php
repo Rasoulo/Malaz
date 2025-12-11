@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->foreignId('owner_id')->constrained('users')->references('id');
+            $table->string('status')->default('pending');
             $table->integer('price')->default(0);
             $table->string('governorate');
             $table->string('city');

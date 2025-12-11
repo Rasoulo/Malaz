@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'date_of_birth' => $this->faker->date(),
             'profile_image' => Str::random(10),
             'identity_card_image' => Str::random(10),
-            'role' => 'OWNER',
+            'role' => 'USER',
         ];
     }
 

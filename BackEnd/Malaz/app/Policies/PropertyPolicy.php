@@ -37,7 +37,7 @@ class PropertyPolicy
      */
     public function update(User $user, Property $property): bool
     {
-        return ($user->role == 'ADMIN' || ($user->role == 'OWNER' && $property->owner_id == $user->id));
+        return ($user->role == 'ADMIN' || ($user->role == 'USER' && $property->owner_id == $user->id));
     }
 
     /**
@@ -45,7 +45,7 @@ class PropertyPolicy
      */
     public function delete(User $user, Property $property): bool
     {
-        return ($user->role == 'ADMIN' || ($user->role == 'OWNER' && $property->owner_id == $user->id));
+        return ($user->role == 'ADMIN' || ($user->role == 'USER' && $property->owner_id == $user->id));
     }
 
     /**
