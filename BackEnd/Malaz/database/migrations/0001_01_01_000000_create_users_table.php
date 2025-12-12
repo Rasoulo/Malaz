@@ -17,9 +17,9 @@ return new class extends Migration {
             $table->string('phone')->unique();
             $table->string('role')->default('PENDING');
             $table->date('date_of_birth');
-            $table->longBlob('profile_image')->nullable();
+            $table->binary('profile_image')->nullable();
             $table->string('profile_image_mime')->nullable();
-            $table->longBlob('identity_card_image')->nullable();
+            $table->binary('identity_card_image')->nullable();
             $table->string('identity_card_mime')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
