@@ -55,6 +55,22 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    public function getProfileImageUrlAttribute()
+    {
+        return $this->profile_image
+            ? route('users.profile_image', $this->id)
+            : null;
+    }
+
+    public function getIdentityCardImageUrlAttribute()
+    {
+        return $this->identity_card_image
+            ? route('users.identity_card_image', $this->id)
+            : null;
+    }
+
+    protected $appends = ['profile_image_url', 'identity_card_image_url'];
+
     protected $guarded = ['role'];
 
     /**
@@ -65,6 +81,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'profile_image',
+        'identity_card_image',
     ];
 
     /**

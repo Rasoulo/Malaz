@@ -18,17 +18,28 @@ class UserController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => User::all(),
-            'message' => 'user update completed',
+            'data' => User::all()->makeHidden(['profile_image', 'identity_card_image']),
+            'message' => 'list of all user',
             'status' => 200,
         ]);
+    }
+
+    public function showProfileImage(User $user)
+    {
+        return response($user->profile_image)
+            ->header('Content-Type', $user->profile_image_mime);
+    }
+
+    public function showIdentityCardImage(User $user)
+    {
+        return response($user->identity_card_image)
+            ->header('Content-Type', $user->identity_card_mime);
     }
 
     public function addtofav($propertyId)
     {
         $user = auth()->user();
-        $user->favorites()->attach($propertyId);
-
+        $user->favorites()->syncWithoutDetaching([$propertyId]);
         return response()->json([
             'message' => 'added to favorite completed',
             'status' => 200,
@@ -136,13 +147,24 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'identity_card_image' => $request->identity_card_image,
-            'profile_image' => $request->profile_image,
             'date_of_birth' => $request->date_of_birth,
         ]);
-        $data = $request->validated();
-        $data['role'] = 'USER';
+        if ($request->hasFile('profile_image')) {
+            $imageData = file_get_contents($request->file('profile_image')->getRealPath());
+            $user->profile_image = $imageData;
+            $user->profile_image_mime = $request->file('profile_image')->getMimeType();
+        }
 
+        if ($request->hasFile('identity_card_image')) {
+            $imageData = file_get_contents($request->file('identity_card_image')->getRealPath());
+            $user->identity_card_image = $imageData;
+            $user->identity_card_mime = $request->file('identity_card_image')->getMimeType();
+        }
+
+        $user->save();
+
+        // $data = $request->validated();
+        // $data['role'] = 'USER';
         $user->refresh();
         // $editrequest = EditRequest::create([
         //     'user_id' => $user->id,
@@ -193,7 +215,7 @@ class UserController extends Controller
         }
 
         if ($user->role === 'PENDING') {
-            return response()->json(['message' => 'Wait until it is approved by the officials'], 500);
+            return response()->json(['message' => 'Wait until it is approved by the officials'], 403);
 
         }
 

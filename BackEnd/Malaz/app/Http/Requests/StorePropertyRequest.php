@@ -23,9 +23,10 @@ class StorePropertyRequest extends FormRequest
     {
         return [
             'price' => 'required|integer|min:0',
+            'title' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'governorate' => 'required|string|max:255',
+            'governorate' => 'nullable|string|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'description' => 'nullable|string|max:1000',
@@ -36,6 +37,9 @@ class StorePropertyRequest extends FormRequest
             'number_of_baths' => 'required|integer|min:0',
             'number_of_bedrooms' => 'required|integer|min:0',
             'area' => 'required|numeric|min:0',
+            'status' => 'prohibited',
+            'rating' => 'prohibited',
+            'number_of_reviews' => 'prohibited',
         ];
     }
 
@@ -78,6 +82,9 @@ class StorePropertyRequest extends FormRequest
             'area.required' => 'Area is required.',
             'area.numeric' => 'Area must be a number.',
             'area.min' => 'Area cannot be less than zero.',
+            'title.required' => 'The title field is required.',
+            'title.string' => 'The title must be a valid string.',
+            'title.max' => 'The title may not be greater than 255 characters.',
         ];
     }
 }

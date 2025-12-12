@@ -17,12 +17,12 @@ return new class extends Migration {
             $table->string('title');
             $table->integer('price')->default(0);
             $table->string('city');
+            $table->string('governorate')->nullable();
             $table->string('address');
             $table->string('description')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('type')->default('flat');
-            
             $table->integer('number_of_rooms')->default(0);
             $table->integer('number_of_baths')->default(0);
             $table->integer('number_of_bedrooms')->default(0);

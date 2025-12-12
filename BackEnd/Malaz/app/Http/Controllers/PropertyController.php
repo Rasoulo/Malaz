@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
-use App\Models\Image;
-use Auth;
 use App\Models\Property;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use App\Http\Requests\storeproperty;
 
 class PropertyController extends Controller
 {
@@ -22,10 +18,22 @@ class PropertyController extends Controller
         $perPage = (int) $request->input('per_page', 20);
 
         $properties = $user->property()
-            ->with('images')
+            ->where('status', 'approved')
+            ->with([
+                'images' => function ($q) {
+                    $q->orderBy('id', 'asc')->limit(1);
+                }
+            ])
             ->orderBy('id', 'desc')
-            ->cursorPaginate($perPage);
-        ;
+            ->cursorPaginate($perPage)
+            ->through(function ($property) {
+                $property->first_image = $property->images->first()
+                    ? url('/images/' . $property->images->first()->id)
+                    : null;
+                unset($property->images);
+                return $property;
+            });
+
         return response()->json(
             [
                 'data' => $properties->items(),
@@ -45,10 +53,17 @@ class PropertyController extends Controller
 
         $perPage = (int) $request->input('per_page', 20);
 
-        $properties = Property::with('images')
+        $properties = Property::where('status', 'approved')->with('images')
             ->orderBy('id', 'desc')
-            ->cursorPaginate($perPage);
-        ;
+            ->cursorPaginate($perPage)
+            ->through(function ($property) {
+                $property->first_image = $property->images->first()
+                    ? url('/images/' . $property->images->first()->id)
+                    : null;
+                unset($property->images);
+                return $property;
+            });
+
         return response()->json(
             [
                 'data' => $properties->items(),
@@ -104,18 +119,46 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        $rate = round($property->rating / $property->number_of_reviews);
+
+        if ($property->status !== 'approved') {
+            return response()->json([
+                'message' => 'Property not approved',
+                'status' => 403,
+            ]);
+        }
+
+        $rate = $property->number_of_reviews > 0
+            ? round($property->rating / $property->number_of_reviews)
+            : 0;
+
+        $images = $property->images->map(function ($img) {
+            return url('/images/' . $img->id);
+        });
+
+
+        $isFav = $property->favoritedBy()->where('user_id', auth()->id())->exists();
+
         return response()->json([
             'data' => $property,
-            'images' => $property->images()->get(),
             'rate' => $rate,
+            'images' => $images,
+            'isFav' => $isFav,
             'message' => 'Property returned successfully',
         ], 200);
     }
 
     public function favonwho($propertyId)
     {
+
         $property = Property::find($propertyId);
+
+        if (!$property) {
+            return response()->json([
+                'message' => 'Property not found',
+                'status' => 404,
+            ]);
+        }
+
         $users = $property->favoritedBy;
 
         return response()->json([
