@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\MessageController;
@@ -96,3 +97,11 @@ Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->cont
         Route::delete('force-cancel/{booking}', 'forceCancel')->name('bookings.forceCancel');
     });
 });
+
+Route::get('/users/{id}/profile-image', [UserController::class, 'profileImage'])
+    ->name('users.profile_image');
+
+Route::get('/users/{id}/identity-image', [UserController::class, 'identityImage'])
+    ->name('users.identity_image');
+
+Route::get('/images/{id}', [ImageController::class, 'show']);

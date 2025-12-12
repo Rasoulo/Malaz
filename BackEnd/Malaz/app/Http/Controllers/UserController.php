@@ -24,6 +24,22 @@ class UserController extends Controller
         ]);
     }
 
+    public function profileImage($id)
+    {
+        $user = User::findOrFail($id);
+
+        return response($user->profile_image)
+            ->header('Content-Type', $user->mime_type);
+    }
+
+    public function identityImage($id)
+    {
+        $user = User::findOrFail($id);
+
+        return response($user->identity_image)
+            ->header('Content-Type', $user->mime_type);
+    }
+
     public function showProfileImage(User $user)
     {
         return response($user->profile_image)
