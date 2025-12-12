@@ -29,6 +29,8 @@ return new class extends Migration {
             $table->integer('area')->default(0);
             $table->integer('rating')->default(0);
             $table->integer('number_of_reviews')->default(0);
+            $table->longBlob('main_image')->nullable();
+            $table->string('mime_type')->nullable();
             $table->timestamps();
         });
     }

@@ -36,6 +36,16 @@ class Property extends Model
             ->withTimestamps();
     }
 
+    public function getMainImageUrlAttribute()
+    {
+        return $this->main_image
+            ? route('property.main_pic', $this->id)
+            : null;
+    }
+
+    protected $appends = ['main_image_url'];
+
+
 
     protected $guarded = [];
 }
