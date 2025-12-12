@@ -95,7 +95,7 @@ class PropertyController extends Controller
         $validated = $request->validated();
         $validated['owner_id'] = $user->id;
         $property = Property::create(
-            collect($validated)->except('images')->toArray()
+            collect($validated)->except(['images', 'main_pic'])->toArray()
         );
 
         if ($request->hasFile('images')) {
@@ -108,10 +108,29 @@ class PropertyController extends Controller
                 ]);
             }
         }
+
+        if ($request->hasFile('main_pic')) {
+            $file = $request->file('main_pic');
+            $imageData = file_get_contents($file->getRealPath());
+            $property->images()->create([
+                'image' => $imageData,
+                'mime_type' => $file->getMimeType(),
+
+            ]);
+        }
+
         return response()->json([
             'data' => $property,
             'message' => 'Property created successfully',
         ], 201);
+    }
+
+    public function showmainpic(Property $property)
+    {
+        $image = $property->main_pic;
+        $mime_type = $property->mime_type;
+        return response($image)
+            ->header('Content-Type', $mime_type);
     }
 
     /**
@@ -182,8 +201,11 @@ class PropertyController extends Controller
     public function update(UpdatePropertyRequest $request, Property $property)
     {
         $this->authorize('update', $property);
+
         $validated = $request->validated();
-        $property->update($validated);
+        $property->update(
+            collect($validated)->except(['images', 'main_pic', 'erase'])->toArray()
+        );
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
@@ -194,11 +216,19 @@ class PropertyController extends Controller
             }
         }
 
+        if ($request->hasFile('main_pic')) {
+            $file = $request->file('main_pic');
+            $property->main_image = file_get_contents($file->getRealPath());
+            $property->mime_type = $file->getMimeType();
+            $property->save();
+        }
+
         if (!empty($validated['erase'])) {
             $property->images()->whereIn('id', $validated['erase'])->delete();
         }
 
         $property->refresh();
+
         return response()->json([
             'property' => $property->load('images'),
             'message' => 'update completed',
