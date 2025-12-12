@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Property;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImageController;
@@ -105,3 +106,6 @@ Route::get('/users/{id}/identity-image', [UserController::class, 'identityImage'
     ->name('users.identity_image');
 
 Route::get('/images/{id}', [ImageController::class, 'show']);
+
+Route::get('/main_pic/{property}', [PropertyController::class, 'showmainpic'])
+    ->name('property.main_pic');
