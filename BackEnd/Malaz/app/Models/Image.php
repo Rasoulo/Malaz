@@ -16,4 +16,6 @@ class Image extends Model
     }
         protected $guarded = [];
 
+        protected $hidden = ['image'];
+
 }

@@ -72,7 +72,7 @@ class User extends Authenticatable
     protected $appends = ['profile_image_url', 'identity_card_image_url'];
 
     protected $guarded = ['role'];
-
+    
     /**
      * The attributes that should be hidden for serialization.
      *

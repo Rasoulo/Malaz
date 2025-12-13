@@ -42,6 +42,7 @@ class UpdatePropertyRequest extends FormRequest
             'number_of_baths' => 'integer|min:0',
             'number_of_bedrooms' => 'integer|min:0',
             'area' => 'numeric|min:0',
+            'main_pic' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
@@ -82,6 +83,10 @@ class UpdatePropertyRequest extends FormRequest
             'number_of_bedrooms.min' => 'The number of bedrooms must be at least 0.',
             'area.numeric' => 'The area must be a valid number.',
             'area.min' => 'The area must be at least 0.',
+            'main_pic.file' => 'main_pic must be a valid file.',
+            'main_pic.image' => 'main_pic must be an image.',
+            'main_pic.mimes' => 'main_pic must be of type: jpeg, png, jpg, gif, svg.',
+            'main_pic..max' => 'main_pic may not be larger than 2MB.',
         ];
     }
 }
