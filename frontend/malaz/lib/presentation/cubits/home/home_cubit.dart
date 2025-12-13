@@ -116,7 +116,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
     } catch (e) {
-      emit(HomeError(message: 'حدث خطأ: ${e.toString()}'));
+      emit(HomeError(message: 'حدث خطأ: ${e.toString()}')); /// TODO : translate
     } finally {
       _isFetching = false;
     }
