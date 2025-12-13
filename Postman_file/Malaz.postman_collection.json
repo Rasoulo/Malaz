@@ -1322,12 +1322,26 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile_image",
+									"type": "file",
+									"src": "postman-cloud:///1f0d7776-4457-4900-875b-19e8b240cccb"
+								},
+								{
+									"key": "identity_card_image",
+									"type": "file",
+									"src": "postman-cloud:///1f0d7719-8fb5-45d0-b60a-adcb1fb598ae"
+								}
+							]
+						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111112&first_name=Pixel&last_name=Master&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=2-2-2&password_confirmation=12345678",
+							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111128&first_name=Maher&last_name=Alnouri&password=12345678&date_of_birth=1-1-1&password_confirmation=12345678",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1344,37 +1358,23 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+1111111112"
-								},
-								{
-									"key": "role",
-									"value": "OWNER",
-									"description": "expired",
-									"disabled": true
+									"value": "+1111111128"
 								},
 								{
 									"key": "first_name",
-									"value": "Pixel"
+									"value": "Maher"
 								},
 								{
 									"key": "last_name",
-									"value": "Master"
+									"value": "Alnouri"
 								},
 								{
 									"key": "password",
 									"value": "12345678"
 								},
 								{
-									"key": "identity_card_image",
-									"value": "123"
-								},
-								{
-									"key": "profile_image",
-									"value": "123"
-								},
-								{
 									"key": "date_of_birth",
-									"value": "2-2-2"
+									"value": "1-1-1"
 								},
 								{
 									"key": "password_confirmation",
@@ -1383,7 +1383,212 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111111&role=OWNER&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"register"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+1111111111"
+										},
+										{
+											"key": "role",
+											"value": "OWNER"
+										},
+										{
+											"key": "first_name",
+											"value": "Maher"
+										},
+										{
+											"key": "last_name",
+											"value": "Alnouri"
+										},
+										{
+											"key": "password",
+											"value": "12345678"
+										},
+										{
+											"key": "identity_card_image",
+											"value": "123"
+										},
+										{
+											"key": "profile_image",
+											"value": "123"
+										},
+										{
+											"key": "date_of_birth",
+											"value": "1-1-1"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "12345678"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 08 Dec 2025 21:26:05 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User created Wait until it is approved by the officials\",\n    \"data\": {\n        \"id\": 2,\n        \"first_name\": \"Maher\",\n        \"last_name\": \"Alnouri\",\n        \"phone\": \"1111111111\",\n        \"role\": \"PENDING\",\n        \"date_of_birth\": \"0001-01-01\",\n        \"profile_image\": \"123\",\n        \"identity_card_image\": \"123\",\n        \"phone_verified_at\": \"2025-12-09T00:26:05.000000Z\",\n        \"created_at\": \"2025-12-08T21:26:05.000000Z\",\n        \"updated_at\": \"2025-12-08T21:26:05.000000Z\"\n    }\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/users/register?phone=+11&role=&first_name=&last_name=&password=123456&identity_card_image=&profile_image=&date_of_birth=1-1-&password_confirmation=12345678",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"users",
+										"register"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "+11"
+										},
+										{
+											"key": "role",
+											"value": ""
+										},
+										{
+											"key": "first_name",
+											"value": ""
+										},
+										{
+											"key": "last_name",
+											"value": ""
+										},
+										{
+											"key": "password",
+											"value": "123456"
+										},
+										{
+											"key": "identity_card_image",
+											"value": ""
+										},
+										{
+											"key": "profile_image",
+											"value": ""
+										},
+										{
+											"key": "date_of_birth",
+											"value": "1-1-"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "12345678"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 08 Dec 2025 21:27:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Phone number must be a valid format (9–15 digits, may start with +). (and 7 more errors)\",\n    \"errors\": {\n        \"phone\": [\n            \"Phone number must be a valid format (9–15 digits, may start with +).\"\n        ],\n        \"role\": [\n            \"The role field is required and cannot be empty.\"\n        ],\n        \"first_name\": [\n            \"First name is required.\"\n        ],\n        \"last_name\": [\n            \"Last name is required.\"\n        ],\n        \"password\": [\n            \"The password field confirmation does not match.\"\n        ],\n        \"identity_card_image\": [\n            \"Identity card image is required.\"\n        ],\n        \"profile_image\": [\n            \"Profile image is required.\"\n        ],\n        \"date_of_birth\": [\n            \"Date of birth must be a valid date.\"\n        ]\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "LogIn",
@@ -3992,6 +4197,128 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": {\n        \"id\": 18,\n        \"owner_id\": 11,\n        \"status\": \"approved\",\n        \"title\": \"i don't know\",\n        \"price\": 300,\n        \"city\": \"damas\",\n        \"governorate\": \"damascus\",\n        \"address\": \"123\",\n        \"description\": \"hello\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"type\": \"Restaurant\",\n        \"number_of_rooms\": 19,\n        \"number_of_baths\": 12,\n        \"number_of_bedrooms\": 1,\n        \"area\": 3,\n        \"rating\": 0,\n        \"number_of_reviews\": 0,\n        \"mime_type\": \"image/jpeg\",\n        \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n        \"updated_at\": \"2025-12-13T03:10:30.000000Z\",\n        \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\",\n        \"images\": []\n    },\n    \"rate\": 0,\n    \"isFav\": true,\n    \"message\": \"Property returned successfully\"\n}"
+						},
+						{
+							"name": "not approved",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/properties/52",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"properties",
+										"52"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Dec 2025 05:42:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Property not approved\",\n    \"status\": 403\n}"
+						},
+						{
+							"name": "show with images",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/properties/52",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"properties",
+										"52"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Dec 2025 05:50:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 52,\n        \"owner_id\": 1,\n        \"status\": \"approved\",\n        \"title\": \"i don't know\",\n        \"price\": 300,\n        \"city\": \"damas\",\n        \"governorate\": \"damascus\",\n        \"address\": \"123\",\n        \"description\": \"hello\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"type\": \"Restaurant\",\n        \"number_of_rooms\": 19,\n        \"number_of_baths\": 12,\n        \"number_of_bedrooms\": 1,\n        \"area\": 3,\n        \"rating\": 0,\n        \"number_of_reviews\": 0,\n        \"mime_type\": \"image/jpeg\",\n        \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n        \"updated_at\": \"2025-12-13T05:46:36.000000Z\",\n        \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/52\",\n        \"images\": [\n            {\n                \"id\": 1,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/1\"\n            },\n            {\n                \"id\": 2,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/2\"\n            },\n            {\n                \"id\": 3,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/3\"\n            },\n            {\n                \"id\": 4,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/4\"\n            },\n            {\n                \"id\": 5,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/5\"\n            },\n            {\n                \"id\": 6,\n                \"property_id\": 52,\n                \"mime_type\": \"image/jpeg\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/6\"\n            }\n        ]\n    },\n    \"rate\": 0,\n    \"isFav\": false,\n    \"message\": \"Property returned successfully\"\n}"
 						}
 					]
 				},

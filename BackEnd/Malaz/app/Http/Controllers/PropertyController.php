@@ -81,7 +81,7 @@ class PropertyController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
-                $imageData = file_get_contents($file->getRealPath());
+                $imageData = base64_encode(file_get_contents($file->getRealPath()));
                 $property->images()->create([
                     'image' => $imageData,
                     'mime_type' => $file->getMimeType(),
@@ -91,7 +91,7 @@ class PropertyController extends Controller
 
         if ($request->hasFile('main_pic')) {
             $file = $request->file('main_pic');
-            $imageData = file_get_contents($file->getRealPath());
+            $imageData = base64_encode(file_get_contents($file->getRealPath()));
             $property->update([
                 'main_image' => $imageData,
                 'mime_type' => $file->getMimeType(),
@@ -110,7 +110,7 @@ class PropertyController extends Controller
 
     public function showmainpic(Property $property)
     {
-        $image = $property->main_image;
+        $image = base64_decode($property->main_image);
         $mime_type = $property->mime_type;
         return response($image)
             ->header('Content-Type', $mime_type);
@@ -192,7 +192,7 @@ class PropertyController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $property->images()->create([
-                    'image' => file_get_contents($file->getRealPath()),
+                    'image' => base64_encode(file_get_contents($file->getRealPath())),
                     'mime_type' => $file->getMimeType(),
                 ]);
             }
@@ -200,7 +200,7 @@ class PropertyController extends Controller
 
         if ($request->hasFile('main_pic')) {
             $file = $request->file('main_pic');
-            $property->main_image = file_get_contents($file->getRealPath());
+            $property->main_image = base64_encode(file_get_contents($file->getRealPath()));
             $property->mime_type = $file->getMimeType();
             $property->save();
         }

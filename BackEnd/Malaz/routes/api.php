@@ -105,7 +105,7 @@ Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->cont
 // Route::get('/users/{id}/identity-image', [UserController::class, 'identityImage'])
 //     ->name('users.identity_image');
 
-Route::get('/images/{id}', [ImageController::class, 'show']);
+Route::get('/images/{id}', [ImageController::class, 'show'])->name('images.show');
 
 Route::get('/main_pic/{property}', [PropertyController::class, 'showmainpic'])
     ->name('property.main_pic');

@@ -14,8 +14,17 @@ class Image extends Model
     {
         return $this->belongsTo(Property::class);
     }
-        protected $guarded = [];
 
-        protected $hidden = ['image'];
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? route('images.show', $this->id)
+            : null;
+    }
+
+    protected $appends = ['image_url'];
+    protected $guarded = [];
+
+    protected $hidden = ['image'];
 
 }
