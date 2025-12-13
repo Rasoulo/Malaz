@@ -31,6 +31,7 @@ class StorePropertyRequest extends FormRequest
             'longitude' => 'nullable|numeric',
             'description' => 'nullable|string|max:1000',
             'images' => 'nullable|array',
+            'main_pic' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'images.*' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'type' => 'required|string|in:Apartment,Farm,Villa,Restaurant,Travel Rest Stop,Residential Tower,Country Estate',
             'number_of_rooms' => 'required|integer|min:0',

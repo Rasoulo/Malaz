@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\EditRequest;
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
@@ -24,31 +25,33 @@ class UserController extends Controller
         ]);
     }
 
-    public function profileImage($id)
-    {
-        $user = User::findOrFail($id);
+    // public function profileImage($id)
+    // {
+    //     $user = User::findOrFail($id);
 
-        return response($user->profile_image)
-            ->header('Content-Type', $user->mime_type);
-    }
+    //     return response($user->profile_image)
+    //         ->header('Content-Type', $user->mime_type);
+    // }
 
-    public function identityImage($id)
-    {
-        $user = User::findOrFail($id);
+    // public function identityImage($id)
+    // {
+    //     $user = User::findOrFail($id);
 
-        return response($user->identity_image)
-            ->header('Content-Type', $user->mime_type);
-    }
+    //     return response($user->identity_image)
+    //         ->header('Content-Type', $user->mime_type);
+    // }
 
     public function showProfileImage(User $user)
     {
-        return response($user->profile_image)
+        $image = base64_decode($user->profile_image);
+        return response($image)
             ->header('Content-Type', $user->profile_image_mime);
     }
 
     public function showIdentityCardImage(User $user)
     {
-        return response($user->identity_card_image)
+        $image = base64_decode($user->identity_card_image);
+        return response($image)
             ->header('Content-Type', $user->identity_card_mime);
     }
 
@@ -167,15 +170,31 @@ class UserController extends Controller
             'date_of_birth' => $request->date_of_birth,
         ]);
         if ($request->hasFile('profile_image')) {
-            $imageData = file_get_contents($request->file('profile_image')->getRealPath());
-            $user->profile_image = $imageData;
-            $user->profile_image_mime = $request->file('profile_image')->getMimeType();
+            try {
+                $imageData = base64_encode(file_get_contents($request->file('profile_image')->getRealPath()));
+                $user->profile_image = $imageData;
+                $user->profile_image_mime = $request->file('profile_image')->getMimeType();
+            } catch (Exception $e) {
+                $user->delete();
+                return response()->json([
+                    'message' => 'try another image',
+                    'status' => 400,
+                ]);
+            }
         }
 
         if ($request->hasFile('identity_card_image')) {
-            $imageData = file_get_contents($request->file('identity_card_image')->getRealPath());
-            $user->identity_card_image = $imageData;
-            $user->identity_card_mime = $request->file('identity_card_image')->getMimeType();
+            try {
+                $imageData = base64_encode(file_get_contents($request->file('identity_card_image')->getRealPath()));
+                $user->identity_card_image = $imageData;
+                $user->identity_card_mime = $request->file('identity_card_image')->getMimeType();
+            } catch (Exception $e) {
+                $user->delete();
+                return response()->json([
+                    'message' => 'try another image',
+                    'status' => 400,
+                ]);
+            }
         }
 
         $user->save();
@@ -238,7 +257,7 @@ class UserController extends Controller
 
         try {
             $token = $user->createToken('api-token')->plainTextToken;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => 'Token creation failed'], 500);
         }
 

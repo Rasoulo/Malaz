@@ -19,20 +19,8 @@ class PropertyController extends Controller
 
         $properties = $user->property()
             ->where('status', 'approved')
-            ->with([
-                'images' => function ($q) {
-                    $q->orderBy('id', 'asc')->limit(1);
-                }
-            ])
             ->orderBy('id', 'desc')
-            ->cursorPaginate($perPage)
-            ->through(function ($property) {
-                $property->first_image = $property->images->first()
-                    ? url('/images/' . $property->images->first()->id)
-                    : null;
-                unset($property->images);
-                return $property;
-            });
+            ->cursorPaginate($perPage);
 
         return response()->json(
             [
@@ -53,16 +41,9 @@ class PropertyController extends Controller
 
         $perPage = (int) $request->input('per_page', 20);
 
-        $properties = Property::where('status', 'approved')->with('images')
+        $properties = Property::where('status', 'approved')
             ->orderBy('id', 'desc')
-            ->cursorPaginate($perPage)
-            ->through(function ($property) {
-                $property->first_image = $property->images->first()
-                    ? url('/images/' . $property->images->first()->id)
-                    : null;
-                unset($property->images);
-                return $property;
-            });
+            ->cursorPaginate($perPage);
 
         return response()->json(
             [
@@ -100,23 +81,25 @@ class PropertyController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
-                $imageData = file_get_contents($file->getRealPath());
+                $imageData = base64_encode(file_get_contents($file->getRealPath()));
                 $property->images()->create([
                     'image' => $imageData,
                     'mime_type' => $file->getMimeType(),
-
                 ]);
             }
         }
 
         if ($request->hasFile('main_pic')) {
             $file = $request->file('main_pic');
-            $imageData = file_get_contents($file->getRealPath());
-            $property->images()->create([
-                'image' => $imageData,
+            $imageData = base64_encode(file_get_contents($file->getRealPath()));
+            $property->update([
+                'main_image' => $imageData,
                 'mime_type' => $file->getMimeType(),
-
             ]);
+            // $property->main_image = $imageData;
+            // $property->mime_type = $file->getMimeType();
+            // $property->save();
+            // return 1;
         }
 
         return response()->json([
@@ -127,7 +110,7 @@ class PropertyController extends Controller
 
     public function showmainpic(Property $property)
     {
-        $image = $property->main_pic;
+        $image = base64_decode($property->main_image);
         $mime_type = $property->mime_type;
         return response($image)
             ->header('Content-Type', $mime_type);
@@ -160,7 +143,6 @@ class PropertyController extends Controller
         return response()->json([
             'data' => $property,
             'rate' => $rate,
-            'images' => $images,
             'isFav' => $isFav,
             'message' => 'Property returned successfully',
         ], 200);
@@ -204,13 +186,13 @@ class PropertyController extends Controller
 
         $validated = $request->validated();
         $property->update(
-            collect($validated)->except(['images', 'main_pic', 'erase'])->toArray()
+            collect($validated)->except(['images', 'main_pic', 'erase', 'mime_type'])->toArray()
         );
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $property->images()->create([
-                    'image' => file_get_contents($file->getRealPath()),
+                    'image' => base64_encode(file_get_contents($file->getRealPath())),
                     'mime_type' => $file->getMimeType(),
                 ]);
             }
@@ -218,7 +200,7 @@ class PropertyController extends Controller
 
         if ($request->hasFile('main_pic')) {
             $file = $request->file('main_pic');
-            $property->main_image = file_get_contents($file->getRealPath());
+            $property->main_image = base64_encode(file_get_contents($file->getRealPath()));
             $property->mime_type = $file->getMimeType();
             $property->save();
         }
@@ -226,11 +208,12 @@ class PropertyController extends Controller
         if (!empty($validated['erase'])) {
             $property->images()->whereIn('id', $validated['erase'])->delete();
         }
-
+        $property->status = 'pending';
+        $property->save();
         $property->refresh();
 
         return response()->json([
-            'property' => $property->load('images'),
+            'property' => $property,
             'message' => 'update completed',
             'status' => 200,
         ]);

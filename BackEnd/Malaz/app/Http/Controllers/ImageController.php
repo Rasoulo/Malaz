@@ -38,7 +38,7 @@ class ImageController extends Controller
     {
         $image = Image::findOrFail($id);
 
-        return response($image->image)
+        return response(base64_decode($image->image))
             ->header('Content-Type', $image->mime_type);
     }
 
