@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             ]
         );
 
-        //User::factory()->count(20)->create();
-        // User::factory()->count(5)->unverified()->create();
+        User::factory()->count(20)->create();
+        User::factory()->count(5)->unverified()->create();
     }
 }
