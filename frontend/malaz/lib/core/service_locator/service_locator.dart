@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import '../../data/datasources/remote/apartment_remote_data_source.dart';
 import '../../data/repositories/apartment_repository_impl.dart';
 import '../../domain/repositories/apartment_repository.dart';
-import '../../domain/usecases/get_apartments_usecase.dart';
+import '../../domain/usecases/apartments_use_case.dart';
 import '../../presentation/cubits/home/home_cubit.dart';
 import '../../presentation/cubits/language/language_cubit.dart';
 import '../../presentation/cubits/theme/theme_cubit.dart';
@@ -49,7 +49,7 @@ Future<void> setUpServices() async {
 
   sl.registerLazySingleton<Dio>(() => Dio());
 
-  sl.registerLazySingleton<NetworkService>(() => NetworkServiceImpl());
+  sl.registerLazySingleton<NetworkService>(() => NetworkServiceImpl(sl()));
 
   sl.registerLazySingleton<ApartmentRemoteDataSource>(
     () => ApartmentRemoteDataSourceImpl(networkService: sl()),

@@ -1,4 +1,4 @@
-import '../../../../core/network/network_service.dart'; // تأكد من المسار
+import '../../../../core/network/network_service.dart';
 import '../../../domain/entities/apartments_list.dart';
 import '../../models/apartment_model.dart';
 
