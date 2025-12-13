@@ -8,20 +8,42 @@ import 'package:equatable/equatable.dart';
 /// [Failure] extends from [Equatable] to make [Failure] objects comparable you
 /// can search for it
 abstract class Failure extends Equatable {
-  const Failure([List properties = const <dynamic>[]]);
+  final String message;
+
+  const Failure(this.message);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [message];
 }
 
 /// Represents a failure that occurs when communicating with a server.
-class ServerFailure extends Failure {}
+class ServerFailure extends Failure {
+  const ServerFailure(super.message);
+}
 
 /// Represents a failure that occurs when there is no internet connection.
-class NetworkFailure extends Failure {}
+class CacheFailure extends Failure {
+  const CacheFailure(super.message);
+}
 
 /// Represents a failure that occurs when accessing cached data.
-class CacheFailure extends Failure {}
+class OfflineFailure extends Failure {
+  const OfflineFailure(super.message);
+}
 
 /// Represents other general failures.
-class GeneralFailure extends Failure {}
+class AuthFailure extends Failure {
+  const AuthFailure(super.message);
+}
+
+class NetworkFailure extends Failure {
+  const NetworkFailure(super.message);
+}
+
+class ValidationFailure extends Failure {
+  const ValidationFailure(super.message);
+}
+
+class UnauthenticatedFailure extends Failure {
+  const UnauthenticatedFailure(super.message);
+}
