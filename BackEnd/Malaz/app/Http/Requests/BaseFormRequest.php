@@ -48,7 +48,6 @@ class BaseFormRequest extends FormRequest
 
         throw new HttpResponseException(
             response()->json([
-                'code' => $status,
                 'message' => $message,
                 'status' => $status,
             ])
