@@ -27,11 +27,11 @@ class StoreConversationRequest extends FormRequest
     }
 
     public function messages()
-    {
-        return [
-            'property_id.required' => 'property id is required',
-            'property_id.integer' => 'property id must be integer',
-            'property_id.exists' => 'The selected property does not exist',
-        ];
-    }
+{
+    return [
+        'property_id.required' => __('validation.property_id.required'),
+        'property_id.integer'  => __('validation.property_id.integer'),
+        'property_id.exists'   => __('validation.property_id.exists'),
+    ];
+}
 }

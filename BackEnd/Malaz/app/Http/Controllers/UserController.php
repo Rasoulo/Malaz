@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         return response()->json([
             'data' => User::all()->makeHidden(['profile_image', 'identity_card_image']),
-            'message' => 'list of all user',
+            'message' => __('messages.user.list'),
             'status' => 200,
         ]);
     }
@@ -60,7 +60,7 @@ class UserController extends Controller
         $user = auth()->user();
         $user->favorites()->syncWithoutDetaching([$propertyId]);
         return response()->json([
-            'message' => 'added to favorite completed',
+            'message' => __('messages.user.added_favorite'),
             'status' => 200,
         ]);
     }
@@ -71,7 +71,7 @@ class UserController extends Controller
         $user->favorites()->detach($propertyId);
 
         return response()->json([
-            'message' => 'removed from favorite completed',
+            'message' => __('messages.user.removed_favorite'),
             'status' => 200,
         ]);
     }
@@ -83,7 +83,7 @@ class UserController extends Controller
 
         return response()->json([
             'favorite' => $favorites,
-            'message' => 'here all your favorite list',
+            'message' => __('messages.user.favorite_list'),
             'status' => 200,
         ]);
     }
@@ -100,7 +100,7 @@ class UserController extends Controller
 
         app('greenapi')->sendMessage($request->phone, "Verification code: {$otp}");
 
-        return response()->json(['message' => 'OTP sent']);
+        return response()->json(['message' => __('messages.user.otp_sent'),]);
     }
 
     public function verifyOtp(Request $request)
@@ -113,11 +113,11 @@ class UserController extends Controller
         $cachedOtp = Cache::get('otp_' . $request->phone);
 
         if (!$cachedOtp) {
-            return response()->json(['message' => 'OTP expired or not found'], 400);
+            return response()->json(['message' => __('messages.user.otp_expired')], 400);
         }
 
         if ($cachedOtp != $request->otp) {
-            return response()->json(['message' => 'Invalid OTP'], 400);
+            return response()->json(['message' => __('messages.user.otp_invalid')], 400);
         }
 
         Cache::forget('otp_' . $request->phone);
@@ -126,8 +126,7 @@ class UserController extends Controller
         if ($user) {
             $user->update(['phone_verified_at' => now()]);
         }
-
-        return response()->json(['message' => 'Phone verified']);
+        return response()->json(['message' => __('messages.user.phone_verified')]);
     }
 
     public function update(UpdateUserRequest $request, User $user)
@@ -137,7 +136,7 @@ class UserController extends Controller
         $user->refresh();
         return response()->json([
             'data' => $user,
-            'message' => 'user update completed',
+            'message' => __('messages.user.updated'),
             'status' => 200,
         ]);
     }
@@ -153,10 +152,28 @@ class UserController extends Controller
         ]);
         return response()->json([
             'data' => $editrequest,
-            'message' => 'Send the edit request , Wait until it is approved by the officials',
+            'message' => __('messages.user.edit_request_sent'),
             'status' => 200,
         ]);
     }
+
+    public function updateLanguage(Request $request)
+    {
+        $request->validate([
+            'language' => 'required|string|in:en,ar,fr,ru,tr',
+        ]);
+
+        $user = Auth::user();
+
+        $user->language = $request->language;
+        $user->save();
+
+        return response()->json([
+            'message' => __('messages.user.language_updated'),
+            'language' => $user->language,
+        ]);
+    }
+
 
 
     public function register(RegisterRequest $request)
@@ -176,7 +193,7 @@ class UserController extends Controller
             } catch (Exception $e) {
                 $user->delete();
                 return response()->json([
-                    'message' => 'try another image',
+                    'message' => __('messages.user.try_another_image'),
                     'status' => 400,
                 ]);
             }
@@ -190,7 +207,7 @@ class UserController extends Controller
             } catch (Exception $e) {
                 $user->delete();
                 return response()->json([
-                    'message' => 'try another image',
+                    'message' => __('messages.user.try_another_image'),
                     'status' => 400,
                 ]);
             }
@@ -208,7 +225,10 @@ class UserController extends Controller
         //     'status' => 'PENDING',
         // ]);
 
-        return response()->json(['message' => 'User created Wait until it is approved by the officials', 'data' => $user], 201);
+        return response()->json([
+            'message' => __('messages.user.created_pending'),
+            'data' => $user
+        ], 201);
     }
 
     public function changepassword(Request $request)
@@ -220,9 +240,7 @@ class UserController extends Controller
 
         $user = auth()->user();
         if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json([
-                'message' => 'Current password is incorrect'
-            ], 400);
+            return response()->json(['message' => __('messages.user.password_incorrect')], 400);
         }
 
         $user->update([
@@ -231,33 +249,29 @@ class UserController extends Controller
 
         auth()->user()->tokens()->delete();
 
-        return response()->json([
-            'message' => 'Password updated successfully'
-        ], 200);
-
+        return response()->json(['message' => __('messages.user.password_updated')], 200);
     }
 
     public function login(LoginRequest $request)
     {
         if (!Auth::attempt($request->only('phone', 'password'))) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => __('messages.user.invalid_credentials')], 401);
         }
 
         $user = Auth::user();
 
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 423);
+            return response()->json(['message' => __('messages.user.not_found')], 423);
         }
 
         if ($user->role === 'PENDING') {
-            return response()->json(['message' => 'Wait until it is approved by the officials'], 403);
-
+            return response()->json(['message' => __('messages.user.pending_approval')], 403);
         }
 
         try {
             $token = $user->createToken('api-token')->plainTextToken;
         } catch (Exception $e) {
-            return response()->json(['message' => 'Token creation failed'], 500);
+            return response()->json(['message' => __('messages.user.token_failed')], 500);
         }
 
         return response()->json([
@@ -271,7 +285,7 @@ class UserController extends Controller
     public function logout()
     {
         auth()->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out']);
+        return response()->json(['message' => __('messages.user.logged_out')]);
     }
 
     public function me()

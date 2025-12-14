@@ -25,7 +25,7 @@ class PropertyController extends Controller
         return response()->json(
             [
                 'data' => $properties->items(),
-                'message' => 'here all your properties',
+                'message' => __('messages.property.my_list'),
                 'meta' => [
                     'next_cursor' => $properties->nextCursor()?->encode(),
                     'prev_cursor' => $properties->previousCursor()?->encode(),
@@ -48,7 +48,7 @@ class PropertyController extends Controller
         return response()->json(
             [
                 'data' => $properties->items(),
-                'message' => 'here all properties',
+                'message' => __('messages.property.all_list'),
                 'meta' => [
                     'next_cursor' => $properties->nextCursor()?->encode(),
                     'prev_cursor' => $properties->previousCursor()?->encode(),
@@ -104,7 +104,7 @@ class PropertyController extends Controller
 
         return response()->json([
             'data' => $property,
-            'message' => 'Property created successfully',
+            'message' => __('messages.property.created'),
         ], 201);
     }
 
@@ -124,7 +124,7 @@ class PropertyController extends Controller
 
         if ($property->status !== 'approved') {
             return response()->json([
-                'message' => 'Property not approved',
+                'message' => __('messages.property.not_approved'),
                 'status' => 403,
             ]);
         }
@@ -144,7 +144,7 @@ class PropertyController extends Controller
             'data' => $property,
             'rate' => $rate,
             'isFav' => $isFav,
-            'message' => 'Property returned successfully',
+            'message' => __('messages.property.returned'),
         ], 200);
     }
 
@@ -155,7 +155,7 @@ class PropertyController extends Controller
 
         if (!$property) {
             return response()->json([
-                'message' => 'Property not found',
+                'message' => __('messages.property.not_found'),
                 'status' => 404,
             ]);
         }
@@ -164,7 +164,7 @@ class PropertyController extends Controller
 
         return response()->json([
             'users' => $users,
-            'message' => 'all of those love this property',
+            'message' => __('messages.property.favorited_by'),
             'status' => 200,
         ]);
     }
@@ -214,7 +214,7 @@ class PropertyController extends Controller
 
         return response()->json([
             'property' => $property,
-            'message' => 'update completed',
+            'message' => __('messages.property.updated'),
             'status' => 200,
         ]);
     }
@@ -227,7 +227,7 @@ class PropertyController extends Controller
         $this->authorize('delete', $property);
         $property->delete();
         return response()->json([
-            'message' => 'Property deleted',
+            'message' => __('messages.property.deleted'),
             'status' => 200,
         ]);
     }

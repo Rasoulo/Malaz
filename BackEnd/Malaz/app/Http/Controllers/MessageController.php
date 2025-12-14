@@ -18,7 +18,7 @@ class MessageController extends Controller
     public function index(Request $request, Conversation $conversation)
     {
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.message.unauthorized')], 403);
         }
         $perPage = (int) $request->input('per_page', 20);
 
@@ -58,7 +58,7 @@ class MessageController extends Controller
         ]);
 
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.message.unauthorized')], 403);
         }
 
         $message = Message::create([
@@ -71,7 +71,7 @@ class MessageController extends Controller
         broadcast(new MessageSent($message))->toOthers();
 
         return response()->json([
-            'message' => 'Message created successfully',
+            'message' => __('messages.message.created'),
             'data' => $message->load('sender'),
             'status' => 201,
         ]);
@@ -85,12 +85,12 @@ class MessageController extends Controller
         $conversation = $message->conversation;
 
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.message.unauthorized')], 403);
         }
 
         return response()->json([
             'message_data' => $message->load(['sender', 'conversation']),
-            'info' => 'Message retrieved successfully',
+            'info' => __('messages.message.retrieved'),
             'status' => 200,
         ]);
     }
@@ -120,13 +120,13 @@ class MessageController extends Controller
             $message->load('sender');
             broadcast(new MessageUpdate($message))->toOthers();
             return response()->json([
-                'message' => 'message updated',
+                'message' => __('messages.message.updated'),
                 'status' => 200,
             ]);
         }
 
         return response()->json([
-            'message' => 'you are not the sender',
+            'message' => __('messages.message.not_sender'),
             'status' => 200,
         ]);
     }
@@ -137,11 +137,11 @@ class MessageController extends Controller
 
         $conversation = $message->conversation;
         if ($conversation->user_one_id !== $user->id && $conversation->user_two_id !== $user->id) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.message.unauthorized')], 403);
         }
 
         if ($message->sender_id === $user->id) {
-            return response()->json(['error' => 'You cannot mark your own message as read'], 400);
+            return response()->json(['error' => __('messages.message.cannot_mark_own')], 400);
         }
 
         $message->update(['read_at' => now()]);
@@ -150,7 +150,7 @@ class MessageController extends Controller
         broadcast(new MessageRead($message))->toOthers();
 
         return response()->json([
-            'message' => 'Message marked as read',
+            'message' => __('messages.message.marked_read'),
             'data' => $message,
             'status' => 200,
         ]);
@@ -165,7 +165,7 @@ class MessageController extends Controller
 
         if ($user->id !== $message->sender_id) {
             return response()->json([
-                'error' => 'Unauthorized',
+                'error' => __('messages.message.unauthorized'),
                 'status' => 403,
             ]);
         }
@@ -177,16 +177,13 @@ class MessageController extends Controller
             //$deleted = Message::withTrashed()->find($message->id);
             broadcast(new MessageDelete($payload))->toOthers();
             return response()->json([
-                'message' => 'message deleted successfully',
+                'message' => __('messages.message.deleted'),
             ], 200);
-
         } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'error' => 'Failed to delete message',
-                    'status' => 500,
-                ]
-            );
+            return response()->json([
+                'error' => __('messages.message.delete_failed'),
+                'status' => 500,
+            ]);
         }
     }
 }

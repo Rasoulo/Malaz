@@ -18,7 +18,7 @@ class ReviewController extends Controller
         $reviews = $user->reviews()->with('property')->get();
         return response()->json([
             'reviews' => $reviews,
-            'message' => 'this is all your reviews',
+            'message' => __('messages.review.all_user_reviews'),
             'status' => 200,
         ]);
     }
@@ -43,7 +43,7 @@ class ReviewController extends Controller
 
         if (!($request->filled('rating') && $request->rating != -1) && !$request->filled('body')) {
             return response()->json([
-                'message' => 'there should be at least one of the [rating,body] for the review',
+                'message' => __('messages.review.require_rating_or_body'),
                 'status' => 400,
             ]);
         }
@@ -59,7 +59,7 @@ class ReviewController extends Controller
 
         if ($alreadyReviewed) {
             return response()->json([
-                'message' => 'You have already reviewed this property.',
+                'message' => __('messages.review.already_reviewed'),
                 'status' => 400,
             ]);
         }
@@ -80,13 +80,13 @@ class ReviewController extends Controller
             }
             return response()->json([
                 'review' => $review,
-                'message' => 'The review was published successfully',
+                'message' => __('messages.review.published'),
                 'status' => 201,
             ]);
         }
 
         return response()->json([
-            'message' => 'It is necessary to make a reservation in this apartment before the review.',
+            'message' => __('messages.review.must_reserve_before'),
             'status' => 400,
         ]);
     }
@@ -136,7 +136,7 @@ if ($alreadyReviewed) {
 
         return response()->json([
             'data' => $reviews->items(),
-            'message' => 'Here are the property reviews',
+            'message' => __('messages.review.property_reviews'),
             'meta' => [
                 'next_cursor' => $reviews->nextCursor()?->encode(),
                 'prev_cursor' => $reviews->previousCursor()?->encode(),
@@ -160,7 +160,7 @@ if ($alreadyReviewed) {
     public function update(Request $request, Review $review)
     {
         if ($review->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return response()->json(['message' => __('messages.review.unauthorized')], 403);
         }
 
         $request->validate([
@@ -180,7 +180,7 @@ if ($alreadyReviewed) {
 
         return response()->json([
             'review' => $review,
-            'message' => 'Review updated successfully',
+            'message' => __('messages.review.updated'),
             'status' => 200,
         ]);
     }
@@ -191,7 +191,7 @@ if ($alreadyReviewed) {
     public function destroy(Review $review)
     {
         if ($review->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return response()->json(['message' => __('messages.review.unauthorized')], 403);
         }
 
         $property = $review->property;
@@ -201,7 +201,7 @@ if ($alreadyReviewed) {
 
         $review->delete();
         return response()->json([
-            'message' => 'Review deleted successfully',
+            'message' => __('messages.review.deleted'),
             'status' => 200,
         ]);
     }

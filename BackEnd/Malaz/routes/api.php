@@ -21,6 +21,7 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
         Route::put('{user}', 'update')->name('users.update');
     });
     Route::middleware(['auth:sanctum', 'role:ADMIN,USER'])->group(function () {
+        Route::post('/language', 'updateLanguage')->name('user.language.update');
         Route::get('/{user}/profile_image', 'showProfileImage')->name('users.profile_image');
         Route::get('/{user}/identity_card_image', 'showIdentityCardImage')->name('users.identity_card_image');
         Route::post('request-update', 'request_update')->name('users.requestUpdate');

@@ -31,35 +31,42 @@ class RegisterRequest extends FormRequest
     }
 
     public function messages()
-    {
-        return [
-            'phone.required' => 'Phone number is required.',
-            'phone.regex' => 'Phone number must be a valid format (9–15 digits, may start with +).',
-            'phone.unique' => 'This phone number is already registered.',
-            // 'role.required' => 'Role is required.',
-            // 'role.string' => 'Role must be a valid string.',
-            // 'role.in' => 'The selected role is invalid. Allowed values are: RENTER, OWNER, ADMIN.',
-            'first_name.required' => 'First name is required.',
-            'first_name.string' => 'First name must be a valid string.',
-            'last_name.required' => 'Last name is required.',
-            'last_name.string' => 'Last name must be a valid string.',
-            'password.required' => 'Password is required.',
-            'password.string' => 'Password must be a valid string.',
-            'password.min' => 'Password must be at least 6 characters long.',
-            'password.confirmed' => 'Password confirmation does not match.',
-            'identity_card_image.required' => 'Identity card image is required.',
-            'identity_card_image.file' => 'Identity card image must be a file.',
-            'identity_card_image.image' => 'Identity card image must be an image.',
-            'identity_card_image.mimes' => 'Identity card image must be one of: jpeg, png, jpg, gif, svg.',
-            'identity_card_image.max' => 'Identity card image must not exceed 2MB.',
-            'profile_image.required' => 'Profile image is required.',
-            'profile_image.file' => 'Profile image must be a file.',
-            'profile_image.image' => 'Profile image must be an image.',
-            'profile_image.mimes' => 'Profile image must be one of: jpeg, png, jpg, gif, svg.',
-            'profile_image.max' => 'Profile image must not exceed 2MB.',
-            'date_of_birth.required' => 'Date of birth is required.',
-            'date_of_birth.date' => 'Date of birth must be a valid date.',
-            'date_of_birth.before' => 'You must be at least 6 years old.',
-        ];
-    }
+{
+    return [
+        'phone.required' => __('validation.phone.required'),
+        'phone.regex'    => __('validation.phone.regex'),
+        'phone.unique'   => __('validation.phone.unique'),
+
+        // 'role.required' => 'Role is required.',
+        // 'role.string' => 'Role must be a valid string.',
+        // 'role.in' => 'The selected role is invalid. Allowed values are: RENTER, OWNER, ADMIN.',
+
+        'first_name.required' => __('validation.first_name.required'),
+        'first_name.string'   => __('validation.first_name.string'),
+
+        'last_name.required' => __('validation.last_name.required'),
+        'last_name.string'   => __('validation.last_name.string'),
+
+        'password.required'  => __('validation.password.required'),
+        'password.string'    => __('validation.password.string'),
+        'password.min'       => __('validation.password.min'),
+        'password.confirmed' => __('validation.password.confirmed'),
+
+        'identity_card_image.required' => __('validation.identity_card_image.required'),
+        'identity_card_image.file'     => __('validation.identity_card_image.file'),
+        'identity_card_image.image'    => __('validation.identity_card_image.image'),
+        'identity_card_image.mimes'    => __('validation.identity_card_image.mimes'),
+        'identity_card_image.max'      => __('validation.identity_card_image.max'),
+
+        'profile_image.required' => __('validation.profile_image.required'),
+        'profile_image.file'     => __('validation.profile_image.file'),
+        'profile_image.image'    => __('validation.profile_image.image'),
+        'profile_image.mimes'    => __('validation.profile_image.mimes'),
+        'profile_image.max'      => __('validation.profile_image.max'),
+
+        'date_of_birth.required' => __('validation.date_of_birth.required'),
+        'date_of_birth.date'     => __('validation.date_of_birth.date'),
+        'date_of_birth.before'   => __('validation.date_of_birth.before'),
+    ];
+}
 }

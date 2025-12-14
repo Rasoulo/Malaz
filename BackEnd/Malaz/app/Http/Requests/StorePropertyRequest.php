@@ -45,47 +45,59 @@ class StorePropertyRequest extends FormRequest
     }
 
     public function messages()
-    {
-        return [
-            'price.required' => 'Price is required.',
-            'price.integer' => 'Price must be an integer.',
-            'price.min' => 'Price cannot be less than zero.',
-            'city.required' => 'City is required.',
-            'city.string' => 'City must be a string.',
-            'city.max' => 'City cannot exceed 255 characters.',
-            'address.required' => 'Address is required.',
-            'address.string' => 'Address must be a string.',
-            'address.max' => 'Address cannot exceed 255 characters.',
-            'governorate.required' => 'Governorate is required.',
-            'governorate.string' => 'Governorate must be a string.',
-            'governorate.max' => 'Governorate cannot exceed 255 characters.',
-            'latitude.numeric' => 'Latitude must be a number.',
-            'longitude.numeric' => 'Longitude must be a number.',
-            'description.string' => 'Description must be a string.',
-            'description.max' => 'Description cannot exceed 1000 characters.',
-            'images.array' => 'Images must be an array.',
-            'images.*.file' => 'Each image must be a file.',
-            'images.*.image' => 'Each file must be an image.',
-            'images.*.mimes' => 'Images must be of type: jpeg, png, jpg, gif, svg.',
-            'images.*.max' => 'Each image must not exceed 2MB.',
-            'type.required' => 'Type is required.',
-            'type.string' => 'Type must be a string.',
-            'type.in' => 'Type must be one of: Apartment, Farm, Villa, Restaurant, Travel Rest Stop, Residential Tower, Country Estate.',
-            'number_of_rooms.required' => 'Number of rooms is required.',
-            'number_of_rooms.integer' => 'Number of rooms must be an integer.',
-            'number_of_rooms.min' => 'Number of rooms cannot be less than zero.',
-            'number_of_baths.required' => 'Number of baths is required.',
-            'number_of_baths.integer' => 'Number of baths must be an integer.',
-            'number_of_baths.min' => 'Number of baths cannot be less than zero.',
-            'number_of_bedrooms.required' => 'Number of bedrooms is required.',
-            'number_of_bedrooms.integer' => 'Number of bedrooms must be an integer.',
-            'number_of_bedrooms.min' => 'Number of bedrooms cannot be less than zero.',
-            'area.required' => 'Area is required.',
-            'area.numeric' => 'Area must be a number.',
-            'area.min' => 'Area cannot be less than zero.',
-            'title.required' => 'The title field is required.',
-            'title.string' => 'The title must be a valid string.',
-            'title.max' => 'The title may not be greater than 255 characters.',
-        ];
-    }
+{
+    return [
+        'price.required' => __('validation.price.required'),
+        'price.integer'  => __('validation.price.integer'),
+        'price.min'      => __('validation.price.min'),
+
+        'city.required' => __('validation.city.required'),
+        'city.string'   => __('validation.city.string'),
+        'city.max'      => __('validation.city.max'),
+
+        'address.required' => __('validation.address.required'),
+        'address.string'   => __('validation.address.string'),
+        'address.max'      => __('validation.address.max'),
+
+        'governorate.required' => __('validation.governorate.required'),
+        'governorate.string'   => __('validation.governorate.string'),
+        'governorate.max'      => __('validation.governorate.max'),
+
+        'latitude.numeric'  => __('validation.latitude.numeric'),
+        'longitude.numeric' => __('validation.longitude.numeric'),
+
+        'description.string' => __('validation.description.string'),
+        'description.max'    => __('validation.description.max'),
+
+        'images.array'     => __('validation.images.array'),
+        'images.*.file'    => __('validation.images.file'),
+        'images.*.image'   => __('validation.images.image'),
+        'images.*.mimes'   => __('validation.images.mimes'),
+        'images.*.max'     => __('validation.images.max'),
+
+        'type.required' => __('validation.type.required'),
+        'type.string'   => __('validation.type.string'),
+        'type.in'       => __('validation.type.in'),
+
+        'number_of_rooms.required' => __('validation.number_of_rooms.required'),
+        'number_of_rooms.integer'  => __('validation.number_of_rooms.integer'),
+        'number_of_rooms.min'      => __('validation.number_of_rooms.min'),
+
+        'number_of_baths.required' => __('validation.number_of_baths.required'),
+        'number_of_baths.integer'  => __('validation.number_of_baths.integer'),
+        'number_of_baths.min'      => __('validation.number_of_baths.min'),
+
+        'number_of_bedrooms.required' => __('validation.number_of_bedrooms.required'),
+        'number_of_bedrooms.integer'  => __('validation.number_of_bedrooms.integer'),
+        'number_of_bedrooms.min'      => __('validation.number_of_bedrooms.min'),
+
+        'area.required' => __('validation.area.required'),
+        'area.numeric'  => __('validation.area.numeric'),
+        'area.min'      => __('validation.area.min'),
+
+        'title.required' => __('validation.title.required'),
+        'title.string'   => __('validation.title.string'),
+        'title.max'      => __('validation.title.max'),
+    ];
+}
 }

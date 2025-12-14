@@ -55,7 +55,7 @@ class ConversationController extends Controller
         $owner = User::findOrFail($userId);
         $user = auth()->user();
         if ($owner->id === $user->id) {
-            return response()->json(['error' => 'You cannot start a conversation with yourself'], 400);
+            return response()->json(['error' => __('messages.conversation.self_start')], 400);
         }
 
         $ids = [$user->id, $owner->id];
@@ -68,11 +68,12 @@ class ConversationController extends Controller
 
         return response()->json([
             'message' => $conversation->wasRecentlyCreated
-                ? 'Conversation created successfully'
-                : 'Conversation already exists',
+                ? __('messages.conversation.created')
+                : __('messages.conversation.exists'),
             'conversation' => $conversation,
             'status' => $conversation->wasRecentlyCreated ? 201 : 200,
         ]);
+
 
     }
 
@@ -82,20 +83,22 @@ class ConversationController extends Controller
     public function show(Conversation $conversation)
     {
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.conversation.unauthorized')], 403);
         }
 
+
         return response()->json([
-            'message' => 'here are your conversation',
+            'message' => __('messages.conversation.show'),
             'conversation' => $conversation,
             'status' => 200,
         ]);
+
     }
 
     public function showmessage(Request $request, Conversation $conversation)
     {
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.conversation.unauthorized')], 403);
         }
 
         $conversation->messages()
@@ -106,9 +109,8 @@ class ConversationController extends Controller
         $perPage = (int) $request->input('per_page', 20);
         $messages = $conversation->messages()->with('sender')->latest()->cursorPaginate($perPage);
 
-
         return response()->json([
-            'message' => 'here are your conversation',
+            'message' => __('messages.conversation.show'),
             'last_messages' => $messages,
             'meta' => [
                 'next_cursor' => $messages->nextCursor()?->encode(),
@@ -141,13 +143,15 @@ class ConversationController extends Controller
     public function destroy(Conversation $conversation)
     {
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.conversation.unauthorized')], 403);
         }
+
 
         $conversation->delete();
         return response()->json([
-            'message' => 'deleted complete',
+            'message' => __('messages.conversation.deleted'),
             'status' => 200,
         ]);
+
     }
 }

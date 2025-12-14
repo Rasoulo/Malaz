@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('identity_card_mime')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
+            $table->string('language', 5)->default('en');
             $table->rememberToken();
             $table->timestamps();
         });
