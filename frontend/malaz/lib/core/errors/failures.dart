@@ -35,7 +35,23 @@ class GeneralFailure extends Failure {
   const GeneralFailure([String? message]) : super(message);
 }
 
-///  Represents a failure that occurs Invalid credentials failure, specifically for wrong username password aituations
+/// This failure appears when the user is in a pending state,
+/// meaning an account with that username and password already exists but has not yet been approved by the admin.
 class InvalidCredentialsFailure extends Failure {
   const InvalidCredentialsFailure([String? message]) : super(message);
+}
+
+/// This exception appears when there is no account with that number entered by the user.
+class PhoneNotFoundFailure extends Failure {
+  const PhoneNotFoundFailure([String? message]) : super(message);
+}
+
+/// This exception appears when the password for the accompanying number is incorrect.
+class WrongPasswordFailure extends Failure {
+  const WrongPasswordFailure([String? message]) : super(message);
+}
+
+class PendingApprovalFailure extends Failure {
+  const PendingApprovalFailure()
+      : super('Wait until approved by the officials');
 }

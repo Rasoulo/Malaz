@@ -27,6 +27,21 @@ class UserEntity extends Equatable{
     required this.updated_at,
   });
 
+  factory UserEntity.emptyPending() {
+    return UserEntity(
+      id: 0,
+      role: 'PENDING',
+      first_name: '',
+      last_name: '',
+      phone: '',
+      date_of_birth: '',
+      profile_image: '',
+      identity_card_image: '',
+      phone_verified_at: '',
+      created_at: '',
+      updated_at: '',
+    );
+  }
   @override
   // TODO: implement props
   List<Object?> get props => [

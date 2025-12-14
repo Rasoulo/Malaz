@@ -24,7 +24,6 @@ import '../../presentation/cubits/language/language_cubit.dart';
 import '../../presentation/cubits/theme/theme_cubit.dart';
 import '../network/auth_interceptor.dart';
 import '../network/network_info.dart';
-import '../network/network_service.dart';
 
 /// [GetIt] / [service_locator]
 ///
@@ -56,16 +55,9 @@ import '../network/network_service.dart';
 
 final sl = GetIt.instance;
 
-const baseurlForUsers = 'http://192.168.1.102:8000/api/users/';
 
 Future<void> setUpServices() async {
   final sharedPreferences = await SharedPreferences.getInstance();
-  // Configure Dio centrally
-  final dio = Dio(BaseOptions(
-    baseUrl: 'http://192.168.1.102:8000',
-    connectTimeout: Duration(seconds: 30),
-    receiveTimeout: Duration(seconds: 30),
-  ));
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   sl.registerLazySingleton<Dio>(() => Dio());
@@ -78,9 +70,6 @@ Future<void> setUpServices() async {
   //
   // sl.registerLazySingleton<InternetConnectionChecker>(
   //         () => InternetConnectionChecker());
-
-
-
 
   sl.registerLazySingleton<InternetConnectionChecker>(() => InternetConnectionChecker());
 
@@ -102,7 +91,7 @@ Future<void> setUpServices() async {
 
   /// --- Auth datasources, repository, usecases, cubit --- //
   /// Data sources
-  sl.registerLazySingleton<AuthLocalDatasource>(() => AuthLocalDataSourceImpl(sharedPreferences: sl()));
+  sl.registerLazySingleton<AuthLocalDatasource>(() => AuthLocalDatasourceImpl(sl<SharedPreferences>()),);
   sl.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(dio: sl<Dio>()));
 
   /// Repositories
@@ -122,10 +111,11 @@ Future<void> setUpServices() async {
 
   /// Dio interceptor needs local datasource -> attach after creating dio
   /// Auth interceptor (attach AFTER registering local datasource)
+  final dio = sl<Dio>();
   dio.interceptors.add(AuthInterceptor(localDatasource: sl()));
 
   /// Cubit (factory so every use-case screen can create a fresh cubit if needed)
-  sl.registerFactory(() => AuthCubit(
+  sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
     loginUsecase: sl(),
     logoutUsecase: sl(),
     getCurrentUserUsecase: sl(),
@@ -134,4 +124,15 @@ Future<void> setUpServices() async {
     sendOtpUsecase: sl(),
     verifyOtpUsecase: sl(),
   ));
+
+  // sl.registerFactory(() => AuthCubit(
+  //   loginUsecase: sl(),
+  //   logoutUsecase: sl(),
+  //   getCurrentUserUsecase: sl(),
+  //   checkAuthUsecase: sl(),
+  //   registerUsecase: sl(),
+  //   sendOtpUsecase: sl(),
+  //   verifyOtpUsecase: sl(),
+  // ));
+
 }

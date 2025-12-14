@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +6,6 @@ import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
 import 'package:malaz/domain/usecases/auth/get_current_user_usecase.dart';
 import 'package:malaz/domain/usecases/auth/login_usecase.dart';
 import 'package:malaz/domain/usecases/auth/logout_usecase.dart';
-
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../domain/usecases/auth/register_usecase.dart';
@@ -35,6 +32,13 @@ class AuthAuthenticated extends AuthState {
 
 class AuthUnauthenticated extends AuthState {}
 
+class AuthPending extends AuthState {
+  final UserEntity user;
+  AuthPending(this.user);
+  @override
+  List<Object?> get props => [user];
+}
+
 class AuthError extends AuthState {
   final String message;
   AuthError({required this.message});
@@ -46,13 +50,19 @@ class OtpSending extends AuthState {}
 
 class OtpSent extends AuthState {}
 
-class OtpSendError extends AuthState { final String message; OtpSendError(this.message); }
+class OtpSendError extends AuthState {
+  final String message;
+  OtpSendError(this.message);
+}
 
 class OtpVerifying extends AuthState {}
 
 class OtpVerified extends AuthState {}
 
-class OtpVerifyError extends AuthState { final String message; OtpVerifyError(this.message); }
+class OtpVerifyError extends AuthState {
+  final String message;
+  OtpVerifyError(this.message);
+}
 
 // --- Cubit --- //
 
@@ -65,37 +75,38 @@ class AuthCubit extends Cubit<AuthState> {
   final SendOtpUsecase sendOtpUsecase;
   final VerifyOtpUsecase verifyOtpUsecase;
 
-  AuthCubit({
-    required this.loginUsecase,
-    required this.logoutUsecase,
-    required this.getCurrentUserUsecase,
-    required this.checkAuthUsecase,
-    required this.registerUsecase,
-    required this.sendOtpUsecase,
-    required this.verifyOtpUsecase
-  }) : super(AuthInitial());
+  AuthCubit(
+      {required this.loginUsecase,
+      required this.logoutUsecase,
+      required this.getCurrentUserUsecase,
+      required this.checkAuthUsecase,
+      required this.registerUsecase,
+      required this.sendOtpUsecase,
+      required this.verifyOtpUsecase})
+      : super(AuthInitial());
 
   Future<void> checkAuth() async {
-    emit(AuthLoading());
     final res = await checkAuthUsecase(NoParams());
+
     res.fold(
-          (failure) => emit(AuthUnauthenticated()),
-          (isAuth) async {
-        if (isAuth == true) {
-          final userRes = await getCurrentUserUsecase(NoParams());
-          userRes.fold(
-                (_) => emit(AuthUnauthenticated()),
-                (user) {
-              if (user != null) emit(AuthAuthenticated(user));
-              else emit(AuthUnauthenticated());
-            },
-          );
+          (_) {
+        if (state is AuthPending) return;
+        emit(AuthUnauthenticated());
+      },
+          (status) {
+        if (status.isPending && status.user != null) {
+          emit(AuthPending(status.user!));
+        } else if (status.isAuthenticated && status.user != null) {
+          emit(AuthAuthenticated(status.user!));
         } else {
+          if (state is AuthPending) return;
           emit(AuthUnauthenticated());
         }
       },
     );
   }
+
+
 
   Future<void> register({
     required String phone,
@@ -111,7 +122,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final res = await registerUsecase(RegisterParams(
         phone: phone,
-        role: 'OWNER',
+        role: 'PENDING',
         firstName: firstName,
         lastName: lastName,
         password: password,
@@ -122,12 +133,17 @@ class AuthCubit extends Cubit<AuthState> {
       ));
       print('>>>> ${res}');
       res.fold(
-            (failure) {
+        (failure) {
           emit(AuthError(message: _mapFailureToMessage(failure)));
           emit(AuthUnauthenticated());
         },
-            (user) {
-          emit(AuthAuthenticated(user));
+        (user) {
+          final role = user.role.toLowerCase();
+          if (role == 'pending') {
+            emit(AuthPending(user));
+          } else {
+            emit(AuthAuthenticated(user));
+          }
         },
       );
     } catch (e) {
@@ -136,22 +152,46 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> login({required String phone, required String password}) async {
+  Future<void> login({
+    required String phone,
+    required String password,
+  }) async {
     emit(AuthLoading());
-    try {
-      final res = await loginUsecase.call(LoginParams(phoneNumber: phone, password: password));
-      res.fold(
-            (failure) => emit(AuthError(message: _mapFailureToMessage(failure))),
-            (user) => emit(AuthAuthenticated(user)),
-      );
-    } catch (e) {
-      emit(AuthError(message: 'Unexpected error: $e'));
-    }
+
+    final res = await loginUsecase(
+      LoginParams(phoneNumber: phone, password: password),
+    );
+
+    res.fold(
+          (failure) {
+        if (failure is PendingApprovalFailure) {
+          emit(AuthPending(
+            UserEntity.emptyPending(),
+          ));
+        } else if (failure is PhoneNotFoundFailure) {
+          emit(AuthError(
+            message: 'This phone number does not exist in our records.',
+          ));
+        } else if (failure is WrongPasswordFailure) {
+          emit(AuthError(message: 'Invalid credentials'));
+        } else {
+          emit(AuthError(message: _mapFailureToMessage(failure)));
+        }
+      },
+          (user) {
+        if (user.role.toUpperCase() == 'PENDING') {
+          emit(AuthPending(user));
+        } else {
+          emit(AuthAuthenticated(user));
+        }
+      },
+    );
   }
+
 
   Future<void> logout() async {
     emit(AuthLoading());
-    await logoutUsecase.call(NoParams());
+    await logoutUsecase(NoParams());
     emit(AuthUnauthenticated());
   }
 
@@ -160,28 +200,58 @@ class AuthCubit extends Cubit<AuthState> {
     emit(OtpSending());
     final res = await sendOtpUsecase(SendOtpParams(phone));
     res.fold(
-          (failure) => emit(OtpSendError(_mapFailureToMessage(failure))),
-          (_) => emit(OtpSent()),
+      (failure) => emit(OtpSendError(_mapFailureToMessage(failure))),
+      (_) => emit(OtpSent()),
     );
   }
-
 
   Future<void> verifyOtp(String phone, String otp) async {
     emit(OtpVerifying());
     final res = await verifyOtpUsecase(VerifyOtpParams(phone: phone, otp: otp));
     res.fold(
-          (failure) => emit(OtpVerifyError(_mapFailureToMessage(failure))),
-          (success) {
-        if (success) emit(OtpVerified());
-        else emit(OtpVerifyError('Invalid code'));
+      (failure) => emit(OtpVerifyError(_mapFailureToMessage(failure))),
+      (success) {
+        if (success)
+          emit(OtpVerified());
+        else
+          emit(OtpVerifyError('Invalid code'));
+      },
+    );
+  }
+
+  Future<void> checkRoleUsingLogin({
+    required String phone,
+    required String password,
+  }) async {
+    emit(AuthLoading());
+
+    final res = await loginUsecase(
+      LoginParams(phoneNumber: phone, password: password),
+    );
+
+    res.fold(
+      (failure) {
+        emit(AuthError(message: _mapFailureToMessage(failure)));
+      },
+      (user) {
+        if (user.role == 'PENDING') {
+          emit(AuthPending(user));
+        } else if (user.role == 'USER') {
+          emit(AuthAuthenticated(user));
+        } else {
+          emit(AuthUnauthenticated());
+        }
       },
     );
   }
 
   String _mapFailureToMessage(Failure f) {
-    if (f is InvalidCredentialsFailure) return 'خطأ في بيانات الدخول';
-    if (f is NetworkFailure) return 'تحقق من اتصال الانترنت';
-    if (f is ServerFailure) return 'مشكلة في الخادم';
-    return 'حدث خطأ غير متوقع';
+    if (f is PhoneNotFoundFailure)
+      return 'This phone number does not exist in our records.';
+    if (f is WrongPasswordFailure) return 'Incorrect Password';
+    if (f is InvalidCredentialsFailure) return 'Invalid credentials';
+    if (f is ServerFailure) return f.message ?? 'Server error';
+    if (f is NetworkFailure) return 'Check your internet connection';
+    return 'An unexpected error occurred';
   }
 }

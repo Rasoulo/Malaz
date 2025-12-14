@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/config/color/app_color.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../global_widgets/build_branding.dart';
@@ -98,6 +96,7 @@ class RegisterScreen3 extends StatelessWidget {
                     haveSuffixEyeIcon: true,
                     obscure: true,
                     formKey: formKey,
+                    onChanged: (value) => registerData.confirmPassword = value,
                   ),
                   const SizedBox(
                     height: 100,
@@ -116,91 +115,6 @@ class RegisterScreen3 extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ImageUploadWidget extends StatefulWidget {
-  @override
-  _ImageUploadWidgetState createState() => _ImageUploadWidgetState();
-}
-
-class _ImageUploadWidgetState extends State<ImageUploadWidget> {
-  File? _image;
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
-  Widget _uploadBox(
-      {required IconData icon, required String label, String? sub}) {
-    return InkWell(
-      onTap: _pickImage,
-      child: DottedBox(
-        child: _image == null
-            ? Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 36, color: Colors.yellow),
-            const SizedBox(height: 8),
-            Text(label,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, color: Colors.yellow)),
-            if (sub != null) ...[
-              const SizedBox(height: 6),
-              Text(sub,
-                  style: TextStyle(fontSize: 12, color: Colors.yellow)),
-            ],
-          ],
-        )
-            : Image.file(_image!, fit: BoxFit.cover),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final tr = AppLocalizations.of(context)!;
-
-    return SizedBox(
-      width: 350,
-      height: 150,
-      child: _uploadBox(
-        icon: Icons.cloud_upload_outlined,
-        label: tr.upload_id_message,
-        sub: tr.png_jpg,
-      ),
-    );
-  }
-}
-
-class DottedBox extends StatelessWidget {
-  final Widget child;
-  const DottedBox({required this.child, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (bounds) =>
-          AppColors.realGoldGradient.createShader(bounds),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white12,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.yellow, style: BorderStyle.solid),
-        ),
-        child: child,
       ),
     );
   }

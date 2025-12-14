@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/presentation/screens/auth/register/register_screen1.dart';
 import 'package:malaz/presentation/screens/auth/register/register_screen2.dart';
@@ -136,69 +137,80 @@ class _HomeRegisterScreenState extends State<HomeRegisterScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final tr = AppLocalizations.of(context)!;
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      body: ListView(
-        children: [
-          SizedBox(
-            height: 800,
-            width: 450,
-            child: PageView(
-              //physics: NeverScrollableScrollPhysics(),
-              controller: _controller,
-              onPageChanged: _onPageChanged,
-              children: [
-                RegisterScreen1(
-                  formKey: formKeys[0],
-                  pinKey: _pinTextfieldKey,
-                  registerData: registerData,
-                  onPinVerified: updatePinValidity,
-                ),
-                RegisterScreen2(
-                  formKey: formKeys[1],
-                  registerData: registerData,
-                ),
-                RegisterScreen3(
-                  formKey: formKeys[2],
-                  registerData: registerData,
-                ),
-                RegisterScreen4(
-                  key: registerScreen4Key,
-                  formKey: formKeys[3],
-                  registerData: registerData,
-                ),
-                RegisterScreen5(
-                  key: registerScreen5Key,
-                  formKey: formKeys[4],
-                  registerData: registerData,
-                  onRegisterPressed: _submitRegister,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Center(
-            child: ShaderMask(
-              shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-              child: SmoothPageIndicator(
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthPending) {
+          context.go('/pending');
+        } else if (state is AuthAuthenticated) {
+          context.go('/home');
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
+      child: Scaffold(
+        backgroundColor: colorScheme.surface,
+        body: ListView(
+          children: [
+            SizedBox(
+              height: 800,
+              width: 450,
+              child: PageView(
+                //physics: NeverScrollableScrollPhysics(),
                 controller: _controller,
-                count: 5,
-                effect: ExpandingDotsEffect(
-                    activeDotColor: Colors.white,
-                    dotColor: Colors.yellow,
-                    dotHeight: 25,
-                    dotWidth: 25,
-                    spacing: 15
+                onPageChanged: _onPageChanged,
+                children: [
+                  RegisterScreen1(
+                    formKey: formKeys[0],
+                    pinKey: _pinTextfieldKey,
+                    registerData: registerData,
+                    onPinVerified: updatePinValidity,
+                  ),
+                  RegisterScreen2(
+                    formKey: formKeys[1],
+                    registerData: registerData,
+                  ),
+                  RegisterScreen3(
+                    formKey: formKeys[2],
+                    registerData: registerData,
+                  ),
+                  RegisterScreen4(
+                    key: registerScreen4Key,
+                    formKey: formKeys[3],
+                    registerData: registerData,
+                  ),
+                  RegisterScreen5(
+                    key: registerScreen5Key,
+                    formKey: formKeys[4],
+                    registerData: registerData,
+                    onRegisterPressed: _submitRegister,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Center(
+              child: ShaderMask(
+                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                child: SmoothPageIndicator(
+                  controller: _controller,
+                  count: 5,
+                  effect: ExpandingDotsEffect(
+                      activeDotColor: Colors.white,
+                      dotColor: Colors.yellow,
+                      dotHeight: 25,
+                      dotWidth: 25,
+                      spacing: 15
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 25,
-          )
-        ],
+            const SizedBox(
+              height: 25,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -209,6 +221,7 @@ class RegisterData {
   String firstName = '';
   String lastName = '';
   String password = '';
+  String confirmPassword = '';
   String dateOfBirth = '';
   XFile? profileImage;
   XFile? identityImage;

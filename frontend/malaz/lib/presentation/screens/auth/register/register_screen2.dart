@@ -5,11 +5,16 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../global_widgets/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
 
-class RegisterScreen2 extends StatelessWidget {
+class RegisterScreen2 extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final RegisterData registerData;
   const RegisterScreen2({super.key, required this.formKey, required this.registerData});
 
+  @override
+  State<RegisterScreen2> createState() => _RegisterScreen2State();
+}
+
+class _RegisterScreen2State extends State<RegisterScreen2> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -24,7 +29,7 @@ class RegisterScreen2 extends StatelessWidget {
               horizontal: 24,
             ),
             child: Form(
-              key: formKey,
+              key: widget.formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -83,8 +88,8 @@ class RegisterScreen2 extends StatelessWidget {
                     obscure: false,
                     keyboardType: TextInputType.name,
                     haveSuffixEyeIcon: false,
-                    formKey: formKey,
-                    onChanged: (value) => registerData.firstName = value,
+                    formKey: widget.formKey,
+                    onChanged: (value) => widget.registerData.firstName = value,
                   ),
                   const SizedBox(
                     height: 16,
@@ -97,8 +102,8 @@ class RegisterScreen2 extends StatelessWidget {
                     obscure: false,
                     keyboardType: TextInputType.name,
                     haveSuffixEyeIcon: false,
-                    formKey: formKey,
-                    onChanged: (value) => registerData.lastName = value,
+                    formKey: widget.formKey,
+                    onChanged: (value) => widget.registerData.lastName = value,
                   ),
                   const SizedBox(
                     height: 16,
@@ -109,8 +114,8 @@ class RegisterScreen2 extends StatelessWidget {
                     label: tr.date_of_birth,
                     icon: Icons.calendar_today_outlined,
                     onPressedForDate: true,
-                    formKey: formKey,
-                    onChanged: (value) => registerData.dateOfBirth = value,
+                    formKey: widget.formKey,
+                    onChanged: (value) => widget.registerData.dateOfBirth = value,
 
                   ),
                   const SizedBox(

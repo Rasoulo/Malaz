@@ -1,5 +1,4 @@
 // data/repositories/auth_repository_impl.dart
-
 import 'package:dartz/dartz.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/exceptions.dart';
@@ -9,6 +8,7 @@ import 'package:malaz/data/datasources/remote/auth_remote_datasource.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
 import 'package:malaz/domain/repositories/auth_repository.dart';
 
+import '../../domain/entities/auth_state.dart';
 import '../models/user_model.dart';
 import '../utils/response_parser.dart';
 
@@ -20,6 +20,44 @@ class AuthRepositoryImpl extends AuthRepository {
     required this.authRemoteDatasource,
     required this.authLocalDatasource,
   });
+
+  @override
+  Future<Either<Failure, AuthStatus>> checkAuth() async {
+    try {
+      final token = await authLocalDatasource.getCachedToken();
+      final isPending = await authLocalDatasource.isPending();
+      final user = await authLocalDatasource.getCachedUser();
+
+      // PENDING USER (no token)
+      if (isPending && user != null) {
+        return Right(AuthStatus(
+          isAuthenticated: false,
+          isPending: true,
+          user: user,
+        ));
+      }
+
+      // AUTHENTICATED USER
+      if (token != null && token.isNotEmpty && user != null) {
+        return Right(AuthStatus(
+          isAuthenticated: true,
+          isPending: false,
+          user: user,
+        ));
+      }
+
+      // NOT AUTHENTICATED
+      return Right(AuthStatus(
+        isAuthenticated: false,
+        isPending: false,
+        user: null,
+      ));
+    } catch (e) {
+      return Left(const CacheFailure());
+    }
+  }
+
+
 
   @override
   Future<Either<Failure, UserEntity?>> getCurrentUser() async {
@@ -35,7 +73,12 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, bool>> isAuthentication() async {
     try {
       final token = await authLocalDatasource.getCachedToken();
-      return Right(token != null && token.isNotEmpty);
+      if (token != null && token.isNotEmpty) {
+        return Right(true);
+      }
+      // لو لا توكن، أنظر إن كان هناك user مخزن
+      final user = await authLocalDatasource.getCachedUser();
+      return Right(user != null);
     } catch (e) {
       return Left(const CacheFailure());
     }
@@ -52,31 +95,42 @@ class AuthRepositoryImpl extends AuthRepository {
         password: password,
       );
 
-      final dataMap = (result['user'] ?? result['data'] ?? result) as Map<
-          String,
-          dynamic>;
-      final user = UserModel.fromJson(dataMap);
-
-      /// if backend gives token:
-      final token = result['token'] as String?;
-      if (token != null && token.isNotEmpty) {
-        await authLocalDatasource.cacheToken(token);
-      } else {
-        /// fallback: cache a mock token if you want:
-        /// await authLocalDatasource.cacheToken('mock_token_${user.id}');
+// الحالة: لم تتم الموافقة
+      if (result['message'] == 'Wait until is approved by the officials') {
+        final us = await authLocalDatasource.getCachedUser();
+        final pendingUser = UserModel.pending(phone: phoneNumber);
+        await authLocalDatasource.cacheUser(pendingUser);
+        await authLocalDatasource.setPending(true);
+        return Right(pendingUser);
       }
+
+// تمت الموافقة
+      final user = UserModel.fromJson(result['user']);
+      final token = result['access_token'];
+
       await authLocalDatasource.cacheUser(user);
+      await authLocalDatasource.cacheToken(token);
+      await authLocalDatasource.setPending(false);
+
       return Right(user);
-    } on InvalidCredentialsException {
-      return Left(const InvalidCredentialsFailure('Invalid credentials'));
-    } on ServerException {
-      return Left(const ServerFailure('Server error'));
-    } on CacheException {
-      return Left(const CacheFailure('Cache error'));
+    } on PendingApprovalException{
+      return Left(const PendingApprovalFailure());
+    } on PhoneNotFoundException catch (e) {
+      return Left(PhoneNotFoundFailure(e.message ?? 'This phone number does not exist.'));
+    } on WrongPasswordException catch (e) {
+      return Left(WrongPasswordFailure(e.message ?? 'Invalid credentials'));
+    } on InvalidCredentialsException catch(e) {
+      if(e.message!.toLowerCase().contains('wait until')) {
+        return Left(InvalidCredentialsFailure(e.message)); // سيتحول لاحقاً لـ AuthPending
+      }
+      return Left(InvalidCredentialsFailure('Invalid credentials'));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message ?? 'Server error'));
     } catch (e) {
-      return Left(const GeneralFailure('Unknown error'));
+      return Left(GeneralFailure());
     }
   }
+
 
 
   @override
@@ -114,13 +168,13 @@ class AuthRepositoryImpl extends AuthRepository {
         profileImage: profileImage,
         identityImage: identityImage,
       );
-      final dataMap = (result['user'] ?? result['data'] ?? result) as Map<String, dynamic>;
-      final user = UserModel.fromJson(dataMap);
-      final token = result['token'] as String?;
+      final userMap = result['data'] as Map<String, dynamic>?;
 
-      if (token != null && token.isNotEmpty) {
-        await authLocalDatasource.cacheToken(token);
+      if (userMap == null) {
+        return Left(ServerFailure('No user data returned from server'));
       }
+
+      final user = UserModel.fromJson(userMap);
       await authLocalDatasource.cacheUser(user);
 
       return Right(user);

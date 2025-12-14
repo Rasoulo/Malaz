@@ -21,10 +21,32 @@ class CacheException implements Exception {
 /// Can be used for other general exceptions.
 class GeneralException implements Exception {}
 
-/// Represents errors that occur when login credentials are wrong
+/// This exception appears when the user is in a pending state,
+/// meaning an account with that username and password already exists but has not yet been approved by the admin.
 class InvalidCredentialsException implements Exception {
   final String? message;
   InvalidCredentialsException([this.message]);
   @override
   String toString() => 'InvalidCredentialsException: ${message ?? ''}';
+}
+
+/// This exception appears when there is no account with that number entered by the user.
+class PhoneNotFoundException implements Exception {
+  final String? message;
+  PhoneNotFoundException([this.message]);
+  @override
+  String toString() => 'PhoneNotFoundException: ${message ?? ''}';
+}
+
+/// This exception appears when the password for the accompanying number is incorrect.
+class WrongPasswordException implements Exception {
+  final String? message;
+  WrongPasswordException([this.message]);
+  @override
+  String toString() => 'WrongPasswordException: ${message ?? ''}';
+}
+
+class PendingApprovalException implements Exception {
+  final String message;
+  PendingApprovalException(this.message);
 }

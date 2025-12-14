@@ -1,4 +1,3 @@
-// data/datasources/auth/auth_remote_datasource.dart
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -6,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/exceptions.dart';
 import 'package:path/path.dart';
 
+import '../../../core/network/network_service.dart';
 import '../../../core/service_locator/service_locator.dart';
 
 abstract class AuthRemoteDatasource {
@@ -52,7 +52,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     required XFile profileImage,
     required XFile identityImage,
   }) async {
-    final url = '${baseurlForUsers}register';
+    final url = '${baseurl}register';
 
     try {
       final formData = FormData.fromMap({
@@ -108,24 +108,43 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     required String phone,
     required String password,
   }) async {
-    final url = '${baseurlForUsers}login';
-    try {
-      final response = await dio.post(url, data: {'phone': phone, 'password': password});
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return response.data as Map<String, dynamic>;
-      } else {
-        throw ServerException('login failed: ${response.statusCode}');
-      }
-    } on DioError catch (e) {
-      /// if backend returns 401 with message -> we can throw InvalidCredentialsException
-      if (e.response?.statusCode == 401) {
-        throw InvalidCredentialsException(e.response?.data?.toString());
-      }
-      throw ServerException(e.message);
-    } catch (e) {
-      throw ServerException(e.toString());
+    final url = '${baseurl}login';
+
+    final response = await dio.post(
+      url,
+      data: {'phone': phone, 'password': password},
+      options: Options(
+        validateStatus: (status) => status != null && status < 500,
+      ),
+    );
+
+    final data = response.data;
+    String? message = data is Map<String, dynamic> ? data['message']?.toString() : null;
+
+    if (response.statusCode == 200 && data['user'] != null) {
+      return data;
     }
+    if (message != null && message.toLowerCase().contains('wait until')) {
+      throw PendingApprovalException(message);
+    }
+
+    if (data['access_token'] != null) {
+      return data;
+    }
+    if (message != null && message.toLowerCase().contains('does not exist')) {
+      throw PhoneNotFoundException(message);
+    }
+//
+    if (message != null && message.toLowerCase().contains('invalid credentials')) {
+      throw WrongPasswordException(message);
+    }
+//
+    throw ServerException(message ?? 'Server error');
   }
+
+
+
+
 
   @override
   Future<void> logout() async {
@@ -140,7 +159,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
   Future<void> sendOtp({required String phone}) async {
     try {
-      final url = '${baseurlForUsers}send-otp';
+      final url = '${baseurl}send-otp';
       final response = await dio.post(url, queryParameters: {'phone': phone});
       if (response.statusCode == 200 || response.statusCode == 201) {
         // success
@@ -156,7 +175,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
   Future<Map<String, dynamic>> verifyOtp({required String phone, required String otp}) async {
     try {
-      final url = '${baseurlForUsers}verify-otp';
+      final url = '${baseurl}verify-otp';
       final response = await dio.post(url, queryParameters: {'phone': phone, 'otp': otp});
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response.data as Map<String, dynamic>;

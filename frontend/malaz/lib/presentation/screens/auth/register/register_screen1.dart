@@ -104,7 +104,9 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 40),
+                    const SizedBox(
+                      height: 40,
+                    ),
                     // Logo
                     Container(
                       width: 80,
@@ -116,18 +118,28 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                       ),
                       child: Image.asset('assets/icons/key_logo.png'),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(
+                      height: 24,
+                    ),
+
+
                     ShaderMask(
                       shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
                       child: Text(tr.create_account,
                           style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.yellow)),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(
+                      height: 8,
+                    ),
+
+
                     ShaderMask(
                       shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
                       child: Text(tr.join_to_find, style: TextStyle(color: Colors.grey.shade600)),
                     ),
-                    const SizedBox(height: 100),
+                    const SizedBox(
+                      height: 100,
+                    ),
 
                     // Mobile Field
                     BuildTextfield(
@@ -139,7 +151,9 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                       formKey: widget.formKey,
                       onChanged: (value) => widget.registerData.phone = value,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(
+                      height: 16,
+                    ),
 
                     // Send Verification Code Button
                     ElevatedButton(
@@ -148,7 +162,9 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                           ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
                           : Text(tr.send_verification_code),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(
+                      height: 4,
+                    ),
 
                     // Pin Code TextField
                     BuildPincodeTextfield(
@@ -166,7 +182,9 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                       },
                     ),
                     if (_pinError != null) Text(_pinError!, style: const TextStyle(color: Colors.red)),
-                    const SizedBox(height: 100),
+                    const SizedBox(
+                      height: 100,
+                    ),
 
                     // Login Row
                     const BuildLoginRow(),

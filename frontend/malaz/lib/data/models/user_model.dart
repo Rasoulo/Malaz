@@ -15,6 +15,37 @@ class UserModel extends UserEntity{
     required super.created_at,
     required super.updated_at,
   });
+// Factory constructor للمستخدم Pending
+  factory UserModel.pending({required String phone}) {
+    return UserModel(
+      id: 0, // أو أي قيمة افتراضية
+      first_name: '',
+      last_name: '',
+      phone: phone,
+      role: 'PENDING',
+      date_of_birth: '',
+      profile_image: '',
+      identity_card_image: '',
+      phone_verified_at: '',
+      created_at: '',
+      updated_at: '',
+    );
+  }
+  factory UserModel.fromEntity(UserEntity user) {
+    return UserModel(
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone: user.phone,
+      role: user.role,
+      date_of_birth: user.date_of_birth,
+      profile_image: user.profile_image,
+      identity_card_image: user.identity_card_image,
+      phone_verified_at: user.phone_verified_at,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    );
+  }
 
   factory UserModel.fromJson(Map<String, dynamic> json){
     return UserModel(

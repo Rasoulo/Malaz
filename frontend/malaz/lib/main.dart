@@ -82,7 +82,8 @@ class RentalApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<ThemeCubit>()),
         BlocProvider(create: (context) => sl<LanguageCubit>()),
         BlocProvider(create: (context) => sl<HomeCubit>()),
-        BlocProvider(create: (context) => sl<AuthCubit>()),// ..checkAuth()
+        BlocProvider.value(value: sl<AuthCubit>()),
+        //BlocProvider(create: (context) => sl<AuthCubit>()),// ..checkAuth()
       ],
       child: const RentalAppView(),
     );
@@ -98,7 +99,7 @@ class RentalAppView extends StatelessWidget {
     final languageState = context.watch<LanguageCubit>().state;
     final authCubit = context.read<AuthCubit>();
 
-    final router = buildAppRouter(authCubit); // build router with authCubit
+    final router = buildAppRouter(); // build router with authCubit
 
     return MaterialApp.router(
       title: 'Malaz Rental',

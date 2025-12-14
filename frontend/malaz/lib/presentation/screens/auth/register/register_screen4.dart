@@ -246,7 +246,7 @@ class DottedBox extends StatelessWidget {
           color: Colors.white12,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isError ? Colors.red : Colors.yellow, // لون الحدود يتغير
+            color: isError ? Colors.red : Colors.yellow,
             style: BorderStyle.solid,
           ),
         ),

@@ -20,7 +20,7 @@ abstract class NetworkService {
 
   Future<Response> post(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters});
 }
-
+const baseurl = 'http://192.168.1.102:8000/api/users/'; // ! this baseurl works only for abrar
 class NetworkServiceImpl implements NetworkService {
   final Dio _dio;
 
