@@ -25,7 +25,7 @@ class PropertyController extends Controller
         return response()->json(
             [
                 'data' => $properties->items(),
-                'message' => __('messages.property.my_list'),
+                'message' => __('validation.property.my_list'),
                 'meta' => [
                     'next_cursor' => $properties->nextCursor()?->encode(),
                     'prev_cursor' => $properties->previousCursor()?->encode(),
@@ -48,7 +48,7 @@ class PropertyController extends Controller
         return response()->json(
             [
                 'data' => $properties->items(),
-                'message' => __('messages.property.all_list'),
+                'message' => __('validation.property.all_list'),
                 'meta' => [
                     'next_cursor' => $properties->nextCursor()?->encode(),
                     'prev_cursor' => $properties->previousCursor()?->encode(),
@@ -107,7 +107,7 @@ class PropertyController extends Controller
 
         return response()->json([
             'data' => $property,
-            'message' => __('messages.property.created'),
+            'message' => __('validation.property.created'),
         ], 201);
     }
 
@@ -127,7 +127,7 @@ class PropertyController extends Controller
 
         if ($property->status !== 'approved') {
             return response()->json([
-                'message' => __('messages.property.not_approved'),
+                'message' => __('validation.property.not_approved'),
                 'status' => 403,
             ]);
         }
@@ -147,7 +147,7 @@ class PropertyController extends Controller
             'data' => $property,
             'rate' => $rate,
             'isFav' => $isFav,
-            'message' => __('messages.property.returned'),
+            'message' => __('validation.property.returned'),
         ], 200);
     }
 
@@ -158,7 +158,7 @@ class PropertyController extends Controller
 
         if (!$property) {
             return response()->json([
-                'message' => __('messages.property.not_found'),
+                'message' => __('validation.property.not_found'),
                 'status' => 404,
             ]);
         }
@@ -167,7 +167,7 @@ class PropertyController extends Controller
 
         return response()->json([
             'users' => $users,
-            'message' => __('messages.property.favorited_by'),
+            'message' => __('validation.property.favorited_by'),
             'status' => 200,
         ]);
     }
@@ -217,7 +217,7 @@ class PropertyController extends Controller
 
         return response()->json([
             'property' => $property,
-            'message' => __('messages.property.updated'),
+            'message' => __('validation.property.updated'),
             'status' => 200,
         ]);
     }
@@ -230,7 +230,7 @@ class PropertyController extends Controller
         $this->authorize('delete', $property);
         $property->delete();
         return response()->json([
-            'message' => __('messages.property.deleted'),
+            'message' => __('validation.property.deleted'),
             'status' => 200,
         ]);
     }

@@ -143,13 +143,13 @@ class ConversationController extends Controller
     public function destroy(Conversation $conversation)
     {
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => __('messages.conversation.unauthorized')], 403);
+            return response()->json(['error' => __('validation.conversation.unauthorized')], 403);
         }
 
 
         $conversation->delete();
         return response()->json([
-            'message' => __('messages.conversation.deleted'),
+            'message' => __('validation.conversation.deleted'),
             'status' => 200,
         ]);
 
