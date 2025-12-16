@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
+use Illuminate\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseFormRequest
 {
     public function authorize()
     {
@@ -23,13 +25,13 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'phone.required' => 'Phone number is required.',
-            'phone.regex' => 'Phone number must be in a valid format (9–15 digits, may start with +).',
-            'phone.exists' => 'This phone number does not exist in our records.',
+            'phone.required' => __('validation.phone.required'),
+            'phone.regex' => __('validation.phone.regex'),
+            'phone.exists' => __('validation.phone.exists'),
 
-            'password.required' => 'Password is required.',
-            'password.string' => 'Password must be a valid string.',
-            'password.min' => 'Password must be at least 6 characters long.',
+            'password.required' => __('validation.password.required'),
+            'password.string' => __('validation.password.string'),
+            'password.min' => __('validation.password.min'),
         ];
     }
 }

@@ -1,9 +1,8 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
-import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/config/color/app_color.dart';
@@ -25,7 +24,10 @@ class BuildCard extends StatelessWidget {
 
 class BuildPincodeTextfield extends StatefulWidget {
   final GlobalKey<BuildPincodeTextfieldState>? pinKey;
-  const BuildPincodeTextfield({super.key, this.pinKey});
+  final Function(String)? onChanged;      // <-- callback لتمرير نص الـ PIN عند التغيير
+  final Function(bool)? onVerified;       // <-- اختياري: للإبلاغ إن تم التحقق ناجحًا
+
+  const BuildPincodeTextfield({super.key, this.pinKey, this.onChanged, this.onVerified});
 
   @override
   State<BuildPincodeTextfield> createState() => BuildPincodeTextfieldState();
@@ -34,10 +36,9 @@ class BuildPincodeTextfield extends StatefulWidget {
 class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  late final GlobalKey<BuildPincodeTextfieldState> _pinKey;
   bool _showError = false;
   String? _errorMessage;
-
+  bool _isVerifying = false;
 
   @override
   void initState() {
@@ -51,31 +52,36 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
 
   @override
   void dispose() {
-    // _focusNode.dispose();
-    // _pinController.dispose();
     super.dispose();
   }
 
   void _validatePin(String value) {
     if (value.length != 6) {
-      setState(() {
-        _errorMessage = 'Please enter a 6-digit PIN code';
-      });
+      setState(() => _errorMessage = 'Please enter a 6-digit PIN code');
     } else {
-      setState(() {
-        _errorMessage = null;
-      });
+      setState(() => _errorMessage = null);
     }
   }
 
   bool isPinValid() {
-    return _pinController.text.length == 6;
+    return _pinController.text.length == 6 && _errorMessage == null;
   }
 
   void showError() {
+    setState(() => _errorMessage = 'Please enter a 6-digit PIN code');
+  }
+
+  Future<void> verifyStarted() async {
+    setState(() => _isVerifying = true);
+  }
+
+  Future<void> verifyFinished({required bool success, String? message}) async {
+    if (!mounted) return;
     setState(() {
-      _errorMessage = 'Please enter a 6-digit PIN code';
+      _isVerifying = false;
+      _errorMessage = success ? null : (message ?? 'Invalid code');
     });
+    widget.onVerified?.call(success);
   }
 
   @override
@@ -97,7 +103,6 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
             textStyle: const TextStyle(
               color: Colors.yellow,
               fontSize: 18,
-              fontWeight: FontWeight.normal,
             ),
             pinTheme: PinTheme(
               selectedBorderWidth: 2,
@@ -114,21 +119,31 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
               activeColor: borderColor,
             ),
             onChanged: (value) {
+              /// Important: We pass the change to the parent to which we passed onChanged
+              widget.onChanged?.call(value);
+
+              /// We also maintain the interior facade
               if (_showError && value.length == 6) {
-                setState(() {
-                  _showError = false; // أخفي الخطأ لأن المدخل صحيح
-                });
+                setState(() => _showError = false);
+              }
+
+              /// Simple local check
+              if (value.length != 6) {
+                setState(() => _errorMessage = 'Please enter a 6-digit PIN code');
+              } else {
+                setState(() => _errorMessage = null);
               }
             },
+            beforeTextPaste: (text) => true,
           ),
+
           if (_errorMessage != null)
             Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-              ),
+              child: Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
             ),
+
+          if (_isVerifying) const Padding(padding: EdgeInsets.only(top: 8), child: SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))),
         ],
       ),
     );
@@ -228,11 +243,25 @@ class BuildTextfield extends StatefulWidget {
   final String label;
   final IconData icon;
   final bool obscure;
+  final TextInputType keyboardType;
   final bool haveSuffixEyeIcon;
   final bool onPressedForDate;
   final GlobalKey<FormState>? formKey;
+  final TextEditingController? controller;
+  final void Function(String)? onChanged;
 
-  const BuildTextfield({super.key, required this.label, required this.icon, this.obscure = false, this.haveSuffixEyeIcon = false, this.onPressedForDate = false, this.formKey});
+  const BuildTextfield({
+    super.key,
+    required this.label,
+    required this.icon,
+    this.obscure = false,
+    this.haveSuffixEyeIcon = false,
+    this.onPressedForDate = false,
+    this.keyboardType = TextInputType.text,
+    this.formKey,
+    this.controller,
+    this.onChanged,
+  });
 
   @override
   State<BuildTextfield> createState() => _BuildTextfieldState();
@@ -240,18 +269,32 @@ class BuildTextfield extends StatefulWidget {
 
 class _BuildTextfieldState extends State<BuildTextfield> {
   late bool _obscureText;
+  late TextInputType _keyboardType;
   late bool _haveSuffixEyeIcon;
   late bool _onPressedForDate;
   late final GlobalKey<FormState>? _formKey;
-  final TextEditingController _controller = TextEditingController();
+  late final TextEditingController _internalController;
+
+  TextEditingController get _effectiveController =>
+      widget.controller ?? _internalController;
+
   @override
   void initState() {
     super.initState();
     _obscureText = widget.obscure;
+    _keyboardType = widget.keyboardType;
     _haveSuffixEyeIcon = widget.haveSuffixEyeIcon;
     _onPressedForDate = widget.onPressedForDate;
     _formKey = widget.formKey;
+    _internalController = TextEditingController();
   }
+
+  @override
+  void dispose() {
+    _internalController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -260,29 +303,44 @@ class _BuildTextfieldState extends State<BuildTextfield> {
     return ShaderMask(
       shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
       child: TextFormField(
-        controller: _controller,
-        validator: (data){
-          if(data!.isEmpty){
+        controller: _effectiveController,
+        validator: (data) {
+          if (data == null || data.isEmpty) {
             return tr.field_required;
           }
+          return null;/// Returning null means the verification was successful
         },
-        onChanged: (data){
-          if(_formKey != null){
+        onChanged: (data) {
+          /// We update the form if it exists and pass an external callback if it exists
+          if (_formKey != null) {
             _formKey?.currentState?.validate();
           }
+          if (widget.onChanged != null) widget.onChanged!(data);
         },
         readOnly: _onPressedForDate == true ? true : false,
         obscureText: _obscureText,
+        keyboardType: _keyboardType,
         onTap: () async {
           if (_onPressedForDate) {
             DateTime? pickedDate = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),
-              firstDate: DateTime(2000),
+              firstDate: DateTime(1900),
               lastDate: DateTime(2100),
             );
             if (pickedDate != null) {
-              _controller.text = "${pickedDate.toLocal()}".split(' ')[0];
+              final formattedDate = "${pickedDate.year.toString().padLeft(4,'0')}-"
+                  "${pickedDate.month.toString().padLeft(2,'0')}-"
+                  "${pickedDate.day.toString().padLeft(2,'0')}";
+              _effectiveController.text = formattedDate;
+              if (_formKey != null) _formKey?.currentState?.validate();
+
+              /// Manually call onChanged
+              if (widget.onChanged != null) {
+                widget.onChanged!(formattedDate);
+              }
+
+              if (_formKey != null) _formKey?.currentState?.validate();
             }
           }
         },
@@ -298,7 +356,8 @@ class _BuildTextfieldState extends State<BuildTextfield> {
               color: Colors.yellow,
             ),
           ),
-          suffixIcon: _haveSuffixEyeIcon == true ? ShaderMask(
+          suffixIcon: _haveSuffixEyeIcon == true
+              ? ShaderMask(
             shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
             child: GestureDetector(
               onTap: () {
@@ -311,7 +370,8 @@ class _BuildTextfieldState extends State<BuildTextfield> {
                 color: Colors.yellow,
               ),
             ),
-          ): null,
+          )
+              : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
@@ -371,8 +431,10 @@ class _BuildTextfieldState extends State<BuildTextfield> {
   }
 }
 
+
 class BuildVerficationCodeButton extends StatelessWidget {
-  const BuildVerficationCodeButton({super.key});
+  final VoidCallback? onPressed;
+  const BuildVerficationCodeButton({super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -382,7 +444,7 @@ class BuildVerficationCodeButton extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: TextButton.icon(
-        onPressed: () {},
+        onPressed: onPressed,
         icon: ShaderMask(
           shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
           child: Icon(Icons.send, color: colorScheme.primary

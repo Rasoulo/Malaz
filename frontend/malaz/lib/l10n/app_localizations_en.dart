@@ -129,4 +129,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get image_required => 'This image is required';
+
+  @override
+  String get server_error_message => '';
 }

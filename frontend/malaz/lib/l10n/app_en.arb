@@ -38,5 +38,6 @@
   "date_of_birth": "Date Of Birth",
   "six_digits": "Please enter a 6-digit PIN code",
   "field_required": "This field is required",
-  "image_required": "This image is required"
+  "image_required": "This image is required",
+  "server_error_message": ""
 }

@@ -21,7 +21,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
+											"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
 											"type": "string"
 										}
 									]
@@ -722,6 +722,16 @@
 						{
 							"name": "Add A property to my favorite",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -731,7 +741,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/users/favorites/1",
+									"raw": "http://127.0.0.1:8000/api/users/favorites/18",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -744,15 +754,91 @@
 										"api",
 										"users",
 										"favorites",
-										"1"
+										"18"
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/users/favorites/18",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"users",
+												"favorites",
+												"18"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 13 Dec 2025 03:41:09 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"added to favorite completed\",\n    \"status\": 200\n}"
+								}
+							]
 						},
 						{
 							"name": "Remove A Property From My Favorite",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
+											"type": "string"
+										}
+									]
+								},
 								"method": "DELETE",
 								"header": [
 									{
@@ -762,7 +848,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/users/favorites/1",
+									"raw": "http://127.0.0.1:8000/api/users/favorites/18",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -775,15 +861,91 @@
 										"api",
 										"users",
 										"favorites",
-										"1"
+										"18"
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/users/favorites/18",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"users",
+												"favorites",
+												"18"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 13 Dec 2025 03:42:33 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"removed from favorite completed\",\n    \"status\": 200\n}"
+								}
+							]
 						},
 						{
 							"name": "Get All My Favorite Property",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -809,7 +971,72 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/users/favorites",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"users",
+												"favorites"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.12"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 13 Dec 2025 03:41:44 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"favorite\": [\n        {\n            \"id\": 2,\n            \"owner_id\": 11,\n            \"status\": \"pending\",\n            \"title\": \"any thing\",\n            \"price\": 101,\n            \"city\": \"duma\",\n            \"governorate\": \"damascus\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"number_of_bedrooms\": 3,\n            \"area\": 1500,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": null,\n            \"created_at\": \"2025-12-12T18:56:09.000000Z\",\n            \"updated_at\": \"2025-12-12T18:56:09.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/2\",\n            \"pivot\": {\n                \"user_id\": 11,\n                \"property_id\": 2,\n                \"created_at\": \"2025-12-13T03:41:01.000000Z\",\n                \"updated_at\": \"2025-12-13T03:41:01.000000Z\"\n            }\n        },\n        {\n            \"id\": 18,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:30.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\",\n            \"pivot\": {\n                \"user_id\": 11,\n                \"property_id\": 18,\n                \"created_at\": \"2025-12-13T03:41:09.000000Z\",\n                \"updated_at\": \"2025-12-13T03:41:09.000000Z\"\n            }\n        }\n    ],\n    \"message\": \"here all your favorite list\",\n    \"status\": 200\n}"
+								}
+							]
 						}
 					]
 				},
@@ -820,12 +1047,26 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile_image",
+									"type": "file",
+									"src": "postman-cloud:///1f0d7776-4457-4900-875b-19e8b240cccb"
+								},
+								{
+									"key": "identity_card_image",
+									"type": "file",
+									"src": "postman-cloud:///1f0d7719-8fb5-45d0-b60a-adcb1fb598ae"
+								}
+							]
+						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111122&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
+							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111128&first_name=Maher&last_name=Alnouri&password=12345678&date_of_birth=1-1-1&password_confirmation=12345678",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -846,7 +1087,7 @@
 								},
 								{
 									"key": "role",
-									"value": "USER",
+									"value": "OWNER",
 									"description": "Expired",
 									"disabled": true
 								},
@@ -861,14 +1102,6 @@
 								{
 									"key": "password",
 									"value": "12345678"
-								},
-								{
-									"key": "identity_card_image",
-									"value": "123"
-								},
-								{
-									"key": "profile_image",
-									"value": "123"
 								},
 								{
 									"key": "date_of_birth",
@@ -1121,7 +1354,7 @@
 								},
 								{
 									"key": "role",
-									"value": "USER",
+									"value": "OWNER",
 									"description": "expired",
 									"disabled": true
 								},
@@ -1439,7 +1672,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/users/login?phone=3016870906&password=password",
+							"raw": "http://127.0.0.1:8000/api/users/login?phone=7890098792&password=password",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1456,7 +1689,7 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "3016870906"
+									"value": "7890098792"
 								},
 								{
 									"key": "password",
@@ -2132,7 +2365,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "2|dLXMAIVANqjTj6FMLmYqQ3fhfnks87JBi15D1gud3721dacf",
+									"value": "2|4UcwdaVg3fZFRHwLKIP7yjvOsp5QB9zo2AAKCYEfe09c8e54",
 									"type": "string"
 								}
 							]
@@ -2145,8 +2378,12 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/reviews/properties/1?rating=4&body=hello world",
+							"raw": "http://127.0.0.1:8000/api/reviews/properties/2?rating=4&body=hello world",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2159,7 +2396,7 @@
 								"api",
 								"reviews",
 								"properties",
-								"1"
+								"2"
 							],
 							"query": [
 								{
@@ -3422,7 +3659,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "1|sNjgRMCMPsaerujpMLZMQfv9BlHscXFqbBbIsWCv1403d16a",
+									"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
 									"type": "string"
 								}
 							]
@@ -3436,7 +3673,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/all?per_page=300&cursor=null",
+							"raw": "http://127.0.0.1:8000/api/properties/all?per_page=10&cursor=eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -3453,11 +3690,11 @@
 							"query": [
 								{
 									"key": "per_page",
-									"value": "300"
+									"value": "10"
 								},
 								{
 									"key": "cursor",
-									"value": "null"
+									"value": "eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
 								}
 							]
 						}
@@ -3475,7 +3712,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/all?per_page=1&cursor=null",
+									"raw": "http://127.0.0.1:8000/api/properties/all?per_page=2&cursor=null",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -3492,7 +3729,7 @@
 									"query": [
 										{
 											"key": "per_page",
-											"value": "1"
+											"value": "2"
 										},
 										{
 											"key": "cursor",
@@ -3523,7 +3760,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:57:13 GMT"
+									"value": "Sat, 13 Dec 2025 03:13:27 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -3535,7 +3772,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": 8,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:35:54.000000Z\",\n            \"updated_at\": \"2025-12-09T18:35:54.000000Z\",\n            \"images\": []\n        }\n    ],\n    \"message\": \"here all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6OCwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ\",\n        \"prev_cursor\": null,\n        \"per_page\": 1\n    },\n    \"status\": 200\n}"
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 18,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:30.000000Z\",\n            \"first_image\": null,\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\"\n        },\n        {\n            \"id\": 17,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:13:38.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:40.000000Z\",\n            \"first_image\": null,\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/17\"\n        }\n    ],\n    \"message\": \"here all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0\",\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
 						},
 						{
 							"name": "second page",
@@ -3549,7 +3786,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/all?per_page=1&cursor=eyJpZCI6OCwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ",
+									"raw": "http://127.0.0.1:8000/api/properties/all?per_page=2&cursor=eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -3566,11 +3803,11 @@
 									"query": [
 										{
 											"key": "per_page",
-											"value": "1"
+											"value": "2"
 										},
 										{
 											"key": "cursor",
-											"value": "eyJpZCI6OCwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"
+											"value": "eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
 										}
 									]
 								}
@@ -3597,7 +3834,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:57:57 GMT"
+									"value": "Sat, 13 Dec 2025 03:17:12 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -3609,7 +3846,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": 7,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:35:52.000000Z\",\n            \"updated_at\": \"2025-12-09T18:35:52.000000Z\",\n            \"images\": []\n        }\n    ],\n    \"message\": \"here all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6NywiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ\",\n        \"prev_cursor\": \"eyJpZCI6NywiX3BvaW50c1RvTmV4dEl0ZW1zIjpmYWxzZX0\",\n        \"per_page\": 1\n    },\n    \"status\": 200\n}"
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 16,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:11:10.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:45.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/16\"\n        },\n        {\n            \"id\": 15,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:10:05.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:51.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/15\"\n        }\n    ],\n    \"message\": \"here all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0\",\n        \"prev_cursor\": \"eyJpZCI6MTYsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9\",\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
 						}
 					]
 				},
@@ -3621,7 +3858,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "3|pI2UF9UaLWK8Jk9j5AePLcDL19jtshVX2rhN0UnWcca719e4",
+									"value": "1|eiMDcaYH7E3TDolPUEAmlX7BGlv2JwPZOtzVtoPI0ea71cca",
 									"type": "string"
 								}
 							]
@@ -3629,7 +3866,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/1",
+							"raw": "http://127.0.0.1:8000/api/properties/18",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -3641,7 +3878,7 @@
 							"path": [
 								"api",
 								"properties",
-								"1"
+								"18"
 							]
 						}
 					},
@@ -3652,7 +3889,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/1",
+									"raw": "http://127.0.0.1:8000/api/properties/18",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -3664,7 +3901,7 @@
 									"path": [
 										"api",
 										"properties",
-										"1"
+										"18"
 									]
 								}
 							},
@@ -3690,7 +3927,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:49:11 GMT"
+									"value": "Sat, 13 Dec 2025 03:18:07 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -3702,7 +3939,187 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"owner_id\": 3,\n        \"price\": 101,\n        \"governorate\": \"damascus\",\n        \"city\": \"duma\",\n        \"address\": \"Alnasur street\",\n        \"description\": \"have a swimming pool\",\n        \"laititude\": null,\n        \"longitude\": null,\n        \"type\": \"Apartment\",\n        \"number_of_rooms\": 12,\n        \"number_of_baths\": 6,\n        \"area\": 1500,\n        \"created_at\": \"2025-12-09T18:28:58.000000Z\",\n        \"updated_at\": \"2025-12-09T18:28:58.000000Z\"\n    },\n    \"images\": [],\n    \"message\": \"Property returned successfully\"\n}"
+							"body": "{\n    \"data\": {\n        \"id\": 18,\n        \"owner_id\": 11,\n        \"status\": \"approved\",\n        \"title\": \"i don't know\",\n        \"price\": 300,\n        \"city\": \"damas\",\n        \"governorate\": \"damascus\",\n        \"address\": \"123\",\n        \"description\": \"hello\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"type\": \"Restaurant\",\n        \"number_of_rooms\": 19,\n        \"number_of_baths\": 12,\n        \"number_of_bedrooms\": 1,\n        \"area\": 3,\n        \"rating\": 0,\n        \"number_of_reviews\": 0,\n        \"mime_type\": \"image/jpeg\",\n        \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n        \"updated_at\": \"2025-12-13T03:10:30.000000Z\",\n        \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\",\n        \"images\": []\n    },\n    \"rate\": 0,\n    \"isFav\": false,\n    \"message\": \"Property returned successfully\"\n}"
+						},
+						{
+							"name": "try to add a property to my favorite",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/properties/18",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"properties",
+										"18"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Dec 2025 03:44:06 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 18,\n        \"owner_id\": 11,\n        \"status\": \"approved\",\n        \"title\": \"i don't know\",\n        \"price\": 300,\n        \"city\": \"damas\",\n        \"governorate\": \"damascus\",\n        \"address\": \"123\",\n        \"description\": \"hello\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"type\": \"Restaurant\",\n        \"number_of_rooms\": 19,\n        \"number_of_baths\": 12,\n        \"number_of_bedrooms\": 1,\n        \"area\": 3,\n        \"rating\": 0,\n        \"number_of_reviews\": 0,\n        \"mime_type\": \"image/jpeg\",\n        \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n        \"updated_at\": \"2025-12-13T03:10:30.000000Z\",\n        \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\",\n        \"images\": []\n    },\n    \"rate\": 0,\n    \"isFav\": true,\n    \"message\": \"Property returned successfully\"\n}"
+						},
+						{
+							"name": "not approved",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/properties/52",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"properties",
+										"52"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Dec 2025 05:42:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Property not approved\",\n    \"status\": 403\n}"
+						},
+						{
+							"name": "show with images",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/properties/52",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"properties",
+										"52"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Dec 2025 05:50:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 52,\n        \"owner_id\": 1,\n        \"status\": \"approved\",\n        \"title\": \"i don't know\",\n        \"price\": 300,\n        \"city\": \"damas\",\n        \"governorate\": \"damascus\",\n        \"address\": \"123\",\n        \"description\": \"hello\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"type\": \"Restaurant\",\n        \"number_of_rooms\": 19,\n        \"number_of_baths\": 12,\n        \"number_of_bedrooms\": 1,\n        \"area\": 3,\n        \"rating\": 0,\n        \"number_of_reviews\": 0,\n        \"mime_type\": \"image/jpeg\",\n        \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n        \"updated_at\": \"2025-12-13T05:46:36.000000Z\",\n        \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/52\",\n        \"images\": [\n            {\n                \"id\": 1,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/1\"\n            },\n            {\n                \"id\": 2,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/2\"\n            },\n            {\n                \"id\": 3,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/3\"\n            },\n            {\n                \"id\": 4,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/4\"\n            },\n            {\n                \"id\": 5,\n                \"property_id\": 52,\n                \"mime_type\": \"image/png\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/5\"\n            },\n            {\n                \"id\": 6,\n                \"property_id\": 52,\n                \"mime_type\": \"image/jpeg\",\n                \"created_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"updated_at\": \"2025-12-13T05:42:04.000000Z\",\n                \"image_url\": \"http://127.0.0.1:8000/api/images/6\"\n            }\n        ]\n    },\n    \"rate\": 0,\n    \"isFav\": false,\n    \"message\": \"Property returned successfully\"\n}"
 						}
 					]
 				},
@@ -3714,7 +4131,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
+									"value": "1|eiMDcaYH7E3TDolPUEAmlX7BGlv2JwPZOtzVtoPI0ea71cca",
 									"type": "string"
 								}
 							]
@@ -3728,7 +4145,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/1/favorites",
+							"raw": "http://127.0.0.1:8000/api/properties/18/favorites",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -3740,7 +4157,7 @@
 							"path": [
 								"api",
 								"properties",
-								"1",
+								"18",
 								"favorites"
 							]
 						}
@@ -3758,7 +4175,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/1/favorites",
+									"raw": "http://127.0.0.1:8000/api/properties/18/favorites",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -3770,7 +4187,7 @@
 									"path": [
 										"api",
 										"properties",
-										"1",
+										"18",
 										"favorites"
 									]
 								}
@@ -3797,7 +4214,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:45:48 GMT"
+									"value": "Sat, 13 Dec 2025 03:18:53 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -3821,7 +4238,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
+									"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
 									"type": "string"
 								}
 							]
@@ -3835,7 +4252,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/all/my",
+							"raw": "http://127.0.0.1:8000/api/properties/all/my?per_page=2&cursor=eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -3849,12 +4266,22 @@
 								"properties",
 								"all",
 								"my"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "2"
+								},
+								{
+									"key": "cursor",
+									"value": "eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "success",
+							"name": "first page",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
@@ -3865,7 +4292,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/all/my?per_page=300&cursor=null",
+									"raw": "http://127.0.0.1:8000/api/properties/all/my?per_page=2&cursor=null",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -3883,7 +4310,7 @@
 									"query": [
 										{
 											"key": "per_page",
-											"value": "300"
+											"value": "2"
 										},
 										{
 											"key": "cursor",
@@ -3914,7 +4341,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:44:13 GMT"
+									"value": "Sat, 13 Dec 2025 03:16:07 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -3926,7 +4353,82 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:28:58.000000Z\",\n            \"updated_at\": \"2025-12-09T18:28:58.000000Z\",\n            \"images\": []\n        },\n        {\n            \"id\": 2,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:29:53.000000Z\",\n            \"updated_at\": \"2025-12-09T18:29:53.000000Z\",\n            \"images\": []\n        },\n        {\n            \"id\": 3,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:30:40.000000Z\",\n            \"updated_at\": \"2025-12-09T18:30:40.000000Z\",\n            \"images\": []\n        },\n        {\n            \"id\": 4,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:34:28.000000Z\",\n            \"updated_at\": \"2025-12-09T18:34:28.000000Z\",\n            \"images\": []\n        },\n        {\n            \"id\": 5,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:35:49.000000Z\",\n            \"updated_at\": \"2025-12-09T18:35:49.000000Z\",\n            \"images\": []\n        },\n        {\n            \"id\": 6,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:35:50.000000Z\",\n            \"updated_at\": \"2025-12-09T18:35:50.000000Z\",\n            \"images\": []\n        },\n        {\n            \"id\": 7,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:35:52.000000Z\",\n            \"updated_at\": \"2025-12-09T18:35:52.000000Z\",\n            \"images\": []\n        },\n        {\n            \"id\": 8,\n            \"owner_id\": 3,\n            \"price\": 101,\n            \"governorate\": \"damascus\",\n            \"city\": \"duma\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"laititude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"area\": 1500,\n            \"created_at\": \"2025-12-09T18:35:54.000000Z\",\n            \"updated_at\": \"2025-12-09T18:35:54.000000Z\",\n            \"images\": []\n        }\n    ],\n    \"message\": \"here all your properties\",\n    \"status\": 200\n}"
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 18,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:30.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\"\n        },\n        {\n            \"id\": 17,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:13:38.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:40.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/17\"\n        }\n    ],\n    \"message\": \"here all your properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0\",\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "second page",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/properties/all/my?per_page=2&cursor=eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"properties",
+										"all",
+										"my"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "eyJpZCI6MTcsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Dec 2025 03:16:29 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 16,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:11:10.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:45.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/16\"\n        },\n        {\n            \"id\": 15,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:10:05.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:51.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/15\"\n        }\n    ],\n    \"message\": \"here all your properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0\",\n        \"prev_cursor\": \"eyJpZCI6MTYsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9\",\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
 						}
 					]
 				},
@@ -3938,7 +4440,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
+									"value": "1|eiMDcaYH7E3TDolPUEAmlX7BGlv2JwPZOtzVtoPI0ea71cca",
 									"type": "string"
 								}
 							]
@@ -3951,8 +4453,18 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "main_pic",
+									"type": "file",
+									"src": "postman-cloud:///1f0d776f-d292-4410-8c3e-45166be7139f"
+								}
+							]
+						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties?price=101&city=duma&address=Alnasur street&governorate=damascus&description=have a swimming pool&type=Apartment&number_of_rooms=12&number_of_baths=6&area=1500",
+							"raw": "http://127.0.0.1:8000/api/properties?price=101&city=duma&address=Alnasur street&governorate=damascus&description=have a swimming pool&type=Apartment&number_of_rooms=12&number_of_baths=6&area=1500&title=any thing&number_of_bedrooms=3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -4001,6 +4513,14 @@
 								{
 									"key": "area",
 									"value": "1500"
+								},
+								{
+									"key": "title",
+									"value": "any thing"
+								},
+								{
+									"key": "number_of_bedrooms",
+									"value": "3"
 								}
 							]
 						}
@@ -4017,8 +4537,18 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "main_pic",
+											"type": "file",
+											"src": "postman-cloud:///1f0d78d7-20e0-4f50-bd45-84602159dfba"
+										}
+									]
+								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties?price=101&city=duma&address=Alnasur street&governorate=damascus&description=have a swimming pool&type=Apartment&number_of_rooms=12&number_of_baths=6&area=1500",
+									"raw": "http://127.0.0.1:8000/api/properties?price=101&city=duma&address=Alnasur street&governorate=damascus&description=have a swimming pool&type=Apartment&number_of_rooms=12&number_of_baths=6&area=1500&title=any thing&number_of_bedrooms=3",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -4067,6 +4597,14 @@
 										{
 											"key": "area",
 											"value": "1500"
+										},
+										{
+											"key": "title",
+											"value": "any thing"
+										},
+										{
+											"key": "number_of_bedrooms",
+											"value": "3"
 										}
 									]
 								}
@@ -4093,7 +4631,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:34:28 GMT"
+									"value": "Fri, 12 Dec 2025 19:17:16 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -4105,7 +4643,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"data\": {\n        \"price\": \"101\",\n        \"city\": \"duma\",\n        \"address\": \"Alnasur street\",\n        \"governorate\": \"damascus\",\n        \"description\": \"have a swimming pool\",\n        \"type\": \"Apartment\",\n        \"number_of_rooms\": \"12\",\n        \"number_of_baths\": \"6\",\n        \"area\": \"1500\",\n        \"owner_id\": 3,\n        \"updated_at\": \"2025-12-09T18:34:28.000000Z\",\n        \"created_at\": \"2025-12-09T18:34:28.000000Z\",\n        \"id\": 4\n    },\n    \"message\": \"Property created successfully\"\n}"
+							"body": "{\n    \"data\": {\n        \"id\": 18,\n        \"owner_id\": 11,\n        \"status\": \"pending\",\n        \"title\": \"any thing\",\n        \"price\": 101,\n        \"city\": \"duma\",\n        \"governorate\": \"damascus\",\n        \"address\": \"Alnasur street\",\n        \"description\": \"have a swimming pool\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"type\": \"Apartment\",\n        \"number_of_rooms\": 12,\n        \"number_of_baths\": 6,\n        \"number_of_bedrooms\": 3,\n        \"area\": 1500,\n        \"rating\": 0,\n        \"number_of_reviews\": 0,\n        \"mime_type\": \"image/png\",\n        \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n        \"updated_at\": \"2025-12-12T19:17:16.000000Z\",\n        \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\"\n    },\n    \"message\": \"Property created successfully\"\n}"
 						},
 						{
 							"name": "fail",
@@ -4118,8 +4656,18 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "main_pic",
+											"type": "file",
+											"src": "postman-cloud:///1f0d78d7-20e0-4f50-bd45-84602159dfba"
+										}
+									]
+								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties?price=&city=&address=&governorate=&description=&type=&number_of_rooms=-1&number_of_baths=&area=",
+									"raw": "http://127.0.0.1:8000/api/properties",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -4135,39 +4683,58 @@
 									"query": [
 										{
 											"key": "price",
-											"value": ""
+											"value": "101",
+											"disabled": true
 										},
 										{
 											"key": "city",
-											"value": ""
+											"value": "duma",
+											"disabled": true
 										},
 										{
 											"key": "address",
-											"value": ""
+											"value": "Alnasur street",
+											"disabled": true
 										},
 										{
 											"key": "governorate",
-											"value": ""
+											"value": "damascus",
+											"disabled": true
 										},
 										{
 											"key": "description",
-											"value": ""
+											"value": "have a swimming pool",
+											"disabled": true
 										},
 										{
 											"key": "type",
-											"value": ""
+											"value": "Apartment",
+											"disabled": true
 										},
 										{
 											"key": "number_of_rooms",
-											"value": "-1"
+											"value": "12",
+											"disabled": true
 										},
 										{
 											"key": "number_of_baths",
-											"value": ""
+											"value": "6",
+											"disabled": true
 										},
 										{
 											"key": "area",
-											"value": ""
+											"value": "1500",
+											"disabled": true
+										},
+										{
+											"key": "title",
+											"value": "any thing",
+											"disabled": true
+										},
+										{
+											"key": "number_of_bedrooms",
+											"value": "3",
+											"disabled": true
 										}
 									]
 								}
@@ -4194,7 +4761,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:35:12 GMT"
+									"value": "Fri, 12 Dec 2025 19:18:13 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -4206,7 +4773,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message\": \"Price is required. (and 7 more errors)\",\n    \"errors\": {\n        \"price\": [\n            \"Price is required.\"\n        ],\n        \"city\": [\n            \"City is required.\"\n        ],\n        \"address\": [\n            \"Address is required.\"\n        ],\n        \"governorate\": [\n            \"Governorate is required.\"\n        ],\n        \"type\": [\n            \"Property type is required.\"\n        ],\n        \"number_of_rooms\": [\n            \"Number of rooms must be zero or greater.\"\n        ],\n        \"number_of_baths\": [\n            \"The number of baths field is required.\"\n        ],\n        \"area\": [\n            \"The area field is required.\"\n        ]\n    }\n}"
+							"body": "{\n    \"message\": \"Price is required. (and 8 more errors)\",\n    \"errors\": {\n        \"price\": [\n            \"Price is required.\"\n        ],\n        \"title\": [\n            \"The title field is required.\"\n        ],\n        \"city\": [\n            \"City is required.\"\n        ],\n        \"address\": [\n            \"Address is required.\"\n        ],\n        \"type\": [\n            \"Type is required.\"\n        ],\n        \"number_of_rooms\": [\n            \"Number of rooms is required.\"\n        ],\n        \"number_of_baths\": [\n            \"Number of baths is required.\"\n        ],\n        \"number_of_bedrooms\": [\n            \"Number of bedrooms is required.\"\n        ],\n        \"area\": [\n            \"Area is required.\"\n        ]\n    }\n}"
 						}
 					]
 				},
@@ -4218,15 +4785,31 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
+									"value": "1|eiMDcaYH7E3TDolPUEAmlX7BGlv2JwPZOtzVtoPI0ea71cca",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "main_pic",
+									"type": "file",
+									"src": "postman-cloud:///1f0d7776-4457-4900-875b-19e8b240cccb"
+								}
+							]
+						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/1?price=300",
+							"raw": "http://127.0.0.1:8000/api/properties/12?price=300&title=i don't know&description=hello&type=Restaurant&number_of_rooms=19&city=damas&address=123&number_of_baths=12&number_of_bedrooms=1&area=3&status=approved",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -4238,12 +4821,52 @@
 							"path": [
 								"api",
 								"properties",
-								"1"
+								"12"
 							],
 							"query": [
 								{
 									"key": "price",
 									"value": "300"
+								},
+								{
+									"key": "title",
+									"value": "i don't know"
+								},
+								{
+									"key": "description",
+									"value": "hello"
+								},
+								{
+									"key": "type",
+									"value": "Restaurant"
+								},
+								{
+									"key": "number_of_rooms",
+									"value": "19"
+								},
+								{
+									"key": "city",
+									"value": "damas"
+								},
+								{
+									"key": "address",
+									"value": "123"
+								},
+								{
+									"key": "number_of_baths",
+									"value": "12"
+								},
+								{
+									"key": "number_of_bedrooms",
+									"value": "1"
+								},
+								{
+									"key": "area",
+									"value": "3"
+								},
+								{
+									"key": "status",
+									"value": "approved"
 								}
 							]
 						}
@@ -4252,10 +4875,26 @@
 						{
 							"name": "success",
 							"originalRequest": {
-								"method": "PUT",
-								"header": [],
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "main_pic",
+											"type": "file",
+											"src": "postman-cloud:///1f0d7776-4457-4900-875b-19e8b240cccb"
+										}
+									]
+								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/1?price=300",
+									"raw": "http://127.0.0.1:8000/api/properties/18?price=300&title=i don't know&description=hello&type=Restaurant&number_of_rooms=19&city=damas&address=123&number_of_baths=12&number_of_bedrooms=1&area=3",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -4267,12 +4906,48 @@
 									"path": [
 										"api",
 										"properties",
-										"1"
+										"18"
 									],
 									"query": [
 										{
 											"key": "price",
 											"value": "300"
+										},
+										{
+											"key": "title",
+											"value": "i don't know"
+										},
+										{
+											"key": "description",
+											"value": "hello"
+										},
+										{
+											"key": "type",
+											"value": "Restaurant"
+										},
+										{
+											"key": "number_of_rooms",
+											"value": "19"
+										},
+										{
+											"key": "city",
+											"value": "damas"
+										},
+										{
+											"key": "address",
+											"value": "123"
+										},
+										{
+											"key": "number_of_baths",
+											"value": "12"
+										},
+										{
+											"key": "number_of_bedrooms",
+											"value": "1"
+										},
+										{
+											"key": "area",
+											"value": "3"
 										}
 									]
 								}
@@ -4299,7 +4974,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Tue, 09 Dec 2025 18:59:39 GMT"
+									"value": "Sat, 13 Dec 2025 03:06:06 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -4311,7 +4986,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"property\": {\n        \"id\": 1,\n        \"owner_id\": 3,\n        \"price\": 300,\n        \"governorate\": \"damascus\",\n        \"city\": \"duma\",\n        \"address\": \"Alnasur street\",\n        \"description\": \"have a swimming pool\",\n        \"laititude\": null,\n        \"longitude\": null,\n        \"type\": \"Apartment\",\n        \"number_of_rooms\": 12,\n        \"number_of_baths\": 6,\n        \"area\": 1500,\n        \"created_at\": \"2025-12-09T18:28:58.000000Z\",\n        \"updated_at\": \"2025-12-09T18:59:39.000000Z\"\n    },\n    \"message\": \"update completed\",\n    \"status\": 200\n}"
+							"body": "{\n    \"property\": {\n        \"id\": 18,\n        \"owner_id\": 11,\n        \"status\": \"pending\",\n        \"title\": \"i don't know\",\n        \"price\": 300,\n        \"city\": \"damas\",\n        \"governorate\": \"damascus\",\n        \"address\": \"123\",\n        \"description\": \"hello\",\n        \"latitude\": null,\n        \"longitude\": null,\n        \"type\": \"Restaurant\",\n        \"number_of_rooms\": 19,\n        \"number_of_baths\": 12,\n        \"number_of_bedrooms\": 1,\n        \"area\": 3,\n        \"rating\": 0,\n        \"number_of_reviews\": 0,\n        \"mime_type\": \"image/jpeg\",\n        \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n        \"updated_at\": \"2025-12-13T02:57:38.000000Z\",\n        \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\"\n    },\n    \"message\": \"update completed\",\n    \"status\": 200\n}"
 						}
 					]
 				},
@@ -4323,15 +4998,21 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "3|VJ3OJySWU3j9ad5mmObrBzfz3dynFw7zSPeoAaWd9e0aadc4",
+									"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
 									"type": "string"
 								}
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/properties/2",
+							"raw": "http://127.0.0.1:8000/api/properties/3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -4343,11 +5024,76 @@
 							"path": [
 								"api",
 								"properties",
-								"2"
+								"3"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/properties/3",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"properties",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Dec 2025 03:20:05 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Property deleted\",\n    \"status\": 200\n}"
+						}
+					]
 				}
 			]
 		},
@@ -4357,28 +5103,21 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
+						"key": "Content-Type",
+						"value": "application/json"
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "chatId",
-							"value": "963981226535@c.us",
-							"type": "text"
-						},
-						{
-							"key": "message",
-							"value": "رمز التحقق: 123456",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"chatId\": \"963966047371@c.us\",\n    \"message\": \"رمز التحقق: 123456\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
-					"raw": "https://api.green-api.com/waInstance{{idInstance}}/SendMessage/{{apiTokenInstance}}?chatId=963981226535@c.us&message=رمز التحقق: 123456",
+					"raw": "https://api.green-api.com/waInstance7105400456/SendMessage/98b6e674d2aa40a1815fdf3882e39b74a4ec20e6f0e94185b4",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -4386,19 +5125,124 @@
 						"com"
 					],
 					"path": [
-						"waInstance{{idInstance}}",
+						"waInstance7105400456",
 						"SendMessage",
-						"{{apiTokenInstance}}"
+						"98b6e674d2aa40a1815fdf3882e39b74a4ec20e6f0e94185b4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show Profile Image",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/114/profile-image",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
 					],
-					"query": [
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"114",
+						"profile-image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show Identity Card Image",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "chatId",
-							"value": "963981226535@c.us"
-						},
-						{
-							"key": "message",
-							"value": "رمز التحقق: 123456"
+							"key": "token",
+							"value": "2|4RNqx5RfZMF4OzSNQ2LhWYzyAOk0bfZ8UVc27rwE6b78d512",
+							"type": "string"
 						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/13/identity_card_image",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"13",
+						"identity_card_image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show main pic",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api//main_pic/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"",
+						"main_pic",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show images",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/images/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"images",
+						"1"
 					]
 				}
 			},

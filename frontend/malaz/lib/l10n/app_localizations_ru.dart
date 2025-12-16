@@ -131,4 +131,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get image_required => 'Это изображение обязательно';
+
+  @override
+  String get server_error_message => '';
 }

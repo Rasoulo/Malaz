@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('property_id')->constrained('properties')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer('rating')->default(3);
+            $table->integer('rating')->nullable();
             $table->string('body')->nullable();
             $table->timestamps();
         });

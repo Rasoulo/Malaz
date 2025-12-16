@@ -17,10 +17,13 @@ return new class extends Migration {
             $table->string('phone')->unique();
             $table->string('role')->default('PENDING');
             $table->date('date_of_birth');
-            $table->longText('profile_image');
-            $table->longText('identity_card_image');
-            $table->timestamp('phone_verified_at');
+            $table->longText('profile_image')->nullable();
+            $table->string('profile_image_mime')->nullable();
+            $table->longText('identity_card_image')->nullable();
+            $table->string('identity_card_mime')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
+            $table->string('language', 5)->default('en');
             $table->rememberToken();
             $table->timestamps();
         });

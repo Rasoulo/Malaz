@@ -1,15 +1,28 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:malaz/data/datasources/local/auth_local_datasource.dart';
+import 'package:malaz/data/repositories/auth_repository_impl.dart';
+import 'package:malaz/domain/repositories/auth_repository.dart';
+import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
+import 'package:malaz/domain/usecases/auth/get_current_user_usecase.dart';
+import 'package:malaz/domain/usecases/auth/login_usecase.dart';
+import 'package:malaz/domain/usecases/auth/logout_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 import '../../data/datasources/remote/apartment_remote_data_source.dart';
+import '../../data/datasources/remote/auth_remote_datasource.dart';
 import '../../data/repositories/apartment_repository_impl.dart';
 import '../../domain/repositories/apartment_repository.dart';
-import '../../domain/usecases/get_apartments_usecase.dart';
+import '../../domain/usecases/auth/send_otp_usecase.dart';
+import '../../domain/usecases/auth/verify_otp_usecase.dart';
+import '../../domain/usecases/auth/register_usecase.dart';
+import '../../presentation/cubits/auth/auth_cubit.dart';
+import '../../domain/usecases/apartments_use_case.dart';
 import '../../presentation/cubits/home/home_cubit.dart';
 import '../../presentation/cubits/language/language_cubit.dart';
 import '../../presentation/cubits/theme/theme_cubit.dart';
+import '../network/auth_interceptor.dart';
 import '../network/network_info.dart';
 import '../network/network_service.dart';
 
@@ -49,11 +62,8 @@ Future<void> setUpServices() async {
 
   sl.registerLazySingleton<Dio>(() => Dio());
 
-  sl.registerLazySingleton<NetworkService>(() => NetworkServiceImpl());
+  sl.registerLazySingleton<NetworkService>(() => NetworkServiceImpl(sl()));
 
-  sl.registerLazySingleton<ApartmentRemoteDataSource>(
-    () => ApartmentRemoteDataSourceImpl(networkService: sl()),
-  );
 
   sl.registerLazySingleton<InternetConnectionChecker>(
       () => InternetConnectionChecker());
@@ -68,6 +78,53 @@ Future<void> setUpServices() async {
 
   sl.registerLazySingleton(() => GetApartmentsUseCase(sl()));
 
-  sl.registerLazySingleton<ApartmentRepository>(
-      () => ApartmentRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton<ApartmentRepository>(() => ApartmentRepositoryImpl(remoteDataSource: sl()));
+
+  sl.registerLazySingleton<ApartmentRemoteDataSource>(() => ApartmentRemoteDataSourceImpl(networkService: sl()));
+
+  /// --- Auth datasources, repository, usecases, cubit --- //
+  /// Data sources
+  sl.registerLazySingleton<AuthLocalDatasource>(() => AuthLocalDatasourceImpl(sl<SharedPreferences>()),);
+  sl.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(networkService: sl()));
+
+  /// Repositories
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
+    authRemoteDatasource: sl(),
+    authLocalDatasource: sl(),
+  ));
+
+  /// Usecases
+  sl.registerLazySingleton(() => RegisterUsecase(repository: sl()));
+  sl.registerLazySingleton(() => LoginUsecase(repository: sl()));
+  sl.registerLazySingleton(() => LogoutUsecase(repository: sl()));
+  sl.registerLazySingleton(() => GetCurrentUserUsecase(repository: sl()));
+  sl.registerLazySingleton(() => CheckAuthUsecase(repository: sl()));
+  sl.registerLazySingleton(() => SendOtpUsecase(sl()));
+  sl.registerLazySingleton(() => VerifyOtpUsecase(sl()));
+
+  /// Dio interceptor needs local datasource -> attach after creating dio
+  /// Auth interceptor (attach AFTER registering local datasource)
+  sl.registerLazySingleton(() => AuthInterceptor(localDatasource: sl()));
+
+  /// Cubit (factory so every use-case screen can create a fresh cubit if needed)
+  sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
+    loginUsecase: sl(),
+    logoutUsecase: sl(),
+    getCurrentUserUsecase: sl(),
+    checkAuthUsecase: sl(),
+    registerUsecase: sl(),
+    sendOtpUsecase: sl(),
+    verifyOtpUsecase: sl(),
+  ));
+
+  // sl.registerFactory(() => AuthCubit(
+  //   loginUsecase: sl(),
+  //   logoutUsecase: sl(),
+  //   getCurrentUserUsecase: sl(),
+  //   checkAuthUsecase: sl(),
+  //   registerUsecase: sl(),
+  //   sendOtpUsecase: sl(),
+  //   verifyOtpUsecase: sl(),
+  // ));
+
 }

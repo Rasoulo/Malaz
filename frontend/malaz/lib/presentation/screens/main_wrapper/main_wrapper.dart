@@ -6,7 +6,7 @@ import '../favorites/favorites_screen.dart';
 import '../home/home_screen.dart';
 
 class MainWrapper extends StatefulWidget {
-  const MainWrapper({Key? key}) : super(key: key);
+  const MainWrapper({super.key});
 
   @override
   State<MainWrapper> createState() => _MainWrapperState();

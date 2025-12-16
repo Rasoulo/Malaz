@@ -14,19 +14,23 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('owner_id')->constrained('users')->references('id');
             $table->string('status')->default('pending');
+            $table->string('title');
             $table->integer('price')->default(0);
-            $table->string('governorate');
             $table->string('city');
+            $table->string('governorate')->nullable();
             $table->string('address');
             $table->string('description')->nullable();
-            $table->string('laititude')->nullable();
+            $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('type')->default('flat');
             $table->integer('number_of_rooms')->default(0);
             $table->integer('number_of_baths')->default(0);
+            $table->integer('number_of_bedrooms')->default(0);
             $table->integer('area')->default(0);
             $table->integer('rating')->default(0);
             $table->integer('number_of_reviews')->default(0);
+            $table->longText('main_image')->nullable();
+            $table->string('mime_type')->nullable();
             $table->timestamps();
         });
     }

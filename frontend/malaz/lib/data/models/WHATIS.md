@@ -8,7 +8,7 @@ Models often include extra functionality that entities don't have, such as metho
 * **Example:**
 ```dart
 // user_model.dart
-import '../../domain/entities/user.dart';
+import '../../domain/entities/user_entity.dart';
 
 class UserModel extends User {
   // ... properties

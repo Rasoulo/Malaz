@@ -343,6 +343,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This image is required'**
   String get image_required;
+
+  /// No description provided for @server_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **''**
+  String get server_error_message;
 }
 
 class _AppLocalizationsDelegate

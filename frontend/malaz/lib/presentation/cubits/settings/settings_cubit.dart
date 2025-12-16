@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// --- State --- //
-
+/// ===========================
+/// ----------[states]---------
+/// ===========================
 
 /// [SettingsCubit] & [SettingsState]
 /// not in work currently the whole code here is nothing but scribble
@@ -32,7 +33,9 @@ class SettingsState extends Equatable {
   }
 }
 
-// --- Cubit --- //
+/// ===========================
+/// ----------[cubit]----------
+/// ===========================
 
 class SettingsCubit extends Cubit<SettingsState> {
   final SharedPreferences _prefs;

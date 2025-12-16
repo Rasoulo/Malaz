@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Property;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\MessageController;
@@ -19,6 +21,9 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
         Route::put('{user}', 'update')->name('users.update');
     });
     Route::middleware(['auth:sanctum', 'role:ADMIN,USER'])->group(function () {
+        Route::post('/language', 'updateLanguage')->name('user.language.update');
+        Route::get('/{user}/profile_image', 'showProfileImage')->name('users.profile_image');
+        Route::get('/{user}/identity_card_image', 'showIdentityCardImage')->name('users.identity_card_image');
         Route::post('request-update', 'request_update')->name('users.requestUpdate');
         Route::post('change-password', 'changepassword')->name('users.changePassword');
         Route::post('logout', 'logout')->name('users.logout');
@@ -34,6 +39,7 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
 });
 
 Route::prefix('reviews')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(ReviewController::class)->group(function () {
+    Route::get('/properties/{propertyId}/reviews', 'propertyReviews');
     Route::get('/', 'index')->name('reviews.index');
     Route::post('/properties/{property}', 'store')->name('reviews.store');
     Route::get('{review}', 'show')->name('reviews.show');
@@ -49,7 +55,7 @@ Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->co
     Route::middleware('role:ADMIN,USER')->group(function () {
         Route::get('all/my', 'my_properties')->name('properties.my');
         Route::post('/', 'store')->name('properties.store');
-        Route::put('{property}', 'update')->name('properties.update');
+        Route::post('{property}', 'update')->name('properties.update');
         Route::delete('{property}', 'destroy')->name('properties.destroy');
     });
 });
@@ -93,3 +99,14 @@ Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->cont
         Route::delete('force-cancel/{booking}', 'forceCancel')->name('bookings.forceCancel');
     });
 });
+
+// Route::get('/users/{id}/profile-image', [UserController::class, 'profileImage'])
+//     ->name('users.profile_image');
+
+// Route::get('/users/{id}/identity-image', [UserController::class, 'identityImage'])
+//     ->name('users.identity_image');
+
+Route::get('/images/{id}', [ImageController::class, 'show'])->name('images.show');
+
+Route::get('/main_pic/{property}', [PropertyController::class, 'showmainpic'])
+    ->name('property.main_pic');

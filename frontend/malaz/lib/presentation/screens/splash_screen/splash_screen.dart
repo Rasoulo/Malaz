@@ -2,8 +2,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/config/color/app_color.dart';
+import '../../cubits/auth/auth_cubit.dart';
 import '../../global_widgets/build_branding.dart';
 
 /// [SplashScreen]
@@ -30,6 +33,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   late Animation<double> _scaleAnimation;
 
+  bool _authStarted = false;
+
   @override
   void initState() {
     super.initState();
@@ -46,15 +51,35 @@ class _SplashScreenState extends State<SplashScreen>
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
 
+    _animationController.forward();
     _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        if (mounted) {
-          context.go('/login');
-        }
+      if (status == AnimationStatus.completed && !_authStarted) {
+        // if (mounted) {
+        //   //context.read<AuthBloc>().add(AuthCheckedRequested);
+        //   context.go('/login');
+        // }
+        _authStarted = true;
+        _startAuthCheckAndNavigate();
       }
     });
+    // الانتظار حتى انتهاء animation + التأكد من auth state
+    //_navigateAfterAnimation();
 
-    _animationController.forward();
+  }
+  Future<void> _startAuthCheckAndNavigate() async {
+    final authCubit = context.read<AuthCubit>();
+
+    // نفذ checkAuth() الآن — سيغيّر حالة الـ cubit
+    await authCubit.checkAuth();
+
+    if (!mounted) return;
+
+    final state = authCubit.state;
+    if (state is AuthAuthenticated) {
+      context.go('/home');
+    } else {
+      context.go('/login');
+    }
   }
 
   @override
@@ -103,10 +128,14 @@ class _BuildAnimatedLogoAndLoader extends StatelessWidget {
             scale: scaleAnimation,
             child: FadeTransition(
               opacity: fadeAnimation,
-              child: Image.asset(
-                'assets/icons/key_logo.png',
-                width: 150,
-                height: 150,
+              child: ShaderMask(
+                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                child: Image.asset(
+                  'assets/icons/key_logo.png',
+                  width: 150,
+                  height: 150,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -118,14 +147,18 @@ class _BuildAnimatedLogoAndLoader extends StatelessWidget {
             ),
             child: SizedBox(
               width: 120,
-              child: LinearProgressIndicator(
-                backgroundColor: Theme.of(
-                  context,
-                ).primaryColor.withOpacity(0.1),
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).primaryColor,
+              child: ShaderMask(
+                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                child: LinearProgressIndicator(
+                  backgroundColor: Theme.of(
+                    context,
+                  ).primaryColor.withOpacity(0.1),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.yellow
+                    //Theme.of(context).primaryColor,
+                  ),
+                  minHeight: 2.5,
                 ),
-                minHeight: 2.5,
               ),
             ),
           ),

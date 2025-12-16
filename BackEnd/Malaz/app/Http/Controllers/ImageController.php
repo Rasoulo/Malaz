@@ -34,10 +34,14 @@ class ImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Image $image)
+    public function show($id)
     {
-        //
+        $image = Image::findOrFail($id);
+
+        return response(base64_decode($image->image))
+            ->header('Content-Type', $image->mime_type);
     }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreConversationRequest extends FormRequest
+class StoreConversationRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,11 +27,11 @@ class StoreConversationRequest extends FormRequest
     }
 
     public function messages()
-    {
-        return [
-            'property_id.required' => 'property id is required',
-            'property_id.integer' => 'property id must be integer',
-            'property_id.exists' => 'The selected property does not exist',
-        ];
-    }
+{
+    return [
+        'property_id.required' => __('validation.property_id.required'),
+        'property_id.integer'  => __('validation.property_id.integer'),
+        'property_id.exists'   => __('validation.property_id.exists'),
+    ];
+}
 }

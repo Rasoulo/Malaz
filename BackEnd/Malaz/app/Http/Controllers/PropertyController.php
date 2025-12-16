@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
-use App\Models\Image;
-use Auth;
 use App\Models\Property;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use App\Http\Requests\storeproperty;
 
 class PropertyController extends Controller
 {
@@ -22,14 +18,14 @@ class PropertyController extends Controller
         $perPage = (int) $request->input('per_page', 20);
 
         $properties = $user->property()
-            ->with('images')
+            ->where('status', 'approved')
             ->orderBy('id', 'desc')
             ->cursorPaginate($perPage);
-        ;
+
         return response()->json(
             [
                 'data' => $properties->items(),
-                'message' => 'here all your properties',
+                'message' => __('validation.property.my_list'),
                 'meta' => [
                     'next_cursor' => $properties->nextCursor()?->encode(),
                     'prev_cursor' => $properties->previousCursor()?->encode(),
@@ -45,14 +41,14 @@ class PropertyController extends Controller
 
         $perPage = (int) $request->input('per_page', 20);
 
-        $properties = Property::with('images')
+        $properties = Property::where('status', 'approved')
             ->orderBy('id', 'desc')
             ->cursorPaginate($perPage);
-        ;
+
         return response()->json(
             [
                 'data' => $properties->items(),
-                'message' => 'here all properties',
+                'message' => __('validation.property.all_list'),
                 'meta' => [
                     'next_cursor' => $properties->nextCursor()?->encode(),
                     'prev_cursor' => $properties->previousCursor()?->encode(),
@@ -80,23 +76,47 @@ class PropertyController extends Controller
         $validated = $request->validated();
         $validated['owner_id'] = $user->id;
         $property = Property::create(
-            collect($validated)->except('images')->toArray()
+            collect($validated)->except(['images', 'main_pic'])->toArray()
         );
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
-                $imageData = file_get_contents($file->getRealPath());
+                $imageData = base64_encode(file_get_contents($file->getRealPath()));
                 $property->images()->create([
                     'image' => $imageData,
                     'mime_type' => $file->getMimeType(),
-
                 ]);
             }
         }
+
+        if ($request->hasFile('main_pic')) {
+            $file = $request->file('main_pic');
+            $imageData = base64_encode(file_get_contents($file->getRealPath()));
+            $property->update([
+                'main_image' => $imageData,
+                'mime_type' => $file->getMimeType(),
+            ]);
+            // $property->main_image = $imageData;
+            // $property->mime_type = $file->getMimeType();
+            // $property->save();
+            // return 1;
+        }
+
+        // $property->status = 'approved';
+        $property->save();
+
         return response()->json([
             'data' => $property,
-            'message' => 'Property created successfully',
+            'message' => __('validation.property.created'),
         ], 201);
+    }
+
+    public function showmainpic(Property $property)
+    {
+        $image = base64_decode($property->main_image);
+        $mime_type = $property->mime_type;
+        return response($image)
+            ->header('Content-Type', $mime_type);
     }
 
     /**
@@ -104,21 +124,50 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
+
+        if ($property->status !== 'approved') {
+            return response()->json([
+                'message' => __('validation.property.not_approved'),
+                'status' => 403,
+            ]);
+        }
+
+        $rate = $property->number_of_reviews > 0
+            ? round($property->rating / $property->number_of_reviews)
+            : 0;
+
+        $images = $property->images->map(function ($img) {
+            return url('/images/' . $img->id);
+        });
+
+
+        $isFav = $property->favoritedBy()->where('user_id', auth()->id())->exists();
+
         return response()->json([
             'data' => $property,
-            'images' => $property->images()->get(),
-            'message' => 'Property returned successfully',
+            'rate' => $rate,
+            'isFav' => $isFav,
+            'message' => __('validation.property.returned'),
         ], 200);
     }
 
     public function favonwho($propertyId)
     {
+
         $property = Property::find($propertyId);
+
+        if (!$property) {
+            return response()->json([
+                'message' => __('validation.property.not_found'),
+                'status' => 404,
+            ]);
+        }
+
         $users = $property->favoritedBy;
 
         return response()->json([
             'users' => $users,
-            'message' => 'all of those love this property',
+            'message' => __('validation.property.favorited_by'),
             'status' => 200,
         ]);
     }
@@ -137,26 +186,38 @@ class PropertyController extends Controller
     public function update(UpdatePropertyRequest $request, Property $property)
     {
         $this->authorize('update', $property);
+
         $validated = $request->validated();
-        $property->update($validated);
+        $property->update(
+            collect($validated)->except(['images', 'main_pic', 'erase', 'mime_type'])->toArray()
+        );
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $property->images()->create([
-                    'image' => file_get_contents($file->getRealPath()),
+                    'image' => base64_encode(file_get_contents($file->getRealPath())),
                     'mime_type' => $file->getMimeType(),
                 ]);
             }
         }
 
+        if ($request->hasFile('main_pic')) {
+            $file = $request->file('main_pic');
+            $property->main_image = base64_encode(file_get_contents($file->getRealPath()));
+            $property->mime_type = $file->getMimeType();
+            $property->save();
+        }
+
         if (!empty($validated['erase'])) {
             $property->images()->whereIn('id', $validated['erase'])->delete();
         }
-
+        $property->status = 'pending';
+        $property->save();
         $property->refresh();
+
         return response()->json([
-            'property' => $property->load('images'),
-            'message' => 'update completed',
+            'property' => $property,
+            'message' => __('validation.property.updated'),
             'status' => 200,
         ]);
     }
@@ -169,7 +230,7 @@ class PropertyController extends Controller
         $this->authorize('delete', $property);
         $property->delete();
         return response()->json([
-            'message' => 'Property deleted',
+            'message' => __('validation.property.deleted'),
             'status' => 200,
         ]);
     }

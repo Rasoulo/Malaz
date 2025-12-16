@@ -130,4 +130,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get image_required => 'هذه الصورة مطلوبة';
+
+  @override
+  String get server_error_message => '';
 }

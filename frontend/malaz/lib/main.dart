@@ -1,6 +1,8 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
 
 import 'package:malaz/presentation/cubits/home/home_cubit.dart';
 import 'package:malaz/presentation/cubits/language/language_cubit.dart';
@@ -80,6 +82,8 @@ class RentalApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<ThemeCubit>()),
         BlocProvider(create: (context) => sl<LanguageCubit>()),
         BlocProvider(create: (context) => sl<HomeCubit>()),
+        BlocProvider.value(value: sl<AuthCubit>()),
+        //BlocProvider(create: (context) => sl<AuthCubit>()),// ..checkAuth()
       ],
       child: const RentalAppView(),
     );
@@ -93,6 +97,9 @@ class RentalAppView extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeState = context.watch<ThemeCubit>().state;
     final languageState = context.watch<LanguageCubit>().state;
+    final authCubit = context.read<AuthCubit>();
+
+    final router = buildAppRouter(); // build router with authCubit
 
     return MaterialApp.router(
       title: 'Malaz Rental',
@@ -116,7 +123,7 @@ class RentalAppView extends StatelessWidget {
         }
         return supportedLocales.first;
       },
-      routerConfig: appRouter,
+      routerConfig: router,
     );
   }
 }

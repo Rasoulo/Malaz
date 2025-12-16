@@ -33,13 +33,13 @@ class ApartmentCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Section with Hero Animation
+
             Hero(
               tag: apartment.id,
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
                 child: Image.network(
-                  apartment.imageUrl,
+                  apartment.mainImageUrl,
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -61,7 +61,7 @@ class ApartmentCard extends StatelessWidget {
                       Icon(Icons.location_on, color: colorScheme.primary, size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        apartment.location,
+                        apartment.city,
                         style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6)),
                       ),
                     ],
@@ -73,7 +73,7 @@ class ApartmentCard extends StatelessWidget {
                     children: [
                       _Amenity(icon: Icons.bed, text: '${apartment.bedrooms} Beds'),
                       _Amenity(icon: Icons.bathtub, text: '${apartment.bathrooms} Baths'),
-                      _Amenity(icon: Icons.square_foot, text: '${apartment.areaSqft} sqft'),
+                      _Amenity(icon: Icons.square_foot, text: '${apartment.area} sqft'),
                     ],
                   ),
                   const SizedBox(height: 16),

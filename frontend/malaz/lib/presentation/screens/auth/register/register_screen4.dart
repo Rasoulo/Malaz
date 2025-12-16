@@ -2,20 +2,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/config/color/app_color.dart';
+import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../global_widgets/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class RegisterScreen4 extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  const RegisterScreen4({super.key, required this.formKey});
+  final RegisterData registerData;
+  const RegisterScreen4({super.key, required this.formKey, required this.registerData});
 
   @override
   State<RegisterScreen4> createState() => RegisterScreen4State();
 }
 
 class RegisterScreen4State extends State<RegisterScreen4> {
-  XFile? _image; // إضافة متغير لتخزين الصورة المختارة
+  XFile? _image;
   bool _showImageError = false;
 
   void _submit() {
@@ -27,7 +29,6 @@ class RegisterScreen4State extends State<RegisterScreen4> {
       setState(() {
         _showImageError = false;
       });
-      // متابعة الإجراء عند وجود صورة
     }
   }
   void showImageError(bool show) {
@@ -123,7 +124,8 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                     onImageSelected: (XFile? img) {
                       setState(() {
                         _image = img;
-                        _showImageError = false; // إزالة الخطأ عند اختيار صورة
+                        widget.registerData.identityImage = img;
+                        _showImageError = false;
                       });
                     },
                   ),
@@ -162,7 +164,7 @@ class RegisterScreen4State extends State<RegisterScreen4> {
 
 class ImageUploadWidget extends StatefulWidget {
   final Function(XFile?) onImageSelected;
-  final bool isError; // متغير نستقبله من الخارج
+  final bool isError;
 
   const ImageUploadWidget({Key? key, required this.onImageSelected,this.isError = false,}) : super(key: key);
   @override
@@ -180,7 +182,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
       setState(() {
         _image = XFile(pickedFile.path);
       });
-      widget.onImageSelected(_image); // تمرير الصورة للوالد فقط عند الاختيار الناجح
+      widget.onImageSelected(_image);
     }
   }
 
@@ -229,7 +231,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
 
 class DottedBox extends StatelessWidget {
   final Widget child;
-  final bool isError; // متغير جديد لتحديد حالة الخطأ
+  final bool isError;
   const DottedBox({required this.child, this.isError = false, Key? key}) : super(key: key);
 
   @override
@@ -244,7 +246,7 @@ class DottedBox extends StatelessWidget {
           color: Colors.white12,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isError ? Colors.red : Colors.yellow, // لون الحدود يتغير
+            color: isError ? Colors.red : Colors.yellow,
             style: BorderStyle.solid,
           ),
         ),

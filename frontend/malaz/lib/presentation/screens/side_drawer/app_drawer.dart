@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/language/language_cubit.dart';
 import '../../cubits/theme/theme_cubit.dart';
 
@@ -20,88 +21,97 @@ class AppDrawer extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
     final tr = AppLocalizations.of(context)!;
 
-    return Drawer(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 60, 20, 40),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: AppColors.realGoldGradient
-            ),
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthUnauthenticated) {
+          context.go('/login');
+        }
+      },
+      child: Scaffold(
+          body: Drawer(
+            backgroundColor: theme.scaffoldBackgroundColor,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                  child: const CircleAvatar(
-                    radius: 35,
-                    backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&fit=crop'),
+                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 40),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      gradient: AppColors.realGoldGradient
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: const CircleAvatar(
+                          radius: 35,
+                          backgroundImage: NetworkImage(
+                              'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&fit=crop'),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'John Doe',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'john.doe@email.com',
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.8), fontSize: 14),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                const Text(
-                  'John Doe',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    children: [
+                      _buildDrawerItem(context, Icons.person_outline, tr.my_profile,
+                              () {}), // ?
+                      _buildDrawerItem(context, Icons.palette_outlined, tr.theme, () {
+                        Navigator.pop(context);
+                        _showThemeBottomSheet(context);
+                      }),
+                      _buildDrawerItem(context, Icons.language, tr.language, () {
+                        Navigator.pop(context);
+                        _showLanguageBottomSheet(context);
+                      }),
+                      const Divider(),
+                      _buildDrawerItem(context, Icons.apartment, tr.become_a_renter,
+                              () {}), // ?
+                      _buildDrawerItem(context, Icons.settings_outlined, tr.settings,
+                              () {
+                            context.push('/settings');
+                          }),
+                    ],
+                  ),
                 ),
-                Text(
-                  'john.doe@email.com',
-                  style: TextStyle(
-                      color: Colors.white.withOpacity(0.8), fontSize: 14),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: colorScheme.error.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      leading: Icon(Icons.logout, color: colorScheme.error),
+                      title: Text(tr.logout,
+                          style: TextStyle(
+                              color: colorScheme.error, fontWeight: FontWeight.bold)),
+                      onTap: () {
+                        context.read<AuthCubit>().logout();
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              children: [
-                _buildDrawerItem(context, Icons.person_outline, tr.my_profile,
-                    () {}), // ?
-                _buildDrawerItem(context, Icons.palette_outlined, tr.theme, () {
-                  Navigator.pop(context);
-                  _showThemeBottomSheet(context);
-                }),
-                _buildDrawerItem(context, Icons.language, tr.language, () {
-                  Navigator.pop(context);
-                  _showLanguageBottomSheet(context);
-                }),
-                const Divider(),
-                _buildDrawerItem(context, Icons.apartment, tr.become_a_renter,
-                    () {}), // ?
-                _buildDrawerItem(context, Icons.settings_outlined, tr.settings,
-                    () {
-                  context.push('/settings');
-                }),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: colorScheme.error.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListTile(
-                leading: Icon(Icons.logout, color: colorScheme.error),
-                title: Text(tr.logout,
-                    style: TextStyle(
-                        color: colorScheme.error, fontWeight: FontWeight.bold)),
-                onTap: () {
-                  context.go('/login');
-                },
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

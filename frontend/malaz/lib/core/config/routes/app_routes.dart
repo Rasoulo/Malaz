@@ -1,14 +1,20 @@
+// core/config/routes
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:malaz/presentation/screens/details/details_screen.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/main_wrapper/main_wrapper.dart'; // الشاشة الرئيسية
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
+import 'package:path/path.dart';
 
 import '../../../domain/entities/apartment.dart';
-
+import '../../../presentation/screens/auth/under_review/under_review.dart';
+import '../../service_locator/service_locator.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -40,48 +46,111 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 /// GoRoute(path: '/details', name: 'details', builder: (context, state) => DetailsScreen(apartment: state.extra as Apartment)),
 /// To navigate to it: `context.go('/details', extra: myApartmentObject)`
 /// :)
-final GoRouter appRouter = GoRouter(
-  navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
 
-  routes: [
-    GoRoute(
-      path: '/',
-      name: 'splash',
-      builder: (context, state) => const SplashScreen(),
-    ),
+final AuthCubit authCubit = sl<AuthCubit>();
+GoRouter buildAppRouter() {
+  return GoRouter(
+    initialLocation: '/',
+    refreshListenable: GoRouterRefreshStream(authCubit.stream),
+    redirect: (context, state) {
+      final authState = authCubit.state;
 
-    GoRoute(
-      path: '/login',
-      name: 'login',
-      builder: (context, state) => const LoginScreen(),
-    ),
+      final goingToLogin = state.matchedLocation == '/login';
+      final goingToRegister = state.matchedLocation == '/home_register';
+      final goingToPending = state.matchedLocation == '/pending';
+      final goingToSplash = state.matchedLocation == '/';
 
-    GoRoute(
-      path: '/home',
-      name: 'home',
-      builder: (context, state) => const MainWrapper(),
-    ),
-
-    GoRoute(
-      path: '/settings',
-      name: 'settings',
-      builder: (context, state) => const SettingsScreen(),
-    ),
-    
-    GoRoute(
-      path: '/details',
-      name: 'details',
-      builder: (context, state) {
-        final apartment = state.extra as Apartment;
-        return DetailsScreen(apartment: apartment);
+      /// 1️⃣ أثناء التحميل أو البداية → Splash
+      if (authState is AuthInitial || authState is AuthLoading) {
+        return goingToSplash ? null : '/';
       }
-    ),
 
-    GoRoute(
-      path: '/home_register',
-      name: 'home_register',
-      builder: (context, state) => HomeRegisterScreen()
-    )
-  ],
-);
+      /// 2️⃣ PENDING له أولوية مطلقة
+      else if (authState is AuthPending) {
+        return goingToPending ? null : '/pending';
+      }
+
+      /// 3️⃣ Authenticated
+      else if (authState is AuthAuthenticated) {
+        if (goingToLogin || goingToRegister || goingToSplash || goingToPending) {
+          return '/home';
+        }
+        return null;
+      }
+
+      /// 4️⃣ Unauthenticated / Error
+      else if (authState is AuthUnauthenticated || authState is AuthError) {
+        return (goingToLogin || goingToRegister) ? null : '/login';
+      }
+
+      return null;
+    },
+
+    routes: [
+      GoRoute(
+        path: '/',
+        name: 'splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
+
+      GoRoute(
+          path: '/login',
+          name: 'login',
+          builder: (context, state) => LoginScreen(formKey: GlobalKey<FormState>()),
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: LoginScreen(formKey: GlobalKey<FormState>()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+          ),
+      ),
+
+      GoRoute(
+        path: '/home',
+        name: 'home',
+        builder: (context, state) => const MainWrapper(),
+      ),
+
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+
+      GoRoute(
+          path: '/details',
+          name: 'details',
+          builder: (context, state) {
+            final apartment = state.extra as Apartment;
+            return DetailsScreen(apartment: apartment);
+          }),
+
+      GoRoute(
+          path: '/home_register',
+          name: 'home_register',
+          builder: (context, state) => HomeRegisterScreen()),
+
+      GoRoute(
+        path: '/pending',
+        name: 'pending',
+        builder: (context, state) => UnderReview(),
+      ),
+    ],
+    errorBuilder: (context, state) => Scaffold(
+      body: Center(
+        child: Text('Page not found: ${state.error.toString()}'),
+      ),
+    ),
+  );
+}
+
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription _subscription;
+}

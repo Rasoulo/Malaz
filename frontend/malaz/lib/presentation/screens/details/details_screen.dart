@@ -23,7 +23,7 @@ class DetailsScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: apartment.id,
-                child: Image.network(apartment.imageUrl, fit: BoxFit.cover),
+                child: Image.network(apartment.mainImageUrl, fit: BoxFit.cover),
               ),
             ),
             leading: IconButton(
@@ -87,7 +87,7 @@ class DetailsScreen extends StatelessWidget {
                       ),
                       _StatBadge(
                         icon: Icons.square_foot,
-                        label: '${apartment.areaSqft} sqft',
+                        label: '${apartment.area} sqft',
                         color: Colors.purple,
                       ),
                     ],

@@ -30,7 +30,7 @@ class GreenApiServiceProvider extends ServiceProvider
                 {
                     $url = "{$this->baseUrl}/waInstance{$this->instanceId}/SendMessage/{$this->token}";
 
-                    return Http::post($url, [
+                    return Http::withOptions(['verify' => false])->post($url, [
                         'chatId' => $phone . '@c.us',
                         'message' => $message,
                     ]);
