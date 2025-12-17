@@ -132,5 +132,77 @@ class AppLocalizationsAr extends AppLocalizations {
   String get image_required => 'هذه الصورة مطلوبة';
 
   @override
-  String get server_error_message => '';
+  String get malaz => 'MALAZ';
+
+  @override
+  String get share_your_property => 'شاركنا تفاصيل عقارك';
+
+  @override
+  String get add_property => 'اضافة عقار';
+
+  @override
+  String get uploud_photo_property => 'انقر لتحميل صور عقارك';
+
+  @override
+  String get essential_details => 'التفاصيل الاساسة';
+
+  @override
+  String get bedroom => ': غرف النوم';
+
+  @override
+  String get bathroom => ':الحمامات';
+
+  @override
+  String get property_area => ': مساحة العقار ';
+
+  @override
+  String get price => 'السعر';
+
+  @override
+  String get property_type => 'نوع العقار';
+
+  @override
+  String get apartment => 'شقة';
+
+  @override
+  String get villa => 'فيلا';
+
+  @override
+  String get house => 'منزل';
+
+  @override
+  String get farm => 'مزرعة';
+
+  @override
+  String get country_house => 'منزل ريفي';
+
+  @override
+  String get location_details => 'تفاصيل الموقع';
+
+  @override
+  String get city => ':مدينة';
+
+  @override
+  String get syria => 'سوريا';
+
+  @override
+  String get governorate => ':محافظة';
+
+  @override
+  String get damascus => 'دمشق';
+
+  @override
+  String get address => ':عنوان';
+
+  @override
+  String get address_loc => 'الهمك , بستان الدور';
+
+  @override
+  String get description => 'الوصف';
+
+  @override
+  String get describe_property => '...صف تفاصيل عقارك';
+
+  @override
+  String get save => 'حفظ';
 }

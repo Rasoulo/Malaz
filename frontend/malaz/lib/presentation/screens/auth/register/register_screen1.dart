@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/core/config/color/app_color.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
 import '../../../global_widgets/build_branding.dart';
@@ -33,7 +34,7 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
   void _sendVerificationCode() {
     final phone = widget.registerData.phone.trim();
     if (phone.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter your phone first')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Colors.amber,content: Text('Please enter your phone first')));
       return;
     }
     /// Here we ask the cubit to send the code
@@ -68,10 +69,10 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
           setState(() => _isSending = true);
         } else if (state is OtpSent) {
           setState(() => _isSending = false);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Verification code sent!')));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Colors.amber,content: Text('Verification code sent!')));
         } else if (state is OtpSendError) {
           setState(() => _isSending = false);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.amber,content: Text(state.message)));
         }
 
         /// Verify Code
@@ -83,118 +84,123 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
           /// Success: Inform the field, and inform the parent (HomeRegister) that the PIN is valid
           widget.pinKey?.currentState?.verifyFinished(success: true);
           widget.onPinVerified?.call(true);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Code verified successfully')));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Colors.amber,content: Text('Code verified successfully')));
         } else if (state is OtpVerifyError) {
           /// Failed: The field was told an error message, and a local error occurred.
           final msg = state.message.isNotEmpty ? state.message : 'Invalid code';
           widget.pinKey?.currentState?.verifyFinished(success: false, message: msg);
           widget.onPinVerified?.call(false);
           setState(() => _pinError = msg);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.amber,content: Text(msg)));
         }
       },
-      child: Scaffold(
-        backgroundColor: colorScheme.surface,
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Form(
-                key: widget.formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    // Logo
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [BoxShadow(blurRadius: 20, color: Colors.black12)],
-                      ),
-                      child: Image.asset('assets/icons/key_logo.png'),
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
+      child: ModalProgressHUD(
+        color: Colors.white,
+        inAsyncCall: _isSending,
+        child: Scaffold(
+          backgroundColor: colorScheme.surface,
+          body: Padding(
+            padding: const EdgeInsets.all(6),
+            child: SingleChildScrollView(
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Form(
+                    key: widget.formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        // Logo
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [BoxShadow(blurRadius: 20, color: Colors.black12)],
+                          ),
+                          child: Image.asset('assets/icons/key_logo.png'),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
 
 
-                    ShaderMask(
-                      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-                      child: Text(tr.create_account,
-                          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.yellow)),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                        ShaderMask(
+                          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                          child: Text(tr.create_account,
+                              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.yellow)),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
 
 
-                    ShaderMask(
-                      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-                      child: Text(tr.join_to_find, style: TextStyle(color: Colors.grey.shade600)),
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    ),
+                        ShaderMask(
+                          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                          child: Text(tr.join_to_find, style: TextStyle(color: Colors.grey.shade600)),
+                        ),
+                        const SizedBox(
+                          height: 100,
+                        ),
 
-                    // Mobile Field
-                    BuildTextfield(
-                      label: tr.mobile_number,
-                      icon: Icons.phone,
-                      obscure: false,
-                      keyboardType: TextInputType.phone,
-                      haveSuffixEyeIcon: false,
-                      formKey: widget.formKey,
-                      onChanged: (value) => widget.registerData.phone = value,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
+                        // Mobile Field
+                        BuildTextfield(
+                          label: tr.mobile_number,
+                          icon: Icons.phone,
+                          obscure: false,
+                          keyboardType: TextInputType.phone,
+                          haveSuffixEyeIcon: false,
+                          formKey: widget.formKey,
+                          onChanged: (value) => widget.registerData.phone = value,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
 
-                    // Send Verification Code Button
-                    ElevatedButton(
-                      onPressed: _isSending ? null : _sendVerificationCode,
-                      child: _isSending
-                          ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                          : Text(tr.send_verification_code),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
+                        // Send Verification Code Button
 
-                    // Pin Code TextField
-                    BuildPincodeTextfield(
-                      key: widget.pinKey,
-                      onChanged: (pin) {
-                        /// When the PIN length reaches 6 digits, we call Cubit verification.
-                        if (pin.length == 6) {
-                          _verifyPin(pin);
-                        }
-                      },
-                      onVerified: (success) {
-                        /// it is called after verifyFinished within the field
-                        /// UI update here too
-                        widget.onPinVerified?.call(success);
-                      },
-                    ),
-                    if (_pinError != null) Text(_pinError!, style: const TextStyle(color: Colors.red)),
-                    const SizedBox(
-                      height: 100,
-                    ),
+                        BuildVerficationCodeButton(
+                          onPressed: _isSending ? null : _sendVerificationCode,
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
 
-                    // Login Row
-                    const BuildLoginRow(),
-                    const SizedBox(
-                      height: 80,
-                    ),
+                        // Pin Code TextField
+                        BuildPincodeTextfield(
+                          key: widget.pinKey,
+                          onChanged: (pin) {
+                            /// When the PIN length reaches 6 digits, we call Cubit verification.
+                            if (pin.length == 6) {
+                              _verifyPin(pin);
+                            }
+                          },
+                          onVerified: (success) {
+                            /// it is called after verifyFinished within the field
+                            /// UI update here too
+                            widget.onPinVerified?.call(success);
+                          },
+                        ),
+                        if (_pinError != null) Text(_pinError!, style: const TextStyle(color: Colors.red)),
+                        const SizedBox(
+                          height: 100,
+                        ),
 
-                    // Branding
-                    BuildBranding(),
-                  ],
+                        // Login Row
+                        const BuildLoginRow(),
+                        const SizedBox(
+                          height: 80,
+                        ),
+
+                        // Branding
+                        BuildBranding(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

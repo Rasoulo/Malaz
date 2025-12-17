@@ -131,5 +131,78 @@ class AppLocalizationsTr extends AppLocalizations {
   String get image_required => 'Bu resim gereklidir';
 
   @override
-  String get server_error_message => '';
+  String get malaz => 'MALAZ';
+
+  @override
+  String get share_your_property => 'Mülkünüzün detaylarını bizimle paylaşın';
+
+  @override
+  String get add_property => 'Özellik ekle';
+
+  @override
+  String get uploud_photo_property =>
+      'Mülkünüzün fotoğraflarını yüklemek için tıklayın';
+
+  @override
+  String get essential_details => 'temel ayrıntılar';
+
+  @override
+  String get bedroom => 'yatak odalar :';
+
+  @override
+  String get bathroom => 'banyolar :';
+
+  @override
+  String get property_area => 'Mülk Alanı :';
+
+  @override
+  String get price => 'Fiyat';
+
+  @override
+  String get property_type => 'Emlak Türü';
+
+  @override
+  String get apartment => 'Apartman';
+
+  @override
+  String get villa => 'Villa';
+
+  @override
+  String get house => 'Ev';
+
+  @override
+  String get farm => 'Çiftlik';
+
+  @override
+  String get country_house => 'Kır Evi';
+
+  @override
+  String get location_details => 'Konum Detayları';
+
+  @override
+  String get city => 'Şehir:';
+
+  @override
+  String get syria => 'Suriye';
+
+  @override
+  String get governorate => 'Valilik:';
+
+  @override
+  String get damascus => 'Şam';
+
+  @override
+  String get address => 'Adres:';
+
+  @override
+  String get address_loc => 'Alhamak, Bostaan Aldoor';
+
+  @override
+  String get description => 'Tanım';
+
+  @override
+  String get describe_property => 'Mülkünüzün detaylarını açıklayın...';
+
+  @override
+  String get save => 'Kaydetmek';
 }

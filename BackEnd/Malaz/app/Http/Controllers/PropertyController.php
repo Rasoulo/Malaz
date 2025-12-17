@@ -102,7 +102,7 @@ class PropertyController extends Controller
             // return 1;
         }
 
-        // $property->status = 'approved';
+        $property->status = 'approved';
         $property->save();
 
         return response()->json([

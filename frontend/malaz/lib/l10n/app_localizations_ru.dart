@@ -133,5 +133,80 @@ class AppLocalizationsRu extends AppLocalizations {
   String get image_required => 'Это изображение обязательно';
 
   @override
-  String get server_error_message => '';
+  String get malaz => 'MALAZ';
+
+  @override
+  String get share_your_property =>
+      'редоставьте нам подробную информацию о вашей недвижимости';
+
+  @override
+  String get add_property => 'Добавить свойство';
+
+  @override
+  String get uploud_photo_property =>
+      'Нажмите, чтобы загрузить фотографии вашей недвижимости';
+
+  @override
+  String get essential_details => 'важные детали';
+
+  @override
+  String get bedroom => 'спальни :';
+
+  @override
+  String get bathroom => 'ванные :';
+
+  @override
+  String get property_area => 'Площадь  недвижимости :';
+
+  @override
+  String get price => 'Цена';
+
+  @override
+  String get property_type => 'Тип недвижимости';
+
+  @override
+  String get apartment => 'Квартира';
+
+  @override
+  String get villa => 'Вилла';
+
+  @override
+  String get house => 'Дом';
+
+  @override
+  String get farm => 'Ферма';
+
+  @override
+  String get country_house => 'Загородный дом';
+
+  @override
+  String get location_details => 'Информация о местоположении';
+
+  @override
+  String get city => 'Город:';
+
+  @override
+  String get syria => 'Сирия';
+
+  @override
+  String get governorate => 'Губернаторство:';
+
+  @override
+  String get damascus => 'Дамаск';
+
+  @override
+  String get address => 'Адрес:';
+
+  @override
+  String get address_loc => 'Альхамак, Бостан Альдур';
+
+  @override
+  String get description => 'Описание';
+
+  @override
+  String get describe_property =>
+      'Опишите характеристики вашей недвижимости...';
+
+  @override
+  String get save => 'Сохранять';
 }

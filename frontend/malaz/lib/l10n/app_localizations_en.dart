@@ -131,5 +131,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get image_required => 'This image is required';
 
   @override
-  String get server_error_message => '';
+  String get malaz => 'MALAZ';
+
+  @override
+  String get share_your_property => 'Share your property details with us';
+
+  @override
+  String get add_property => 'Add property';
+
+  @override
+  String get uploud_photo_property => 'Click to upload photos of your property';
+
+  @override
+  String get essential_details => 'Essential Details';
+
+  @override
+  String get bedroom => 'Bedrooms:';
+
+  @override
+  String get bathroom => 'Bathrooms:';
+
+  @override
+  String get property_area => 'Property Area:';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get property_type => 'Property Type';
+
+  @override
+  String get apartment => 'Apartment';
+
+  @override
+  String get villa => 'Villa';
+
+  @override
+  String get house => 'House';
+
+  @override
+  String get farm => 'Farm';
+
+  @override
+  String get country_house => 'Country House';
+
+  @override
+  String get location_details => 'Location Details';
+
+  @override
+  String get city => 'City:';
+
+  @override
+  String get syria => 'Syria';
+
+  @override
+  String get governorate => 'Governorate:';
+
+  @override
+  String get damascus => 'Damascus';
+
+  @override
+  String get address => 'Address:';
+
+  @override
+  String get address_loc => 'Alhamak,bostan Aldoor';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get describe_property => 'Describe your property details...';
+
+  @override
+  String get save => 'Save';
 }

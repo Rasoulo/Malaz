@@ -344,11 +344,155 @@ abstract class AppLocalizations {
   /// **'This image is required'**
   String get image_required;
 
-  /// No description provided for @server_error_message.
+  /// No description provided for @malaz.
   ///
   /// In en, this message translates to:
-  /// **''**
-  String get server_error_message;
+  /// **'MALAZ'**
+  String get malaz;
+
+  /// No description provided for @share_your_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your property details with us'**
+  String get share_your_property;
+
+  /// No description provided for @add_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Add property'**
+  String get add_property;
+
+  /// No description provided for @uploud_photo_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Click to upload photos of your property'**
+  String get uploud_photo_property;
+
+  /// No description provided for @essential_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Essential Details'**
+  String get essential_details;
+
+  /// No description provided for @bedroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedrooms:'**
+  String get bedroom;
+
+  /// No description provided for @bathroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Bathrooms:'**
+  String get bathroom;
+
+  /// No description provided for @property_area.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Area:'**
+  String get property_area;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @property_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Type'**
+  String get property_type;
+
+  /// No description provided for @apartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment'**
+  String get apartment;
+
+  /// No description provided for @villa.
+  ///
+  /// In en, this message translates to:
+  /// **'Villa'**
+  String get villa;
+
+  /// No description provided for @house.
+  ///
+  /// In en, this message translates to:
+  /// **'House'**
+  String get house;
+
+  /// No description provided for @farm.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm'**
+  String get farm;
+
+  /// No description provided for @country_house.
+  ///
+  /// In en, this message translates to:
+  /// **'Country House'**
+  String get country_house;
+
+  /// No description provided for @location_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Details'**
+  String get location_details;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City:'**
+  String get city;
+
+  /// No description provided for @syria.
+  ///
+  /// In en, this message translates to:
+  /// **'Syria'**
+  String get syria;
+
+  /// No description provided for @governorate.
+  ///
+  /// In en, this message translates to:
+  /// **'Governorate:'**
+  String get governorate;
+
+  /// No description provided for @damascus.
+  ///
+  /// In en, this message translates to:
+  /// **'Damascus'**
+  String get damascus;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address:'**
+  String get address;
+
+  /// No description provided for @address_loc.
+  ///
+  /// In en, this message translates to:
+  /// **'Alhamak,bostan Aldoor'**
+  String get address_loc;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @describe_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your property details...'**
+  String get describe_property;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
 }
 
 class _AppLocalizationsDelegate
