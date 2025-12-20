@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    // 'user.created_pending' => 'Kullanıcı oluşturuldu, lütfen yönetici onayını bekleyin',
+
     // Telefon
     'phone.required' => 'Telefon numarası gereklidir.',
     'phone.regex' => 'Telefon numarası geçerli bir formatta olmalıdır (9–15 rakam, + ile başlayabilir).',

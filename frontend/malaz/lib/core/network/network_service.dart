@@ -25,7 +25,7 @@ abstract class NetworkService {
   Future<Response> put(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters});
   Future<Response> delete(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters});
 }
-const baseurl = 'http://192.168.1.103:8000/api/users/'; // ! this baseurl works only for hamwi
+//const baseurl = 'http://192.168.1.102:8000/api/users/'; // ! this baseurl works only for hamwi
 class NetworkServiceImpl implements NetworkService {
   final Dio _dio;
   final AuthInterceptor interceptor;
@@ -33,7 +33,7 @@ class NetworkServiceImpl implements NetworkService {
   NetworkServiceImpl(this.interceptor)
       : _dio = Dio(
     BaseOptions(
-      baseUrl: AppConstants.baseUrl,
+      baseUrl: AppConstants.baseurl,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -61,6 +61,7 @@ class NetworkServiceImpl implements NetworkService {
   Future<Response> post(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
       final response = await _dio.post(endpoint, data: data, queryParameters: queryParameters);
+      print('>>>> ${response.data}');
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handle(e);

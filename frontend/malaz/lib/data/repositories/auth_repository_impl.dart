@@ -180,6 +180,8 @@ class AuthRepositoryImpl extends AuthRepository {
       return Right(user);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.toString()));
+    } on NetworkException {
+      return Left(NetworkFailure());
     } on CacheException catch(e) {
       return Left(CacheFailure(e.toString()));
     } catch (e) {

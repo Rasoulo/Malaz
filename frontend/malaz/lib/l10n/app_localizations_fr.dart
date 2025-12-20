@@ -134,5 +134,79 @@ class AppLocalizationsFr extends AppLocalizations {
   String get image_required => 'Cette image est requise';
 
   @override
-  String get server_error_message => '';
+  String get malaz => 'MALAZ';
+
+  @override
+  String get share_your_property =>
+      'Partagez les détails de votre propriété avec nous';
+
+  @override
+  String get add_property => 'Propriété Aadd';
+
+  @override
+  String get uploud_photo_property =>
+      'Cliquez ici pour télécharger des photos de votre propriété';
+
+  @override
+  String get essential_details => 'détails essentiels';
+
+  @override
+  String get bedroom => 'chambres :';
+
+  @override
+  String get bathroom => 'de bains:';
+
+  @override
+  String get property_area => 'Superficie de la propriété :';
+
+  @override
+  String get price => 'Prix';
+
+  @override
+  String get property_type => 'Type de propriété';
+
+  @override
+  String get apartment => 'Appartement';
+
+  @override
+  String get villa => 'Villa';
+
+  @override
+  String get house => 'Maison';
+
+  @override
+  String get farm => 'Ferme';
+
+  @override
+  String get country_house => 'Maison de campagne';
+
+  @override
+  String get location_details => 'Détails de l\'emplacement';
+
+  @override
+  String get city => 'Ville:';
+
+  @override
+  String get syria => 'Syrie';
+
+  @override
+  String get governorate => 'Gouvernorat:';
+
+  @override
+  String get damascus => 'Damas';
+
+  @override
+  String get address => 'Adresse:';
+
+  @override
+  String get address_loc => 'Alhamak, Bostaan Aldoor';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get describe_property => 'Décrivez les détails de votre propriété...';
+
+  @override
+  String get save => 'Sauvegarder';
 }

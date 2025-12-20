@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:malaz/core/constants/app_constants.dart';
 import 'package:malaz/core/errors/exceptions.dart';
 import 'package:path/path.dart';
 
@@ -50,7 +51,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     required XFile profileImage,
     required XFile identityImage,
   }) async {
-    final endpoint = 'register';
+    final endpoint = '/users/register';
 
     try {
       final formData = FormData.fromMap({
@@ -76,7 +77,9 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
         data: formData,
       );
       return response.data as Map<String, dynamic>;
-    } catch (e) {
+    } catch (e, stack) {
+      print('REGISTER ERROR: $e');
+      print(stack);
       rethrow;
     }
   }
@@ -88,7 +91,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     required String phone,
     required String password,
   }) async {
-    final endpoint = 'login';
+    final endpoint = '/users/login';
 
     final response = await networkService.post(
       endpoint,
@@ -130,7 +133,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
   Future<void> sendOtp({required String phone}) async {
     try {
-      final url = '${baseurl}send-otp';
+      final url = '${AppConstants.baseurl}/users/send-otp';
       final response = await networkService.post(url, queryParameters: {'phone': phone});
       if (response.statusCode == 200 || response.statusCode == 201) {
         return;
@@ -138,6 +141,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
         throw ServerException(message: 'sendOtp failed: ${response.statusCode}');
       }
     } catch (e) {
+      print(e.toString());
       rethrow;
     }
   }
@@ -145,7 +149,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
   Future<Map<String, dynamic>> verifyOtp({required String phone, required String otp}) async {
     try {
-      final url = '${baseurl}verify-otp';
+      final url = '${AppConstants.baseurl}/users/verify-otp';
       final response = await networkService.post(url, queryParameters: {'phone': phone, 'otp': otp});
       return response.data as Map<String, dynamic>;
     } catch (e) {

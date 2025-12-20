@@ -13,7 +13,7 @@ class EditRequestController extends Controller
 
         return response()->json([
             'data' => $requests,
-            'message' => __('messages.edit_request.all_retrieved'),
+            'message' => __('validation.edit_request.all_retrieved'),
             'status' => 200,
         ]);
     }
@@ -24,7 +24,7 @@ class EditRequestController extends Controller
 
         return response()->json([
             'data' => $requests,
-            'message' => __('messages.edit_request.pending_retrieved'),
+            'message' => __('validation.edit_request.pending_retrieved'),
             'status' => 200,
         ]);
     }
@@ -47,7 +47,7 @@ class EditRequestController extends Controller
 
         return response()->json([
             'data' => $editRequest,
-            'message' => __('messages.edit_request.updated'),
+            'message' => __('validation.edit_request.updated'),
             'status' => 200,
         ]);
     }

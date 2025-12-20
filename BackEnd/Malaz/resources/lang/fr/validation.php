@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    // 'user.created_pending' => 'Utilisateur créé, veuillez attendre l’approbation des responsables',
+
     // Téléphone
     'phone.required' => 'Le numéro de téléphone est requis.',
     'phone.regex' => 'Le numéro de téléphone doit être dans un format valide (9–15 chiffres, peut commencer par +).',
