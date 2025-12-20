@@ -4,7 +4,7 @@ import 'dart:convert';
 
 /// [collect_code]
 ///
-/// it's build up the hole project in only one file named 'full_project_code.txt'
+/// it builds up the hole project in only one file named 'full_project_code.txt'
 /// not only the source code but also project architecture :)
 void main() async {
   final directory = Directory('lib');
