@@ -12,6 +12,4 @@ class LogoutUsecase implements UseCase<void,NoParams>{
   Future<Either<Failure, void>> call(NoParams params) async {
     return await repository.logout();
   }
-
-
 }

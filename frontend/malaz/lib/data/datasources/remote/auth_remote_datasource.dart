@@ -27,6 +27,8 @@ abstract class AuthRemoteDatasource {
     required XFile identityImage,
   });
 
+  Future<void> logout();
+
   Future<void> sendOtp({required String phone});
 
   Future<Map<String, dynamic>> verifyOtp({required String phone, required String otp});
@@ -125,8 +127,10 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     return data;
   }
 
-
-
+  @override
+  Future<void> logout() async {
+    await networkService.post('/users/logout');
+  }
 
 
   /// TODO: merge to error handler

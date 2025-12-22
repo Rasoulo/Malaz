@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
@@ -188,11 +189,16 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-
   Future<void> logout() async {
     emit(AuthLoading());
-    await logoutUsecase(NoParams());
-    emit(AuthUnauthenticated());
+    final result = await logoutUsecase(NoParams());
+
+    result.fold(
+          (failure) => emit(AuthError(message:failure.message ?? "Logout Failed")),
+          (_) {
+        emit(AuthUnauthenticated());
+      },
+    );
   }
 
 

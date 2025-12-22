@@ -131,16 +131,16 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
 
-
   @override
   Future<Either<Failure, void>> logout() async {
     try {
-      /// TODO: logout out of the service
-      // await authRemoteDatasource.logout();
-      await authLocalDatasource.clearToken();
+      await authRemoteDatasource.logout();
+      await authLocalDatasource.clearAll();
       return const Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(GeneralFailure(e.toString()));
     }
   }
 
