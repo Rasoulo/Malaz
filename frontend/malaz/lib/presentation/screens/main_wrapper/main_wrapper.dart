@@ -61,18 +61,18 @@ class _MainWrapperState extends State<MainWrapper> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const AddPropertyScreen()));
                   },
                   backgroundColor: fabColor,
-                  child: Icon(Icons.add, color: colorScheme.onPrimary, size: 30),
                   shape: const CircleBorder(),
+                  child: Icon(Icons.add, color: colorScheme.onPrimary, size: 30),
                 ),
               ),
             ),
 
             bottomNavigationBar: CurvedNavigationBar(
               key: _bottomNavigationKey,
-              color: colorScheme.primary,
+              color: colorScheme.secondary,
               backgroundColor: Colors.transparent,
               buttonBackgroundColor: colorScheme.primary,
-              height: 75,
+              height: 55,
               index: _currentIndex,
               items: item,
               onTap: (index) {

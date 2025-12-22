@@ -74,7 +74,6 @@ class HomeCubit extends Cubit<HomeState> {
 
     try {
       String? cursorToSend;
-
       if (isRefresh) {
         cursorToSend = null;
         emit(HomeLoading());
@@ -95,6 +94,7 @@ class HomeCubit extends Cubit<HomeState> {
         cursorToSend = null;
       }
 
+      print('cursor sent in cubit : $cursorToSend');
       final result = await getApartmentsUseCase.call(cursor: cursorToSend);
 
       _nextCursor = result.nextCursor;
@@ -116,7 +116,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
     } catch (e) {
-      emit(HomeError(message: 'حدث خطأ: ${e.toString()}')); /// TODO : translate
+      emit(HomeError(message: e.toString()));
     } finally {
       _isFetching = false;
     }
