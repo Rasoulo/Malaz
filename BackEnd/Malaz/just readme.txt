@@ -18,3 +18,7 @@ _______________________________________________________
 - update messages and read at should be build again
 - show all conversation for admin only
 - PENDING account shouldn't make a login
+- show all favorite as you do in show all property
+- update user doesnot need a ok from admin
+- change password with green api
+- tags for property

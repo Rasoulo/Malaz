@@ -142,11 +142,12 @@ class PropertyController extends Controller
 
 
         $isFav = $property->favoritedBy()->where('user_id', auth()->id())->exists();
-
+        $user = $property->user;
         return response()->json([
             'data' => $property,
             'rate' => $rate,
             'isFav' => $isFav,
+            'owner' => $user,
             'message' => __('validation.property.returned'),
         ], 200);
     }

@@ -8,6 +8,7 @@ return [
     'phone.regex' => 'Phone number must be in a valid format (9–15 digits, may start with +).',
     'phone.exists' => 'This phone number does not exist in our records.',
     'phone.unique' => 'This phone number is already registered.',
+    'phone.doesnotmatch' => 'The phone number you entered does not match the number registered to your account.',
 
     'password.required' => 'Password is required.',
     'password.string' => 'Password must be a valid string.',

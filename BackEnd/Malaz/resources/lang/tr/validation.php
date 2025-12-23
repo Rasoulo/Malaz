@@ -9,6 +9,8 @@ return [
     'phone.regex' => 'Telefon numarası geçerli bir formatta olmalıdır (9–15 rakam, + ile başlayabilir).',
     'phone.exists' => 'Bu telefon numarası kayıtlarımızda bulunmamaktadır.',
     'phone.unique' => 'Bu telefon numarası zaten kayıtlı.',
+    'phone.doesnotmatch' => 'Girdiğiniz telefon numarası, hesabınızda kayıtlı olan numarayla eşleşmiyor.',
+
 
     // Şifre
     'password.required' => 'Şifre gereklidir.',

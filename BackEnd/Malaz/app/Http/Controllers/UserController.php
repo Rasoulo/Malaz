@@ -34,6 +34,11 @@ class UserController extends Controller
 
     public function showIdentityCardImage(User $user)
     {
+        // $source = auth()->user();
+        // if ($user->id != $source->id && $source->role != 'ADMIN') {
+        //     return 9999;
+        // }
+
         $image = base64_decode($user->identity_card_image);
         return response($image)
             ->header('Content-Type', $user->identity_card_mime);
@@ -74,10 +79,32 @@ class UserController extends Controller
 
     public function sendOtp(Request $request)
     {
-        //return response()->json(['message' => 'OTP sent111']);;
         $request->validate([
             'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
         ]);
+
+        $otp = rand(100000, 999999);
+
+        Cache::put('otp_' . $request->phone, $otp, now()->addMinutes(5));
+
+        app('greenapi')->sendMessage($request->phone, "Verification code: {$otp}");
+
+        return response()->json(['message' => __('validation.user.otp_sent'),]);
+    }
+
+    public function sendOtp_passwordone(Request $request)
+    {
+        $user = auth()->user();
+        $request->validate([
+            'phone' => 'required|regex:/^\+?\d{9,15}$/|exists:users,phone',
+        ]);
+
+        if ($user->phone != $request->phone)
+            return response()->json([
+                'message' => __('validation.phone.doesnotmatch'),
+            ]);
+
+
 
         $otp = rand(100000, 999999);
 
@@ -129,14 +156,10 @@ class UserController extends Controller
     public function request_update(UpdateUserRequest $request)
     {
         $user = auth()->user();
-        $editrequest = EditRequest::create([
-            'user_id' => $user->id,
-            'old_data' => $user->toArray(),
-            'new_data' => $request->validated(),
-            'status' => 'PENDING',
-        ]);
+        $validated = $request->validated();
+        $user->update($validated);
         return response()->json([
-            'data' => $editrequest,
+            'data' => $user,
             'message' => __('validation.user.edit_request_sent'),
             'status' => 200,
         ]);
@@ -281,7 +304,7 @@ class UserController extends Controller
         return response()->json(['message' => __('validation.user.logged_out')]);
     }
 
-    public function me()
+    public function info(User $user)
     {
         return response()->json(auth()->user());
     }
