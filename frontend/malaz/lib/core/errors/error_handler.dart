@@ -18,10 +18,10 @@ class ErrorHandler {
         return _handleBadResponse(error.response);
 
       case DioExceptionType.cancel:
-        return ServerException(message: 'Request was cancelled');
+        return ServerException(message: AppLocalizations.of(context as BuildContext).request_cancelled_error_message);
 
       default:
-        return ServerException(message: 'Unexpected error occurred');
+        return ServerException(message: AppLocalizations.of(context as BuildContext).unexpected_error_message);
     }
   }
 

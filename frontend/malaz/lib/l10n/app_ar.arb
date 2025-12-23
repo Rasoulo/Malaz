@@ -74,5 +74,8 @@
   "per_month": "شهرياً",
   "book_now": "احجز الآن",
   "month": "شهر",
-  "new_": "جديد"
+  "new_": "جديد",
+  "network_error_message": "حدث خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+  "request_cancelled_error_message": "تم إلغاء الطلب",
+  "unexpected_error_message": "حدث خطأ غير متوقع"
 }

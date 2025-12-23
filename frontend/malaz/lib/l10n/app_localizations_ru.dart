@@ -238,4 +238,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get new_ => 'Новое';
+
+  @override
+  String get network_error_message =>
+      'Произошла ошибка сети. Пожалуйста, проверьте подключение к интернету и попробуйте еще раз.';
+
+  @override
+  String get request_cancelled_error_message => 'Запрос был отменен';
+
+  @override
+  String get unexpected_error_message => 'Произошла непредвиденная ошибка';
 }

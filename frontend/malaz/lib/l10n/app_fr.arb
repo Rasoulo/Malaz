@@ -74,5 +74,8 @@
   "per_month": "par mois",
   "book_now": "Réserver",
   "month": "mois",
-  "new_": "Nouveau"
+  "new_": "Nouveau",
+  "network_error_message": "Une erreur réseau est survenue. Veuillez vérifier votre connexion internet et réessayer.",
+  "request_cancelled_error_message": "La demande a été annulée",
+  "unexpected_error_message": "Une erreur inattendue s'est produite"
 }

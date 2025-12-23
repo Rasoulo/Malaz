@@ -74,5 +74,8 @@
   "per_month": "per month",
   "book_now": "Book Now",
   "month": "month",
-  "new_": "New"
+  "new_": "New",
+  "network_error_message": "Network error occurred. Please check your internet connection and try again.",
+  "request_cancelled_error_message": "Request was cancelled",
+  "unexpected_error_message": "Unexpected error occurred"
 }

@@ -236,4 +236,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get new_ => 'جديد';
+
+  @override
+  String get network_error_message =>
+      'حدث خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
+
+  @override
+  String get request_cancelled_error_message => 'تم إلغاء الطلب';
+
+  @override
+  String get unexpected_error_message => 'حدث خطأ غير متوقع';
 }

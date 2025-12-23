@@ -238,4 +238,14 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get new_ => 'Yeni';
+
+  @override
+  String get network_error_message =>
+      'Ağ hatası oluştu. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin.';
+
+  @override
+  String get request_cancelled_error_message => 'İstek iptal edildi';
+
+  @override
+  String get unexpected_error_message => 'Beklenmedik bir hata oluştu';
 }

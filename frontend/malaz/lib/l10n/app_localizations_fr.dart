@@ -242,4 +242,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get new_ => 'Nouveau';
+
+  @override
+  String get network_error_message =>
+      'Une erreur réseau est survenue. Veuillez vérifier votre connexion internet et réessayer.';
+
+  @override
+  String get request_cancelled_error_message => 'La demande a été annulée';
+
+  @override
+  String get unexpected_error_message =>
+      'Une erreur inattendue s\'est produite';
 }

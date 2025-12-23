@@ -237,4 +237,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get new_ => 'New';
+
+  @override
+  String get network_error_message =>
+      'Network error occurred. Please check your internet connection and try again.';
+
+  @override
+  String get request_cancelled_error_message => 'Request was cancelled';
+
+  @override
+  String get unexpected_error_message => 'Unexpected error occurred';
 }

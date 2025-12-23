@@ -559,6 +559,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New'**
   String get new_;
+
+  /// No description provided for @network_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error occurred. Please check your internet connection and try again.'**
+  String get network_error_message;
+
+  /// No description provided for @request_cancelled_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Request was cancelled'**
+  String get request_cancelled_error_message;
+
+  /// No description provided for @unexpected_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected error occurred'**
+  String get unexpected_error_message;
 }
 
 class _AppLocalizationsDelegate
