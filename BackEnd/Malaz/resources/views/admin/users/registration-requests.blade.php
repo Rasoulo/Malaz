@@ -34,30 +34,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div class="flex items-center">
-                <div class="p-2 rounded-lg mr-3" style="background: rgba(160, 82, 45, 0.1)">
-                    <i class="fas fa-user-tie text-lg" style="color: var(--accent)"></i>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Approved Owners</p>
-                    <p class="text-xl font-bold text-gray-900">{{ \App\Models\User::where('role', 'OWNER')->count() }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div class="flex items-center">
-                <div class="p-2 rounded-lg mr-3" style="background: rgba(218, 165, 32, 0.1)">
-                    <i class="fas fa-key text-lg" style="color: var(--primary-light)"></i>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Approved Renters</p>
-                    <p class="text-xl font-bold text-gray-900">{{ \App\Models\User::where('role', 'RENTER')->count() }}</p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Main Card -->

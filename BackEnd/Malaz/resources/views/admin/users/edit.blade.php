@@ -176,9 +176,9 @@
                         </a>
 
                         <button type="submit"
-                            class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition font-medium shadow-md hover:shadow-lg flex items-center">
+                            class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition font-medium">
                             <i class="fas fa-save mr-2"></i>
-                            Save Changes
+                            Save
                         </button>
                     </div>
                 </div>

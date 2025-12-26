@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PropertyController;
 
 // Public admin routes (login)
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -26,5 +27,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Regular user management (for existing users)
         Route::resource('users', UserController::class)
             ->except(['create', 'store']);
+
+        // Property Management Routes - Clean Grouping
+        Route::prefix('properties')->name('properties.')->group(function () {
+            // Standard CRUD routes
+            Route::get('/', [PropertyController::class, 'index'])->name('index');
+            Route::get('/{property}', [PropertyController::class, 'show'])->name('show');
+            Route::get('/{property}/edit', [PropertyController::class, 'edit'])->name('edit');
+            Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
+            Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
+
+            // Status management routes
+            Route::post('/{property}/approve', [PropertyController::class, 'approve'])->name('approve');
+            Route::post('/{property}/reject', [PropertyController::class, 'reject'])->name('reject');
+            Route::post('/{property}/suspend', [PropertyController::class, 'suspend'])->name('suspend');
+        });
     });
 });

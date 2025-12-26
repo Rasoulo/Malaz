@@ -1209,7 +1209,7 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+1111111117"
+									"value": "+1111111128"
 								},
 								{
 									"key": "first_name",
@@ -1244,7 +1244,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111111&role=OWNER&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
+									"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111111&role=USER&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1265,7 +1265,7 @@
 										},
 										{
 											"key": "role",
-											"value": "OWNER"
+											"value": "USER"
 										},
 										{
 											"key": "first_name",
@@ -1454,20 +1454,25 @@
 								{
 									"key": "profile_image",
 									"type": "file",
-									"src": "postman-cloud:///1f0d7df2-e7b3-4270-bca5-1b669ade56e8"
+									"src": "postman-cloud:///1f0d7776-4457-4900-875b-19e8b240cccb"
 								},
 								{
 									"key": "identity_card_image",
 									"type": "file",
-									"src": "postman-cloud:///1f0d7df3-23f6-4660-95ea-f3abe04bf9b3"
+									"src": "postman-cloud:///1f0d7719-8fb5-45d0-b60a-adcb1fb598ae"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{localhost}}/api/users/register?phone=+99920200127&first_name=anya&last_name=petrrva&password=12345678&date_of_birth=1-1-1&password_confirmation=12345678&lang=en",
+							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111128&first_name=Maher&last_name=Alnouri&password=12345678&date_of_birth=1-1-1&password_confirmation=12345678",
+							"protocol": "http",
 							"host": [
-								"{{localhost}}"
+								"127",
+								"0",
+								"0",
+								"1"
 							],
+							"port": "8000",
 							"path": [
 								"api",
 								"users",
@@ -1476,15 +1481,15 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+99920200127"
+									"value": "+1111111128"
 								},
 								{
 									"key": "first_name",
-									"value": "anya"
+									"value": "Maher"
 								},
 								{
 									"key": "last_name",
-									"value": "petrrva"
+									"value": "Alnouri"
 								},
 								{
 									"key": "password",
@@ -1497,10 +1502,6 @@
 								{
 									"key": "password_confirmation",
 									"value": "12345678"
-								},
-								{
-									"key": "lang",
-									"value": "en"
 								}
 							]
 						}
@@ -3251,7 +3252,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message\": \"Message created successfully\",\n    \"data\": {\n        \"sender_id\": 3,\n        \"conversation_id\": 1,\n        \"body\": \"Welcome back\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"id\": 1,\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 201\n}"
+							"body": "{\n    \"message\": \"Message created successfully\",\n    \"data\": {\n        \"sender_id\": 3,\n        \"conversation_id\": 1,\n        \"body\": \"Welcome back\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"id\": 1,\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"USER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 201\n}"
 						}
 					]
 				},
@@ -3351,7 +3352,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message_data\": {\n        \"id\": 1,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": null,\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"info\": \"Message retrieved successfully\",\n    \"status\": 200\n}"
+							"body": "{\n    \"message_data\": {\n        \"id\": 1,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": null,\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"USER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"info\": \"Message retrieved successfully\",\n    \"status\": 200\n}"
 						}
 					]
 				},
@@ -3706,7 +3707,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message\": \"Message marked as read\",\n    \"data\": {\n        \"id\": 8,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": \"2025-12-09T06:18:09.330360Z\",\n        \"created_at\": \"2025-12-09T06:15:07.000000Z\",\n        \"updated_at\": \"2025-12-09T06:18:09.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 200\n}"
+							"body": "{\n    \"message\": \"Message marked as read\",\n    \"data\": {\n        \"id\": 8,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": \"2025-12-09T06:18:09.330360Z\",\n        \"created_at\": \"2025-12-09T06:15:07.000000Z\",\n        \"updated_at\": \"2025-12-09T06:18:09.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"USER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 200\n}"
 						}
 					]
 				}

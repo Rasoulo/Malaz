@@ -36,6 +36,31 @@ class Property extends Model
             ->withTimestamps();
     }
 
+    public function isApproved()
+    {
+        return $this->status === 'approved';
+    }
+
+    public function isPending()
+    {
+        return $this->status === 'pending';
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', 'rejected');
+    }
+
     public function getMainImageUrlAttribute()
     {
         return $this->main_image
