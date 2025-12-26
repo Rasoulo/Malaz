@@ -1,8 +1,15 @@
 class AppConstants {
   //static const String baseUrl = "http://192.168.1.102:8000/api";
-  static const baseurl = 'http://10.88.89.242:8000/api';
-  // Keys for SharedPreferences
+  static const baseurl = 'http://192.168.1.100:8000/api';
+  /// [SharedPreferences] Keys
   static const String themeKey = 'theme_mode';
   static const String languageKey = 'language_code';
   static const String tokenKey = 'CACHED_TOKEN';
+
+  /// [Failure] Keys
+  static const String networkFailureKey = 'NETWORK_FAILURE_KEY';
+  static const String unknownFailureKey = 'UNKNOWN_FAILURE_KEY';
+  static const String cancelledFailureKey = 'CANCELLED_FAILURE_KEY';
+
+  static const numberOfApartmentsEachRequest = 2;
 }

@@ -1,3 +1,5 @@
+import 'package:malaz/core/constants/app_constants.dart';
+
 import '../../../../core/network/network_service.dart';
 import '../../../domain/entities/apartments_list.dart';
 import '../../models/apartment_model.dart';
@@ -17,7 +19,7 @@ class ApartmentRemoteDataSourceImpl implements ApartmentRemoteDataSource {
     final response = await networkService.get(
       '/properties/all',
       queryParameters: {
-        'per_page': 2, // ! do not make per_page = 1
+        'per_page': AppConstants.numberOfApartmentsEachRequest,
         'cursor': cursor,
       },
     );

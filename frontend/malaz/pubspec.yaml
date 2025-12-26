@@ -32,6 +32,7 @@ dependencies:
   modal_progress_hud_nsn: ^0.5.1
   another_flushbar: ^1.12.32
   curved_navigation_bar: ^1.0.6
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

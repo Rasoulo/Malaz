@@ -1,7 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malaz/core/constants/app_constants.dart';
 import '../../../../domain/entities/apartment.dart';
-import '../../../../domain/usecases/apartments_use_case.dart';
+import '../../../core/errors/exceptions.dart';
+import '../../../core/errors/failures.dart';
+import '../../../data/utils/failuer_mapper.dart';
+import '../../../domain/usecases/home/apartments_use_case.dart';
 
 /// ===========================
 /// ----------[states]---------
@@ -93,8 +97,6 @@ class HomeCubit extends Cubit<HomeState> {
         if (state is! HomeLoaded) emit(HomeLoading());
         cursorToSend = null;
       }
-
-      print('cursor sent in cubit : $cursorToSend');
       final result = await getApartmentsUseCase.call(cursor: cursorToSend);
 
       _nextCursor = result.nextCursor;
@@ -116,7 +118,19 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
     } catch (e) {
-      emit(HomeError(message: e.toString()));
+      final Failure failure = FailureMapper.map(e);
+
+      String keyMessage;
+
+      if (failure is NetworkFailure) {
+        keyMessage = AppConstants.networkFailureKey;
+      } else if(failure is ServerFailure) {
+        keyMessage = failure.message ?? AppConstants.cancelledFailureKey;
+      } else {
+        keyMessage = AppConstants.unknownFailureKey;
+      }
+
+      if (!isClosed) emit(HomeError(message: keyMessage));
     } finally {
       _isFetching = false;
     }
