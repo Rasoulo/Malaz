@@ -75,7 +75,6 @@ class PropertyController extends Controller
         // Validate the incoming data
         $validator = Validator::make($request->all(), [
             'price' => 'required|integer|min:0',
-            'governorate' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -108,7 +107,7 @@ class PropertyController extends Controller
     public function approve(Property $property)
     {
         // Check if property is pending
-        if ($property->status !== 'pending') {
+        if ($property->status !== 'pending' && $property->status !== 'suspended') {
             return redirect()->back()
                 ->with('error', 'Only pending properties can be approved.');
         }
