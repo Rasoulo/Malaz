@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// [_BuildShimmerCard]
+/// [BuildShimmerCard]
 /// The actual skeleton design matching the ApartmentCard structure.
-class _BuildShimmerCard extends StatelessWidget {
-  const _BuildShimmerCard();
+class BuildShimmerCard extends StatelessWidget {
+  const BuildShimmerCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class _BuildShimmerCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 220,
+            height: 400,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
