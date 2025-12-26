@@ -15,7 +15,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get login_to_continue => 'Войдите, чтобы продолжить поиск';
 
   @override
-  String get mobile_number => 'Номер мобильного телефона';
+  String get mobile_number => 'Номер телефона';
 
   @override
   String get send_verification_code => 'Отправить код подтверждения';
@@ -27,7 +27,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get logout => 'Выйти';
 
   @override
-  String get dont_have_account => 'Нет учетной записи?';
+  String get dont_have_account => 'Нет аккаунта?';
 
   @override
   String get my_bookings => 'Мои бронирования';
@@ -36,7 +36,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get bookings => 'бронирования';
 
   @override
-  String get my_favorites => 'Мои избранные';
+  String get my_favorites => 'Избранное';
 
   @override
   String get favorites => 'избранное';
@@ -45,16 +45,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chats => 'чаты';
 
   @override
-  String get select_theme => 'выбрать тему';
+  String get select_theme => 'выберите тему';
 
   @override
-  String get select_language => 'выбрать язык';
+  String get select_language => 'выберите язык';
 
   @override
   String get messages => 'Сообщения';
 
   @override
-  String get register => 'Зарегистрироваться';
+  String get register => 'Регистрация';
 
   @override
   String get home => 'Главная';
@@ -69,69 +69,189 @@ class AppLocalizationsRu extends AppLocalizations {
   String get my_profile => 'Мой профиль';
 
   @override
-  String get become_a_renter => 'Стать арендатором';
+  String get become_a_renter => 'Стать арендодателем';
 
   @override
   String get language => 'Язык';
 
   @override
-  String get first_name => 'имя';
+  String get first_name => 'Имя';
 
   @override
   String get last_name => 'Фамилия';
 
   @override
-  String get have_account => 'У вас уже есть аккаунт ?';
+  String get have_account => 'У вас уже есть аккаунт?';
 
   @override
-  String get create_account => 'Завести аккаунт';
+  String get create_account => 'Создать аккаунт';
 
   @override
   String get join_to_find =>
-      'присоединяйтесь к нам, чтобы найти вашу идеальную квартиру!';
+      'Присоединяйтесь к нам, чтобы найти идеальную квартиру!';
 
   @override
-  String get password => 'пароль';
+  String get password => 'Пароль';
 
   @override
   String get confirm_password => 'Подтвердите пароль';
 
   @override
   String get id_document_message =>
-      'В целях безопасности загрузите фотографию вашего удостоверения личности:';
+      'Пожалуйста, загрузите фото вашего удостоверения личности в целях безопасности:';
 
   @override
-  String get upload_id_message =>
-      'нажмите, чтобы загрузить документ, удостоверяющий личность';
+  String get upload_id_message => 'Нажмите, чтобы загрузить документ';
 
   @override
   String get png_jpg => 'PNG, JPG, PDF до 10 МБ';
 
   @override
   String get profile_image_message =>
-      'Выбирайте подходящую вам фотографию! Если она вам нужна... ваша фотография профиля будет отображаться, когда вы напишете сообщение будущему владельцу квартиры!';
+      'Выберите подходящее фото!\nЕсли нужно..\n\nваше фото профиля будет видно владельцу квартиры, когда вы напишете ему сообщение!';
 
   @override
-  String get next => 'следующий';
+  String get next => 'Далее';
 
   @override
-  String get previous => 'предыдущий';
+  String get previous => 'Назад';
 
   @override
-  String get send_code => 'отправить код подтверждения';
+  String get send_code => 'Отправить код подтверждения';
 
   @override
   String get date_of_birth => 'Дата рождения';
 
   @override
-  String get six_digits => 'Пожалуйста, введите 6-значный PIN-код.';
+  String get six_digits => 'Пожалуйста, введите 6-значный PIN-код';
 
   @override
-  String get field_required => 'Это поле обязательно к заполнению';
+  String get field_required => 'Это поле обязательно';
 
   @override
   String get image_required => 'Это изображение обязательно';
 
   @override
-  String get server_error_message => '';
+  String get malaz => 'Малаз';
+
+  @override
+  String get share_your_property => 'Поделитесь с нами деталями вашего объекта';
+
+  @override
+  String get add_property => 'Добавить объект';
+
+  @override
+  String get uploud_photo_property => 'Нажмите, чтобы загрузить фото объекта';
+
+  @override
+  String get essential_details => 'Основные детали';
+
+  @override
+  String get bedrooms => 'Спальни:';
+
+  @override
+  String get bathrooms => 'Ванные:';
+
+  @override
+  String get bathrooms_no_dots => 'Ванные';
+
+  @override
+  String get area => 'Площадь:';
+
+  @override
+  String get price => 'Цена';
+
+  @override
+  String get property_type => 'Тип недвижимости';
+
+  @override
+  String get apartment => 'Квартира';
+
+  @override
+  String get villa => 'Вилла';
+
+  @override
+  String get house => 'Дом';
+
+  @override
+  String get farm => 'Ферма';
+
+  @override
+  String get country_house => 'Загородный дом';
+
+  @override
+  String get location_details => 'Детали местоположения';
+
+  @override
+  String get city => 'Город:';
+
+  @override
+  String get syria => 'Сирия';
+
+  @override
+  String get governorate => 'Провинция:';
+
+  @override
+  String get damascus => 'Дамаск';
+
+  @override
+  String get address => 'Адрес:';
+
+  @override
+  String get address_loc => 'Аль-Хамак, Бостан Аль-Дур';
+
+  @override
+  String get description => 'Описание';
+
+  @override
+  String get describe_property => 'Опишите детали вашего объекта...';
+
+  @override
+  String get save => 'Сохранить';
+
+  @override
+  String get verified_host => 'Проверенный хозяин';
+
+  @override
+  String get owner => 'Владелец';
+
+  @override
+  String get rooms => 'Комнаты';
+
+  @override
+  String get reviews => 'Отзывы';
+
+  @override
+  String get review => 'Отзыв';
+
+  @override
+  String get view_all => 'Посмотреть все';
+
+  @override
+  String get per_month => 'в месяц';
+
+  @override
+  String get book_now => 'Забронировать';
+
+  @override
+  String get month => 'месяц';
+
+  @override
+  String get new_ => 'Новое';
+
+  @override
+  String get network_error_message =>
+      'Произошла ошибка сети. Пожалуйста, проверьте подключение к интернету и попробуйте еще раз.';
+
+  @override
+  String get request_cancelled_error_message => 'Запрос был отменен';
+
+  @override
+  String get unexpected_error_message => 'Произошла непредвиденная ошибка';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
+  String get warring => 'Предупреждение';
 }

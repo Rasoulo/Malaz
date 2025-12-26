@@ -22,6 +22,7 @@ class AppTheme {
         onBackground: AppColors.textPrimaryLight,
         onSurface: AppColors.textPrimaryLight,
         onError: Colors.white,
+        tertiary: AppColors.tertiary,
       ),
     );
   }
@@ -43,6 +44,7 @@ class AppTheme {
         onBackground: AppColors.textPrimaryDark,
         onSurface: AppColors.textPrimaryDark,
         onError: Colors.white,
+        tertiary: AppColors.tertiary,
       ),
     );
   }

@@ -10,9 +10,9 @@ class ApartmentRepositoryImpl implements ApartmentRepository {
   ApartmentRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<ApartmentsList> getApartments() async {
+  Future<ApartmentsList> getApartments({required String? cursor}) async {
     try {
-      final remoteApartments = await remoteDataSource.getApartments();
+      final remoteApartments = await remoteDataSource.getApartments(cursor: cursor);
       return remoteApartments;
     } catch (e) {
       rethrow;

@@ -10,6 +10,6 @@ class GetApartmentsUseCase {
   GetApartmentsUseCase(this.repository);
 
   Future<ApartmentsList> call({required String? cursor}) async {
-    return await repository.getApartments();
+    return await repository.getApartments(cursor: cursor);
   }
 }

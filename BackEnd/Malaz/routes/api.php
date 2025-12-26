@@ -19,11 +19,11 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::middleware(['auth:sanctum', 'role:ADMIN'])->group(function () {
         Route::get('/', 'index')->name('users.index');
         Route::put('{user}', 'update')->name('users.update');
+        Route::get('/{user}/identity_card_image', 'showIdentityCardImage')->name('users.identity_card_image');
     });
     Route::middleware(['auth:sanctum', 'role:ADMIN,USER'])->group(function () {
         Route::post('/language', 'updateLanguage')->name('user.language.update');
         Route::get('/{user}/profile_image', 'showProfileImage')->name('users.profile_image');
-        Route::get('/{user}/identity_card_image', 'showIdentityCardImage')->name('users.identity_card_image');
         Route::post('request-update', 'request_update')->name('users.requestUpdate');
         Route::post('change-password', 'changepassword')->name('users.changePassword');
         Route::post('logout', 'logout')->name('users.logout');
@@ -31,6 +31,8 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
         Route::post('favorites/{property}', 'addtofav')->name('users.addFavorite');
         Route::delete('favorites/{property}', 'erasefromfav')->name('users.removeFavorite');
         Route::get('favorites', 'getfav')->name('users.getFavorites');
+        Route::post('send-otppassword', 'sendOtp_passwordone')->name('users.sendOtppassword');
+        Route::get('showinfo/{user}', 'showinfo')->name('users.showinfo');
     });
     Route::post('register', 'register')->name('users.register');
     Route::post('login', 'login')->name('users.login');

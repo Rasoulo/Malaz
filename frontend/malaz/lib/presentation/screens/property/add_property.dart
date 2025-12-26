@@ -1,23 +1,24 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
 
-class AddProperty extends StatefulWidget {
-  const AddProperty({super.key});
+class AddPropertyScreen extends StatefulWidget {
+  const AddPropertyScreen({super.key});
 
   @override
-  State<AddProperty> createState() => _AddPropertyState();
+  State<AddPropertyScreen> createState() => _AddPropertyScreenState();
 }
 
-class _AddPropertyState extends State<AddProperty> {
+class _AddPropertyScreenState extends State<AddPropertyScreen> {
+  //  State Management & Controllers
   final List<XFile> _images = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _showImageError = false;
 
-  // Controllers لحقول الإدخال
   final TextEditingController _bedroomsController = TextEditingController();
   final TextEditingController _bathroomsController = TextEditingController();
   final TextEditingController _areaController = TextEditingController();
@@ -27,8 +28,30 @@ class _AddPropertyState extends State<AddProperty> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  String _selectedPropertyType = 'Apartment';
+  String _selectedPropertyType = '';
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_selectedPropertyType.isEmpty) {
+      _selectedPropertyType = AppLocalizations.of(context)!.apartment;
+    }
+  }
+
+  @override
+  void dispose() {
+    _bedroomsController.dispose();
+    _bathroomsController.dispose();
+    _areaController.dispose();
+    _priceController.dispose();
+    _cityController.dispose();
+    _governorateController.dispose();
+    _addressController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  // 2. Business Logic/Actions
   void _addPhoto(XFile? img) {
     if (img != null) {
       setState(() {
@@ -48,26 +71,18 @@ class _AddPropertyState extends State<AddProperty> {
   }
 
   void _submitProperty() {
-    // 1. التحقق من وجود صورة
     if (_images.isEmpty) {
       setState(() {
         _showImageError = true;
       });
     }
 
-    // 2. التحقق من صحة حقول النموذج (Validation)
-    final isValid = _formKey.currentState!.validate();
+    final bool isFormValid = _formKey.currentState!.validate();
+    final bool hasImages = _images.isNotEmpty;
 
-    if (isValid && _images.isNotEmpty) {
-      // إذا كان النموذج صحيحاً والصور موجودة، قم بإرسال البيانات
+    if (isFormValid && hasImages) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Property Data is valid and saved!')),
-      );
-      // يمكنك هنا إضافة منطق إرسال البيانات (API call)
-    } else {
-      // إظهار رسالة خطأ عامة إذا فشل التحقق
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please correct the highlighted errors.')),
+        const SnackBar(content: Text('Form Submitted Successfully!')),
       );
     }
   }
@@ -76,16 +91,10 @@ class _AddPropertyState extends State<AddProperty> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final tr = AppLocalizations.of(context)!;
-    const double titlePadding = 24.0; // بادئة موحدة للعناوين
 
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: AppBar(
-        title:  Text("Add property", style: const TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: colorScheme.surface,
-        elevation: 0,
-        foregroundColor: colorScheme.onSurface,
-      ),
+      appBar: const _PropertyAppBar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Form(
@@ -96,387 +105,376 @@ class _AddPropertyState extends State<AddProperty> {
                 children: [
                   const SizedBox(height: 60),
 
-                  // شعار المالاز
-                  ShaderMask(
-                      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-                      child:Center(
-                          child:Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(" MALAZ",style: TextStyle(color: colorScheme.onPrimary,fontSize: 40),),
-                                Icon(Icons.house,color: colorScheme.onPrimary,size: 40,),
-                              ]
-                          )
-                      )
-                  ),
-                  const SizedBox(height: 10),
-
-                  // رسالة الترحيب
-                  ShaderMask(
-                    shaderCallback: (bounds) => AppColors.goldGradientbut.createShader(bounds),
-                    child:const Center(
-                      child: Text(
-                        "Share your property details with us",
-                        style: TextStyle(color: Colors.white,fontSize: 15),
-                      ),
-                    ),
-                  ),
+                  _buildHeader(tr, colorScheme),
                   const SizedBox(height: 40),
 
-                  // 🌟 1. واجهة رفع الصور
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                    child :PropertyImageCarousel(
-                      images: _images,
-                      onImageAdded: _addPhoto,
-                      onImageRemoved: _removePhoto,
-                      showError: _showImageError,
-                    ),
-                  ),
-                  if (_showImageError)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 24),
-                      child: Text(tr.image_required,
-                        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-
+                  _buildImageSection(tr, colorScheme),
                   const SizedBox(height: 30),
 
-                  // 🌟 2. عنوان الميزات الأساسية
-                  Padding(
-                    padding: EdgeInsets.only(left: titlePadding, bottom: 15),
-                    child: Text(
-                      "Essential Details",
-                      style: TextStyle(color: colorScheme.primary,fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  // حقول غرف النوم والحمامات (في صف واحد)
-                  Row(
-                      children: [
-                        Expanded(
-                            child: BedroomTextFieldInline(
-                              controller: _bedroomsController,
-                              icon: Icons.bed,
-                              hint: "0",
-                              preffix: "Bedrooms:",
-                              isnumber: true,
-                              suffix: "",
-                              validator: (value) {
-                                if (value == null || value.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0) {
-                                  return 'Required (Number)';
-                                }
-                                return null;
-                              },
-                            )
-                        ),
-                        Expanded(
-                            child: BedroomTextFieldInline(
-                              controller: _bathroomsController,
-                              icon: Icons.bathtub,
-                              hint: "0",
-                              preffix: "Bathrooms:",
-                              isnumber: true,
-                              suffix: "",
-                              validator: (value) {
-                                if (value == null || value.isEmpty || int.tryParse(value) == null) {
-                                  return 'Required (Number)';
-                                }
-                                return null;
-                              },
-                            )
-                        ),
-                      ]
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  // حقل المساحة
-                  BedroomTextFieldInline(
-                    controller: _areaController,
-                    icon: Icons.square_foot,
-                    hint: "0",
-                    preffix: "Property Area:",
-                    isnumber: true,
-                    suffix: "(sqft)" ,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0) {
-                        return 'Area is required.';
-                      }
-                      return null;
-                    },
-                  ),
-
+                  _buildEssentialDetailsSection(tr, colorScheme),
                   const SizedBox(height: 40),
 
-                  // 🌟 3. قسم السعر
-                  Padding(
-                    padding: EdgeInsets.only(left: titlePadding, bottom: 10),
-                    child: Text(
-                      "Price",
-                      style: TextStyle(color: colorScheme.primary,fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  BedroomTextFieldInline(
-                    controller: _priceController,
-                    icon: Icons.money,
-                    hint: "0",
-                    preffix: "Price:",
-                    isnumber: true,
-                    suffix:"\$" ,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0) {
-                        return 'Price is required.';
-                      }
-                      return null;
-                    },
-                  ),
-
+                  _buildPriceSection(tr, colorScheme),
                   const SizedBox(height: 40),
 
-                  // 🌟 4. قسم نوع العقار
-                  Padding(
-                    padding: EdgeInsets.only(left: titlePadding, bottom: 5),
-                    child: Text(
-                      "Property Type",
-                      style: TextStyle(color: colorScheme.primary,fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  PropertyTypeSelector(
-                      onTypeSelected: (selectedType) {
-                        _selectedPropertyType = selectedType;
-                      }
-                  ),
-
-                  const SizedBox(height:20),
-
-                  // 🌟 5. عنوان تفاصيل الموقع
-                  Padding(
-                    padding: EdgeInsets.only(left: titlePadding, bottom: 15),
-                    child: Text(
-                      "Location Details",
-                      style: TextStyle(color: colorScheme.primary,fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-
-                  // حقول الموقع
-                  Column(
-                      children: [
-                        BedroomTextFieldInline(
-                          controller: _cityController,
-                          icon: Icons.location_city,
-                          hint: "Syria",
-                          preffix: "City:",
-                          isnumber: false,
-                          suffix: "",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'City name is required.';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 15,),
-                        BedroomTextFieldInline(
-                          controller: _governorateController,
-                          icon: Icons.public,
-                          hint: "Damascus",
-                          preffix: "Governorate:",
-                          isnumber: false,
-                          suffix: "",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Governorate is required.';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 10,),
-                        BedroomTextFieldInline(
-                          controller: _addressController,
-                          icon: Icons.pin_drop,
-                          hint: "Alhamak,bostan Aldoor",
-                          preffix: "Address:",
-                          isnumber: false,
-                          suffix:"" ,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Address is required.';
-                            }
-                            return null;
-                          },
-                        ),
-                      ]
-                  ),
-
+                  _buildPropertyTypeSection(tr, colorScheme),
                   const SizedBox(height: 20),
 
-                  // 🌟 6. عنوان الوصف
-                  Padding(
-                    padding: EdgeInsets.only(left: titlePadding, bottom: 10),
-                    child: Text(
-                      "Description",
-                      style: TextStyle(color: colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  _buildLocationDetailsSection(tr, colorScheme),
+                  const SizedBox(height: 20),
 
-                  // حقل الوصف (متعدد الأسطر)
-                  BedroomTextFieldInline(
-                    controller: _descriptionController,
-                    hint: 'Describe your property details...',
-                    icon: Icons.description,
-                    preffix: 'Description:',
-                    isnumber: false, // يسمح بالأسطر المتعددة
-                    suffix: '',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Description is required.';
-                      }
-                      return null;
-                    },
-                  ),
+                  _buildDescriptionSection(tr, colorScheme),
 
-                  // --------------------------------------------------------
-                  // 🌟🌟🌟 زر الحفظ (Save Button) 🌟🌟🌟
-                  // --------------------------------------------------------
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30.0),
-                    child: ElevatedButton(
-                      onPressed: _submitProperty,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: colorScheme.primary, // لون الزر
-                        minimumSize: const Size(double.infinity, 55), // عرض كامل
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 5,
-                      ),
-                      child: Text(
-                        'Save Property', // يمكنك استخدام tr.save_property هنا
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.onPrimary, // لون النص داخل الزر
-                        ),
-                      ),
-                    ),
-                  ),
+                  _buildSaveButton(tr),
 
                   const SizedBox(height: 20),
-                ]
-            ),
+                ]),
           ),
         ),
       ),
     );
   }
-}
-// -------------------------------------------------------------------
-// 2. كلاس PropertyImageCarousel
-// -------------------------------------------------------------------
-class PropertyImageCarousel extends StatefulWidget {
-  final List<XFile> images;
-  final Function(XFile?) onImageAdded;
-  final Function(int index)? onImageRemoved;
-  final bool showError;
 
-  const PropertyImageCarousel({
-    super.key,
-    required this.images,
-    required this.onImageAdded,
-    this.onImageRemoved,
-    this.showError = false,
-  });
+  // 4. Helper Private Methods for UI Construction
 
-  @override
-  State<PropertyImageCarousel> createState() => _PropertyImageCarouselState();
-}
-
-class _PropertyImageCarouselState extends State<PropertyImageCarousel> {
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    widget.onImageAdded(pickedFile);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return DottedBox(
-      isError: widget.showError,
-      child: Container(
-        height: 250,
-        child: Stack(
-          children: <Widget>[
-            // 1. عرض الصور (PageView.builder)
-            Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(13),
-                child: widget.images.isEmpty
-                    ? Center(
-                  child: Text(
-                    'Click to upload a photo of your property',
-                    style: TextStyle(
-                        color: colorScheme.primary,
-                        fontSize: 16
+  Widget _buildHeader(AppLocalizations tr, ColorScheme colorScheme) {
+    return Center(
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ShaderMask(
+                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                child: Text(
+                  tr.malaz,
+                  style: TextStyle(color: colorScheme.onPrimary, fontSize: 40, fontWeight: FontWeight.w500),
+                ),
+              ),
+              ShaderMask(
+                  shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                  child: SizedBox(
+                    height: 70,
+                    width: 60,
+                    child: Image.asset(
+                      "assets/icons/key_logo.png",
+                      color: Colors.white,
                     ),
-                  ),
-                )
-                    : PageView.builder(
-                  itemCount: widget.images.length,
-                  itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        Image.file(
-                          File(widget.images[index].path),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-
-                        // زر الحذف (دائرة حمراء بها X)
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (widget.onImageRemoved != null) {
-                                widget.onImageRemoved!(index);
-                              }
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  color: Colors.red.shade700,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: Colors.white, width: 1.5)
-                              ),
-                              child: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                  ))
+            ]),
+            const SizedBox(height: 10),
+            ShaderMask(
+              shaderCallback: (bounds) => AppColors.goldGradientbut.createShader(bounds),
+              child: Center(
+                child: Text(
+                  tr.share_your_property,
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
             ),
+          ],
+        ));
+  }
 
-            // 2. زر "إضافة صور"
-            Positioned(
-              top: 10,
-              left: 10,
-              child: _GradientFab(onPressed: _pickImage),
+  Widget _buildImageSection(AppLocalizations tr, ColorScheme colorScheme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _PropertyImageCarousel(
+            images: _images,
+            onImageAdded: _addPhoto,
+            onImageRemoved: _removePhoto,
+            showError: _showImageError,
+          ),
+          if (_showImageError)
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 0),
+              child: Text(
+                tr.image_required,
+                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEssentialDetailsSection(AppLocalizations tr, ColorScheme colorScheme) {
+    const double titlePadding = 24.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: titlePadding, bottom: 15),
+          child: Text(
+            tr.essential_details,
+            style: TextStyle(color: colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Row(children: [
+          Expanded(
+              child: _PropertyFormInputField(
+                controller: _bedroomsController,
+                icon: Icons.bed,
+                hint: "0",
+                preffix: tr.bedrooms,
+                isnumber: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0) {
+                    return tr.field_required;
+                  }
+                  return null;
+                },
+              )),
+          Expanded(
+              child: _PropertyFormInputField(
+                controller: _bathroomsController,
+                icon: Icons.bathtub,
+                hint: "0",
+                preffix: tr.bathrooms,
+                isnumber: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0) {
+                    return tr.field_required;
+                  }
+                  return null;
+                },
+              )),
+        ]),
+        const SizedBox(height: 15),
+        _PropertyFormInputField(
+          controller: _areaController,
+          icon: Icons.square_foot,
+          hint: "0",
+          preffix: tr.area,
+          isnumber: true,
+          suffix: ("sqft"),
+          validator: (value) {
+            if (value == null || value.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0) {
+              return tr.field_required;
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPriceSection(AppLocalizations tr, ColorScheme colorScheme) {
+    const double titlePadding = 24.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: titlePadding, bottom: 10),
+          child: Text(
+            tr.price,
+            style: TextStyle(color: colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        _PropertyFormInputField(
+          controller: _priceController,
+          icon: Icons.money,
+          hint: "0",
+          preffix: "${tr.price} :",
+          isnumber: true,
+          suffix: "\$",
+          validator: (value) {
+            if (value == null || value.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0) {
+              return tr.field_required;
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPropertyTypeSection(AppLocalizations tr, ColorScheme colorScheme) {
+    const double titlePadding = 24.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: titlePadding, bottom: 5),
+          child: Text(
+            tr.property_type,
+            style: TextStyle(color: colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        _PropertyTypeSelector(onTypeSelected: (selectedType) {
+          _selectedPropertyType = selectedType;
+        }),
+      ],
+    );
+  }
+
+  Widget _buildLocationDetailsSection(AppLocalizations tr, ColorScheme colorScheme) {
+    const double titlePadding = 24.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: titlePadding, bottom: 15),
+          child: Text(
+            tr.location_details,
+            style: TextStyle(color: colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        _PropertyFormInputField(
+          controller: _cityController,
+          icon: Icons.location_city,
+          hint: tr.syria,
+          preffix: tr.city,
+          isnumber: false,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return tr.field_required;
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 15),
+        _PropertyFormInputField(
+          controller: _governorateController,
+          icon: Icons.public,
+          hint: tr.damascus,
+          preffix: tr.governorate,
+          isnumber: false,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return tr.field_required;
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        _PropertyFormInputField(
+          controller: _addressController,
+          icon: Icons.pin_drop,
+          hint: tr.address_loc,
+          preffix: tr.address,
+          isnumber: false,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return tr.field_required;
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDescriptionSection(AppLocalizations tr, ColorScheme colorScheme) {
+    const double titlePadding = 24.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: titlePadding, bottom: 10),
+          child: Text(
+            tr.description,
+            style: TextStyle(color: colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        _PropertyFormInputField(
+          controller: _descriptionController,
+          hint: tr.describe_property,
+          icon: Icons.description,
+          preffix: "${tr.description}:",
+          isnumber: false,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return tr.field_required;
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSaveButton(AppLocalizations tr) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30.0),
+      child: _PrimaryGradientButton(
+        text: tr.save,
+        onTap: _submitProperty,
+      ),
+    );
+  }
+}
+
+class _PropertyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _PropertyAppBar();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final tr = AppLocalizations.of(context)!;
+
+    return AppBar(
+      title: Text(
+        tr.add_property,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: colorScheme.surface,
+      elevation: 0,
+      foregroundColor: colorScheme.onSurface,
+      centerTitle: false,
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _PrimaryGradientButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onTap;
+
+  const _PrimaryGradientButton({required this.text, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: 55,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned.fill(
+              child: ShaderMask(
+                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              text,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -486,111 +484,7 @@ class _PropertyImageCarouselState extends State<PropertyImageCarousel> {
 }
 
 
-// -------------------------------------------------------------------
-// 3. الكلاس المساعد: DottedBox (يحافظ على اللون الصلب للحدود)
-// -------------------------------------------------------------------
-
-class DottedBox extends StatelessWidget {
-  final Widget child;
-  final bool isError;
-  const DottedBox({required this.child, this.isError = false, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    final Color borderColor = isError ? Colors.red : Theme.of(context).colorScheme.primary;
-
-    const BoxDecoration borderDecoration = BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(18)),
-      border: Border.fromBorderSide(BorderSide(color: Colors.white, width: 2.0)),
-    );
-
-    return Container(
-      width: double.infinity,
-      child: CustomPaint(
-        painter: _PrimaryBorderPainter(
-          decoration: borderDecoration,
-          borderColor: borderColor,
-          isError: isError,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(5),
-          child: child,
-        ),
-      ),
-    );
-  }
-}
-
-// -------------------------------------------------------------------
-// 4. الكلاس المساعد: _PrimaryBorderPainter (الرسام الذي يتعامل مع اللون الصلب)
-// -------------------------------------------------------------------
-
-class _PrimaryBorderPainter extends CustomPainter {
-  final BoxDecoration decoration;
-  final Color? borderColor;
-  final bool isError;
-
-  _PrimaryBorderPainter({required this.decoration, this.borderColor, required this.isError});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Rect rect = Offset.zero & size;
-    final Paint borderPaint = Paint();
-
-    if (isError) {
-      borderPaint.color = Colors.red;
-    } else if (borderColor != null) {
-      borderPaint.color = borderColor!;
-    } else {
-      return;
-    }
-
-    borderPaint.style = PaintingStyle.stroke;
-    borderPaint.strokeWidth = decoration.border!.top.width;
-
-    final RRect rrect = RRect.fromRectAndRadius(rect, decoration.borderRadius!.resolve(TextDirection.ltr).topRight);
-    canvas.drawRRect(rrect.deflate(borderPaint.strokeWidth / 2), borderPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _PrimaryBorderPainter oldDelegate) {
-    return oldDelegate.isError != isError || oldDelegate.borderColor != borderColor;
-  }
-}
-
-// -------------------------------------------------------------------
-// 5. الكلاس المساعد: _GradientFab (زر الإضافة الدائري بالتدرج)
-// -------------------------------------------------------------------
-
-class _GradientFab extends StatelessWidget {
-
-  final VoidCallback onPressed;
-  const _GradientFab({required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: AppColors.realGoldGradient, // ⚠️ يتطلب استيراد AppColors!
-          boxShadow: const [
-            BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
-          ],
-        ),
-        child: Icon(Icons.add_a_photo, color: colorScheme.surface, size: 20),
-      ),
-    );
-  }
-}
-
-class BedroomTextFieldInline extends StatelessWidget {
+class _PropertyFormInputField extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final String hint;
@@ -599,15 +493,14 @@ class BedroomTextFieldInline extends StatelessWidget {
   final String suffix;
   final bool isnumber;
 
-  const BedroomTextFieldInline({
-    super.key,
+  const _PropertyFormInputField({
     this.controller,
     this.validator,
     required this.hint,
     required this.icon,
     required this.isnumber,
     required this.preffix,
-    required this.suffix,
+    this.suffix = '',
   });
 
   @override
@@ -619,14 +512,18 @@ class BedroomTextFieldInline extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 8),
       child: TextFormField(
         controller: controller,
-        validator: validator, // 🌟 تفعيل الـ validator
+        validator: validator,
         keyboardType: isnumber ? TextInputType.number : TextInputType.text,
-
         maxLines: isnumber ? 1 : null,
         minLines: isnumber ? null : 1,
 
+        inputFormatters: isnumber
+            ? [
+          FilteringTextInputFormatter.digitsOnly,
+        ]
+            : null,
+
         decoration: InputDecoration(
-          // 1. Prefix (الأيقونة والنص)
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 15, right: 10),
             child: Row(
@@ -649,7 +546,6 @@ class BedroomTextFieldInline extends StatelessWidget {
             ),
           ),
 
-          // 2. Suffix (الوحدة)
           suffixIcon: (suffix.isNotEmpty && suffix != ' ')
               ? Padding(
             padding: const EdgeInsets.only(right: 15),
@@ -679,22 +575,18 @@ class BedroomTextFieldInline extends StatelessWidget {
           fillColor: colorScheme.surface,
           contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
 
-          // الحدود العادية (تظهر عند عدم التركيز)
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.5), width: 1.0),
           ),
-          // حدود حالة التركيز
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: colorScheme.primary, width: 2.0),
           ),
-          // 🌟 حدود حالة الخطأ (تظهر باللون الأحمر عند فشل الـ validation)
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Colors.red, width: 1.5),
           ),
-          // 🌟 حدود حالة التركيز مع الخطأ
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Colors.red, width: 2.0),
@@ -704,13 +596,78 @@ class BedroomTextFieldInline extends StatelessWidget {
     );
   }
 }
-class TypeSelectorButton extends StatelessWidget {
+
+
+class _PropertyTypeSelector extends StatefulWidget {
+  final Function(String type)? onTypeSelected;
+
+  const _PropertyTypeSelector({this.onTypeSelected});
+
+  @override
+  State<_PropertyTypeSelector> createState() => _PropertyTypeSelectorState();
+}
+
+class _PropertyTypeSelectorState extends State<_PropertyTypeSelector> {
+  List<String> propertyTypes = [];
+  String? _selectedType;
+  bool _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_isInit) {
+      final tr = AppLocalizations.of(context)!;
+      propertyTypes = [
+        tr.apartment,
+        tr.villa,
+        tr.house,
+        tr.farm,
+        tr.country_house,
+      ];
+
+      if (propertyTypes.isNotEmpty) {
+        _selectedType = propertyTypes.first;
+      }
+      _isInit = false;
+    }
+  }
+
+  void _handleSelection(String type) {
+    setState(() {
+      _selectedType = type;
+    });
+    if (widget.onTypeSelected != null && _selectedType != null) {
+      widget.onTypeSelected!(_selectedType!);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+      child: Wrap(
+        spacing: 12.0,
+        runSpacing: 10.0,
+        children: propertyTypes.map((type) {
+          return _TypeSelectorButton(
+            text: type,
+            isSelected: _selectedType == type,
+            onTap: () => _handleSelection(type),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+
+class _TypeSelectorButton extends StatelessWidget {
   final String text;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const TypeSelectorButton({
-    super.key,
+  const _TypeSelectorButton({
     required this.text,
     required this.isSelected,
     required this.onTap,
@@ -748,60 +705,194 @@ class TypeSelectorButton extends StatelessWidget {
   }
 }
 
-// -------------------------------------------------------------------
-// 9. كلاس PropertyTypeSelector
-// -------------------------------------------------------------------
+class _PropertyImageCarousel extends StatefulWidget {
+  final List<XFile> images;
+  final Function(XFile?) onImageAdded;
+  final Function(int index)? onImageRemoved;
+  final bool showError;
 
-class PropertyTypeSelector extends StatefulWidget {
-  final Function(String type)? onTypeSelected;
-
-  const PropertyTypeSelector({super.key, this.onTypeSelected});
+  const _PropertyImageCarousel({
+    required this.images,
+    required this.onImageAdded,
+    this.onImageRemoved,
+    this.showError = false,
+  });
 
   @override
-  State<PropertyTypeSelector> createState() => _PropertyTypeSelectorState();
+  State<_PropertyImageCarousel> createState() => _PropertyImageCarouselState();
 }
 
-class _PropertyTypeSelectorState extends State<PropertyTypeSelector> {
-
-  final List<String> propertyTypes = [
-    'Apartment',
-    'Villa',
-    'House',
-    'Farm',
-    'Country House',
-  ];
-
-  String? _selectedType;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedType = propertyTypes.first;
-  }
-
-  void _handleSelection(String type) {
-    setState(() {
-      _selectedType = type;
-    });
-    if (widget.onTypeSelected != null) {
-      widget.onTypeSelected!(_selectedType!);
-    }
+class _PropertyImageCarouselState extends State<_PropertyImageCarousel> {
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    widget.onImageAdded(pickedFile);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-      child: Wrap(
-        spacing: 12.0,
-        runSpacing: 10.0,
-        children: propertyTypes.map((type) {
-          return TypeSelectorButton(
-            text: type,
-            isSelected: _selectedType == type,
-            onTap: () => _handleSelection(type),
-          );
-        }).toList(),
+    final colorScheme = Theme.of(context).colorScheme;
+    final tr = AppLocalizations.of(context)!;
+
+    return _DottedBox(
+      isError: widget.showError,
+      child: SizedBox(
+        height: 250,
+        child: Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(13),
+                child: widget.images.isEmpty
+                    ? Center(
+                  child: Text(
+                    tr.uploud_photo_property,
+                    style: TextStyle(color: colorScheme.primary, fontSize: 16),
+                  ),
+                )
+                    : PageView.builder(
+                  itemCount: widget.images.length,
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      children: [
+                        Image.file(
+                          File(widget.images[index].path),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+
+                        // زر الحذف
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (widget.onImageRemoved != null) {
+                                widget.onImageRemoved!(index);
+                              }
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  color: Colors.red.shade700,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.white, width: 1.5)),
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            // زر إضافة الصورة
+            Positioned(
+              top: 10,
+              left: 10,
+              child: _GradientFab(onPressed: _pickImage),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class _DottedBox extends StatelessWidget {
+  final Widget child;
+  final bool isError;
+  const _DottedBox({required this.child, this.isError = false, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final Color borderColor = isError ? Colors.red : Theme.of(context).colorScheme.primary;
+
+    const BoxDecoration borderDecoration = BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(18)),
+      border: Border.fromBorderSide(BorderSide(color: Colors.transparent, width: 2.0)),
+    );
+
+    return SizedBox(
+      width: double.infinity,
+      child: CustomPaint(
+        painter: __PrimaryBorderPainter(
+          decoration: borderDecoration,
+          borderColor: borderColor,
+          isError: isError,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+
+class __PrimaryBorderPainter extends CustomPainter {
+  final BoxDecoration decoration;
+  final Color? borderColor;
+  final bool isError;
+
+  __PrimaryBorderPainter({required this.decoration, this.borderColor, required this.isError});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Rect rect = Offset.zero & size;
+    final Paint borderPaint = Paint();
+
+    borderPaint.color = isError ? Colors.red : (borderColor ?? Colors.transparent);
+
+    borderPaint.style = PaintingStyle.stroke;
+    borderPaint.strokeWidth = 2.0;
+
+    final RRect rrect =
+    RRect.fromRectAndRadius(rect, decoration.borderRadius!.resolve(TextDirection.ltr).topLeft);
+
+    // لرسم خط متقطع (dotted line)، نحتاج إلى منطق مختلف. بما أن الكلاس الأصلي لم يكن يرسم خطاً متقطعاً حقيقياً،
+    // بل يرسم RRect عادي، سأبقيه كما كان مع تغيير الاسم ليصبح خاصاً:
+    canvas.drawRRect(rrect.deflate(borderPaint.strokeWidth / 2), borderPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant __PrimaryBorderPainter oldDelegate) {
+    return oldDelegate.isError != isError || oldDelegate.borderColor != borderColor;
+  }
+}
+
+
+class _GradientFab extends StatelessWidget {
+  final VoidCallback onPressed;
+  const _GradientFab({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: AppColors.realGoldGradient,
+          boxShadow: const [
+            BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
+          ],
+        ),
+        child: Icon(Icons.add_a_photo, color: colorScheme.surface, size: 20),
       ),
     );
   }

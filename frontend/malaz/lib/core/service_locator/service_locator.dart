@@ -82,18 +82,14 @@ Future<void> setUpServices() async {
 
   sl.registerLazySingleton<ApartmentRemoteDataSource>(() => ApartmentRemoteDataSourceImpl(networkService: sl()));
 
-  /// --- Auth datasources, repository, usecases, cubit --- //
-  /// Data sources
   sl.registerLazySingleton<AuthLocalDatasource>(() => AuthLocalDatasourceImpl(sl<SharedPreferences>()),);
   sl.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(networkService: sl()));
 
-  /// Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
     authRemoteDatasource: sl(),
     authLocalDatasource: sl(),
   ));
 
-  /// Usecases
   sl.registerLazySingleton(() => RegisterUsecase(repository: sl()));
   sl.registerLazySingleton(() => LoginUsecase(repository: sl()));
   sl.registerLazySingleton(() => LogoutUsecase(repository: sl()));
@@ -102,11 +98,8 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => SendOtpUsecase(sl()));
   sl.registerLazySingleton(() => VerifyOtpUsecase(sl()));
 
-  /// Dio interceptor needs local datasource -> attach after creating dio
-  /// Auth interceptor (attach AFTER registering local datasource)
   sl.registerLazySingleton(() => AuthInterceptor(localDatasource: sl()));
 
-  /// Cubit (factory so every use-case screen can create a fresh cubit if needed)
   sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
     loginUsecase: sl(),
     logoutUsecase: sl(),

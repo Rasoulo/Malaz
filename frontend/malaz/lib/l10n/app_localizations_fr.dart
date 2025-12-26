@@ -9,7 +9,7 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get welcome_back => 'Content de vous revoir';
+  String get welcome_back => 'Bon retour';
 
   @override
   String get login_to_continue =>
@@ -40,16 +40,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get my_favorites => 'Mes favoris';
 
   @override
-  String get favorites => 'Favoris';
+  String get favorites => 'favoris';
 
   @override
-  String get chats => 'Discussions';
+  String get chats => 'discussions';
 
   @override
-  String get select_theme => 'Sélectionner le thème';
+  String get select_theme => 'choisir le thème';
 
   @override
-  String get select_language => 'Sélectionner la langue';
+  String get select_language => 'choisir la langue';
 
   @override
   String get messages => 'Messages';
@@ -70,7 +70,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get my_profile => 'Mon profil';
 
   @override
-  String get become_a_renter => 'Devenir un loueur';
+  String get become_a_renter => 'Devenir hôte';
 
   @override
   String get language => 'Langue';
@@ -79,7 +79,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get first_name => 'Prénom';
 
   @override
-  String get last_name => 'Nom de famille';
+  String get last_name => 'Nom';
 
   @override
   String get have_account => 'Avez-vous déjà un compte ?';
@@ -95,34 +95,34 @@ class AppLocalizationsFr extends AppLocalizations {
   String get password => 'Mot de passe';
 
   @override
-  String get confirm_password => 'Confirmez le mot de passe';
+  String get confirm_password => 'Confirmer le mot de passe';
 
   @override
   String get id_document_message =>
-      'Veuillez télécharger une photo de votre pièce d\'identité pour des raisons de sécurité :';
+      'Veuillez télécharger une photo de votre pièce d\'identité pour des raisons de sécurité :';
 
   @override
   String get upload_id_message =>
-      'Cliquez pour télécharger une pièce d\'identité';
+      'Cliquez pour télécharger la pièce d\'identité';
 
   @override
   String get png_jpg => 'PNG, JPG, PDF jusqu\'à 10 Mo';
 
   @override
   String get profile_image_message =>
-      'Choisissez une photo qui vous représente ! Si besoin, votre photo de profil apparaîtra lorsque vous contacterez le propriétaire de votre futur appartement !';
+      'Choisissez une photo qui vous correspond !\nSi besoin..\n\nvotre photo de profil apparaîtra lorsque vous enverrez un message au futur propriétaire !';
 
   @override
-  String get next => 'Prochain';
+  String get next => 'Suivant';
 
   @override
-  String get previous => 'le précédent';
+  String get previous => 'Précédent';
 
   @override
-  String get send_code => 'envoyer le code de vérification';
+  String get send_code => 'Envoyer le code de vérification';
 
   @override
-  String get date_of_birth => 'date de naissance';
+  String get date_of_birth => 'Date de naissance';
 
   @override
   String get six_digits => 'Veuillez saisir un code PIN à 6 chiffres';
@@ -131,8 +131,132 @@ class AppLocalizationsFr extends AppLocalizations {
   String get field_required => 'Ce champ est obligatoire';
 
   @override
-  String get image_required => 'Cette image est requise';
+  String get image_required => 'Cette image est obligatoire';
 
   @override
-  String get server_error_message => '';
+  String get malaz => 'MALAZ';
+
+  @override
+  String get share_your_property =>
+      'Partagez les détails de votre bien avec nous';
+
+  @override
+  String get add_property => 'Ajouter un bien';
+
+  @override
+  String get uploud_photo_property =>
+      'Cliquez pour télécharger des photos de votre bien';
+
+  @override
+  String get essential_details => 'Détails essentiels';
+
+  @override
+  String get bedrooms => 'Chambres :';
+
+  @override
+  String get bathrooms => 'Salles de bain :';
+
+  @override
+  String get bathrooms_no_dots => 'Salles de bain';
+
+  @override
+  String get area => 'Surface :';
+
+  @override
+  String get price => 'Prix';
+
+  @override
+  String get property_type => 'Type de bien';
+
+  @override
+  String get apartment => 'Appartement';
+
+  @override
+  String get villa => 'Villa';
+
+  @override
+  String get house => 'Maison';
+
+  @override
+  String get farm => 'Ferme';
+
+  @override
+  String get country_house => 'Maison de campagne';
+
+  @override
+  String get location_details => 'Détails de l\'emplacement';
+
+  @override
+  String get city => 'Ville :';
+
+  @override
+  String get syria => 'Syrie';
+
+  @override
+  String get governorate => 'Gouvernorat :';
+
+  @override
+  String get damascus => 'Damas';
+
+  @override
+  String get address => 'Adresse :';
+
+  @override
+  String get address_loc => 'Alhamak, Bostan Aldoor';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get describe_property => 'Décrivez les détails de votre bien...';
+
+  @override
+  String get save => 'Enregistrer';
+
+  @override
+  String get verified_host => 'Hôte vérifié';
+
+  @override
+  String get owner => 'Propriétaire';
+
+  @override
+  String get rooms => 'Pièces';
+
+  @override
+  String get reviews => 'Avis';
+
+  @override
+  String get review => 'Avis';
+
+  @override
+  String get view_all => 'Tout voir';
+
+  @override
+  String get per_month => 'par mois';
+
+  @override
+  String get book_now => 'Réserver';
+
+  @override
+  String get month => 'mois';
+
+  @override
+  String get new_ => 'Nouveau';
+
+  @override
+  String get network_error_message =>
+      'Une erreur réseau est survenue. Veuillez vérifier votre connexion internet et réessayer.';
+
+  @override
+  String get request_cancelled_error_message => 'La demande a été annulée';
+
+  @override
+  String get unexpected_error_message =>
+      'Une erreur inattendue s\'est produite';
+
+  @override
+  String get retry => 'Réessayer';
+
+  @override
+  String get warring => 'Avertissement';
 }

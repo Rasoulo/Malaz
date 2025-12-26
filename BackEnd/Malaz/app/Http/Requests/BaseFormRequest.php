@@ -50,7 +50,7 @@ class BaseFormRequest extends FormRequest
             response()->json([
                 'message' => $message,
                 'status' => $status,
-            ])
+            ], 400)
         );
     }
 }

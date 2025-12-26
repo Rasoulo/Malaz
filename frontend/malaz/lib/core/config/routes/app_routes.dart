@@ -4,8 +4,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
+import 'package:malaz/presentation/screens/auth/my_profile/my_profile_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
+import 'package:malaz/presentation/screens/chats/ChatWithAPerson.dart';
 import 'package:malaz/presentation/screens/details/details_screen.dart';
+import 'package:malaz/presentation/screens/property/add_property.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/main_wrapper/main_wrapper.dart'; // الشاشة الرئيسية
@@ -61,7 +64,7 @@ GoRouter buildAppRouter() {
       final goingToSplash = state.matchedLocation == '/';
 
       /// 1️⃣ أثناء التحميل أو البداية → Splash
-      if (authState is AuthInitial || authState is AuthLoading) {
+      if (authState is AuthInitial) {
         return goingToSplash ? null : '/';
       }
 
@@ -136,6 +139,18 @@ GoRouter buildAppRouter() {
         path: '/pending',
         name: 'pending',
         builder: (context, state) => UnderReview(),
+      ),
+
+      GoRoute(
+        path: '/profile',
+        name: 'profile',
+        builder: (context, state) => MyProfileScreen(),
+      ),
+
+      GoRoute(
+        path: '/one_chat',
+        name: 'one_chat',
+        builder: (context, state) => ChatWithAPerson(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

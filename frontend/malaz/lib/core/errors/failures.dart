@@ -38,7 +38,7 @@ class GeneralFailure extends Failure {
 /// This failure appears when the user is in a pending state,
 /// meaning an account with that username and password already exists but has not yet been approved by the admin.
 class InvalidCredentialsFailure extends Failure {
-  const InvalidCredentialsFailure([super.message]);
+  const InvalidCredentialsFailure(super.message);
 }
 
 /// This exception appears when there is no account with that number entered by the user.
@@ -48,7 +48,7 @@ class PhoneNotFoundFailure extends Failure {
 
 /// This exception appears when the password for the accompanying number is incorrect.
 class WrongPasswordFailure extends Failure {
-  const WrongPasswordFailure([super.message]);
+  const WrongPasswordFailure(super.message);
 }
 
 class PendingApprovalFailure extends Failure {
@@ -58,4 +58,12 @@ class PendingApprovalFailure extends Failure {
 
 class NetworkFailure extends Failure {
   const NetworkFailure([super.message]);
+}
+
+class UnauthenticatedFailure extends Failure {
+  const UnauthenticatedFailure(super.message);
+}
+
+class UnexpectedFailure extends Failure {
+  const UnexpectedFailure(super.message);
 }

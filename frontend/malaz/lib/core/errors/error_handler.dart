@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:malaz/l10n/app_localizations.dart';
+import 'package:path/path.dart';
 import '../errors/exceptions.dart';
 
 /// TODO: translate
@@ -15,10 +18,10 @@ class ErrorHandler {
         return _handleBadResponse(error.response);
 
       case DioExceptionType.cancel:
-        return ServerException(message: 'Request was cancelled');
+        return ServerException();
 
       default:
-        return ServerException(message: 'Unexpected error occurred');
+        return UnexpectedException();
     }
   }
 
@@ -34,7 +37,7 @@ class ErrorHandler {
     }
 
     if (statusCode == 401) {
-      return UnauthenticatedException(message: message);
+      return UnauthenticatedException(message);
     }
 
     if(statusCode == 403) {

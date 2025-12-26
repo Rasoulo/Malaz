@@ -34,6 +34,11 @@ class UserController extends Controller
 
     public function showIdentityCardImage(User $user)
     {
+        // $source = auth()->user();
+        // if ($user->id != $source->id && $source->role != 'ADMIN') {
+        //     return 9999;
+        // }
+
         $image = base64_decode($user->identity_card_image);
         return response($image)
             ->header('Content-Type', $user->identity_card_mime);
@@ -74,10 +79,32 @@ class UserController extends Controller
 
     public function sendOtp(Request $request)
     {
-        //return response()->json(['message' => 'OTP sent111']);;
         $request->validate([
             'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
         ]);
+
+        $otp = rand(100000, 999999);
+
+        Cache::put('otp_' . $request->phone, $otp, now()->addMinutes(5));
+
+        app('greenapi')->sendMessage($request->phone, "Verification code: {$otp}");
+
+        return response()->json(['message' => __('validation.user.otp_sent'),]);
+    }
+
+    public function sendOtp_passwordone(Request $request)
+    {
+        $user = auth()->user();
+        $request->validate([
+            'phone' => 'required|regex:/^\+?\d{9,15}$/|exists:users,phone',
+        ]);
+
+        if ($user->phone != $request->phone)
+            return response()->json([
+                'message' => __('validation.phone.doesnotmatch'),
+            ]);
+
+
 
         $otp = rand(100000, 999999);
 
@@ -126,17 +153,28 @@ class UserController extends Controller
         ]);
     }
 
+    public function showinfo(User $user)
+    {
+        return response()->json([
+            'message' => 'here it is user information',
+            'user' => $user,
+            'status' => 200,
+        ]);
+    }
+
     public function request_update(UpdateUserRequest $request)
     {
         $user = auth()->user();
-        $editrequest = EditRequest::create([
-            'user_id' => $user->id,
-            'old_data' => $user->toArray(),
-            'new_data' => $request->validated(),
-            'status' => 'PENDING',
-        ]);
+        $validated = $request->validated();
+        $user->update(collect($validated)->except('profile_image')->toArray());
+        if ($request->hasFile('profile_image')) {
+            $imageData = base64_encode(file_get_contents($request->file('profile_image')->getRealPath()));
+            $user->profile_image = $imageData;
+            $user->profile_image_mime = $request->file('profile_image')->getMimeType();
+        }
+        $user->save();
         return response()->json([
-            'data' => $editrequest,
+            'data' => $user,
             'message' => __('validation.user.edit_request_sent'),
             'status' => 200,
         ]);
@@ -227,21 +265,21 @@ class UserController extends Controller
     public function changepassword(Request $request)
     {
         $request->validate([
-            'current_password' => 'required',
+            // 'current_password' => 'required',
             'new_password' => 'required|string|min:8|confirmed'
         ]);
 
         $user = auth()->user();
-        if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json(['message' => __('validation.user.password_incorrect')], 400);
-        }
+        // if (!Hash::check($request->current_password, $user->password)) {
+        //     return response()->json(['message' => __('validation.user.password_incorrect')], 400);
+        // }
 
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
 
         auth()->user()->tokens()->delete();
-
+        
         return response()->json(['message' => __('validation.user.password_updated')], 200);
     }
 
@@ -281,7 +319,7 @@ class UserController extends Controller
         return response()->json(['message' => __('validation.user.logged_out')]);
     }
 
-    public function me()
+    public function info(User $user)
     {
         return response()->json(auth()->user());
     }

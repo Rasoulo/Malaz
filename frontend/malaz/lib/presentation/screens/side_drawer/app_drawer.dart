@@ -17,7 +17,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-      final colorScheme = theme.colorScheme;
+    final colorScheme = theme.colorScheme;
     final isDarkMode = theme.brightness == Brightness.dark;
     final tr = AppLocalizations.of(context)!;
 
@@ -27,8 +27,7 @@ class AppDrawer extends StatelessWidget {
           context.go('/login');
         }
       },
-      child: Scaffold(
-          body: Drawer(
+      child: Drawer(
             backgroundColor: theme.scaffoldBackgroundColor,
             child: Column(
               children: [
@@ -71,8 +70,10 @@ class AppDrawer extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     children: [
-                      _buildDrawerItem(context, Icons.person_outline, tr.my_profile,
-                              () {}), // ?
+                      _buildDrawerItem(context, Icons.person_outline, tr.my_profile, () {
+                        //Navigator.pop(context);
+                        context.push('/profile');
+                      }),
                       _buildDrawerItem(context, Icons.palette_outlined, tr.theme, () {
                         Navigator.pop(context);
                         _showThemeBottomSheet(context);
@@ -112,7 +113,6 @@ class AppDrawer extends StatelessWidget {
               ],
             ),
           ),
-      ),
     );
   }
 

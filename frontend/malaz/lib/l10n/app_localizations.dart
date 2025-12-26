@@ -344,11 +344,251 @@ abstract class AppLocalizations {
   /// **'This image is required'**
   String get image_required;
 
-  /// No description provided for @server_error_message.
+  /// No description provided for @malaz.
   ///
   /// In en, this message translates to:
-  /// **''**
-  String get server_error_message;
+  /// **'MALAZ'**
+  String get malaz;
+
+  /// No description provided for @share_your_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your property details with us'**
+  String get share_your_property;
+
+  /// No description provided for @add_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Add property'**
+  String get add_property;
+
+  /// No description provided for @uploud_photo_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Click to upload photos of your property'**
+  String get uploud_photo_property;
+
+  /// No description provided for @essential_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Essential Details'**
+  String get essential_details;
+
+  /// No description provided for @bedrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedrooms:'**
+  String get bedrooms;
+
+  /// No description provided for @bathrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Bathrooms:'**
+  String get bathrooms;
+
+  /// No description provided for @bathrooms_no_dots.
+  ///
+  /// In en, this message translates to:
+  /// **'Bathrooms'**
+  String get bathrooms_no_dots;
+
+  /// No description provided for @area.
+  ///
+  /// In en, this message translates to:
+  /// **'Area:'**
+  String get area;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @property_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Type'**
+  String get property_type;
+
+  /// No description provided for @apartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment'**
+  String get apartment;
+
+  /// No description provided for @villa.
+  ///
+  /// In en, this message translates to:
+  /// **'Villa'**
+  String get villa;
+
+  /// No description provided for @house.
+  ///
+  /// In en, this message translates to:
+  /// **'House'**
+  String get house;
+
+  /// No description provided for @farm.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm'**
+  String get farm;
+
+  /// No description provided for @country_house.
+  ///
+  /// In en, this message translates to:
+  /// **'Country House'**
+  String get country_house;
+
+  /// No description provided for @location_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Details'**
+  String get location_details;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City:'**
+  String get city;
+
+  /// No description provided for @syria.
+  ///
+  /// In en, this message translates to:
+  /// **'Syria'**
+  String get syria;
+
+  /// No description provided for @governorate.
+  ///
+  /// In en, this message translates to:
+  /// **'Governorate:'**
+  String get governorate;
+
+  /// No description provided for @damascus.
+  ///
+  /// In en, this message translates to:
+  /// **'Damascus'**
+  String get damascus;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address:'**
+  String get address;
+
+  /// No description provided for @address_loc.
+  ///
+  /// In en, this message translates to:
+  /// **'Alhamak,bostan Aldoor'**
+  String get address_loc;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @describe_property.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your property details...'**
+  String get describe_property;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @verified_host.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified Host'**
+  String get verified_host;
+
+  /// No description provided for @owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get owner;
+
+  /// No description provided for @rooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms'**
+  String get rooms;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviews;
+
+  /// No description provided for @review.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get review;
+
+  /// No description provided for @view_all.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get view_all;
+
+  /// No description provided for @per_month.
+  ///
+  /// In en, this message translates to:
+  /// **'per month'**
+  String get per_month;
+
+  /// No description provided for @book_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Now'**
+  String get book_now;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get month;
+
+  /// No description provided for @new_.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get new_;
+
+  /// No description provided for @network_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error occurred. Please check your internet connection and try again.'**
+  String get network_error_message;
+
+  /// No description provided for @request_cancelled_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Request was cancelled'**
+  String get request_cancelled_error_message;
+
+  /// No description provided for @unexpected_error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected error occurred'**
+  String get unexpected_error_message;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @warring.
+  ///
+  /// In en, this message translates to:
+  /// **'warring'**
+  String get warring;
 }
 
 class _AppLocalizationsDelegate
