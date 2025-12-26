@@ -49,6 +49,41 @@
 							"response": []
 						},
 						{
+							"name": "Get All Users Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admintoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/users/",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Update A Request",
 							"request": {
 								"auth": {
@@ -556,8 +591,18 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "profile_image",
+											"type": "file",
+											"src": "postman-cloud:///1f0d78d7-20e0-4f50-bd45-84602159dfba"
+										}
+									]
+								},
 								"url": {
-									"raw": "{{localhost}}/api/users/request-update?first_name=almalek&last_name=poteto",
+									"raw": "{{localhost}}/api/users/request-update?first_name=almalek&last_name=poteto&date_of_birth=1-1-1",
 									"host": [
 										"{{localhost}}"
 									],
@@ -574,6 +619,10 @@
 										{
 											"key": "last_name",
 											"value": "poteto"
+										},
+										{
+											"key": "date_of_birth",
+											"value": "1-1-1"
 										}
 									]
 								}
@@ -601,8 +650,23 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "new_password",
+											"value": "11223344",
+											"type": "text"
+										},
+										{
+											"key": "new_password_confirmation",
+											"value": "11223344",
+											"type": "text"
+										}
+									]
+								},
 								"url": {
-									"raw": "{{localhost}}/api/users/change-password?current_password=12345678&new_password=123123123&new_password_confirmation=123123123",
+									"raw": "{{localhost}}/api/users/change-password",
 									"host": [
 										"{{localhost}}"
 									],
@@ -610,20 +674,6 @@
 										"api",
 										"users",
 										"change-password"
-									],
-									"query": [
-										{
-											"key": "current_password",
-											"value": "12345678"
-										},
-										{
-											"key": "new_password",
-											"value": "123123123"
-										},
-										{
-											"key": "new_password_confirmation",
-											"value": "123123123"
-										}
 									]
 								}
 							},
@@ -1043,6 +1093,71 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "showinfo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{localhost}}/api/users/showinfo/2",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"showinfo",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "send otp to change password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{usertoken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{localhost}}/api/users/send-optpassword?phone=963981226535",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"send-optpassword"
+									],
+									"query": [
+										{
+											"key": "phone",
+											"value": "963981226535"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1068,11 +1183,21 @@
 									"key": "identity_card_image",
 									"type": "file",
 									"src": "postman-cloud:///1f0d7719-8fb5-45d0-b60a-adcb1fb598ae"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "12345678",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{localhost}}/api/users/register?phone=+1111111117&first_name=Maher&last_name=Alnouri&password=12345678&date_of_birth=1-1-1&password_confirmation=12345678",
+							"raw": "{{localhost}}/api/users/register?phone=+1111111117&first_name=Maher&last_name=Alnouri&date_of_birth=1-1-1",
 							"host": [
 								"{{localhost}}"
 							],
@@ -1095,16 +1220,8 @@
 									"value": "Alnouri"
 								},
 								{
-									"key": "password",
-									"value": "12345678"
-								},
-								{
 									"key": "date_of_birth",
 									"value": "1-1-1"
-								},
-								{
-									"key": "password_confirmation",
-									"value": "12345678"
 								},
 								{
 									"key": "lang",
@@ -1606,8 +1723,18 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{localhost}}/api/users/login?phone=+7056585603&password=password",
+							"raw": "{{localhost}}/api/users/login?phone=+7056585603",
 							"host": [
 								"{{localhost}}"
 							],
@@ -1620,10 +1747,6 @@
 								{
 									"key": "phone",
 									"value": "+7056585603"
-								},
-								{
-									"key": "password",
-									"value": "password"
 								}
 							]
 						}
@@ -1825,8 +1948,18 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{localhost}}/api/users/login?phone=0999999999&password=Admin@123",
+							"raw": "{{localhost}}/api/users/login?phone=0999999999",
 							"host": [
 								"{{localhost}}"
 							],
@@ -1839,10 +1972,6 @@
 								{
 									"key": "phone",
 									"value": "0999999999"
-								},
-								{
-									"key": "password",
-									"value": "Admin@123"
 								}
 							]
 						}
@@ -3970,14 +4099,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/properties/52",
+							"raw": "{{localhost}}/api/properties/1",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
 								"properties",
-								"52"
+								"1"
 							]
 						}
 					},
@@ -5264,15 +5393,15 @@
 					}
 				],
 				"url": {
-					"raw": "{{localhost}}/api/users/114/profile-image",
+					"raw": "{{localhost}}/api/users/4/profile_image",
 					"host": [
 						"{{localhost}}"
 					],
 					"path": [
 						"api",
 						"users",
-						"114",
-						"profile-image"
+						"4",
+						"profile_image"
 					]
 				}
 			},
@@ -5292,16 +5421,22 @@
 					]
 				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{localhost}}/api/users/122/identity_card_image",
+					"raw": "{{localhost}}/api/users/2/identity_card_image",
 					"host": [
 						"{{localhost}}"
 					],
 					"path": [
 						"api",
 						"users",
-						"122",
+						"2",
 						"identity_card_image"
 					]
 				}
@@ -5322,17 +5457,22 @@
 					]
 				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{localhost}}/api//main_pic/1",
+					"raw": "{{localhost}}/api/main_pic/5",
 					"host": [
 						"{{localhost}}"
 					],
 					"path": [
 						"api",
-						"",
 						"main_pic",
-						"1"
+						"5"
 					]
 				}
 			},
