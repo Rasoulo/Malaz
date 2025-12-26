@@ -17,7 +17,7 @@ class UpdateUserRequest extends BaseFormRequest
         return [
             'first_name' => 'string',
             'last_name' => 'string',
-            'profile_image' => 'string',
+            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'date_of_birth' => [
                 'date',
                 'before:' . Carbon::now()->subYears(6)->toDateString(),
@@ -34,7 +34,11 @@ class UpdateUserRequest extends BaseFormRequest
             'password.string' => __('validation.password.string'),
             'password.min' => __('validation.password.min'),
 
-            'profile_image.string' => __('validation.profile_image.string'),
+            'profile_image.required' => __('validation.profile_image.required'),
+            'profile_image.file' => __('validation.profile_image.file'),
+            'profile_image.image' => __('validation.profile_image.image'),
+            'profile_image.mimes' => __('validation.profile_image.mimes'),
+            'profile_image.max' => __('validation.profile_image.max'),
 
             'date_of_birth.date' => __('validation.date_of_birth.date'),
             'date_of_birth.before' => __('validation.date_of_birth.before'),

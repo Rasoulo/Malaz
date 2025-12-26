@@ -153,11 +153,26 @@ class UserController extends Controller
         ]);
     }
 
+    public function showinfo(User $user)
+    {
+        return response()->json([
+            'message' => 'here it is user information',
+            'user' => $user,
+            'status' => 200,
+        ]);
+    }
+
     public function request_update(UpdateUserRequest $request)
     {
         $user = auth()->user();
         $validated = $request->validated();
-        $user->update($validated);
+        $user->update(collect($validated)->except('profile_image')->toArray());
+        if ($request->hasFile('profile_image')) {
+            $imageData = base64_encode(file_get_contents($request->file('profile_image')->getRealPath()));
+            $user->profile_image = $imageData;
+            $user->profile_image_mime = $request->file('profile_image')->getMimeType();
+        }
+        $user->save();
         return response()->json([
             'data' => $user,
             'message' => __('validation.user.edit_request_sent'),
@@ -250,21 +265,21 @@ class UserController extends Controller
     public function changepassword(Request $request)
     {
         $request->validate([
-            'current_password' => 'required',
+            // 'current_password' => 'required',
             'new_password' => 'required|string|min:8|confirmed'
         ]);
 
         $user = auth()->user();
-        if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json(['message' => __('validation.user.password_incorrect')], 400);
-        }
+        // if (!Hash::check($request->current_password, $user->password)) {
+        //     return response()->json(['message' => __('validation.user.password_incorrect')], 400);
+        // }
 
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
 
         auth()->user()->tokens()->delete();
-
+        
         return response()->json(['message' => __('validation.user.password_updated')], 200);
     }
 
