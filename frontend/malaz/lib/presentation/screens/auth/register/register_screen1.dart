@@ -130,7 +130,7 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
 
 
                         ShaderMask(
-                          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                          shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                           child: Text(tr.create_account,
                               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.yellow)),
                         ),
@@ -140,7 +140,7 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
 
 
                         ShaderMask(
-                          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                          shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                           child: Text(tr.join_to_find, style: TextStyle(color: Colors.grey.shade600)),
                         ),
                         const SizedBox(

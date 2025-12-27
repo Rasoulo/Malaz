@@ -17,8 +17,8 @@ import '../../domain/repositories/apartment_repository.dart';
 import '../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../domain/usecases/auth/verify_otp_usecase.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
+import '../../domain/usecases/home/apartments_use_case.dart';
 import '../../presentation/cubits/auth/auth_cubit.dart';
-import '../../domain/usecases/apartments_use_case.dart';
 import '../../presentation/cubits/home/home_cubit.dart';
 import '../../presentation/cubits/language/language_cubit.dart';
 import '../../presentation/cubits/theme/theme_cubit.dart';
@@ -101,6 +101,7 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => AuthInterceptor(localDatasource: sl()));
 
   sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
+    repository: sl<AuthRepository>(),
     loginUsecase: sl(),
     logoutUsecase: sl(),
     getCurrentUserUsecase: sl(),
@@ -109,15 +110,5 @@ Future<void> setUpServices() async {
     sendOtpUsecase: sl(),
     verifyOtpUsecase: sl(),
   ));
-
-  // sl.registerFactory(() => AuthCubit(
-  //   loginUsecase: sl(),
-  //   logoutUsecase: sl(),
-  //   getCurrentUserUsecase: sl(),
-  //   checkAuthUsecase: sl(),
-  //   registerUsecase: sl(),
-  //   sendOtpUsecase: sl(),
-  //   verifyOtpUsecase: sl(),
-  // ));
 
 }

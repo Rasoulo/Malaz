@@ -254,4 +254,69 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get warring => 'Предупреждение';
+
+  @override
+  String get edit_profile => 'Редактировать профиль';
+
+  @override
+  String get identity_verification => 'проверка личности';
+
+  @override
+  String get identity_verification_input =>
+      'Пожалуйста, введите свой пароль для подтверждения личности';
+
+  @override
+  String get current_password => 'Текущий пароль';
+
+  @override
+  String get cancel => 'Oтмена';
+
+  @override
+  String get incorrect_password => 'Неверный пароль';
+
+  @override
+  String get verify => 'проверка';
+
+  @override
+  String get profile_updated_success => 'Профиль успешно обновлен и кэширован';
+
+  @override
+  String get change_password => 'Сменить пароль';
+
+  @override
+  String get otp_sent_success => 'Код подтверждения отправлен на ваш телефон';
+
+  @override
+  String get enter_otp_hint => 'Введите 6-значный код, отправленный вам';
+
+  @override
+  String get new_password => 'Новый пароль';
+
+  @override
+  String get confirm_new_password => 'Подтвердите новый пароль';
+
+  @override
+  String get password_mismatch => 'Пароли не совпадают';
+
+  @override
+  String get password_changed_success => 'Пароль успешно изменен';
+
+  @override
+  String get resend_code => 'Отправить код повторно';
+
+  @override
+  String get done => 'сделанный';
+
+  @override
+  String get please_enter_password => 'Пожалуйста, введите пароль';
+
+  @override
+  String get passwords_do_not_match => 'Пароли не совпадают';
+
+  @override
+  String get wronge_otp =>
+      'Введенный код неверный, пожалуйста, попробуйте еще раз';
+
+  @override
+  String get otp_verified_success => 'OTP-код успешно подтвержден';
 }

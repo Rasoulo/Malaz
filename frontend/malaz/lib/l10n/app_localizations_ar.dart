@@ -252,4 +252,68 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get warring => 'تنبيه';
+
+  @override
+  String get edit_profile => 'تعديل الحساب';
+
+  @override
+  String get identity_verification => 'التحقق من الهوية';
+
+  @override
+  String get identity_verification_input =>
+      'يرجى إدخال كلمة المرور الخاصة بك لتأكيد هويتك';
+
+  @override
+  String get current_password => 'كلمة المرور الحالية';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get incorrect_password => 'كلمة المرور غير صحيحة';
+
+  @override
+  String get verify => 'تحقق';
+
+  @override
+  String get profile_updated_success => 'تم تحديث الملف الشخصي وحفظه بنجاح';
+
+  @override
+  String get change_password => 'تغيير كلمة المرور';
+
+  @override
+  String get otp_sent_success => 'تم إرسال رمز التأكيد إلى هاتفك';
+
+  @override
+  String get enter_otp_hint => 'أدخل الرمز المكون من 6 أرقام المرسل إليك';
+
+  @override
+  String get new_password => 'كلمة المرور الجديدة';
+
+  @override
+  String get confirm_new_password => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get password_mismatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get password_changed_success => 'تم تغيير كلمة المرور بنجاح';
+
+  @override
+  String get resend_code => 'إعادة إرسال الرمز';
+
+  @override
+  String get done => 'تم';
+
+  @override
+  String get please_enter_password => 'الرجاء إدخال كلمة المرور';
+
+  @override
+  String get passwords_do_not_match => 'كلمتا السر غير متطابقتين';
+
+  @override
+  String get wronge_otp => 'الرمز المدخل غير صحيح، يرجى المحاولة مرة أخرى';
+
+  @override
+  String get otp_verified_success => 'تم التحقق من الرمز بنجاح';
 }

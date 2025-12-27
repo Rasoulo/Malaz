@@ -8,6 +8,8 @@ import 'package:path/path.dart';
 
 import '../../../core/network/network_service.dart';
 import '../../../core/service_locator/service_locator.dart';
+import '../../../domain/entities/user_entity.dart';
+import '../../models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
   Future<Map<String, dynamic>> login({
@@ -33,8 +35,16 @@ abstract class AuthRemoteDatasource {
 
   Future<Map<String, dynamic>> verifyOtp({required String phone, required String otp});
 
-}
+  Future<UserModel> updateProfile(FormData formData);
 
+  Future<Map<String, dynamic>> sendPasswordResetOtp(String phone);
+
+  Future<Map<String, dynamic>> updatePassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  });
+}
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   final NetworkService networkService;
@@ -86,8 +96,6 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     }
   }
 
-
-  /// TODO: merge to error handler
   @override
   Future<Map<String, dynamic>> login({
     required String phone,
@@ -103,7 +111,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     final data = response.data;
     String? message = data is Map<String, dynamic> ? data['message']?.toString() : null;
 
-    if (response.statusCode == 200 && data['user'] != null) {
+    if (response.statusCode == 200 && data['data'] != null) {
       return data;
     }
 
@@ -132,8 +140,6 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     await networkService.post('/users/logout');
   }
 
-
-  /// TODO: merge to error handler
   @override
   Future<void> sendOtp({required String phone}) async {
     try {
@@ -156,6 +162,62 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       final url = '${AppConstants.baseurl}/users/verify-otp';
       final response = await networkService.post(url, queryParameters: {'phone': phone, 'otp': otp});
       return response.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserModel> updateProfile(FormData formData) async {
+    try {
+      final response = await networkService.post(
+        '/users/request-update',
+        data: formData,
+      );
+
+      if (response.data != null) {
+        return UserModel.fromJson(response.data['data'] ?? response.data);
+      } else {
+        throw ServerException(message: 'لم يتم استلام بيانات من السيرفر');
+      }
+    } on DioException catch (e) {
+      final errorMessage = e.response?.data['message'];
+      throw ServerException(message: errorMessage);
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> sendPasswordResetOtp(String phone) async {
+    try {
+      final response = await networkService.post(
+        '/users/send-otppassword',
+        data: {'phone': phone},
+      );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> updatePassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await networkService.post(
+        '/users/change-password',
+        data: {
+          'phone': phone,
+          'otp': otp,
+          'new_password': newPassword,
+          'new_password_confirmation': newPassword, // تأكد من مسمى الحقل في الباك إند
+        },
+      );
+      return response.data;
     } catch (e) {
       rethrow;
     }

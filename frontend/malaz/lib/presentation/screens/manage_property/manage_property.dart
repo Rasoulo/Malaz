@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:malaz/presentation/cubits/home/home_cubit.dart';
+import '../../cubits/auth/auth_cubit.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../global_widgets/apartment_card.dart';
+import '../auth/my_profile/my_profile_screen.dart';
 import '../details/details_screen.dart';
 import '../property/add_property.dart';
 
@@ -24,9 +26,7 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
     _pageController.addListener(() {
       int next = _pageController.page!.round();
       if (_currentPage != next) {
-        setState(() {
-          _currentPage = next;
-        });
+        setState(() => _currentPage = next);
       }
     });
   }
@@ -42,20 +42,21 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      backgroundColor: colorScheme.surface,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: _currentPage == 0
-          ? FloatingActionButton(
+          ? FloatingActionButton.extended(
         heroTag: 'manage_property_fab',
-        onPressed: () {
-          Navigator.push(
+        onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const AddPropertyScreen()),
-          );
-        },
+                builder: (context) => const AddPropertyScreen())),
         backgroundColor: colorScheme.primary,
-        shape: const CircleBorder(),
-        child: Icon(Icons.add, color: colorScheme.onPrimary, size: 30),
+        elevation: 4,
+        icon: Icon(Icons.add_home_work_rounded, color: colorScheme.onPrimary),
+        label: Text("Add New",
+            style: TextStyle(
+                color: colorScheme.onPrimary, fontWeight: FontWeight.bold)),
       )
           : null,
       body: NestedScrollView(
@@ -63,39 +64,42 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
           return [
             SliverAppBar(
               pinned: true,
-              expandedHeight: 410.0,
+              expandedHeight: 360.0,
               backgroundColor: colorScheme.primary,
               elevation: 0,
               centerTitle: true,
-              title: const Text('My Profile',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              title: Text('Property Manager',
+                  style: TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1, color: colorScheme.surface)),
               flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.pin,
                 background: Container(
-                  margin: const EdgeInsets.only(top: kToolbarHeight + 20),
                   decoration: BoxDecoration(
-                    color: colorScheme.surface,
-                    borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(30)),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.primary.withOpacity(0.8)
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      _buildProfileImage(),
-                      const SizedBox(height: 15),
-                      ShaderMask(
-                        shaderCallback: (bounds) =>
-                            AppColors.realGoldGradient.createShader(bounds),
-                        child: const Text(
-                          'John Doe',
-                          style: TextStyle(
-                              color: AppColors.surfaceLight,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const SizedBox(height: 20)
-                    ],
+                  child: Container(
+                    margin: const EdgeInsets.only(top: kToolbarHeight + 10),
+                    decoration: BoxDecoration(
+                      color: colorScheme.surface,
+                      borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(35)),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 25),
+                        _buildProfileImage(),
+                        const SizedBox(height: 12),
+                        _buildUserName(),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -103,27 +107,29 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                 preferredSize: const Size.fromHeight(100),
                 child: Container(
                   width: double.infinity,
-                  color: colorScheme.surface,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      )
+                    ],
+                  ),
                   child: Column(
                     children: [
-                      const SizedBox(height: 20),
                       _buildGradientIndicator(),
-                      const SizedBox(height: 10),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
+                      const SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text("Properties",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                            Text("Inbound",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                            Text("Past Rentals",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
+                            _buildTabItem("Properties", 0),
+                            _buildTabItem("Inbound", 1),
+                            _buildTabItem("History", 2),
                           ],
                         ),
                       ),
@@ -134,16 +140,135 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
             ),
           ];
         },
-        body: Container(
-          color: colorScheme.surface,
-          child: PageView(
-            controller: _pageController,
-            children: [
-              _buildPropertiesList(),
-              _buildInboundRequestsList(),
-              _buildPastRentalsList(),
+        body: PageView(
+          controller: _pageController,
+          children: [
+            _buildPropertiesList(),
+            _buildInboundRequestsList(),
+            _buildPastRentalsList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUserName() {
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        String name = "Premium Member";
+        if (state is AuthAuthenticated) {
+          name = "${state.user.first_name} ${state.user.last_name}";
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: ShaderMask(
+            shaderCallback: (bounds) =>
+                AppColors.premiumGoldGradient.createShader(bounds),
+            child: Text(
+              name,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.visible,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.5),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTabItem(String title, int index) {
+    final colorScheme = Theme.of(context).colorScheme;
+    bool isSelected = _currentPage == index;
+    return GestureDetector(
+      onTap: () => _pageController.animateToPage(index,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? colorScheme.primary.withOpacity(0.08)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
+            color: isSelected
+                ? colorScheme.primary
+                : colorScheme.onSurface.withOpacity(0.5),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProfileImage() {
+    final colorScheme = Theme.of(context).colorScheme;
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        String? img;
+        if (state is AuthAuthenticated) img = state.user.profile_image_url;
+
+        return Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                  color: colorScheme.primary.withOpacity(0.15),
+                  blurRadius: 15,
+                  spreadRadius: 1)
             ],
           ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              ShaderMask(
+                shaderCallback: (Rect bounds) =>
+                    AppColors.premiumGoldGradient.createShader(bounds),
+                child: Container(
+                  width: 140,
+                  height: 140,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.white),
+                ),
+              ),
+              CircleAvatar(
+                radius: 66,
+                backgroundColor: colorScheme.surfaceVariant,
+                child: (img == null || img.isEmpty)
+                    ? Icon(Icons.person_rounded,
+                    size: 55, color: colorScheme.primary.withOpacity(0.5))
+                    : ClipOval(
+                    child: UserProfileImage(imageUrl: img, size: 132.0)),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildGradientIndicator() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: SmoothPageIndicator(
+        controller: _pageController,
+        count: 3,
+        effect: ExpandingDotsEffect(
+          activeDotColor: Theme.of(context).colorScheme.primary,
+          dotColor: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+          dotHeight: 5,
+          dotWidth: 5,
+          expansionFactor: 4,
+          spacing: 8,
         ),
       ),
     );
@@ -152,26 +277,27 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
   Widget _buildPropertiesList() {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        if (state is HomeLoading || state is HomeInitial) {
-          return const Center(child: CircularProgressIndicator());
+        if (state is HomeLoading) {
+          return const Center(child: CircularProgressIndicator.adaptive());
         }
         if (state is HomeLoaded) {
+          if (state.apartments.isEmpty) {
+            return const Center(child: Text("No Properties Found"));
+          }
           return ListView.builder(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 100),
             itemCount: state.apartments.length,
-            itemBuilder: (context, index) {
-              final apartment = state.apartments[index];
-              return ApartmentCard(
-                apartment: apartment,
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => DetailsScreen(apartment: apartment))),
-              );
-            },
+            itemBuilder: (context, index) => ApartmentCard(
+              apartment: state.apartments[index],
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          DetailsScreen(apartment: state.apartments[index]))),
+            ),
           );
         }
-        return const Center(child: Text("Error loading properties"));
+        return const Center(child: Text("Something went wrong"));
       },
     );
   }
@@ -186,14 +312,6 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
           peopleCount: 3,
           apartmentImageUrl:
           'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500',
-          status: 'pending',
-        ),
-        InboundRequestCard(
-          tenantName: 'Ali Ahmed',
-          dateRange: '05 Jan - 12 Jan',
-          peopleCount: 2,
-          apartmentImageUrl:
-          'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500',
           status: 'pending',
         ),
       ],
@@ -213,48 +331,6 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
           status: 'completed',
         ),
       ],
-    );
-  }
-
-  Widget _buildProfileImage() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        ShaderMask(
-          shaderCallback: (Rect bounds) => const LinearGradient(
-            colors: [Colors.yellow, Colors.orange, Colors.yellowAccent],
-          ).createShader(bounds),
-          child: Container(
-            width: 190,
-            height: 190,
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: Colors.white),
-          ),
-        ),
-        const CircleAvatar(
-          radius: 90,
-          backgroundColor: Colors.transparent,
-          backgroundImage: NetworkImage(
-              'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600'),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildGradientIndicator() {
-    return ShaderMask(
-      shaderCallback: (bounds) =>
-          AppColors.realGoldGradient.createShader(bounds),
-      child: SmoothPageIndicator(
-        controller: _pageController,
-        count: 3,
-        effect: const ExpandingDotsEffect(
-          activeDotColor: Colors.white,
-          dotColor: AppColors.surfaceLight,
-          dotHeight: 10,
-          expansionFactor: 3,
-        ),
-      ),
     );
   }
 }
@@ -303,8 +379,7 @@ class _InboundRequestCardState extends State<InboundRequestCard> {
                     color: _getStatusColor(widget.status),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Text(
-                      widget.status.toUpperCase(), // سيظهر هنا ACCEPTED أو PENDING
+                  child: Text(widget.status.toUpperCase(),
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
@@ -398,6 +473,6 @@ class _InboundRequestCardState extends State<InboundRequestCard> {
   Color _getStatusColor(String status) {
     if (status == 'completed' || status == 'accepted') return Colors.green;
     if (status == 'canceled') return Colors.red;
-    return Colors.orange; // لـ pending
+    return Colors.orange;
   }
 }

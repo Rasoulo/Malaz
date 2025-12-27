@@ -1,5 +1,5 @@
-// data/repositories/auth_repository_impl.dart
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/exceptions.dart';
 import 'package:malaz/core/errors/failures.dart';
@@ -56,8 +56,6 @@ class AuthRepositoryImpl extends AuthRepository {
       return Left(CacheFailure(e.toString()));
     }
   }
-
-
 
   @override
   Future<Either<Failure, UserEntity?>> getCurrentUser() async {
@@ -120,7 +118,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return Left(WrongPasswordFailure(e.message ?? 'Invalid credentials'));
     } on InvalidCredentialsException catch(e) {
       if(e.message!.toLowerCase().contains('wait until')) {
-        return Left(InvalidCredentialsFailure(e.message)); // سيتحول لاحقاً لـ AuthPending
+        return Left(InvalidCredentialsFailure(e.message));
       }
       return Left(InvalidCredentialsFailure('Invalid credentials'));
     } on ServerException catch (e) {
@@ -129,7 +127,6 @@ class AuthRepositoryImpl extends AuthRepository {
       return Left(GeneralFailure());
     }
   }
-
 
   @override
   Future<Either<Failure, void>> logout() async {
@@ -216,5 +213,53 @@ class AuthRepositoryImpl extends AuthRepository {
     } catch (e) {
       return Left(const GeneralFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, String>> sendPasswordResetOtp(String phone) async {
+    try {
+      final data = await authRemoteDatasource.sendPasswordResetOtp(phone);
+
+      return Right(data['message'] ?? "Success");
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure("Unexpected error occurred"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updatePassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  }) async {
+    try {
+      final data = await authRemoteDatasource.updatePassword(
+        phone: phone,
+        otp: otp,
+        newPassword: newPassword,
+      );
+      return Right(data['message'] ?? "Password updated successfully");
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure("حدث خطأ غير متوقع"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateProfile(FormData formData) async {
+    try {
+      final response = await authRemoteDatasource.updateProfile(formData);
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    }
+  }
+
+  @override
+  Future<void> updateCachedUser(UserEntity user) async {
+    await authLocalDatasource.cacheUser(user);
   }
 }

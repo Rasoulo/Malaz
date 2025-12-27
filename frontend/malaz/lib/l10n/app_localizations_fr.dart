@@ -259,4 +259,71 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get warring => 'Avertissement';
+
+  @override
+  String get edit_profile => 'Modifier le profil';
+
+  @override
+  String get identity_verification => 'Vérification d\'identité';
+
+  @override
+  String get identity_verification_input =>
+      'Veuillez saisir votre mot de passe pour confirmer votre identité';
+
+  @override
+  String get current_password => 'Mot de passe actuel';
+
+  @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get incorrect_password => 'Mot de passe incorrect';
+
+  @override
+  String get verify => 'vérification';
+
+  @override
+  String get profile_updated_success =>
+      'Profil mis à jour et en cache avec succès';
+
+  @override
+  String get change_password => 'Changer le mot de passe';
+
+  @override
+  String get otp_sent_success =>
+      'Code de vérification envoyé sur votre téléphone';
+
+  @override
+  String get enter_otp_hint =>
+      'Entrez le code à 6 chiffres qui vous a été envoyé';
+
+  @override
+  String get new_password => 'Nouveau mot de passe';
+
+  @override
+  String get confirm_new_password => 'Confirmer le nouveau mot de passe';
+
+  @override
+  String get password_mismatch => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String get password_changed_success => 'Mot de passe changé avec succès';
+
+  @override
+  String get resend_code => 'Renvoyer le code';
+
+  @override
+  String get done => 'faite';
+
+  @override
+  String get please_enter_password => 'Veuillez saisir votre mot de passe';
+
+  @override
+  String get passwords_do_not_match => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String get wronge_otp => 'Le code saisi est incorrect, veuillez réessayer';
+
+  @override
+  String get otp_verified_success => 'Code OTP vérifié avec succès';
 }

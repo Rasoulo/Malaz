@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:malaz/presentation/screens/chats/ChatWithAPerson.dart';
 
 class ChatModel {
@@ -29,17 +28,6 @@ class ChatsScreen extends StatelessWidget {
       backgroundColor: colorScheme.background,
       appBar: AppBar(
         toolbarHeight: 80,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     context.go('/home');
-        //   },
-        //   icon: Icon(
-        //     weight: 30,
-        //     size: 30,
-        //     Icons.arrow_back,
-        //     color: colorScheme.surface,
-        //   ),
-        // ),
         title: const Text('Chat', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 36)),
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.surface,

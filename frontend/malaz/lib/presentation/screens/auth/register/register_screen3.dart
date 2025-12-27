@@ -51,7 +51,7 @@ class RegisterScreen3 extends StatelessWidget {
                   // Create Account - Header Text 1
                   ShaderMask(
                     shaderCallback: (bounds) =>
-                        AppColors.realGoldGradient.createShader(bounds),
+                        AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(tr.create_account, // Using getter
                         style: TextStyle(
                           fontSize: 28,
@@ -66,7 +66,7 @@ class RegisterScreen3 extends StatelessWidget {
                   // Join To Find - Header Text 2
                   ShaderMask(
                     shaderCallback: (bounds) =>
-                        AppColors.realGoldGradient.createShader(bounds),
+                        AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(
                       tr.join_to_find, // Using getter
                       style: TextStyle(color: Colors.grey.shade600),

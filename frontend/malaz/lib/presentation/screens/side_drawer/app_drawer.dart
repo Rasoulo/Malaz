@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/config/color/app_color.dart';
+import '../../../core/service_locator/service_locator.dart';
+import '../../../data/datasources/local/auth_local_datasource.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/language/language_cubit.dart';
@@ -9,225 +11,265 @@ import '../../cubits/theme/theme_cubit.dart';
 
 enum ThemeOption { light, dark, system }
 
-/// [AppDrawer]
-/// a huge mass here it needs to be cleaned up :(
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
 
+  @override
+  State<AppDrawer> createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDarkMode = theme.brightness == Brightness.dark;
     final tr = AppLocalizations.of(context)!;
+    final isDark = theme.brightness == Brightness.dark;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthUnauthenticated) {
-          context.go('/login');
-        }
+        if (state is AuthUnauthenticated) context.go('/login');
       },
       child: Drawer(
-            backgroundColor: theme.scaffoldBackgroundColor,
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 40),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      gradient: AppColors.realGoldGradient
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: const CircleAvatar(
-                          radius: 35,
-                          backgroundImage: NetworkImage(
-                              'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&fit=crop'),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'John Doe',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'john.doe@email.com',
-                        style: TextStyle(
-                            color: Colors.white.withOpacity(0.8), fontSize: 14),
-                      ),
-                    ],
-                  ),
+        width: MediaQuery.of(context).size.width * 0.82,
+        backgroundColor: theme.scaffoldBackgroundColor,
+        elevation: 0,
+        child: Column(
+          children: [
+            _buildUserHeader(context, tr, colorScheme, isDark),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.black.withOpacity(0.2) : Colors.grey.shade50.withOpacity(0.5),
                 ),
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    children: [
-                      _buildDrawerItem(context, Icons.person_outline, tr.my_profile, () {
-                        //Navigator.pop(context);
-                        context.push('/profile');
-                      }),
-                      _buildDrawerItem(context, Icons.palette_outlined, tr.theme, () {
-                        Navigator.pop(context);
-                        _showThemeBottomSheet(context);
-                      }),
-                      _buildDrawerItem(context, Icons.language, tr.language, () {
-                        Navigator.pop(context);
-                        _showLanguageBottomSheet(context);
-                      }),
-                      const Divider(),
-                      _buildDrawerItem(context, Icons.apartment, tr.become_a_renter,
-                              () {}), // ?
-                      _buildDrawerItem(context, Icons.settings_outlined, tr.settings,
-                              () {
-                            context.push('/settings');
-                          }),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: colorScheme.error.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                  children: [
+                    _buildDrawerItem(context, Icons.person_outline_rounded, tr.my_profile, () => context.push('/profile')),
+                    _buildDrawerItem(context, Icons.palette_outlined, tr.theme, () {
+                      Navigator.pop(context);
+                      _showThemeBottomSheet(context);
+                    }),
+                    _buildDrawerItem(context, Icons.language_rounded, tr.language, () {
+                      Navigator.pop(context);
+                      _showLanguageBottomSheet(context);
+                    }),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      child: Divider(color: colorScheme.outlineVariant.withOpacity(0.3), thickness: 0.5),
                     ),
-                    child: ListTile(
-                      leading: Icon(Icons.logout, color: colorScheme.error),
-                      title: Text(tr.logout,
-                          style: TextStyle(
-                              color: colorScheme.error, fontWeight: FontWeight.bold)),
-                      onTap: () {
-                        context.read<AuthCubit>().logout();
-                      },
-                    ),
-                  ),
+                    _buildDrawerItem(context, Icons.apartment_rounded, tr.become_a_renter, () {}),
+                    _buildDrawerItem(context, Icons.settings_outlined, tr.settings, () => context.push('/settings')),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            _buildLogoutButton(context, colorScheme, tr),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildDrawerItem(
-      BuildContext context, IconData icon, String title, VoidCallback onTap) {
+  Widget _buildUserHeader(BuildContext context, AppLocalizations tr, ColorScheme colorScheme, bool isDark) {
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        String name = 'Guest User';
+        String? img;
+        if (state is AuthAuthenticated) {
+          name = "${state.user.first_name} ${state.user.last_name}";
+          img = state.user.profile_image_url;
+        }
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(24, 60, 24, 30),
+          decoration: BoxDecoration(
+            gradient: AppColors.premiumGoldGradient2,
+            borderRadius: const BorderRadius.only(bottomRight: Radius.circular(40)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildModernAvatar(img, colorScheme, isDark),
+              const SizedBox(height: 20),
+              Text(
+                name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildEditButton(context, tr),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildModernAvatar(String? img, ColorScheme colorScheme, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.5),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+        child: CircleAvatar(
+          radius: 42,
+          backgroundColor: isDark ? Colors.white10 : Colors.white24,
+          child: (img == null || img.isEmpty)
+              ? const Icon(Icons.person, size: 45, color: Colors.white)
+              : ClipOval(child: UserProfileImage(imageUrl: img, size: 84)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEditButton(BuildContext context, AppLocalizations tr) {
+    return InkWell(
+      onTap: () => context.push('/profile'),
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withOpacity(0.2)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.edit_note_rounded, color: Colors.white, size: 18),
+            const SizedBox(width: 6),
+            Text(tr.edit_profile, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(BuildContext context, IconData icon, String title, VoidCallback onTap) {
     final colorScheme = Theme.of(context).colorScheme;
     return ListTile(
-      leading: Icon(icon, color: colorScheme.primary),
-      title: Text(title,
-          style: TextStyle(
-              fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
+      leading: Icon(icon, color: colorScheme.onSurface.withOpacity(0.6), size: 22),
+      title: Text(title, style: TextStyle(fontWeight: FontWeight.w500, color: colorScheme.onSurface, fontSize: 15)),
       onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+  }
+
+  Widget _buildLogoutButton(BuildContext context, ColorScheme colorScheme, AppLocalizations tr) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: ListTile(
+        leading: Icon(Icons.logout_rounded, color: colorScheme.error.withOpacity(0.7)),
+        title: Text(tr.logout, style: TextStyle(color: colorScheme.error.withOpacity(0.7), fontWeight: FontWeight.bold)),
+        onTap: () => context.read<AuthCubit>().logout(),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      ),
     );
   }
 
   void _showThemeBottomSheet(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(width: 40, height: 4, decoration: BoxDecoration(color: colorScheme.outlineVariant.withOpacity(0.4), borderRadius: BorderRadius.circular(2))),
+            const SizedBox(height: 25),
+            Text(tr.select_theme, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+            const SizedBox(height: 30),
+            _ThemeSwitcher(),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
-      builder: (ctx) {
-        return BlocBuilder<ThemeCubit, ThemeState>(
-          builder: (context, state) {
-            return Container(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(tr.select_theme,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 24),
-                  _ThemeSwitcher(currentThemeMode: state.themeMode),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            );
-          },
-        );
-      },
     );
   }
 
   void _showLanguageBottomSheet(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) {
-        return BlocBuilder<LanguageCubit, LanguageState>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(width: 40, height: 4, decoration: BoxDecoration(color: colorScheme.outlineVariant.withOpacity(0.4), borderRadius: BorderRadius.circular(2))),
+            const SizedBox(height: 25),
+            Text(tr.select_language, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+            const SizedBox(height: 20),
+            BlocBuilder<LanguageCubit, LanguageState>(
+              builder: (context, state) => Column(
                 children: [
-                  Text(tr.select_language,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  Flexible(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        RadioListTile<Locale>(
-                          title: const Text('English'),
-                          value: const Locale('en'),
-                          groupValue: state.locale,
-                          onChanged: (value) => _onLanguageChanged(ctx, value),
-                        ),
-                        RadioListTile<Locale>(
-                          title: const Text('العربية'),
-                          value: const Locale('ar'),
-                          groupValue: state.locale,
-                          onChanged: (value) => _onLanguageChanged(ctx, value),
-                        ),
-                        RadioListTile<Locale>(
-                          title: const Text('Français'),
-                          value: const Locale('fr'),
-                          groupValue: state.locale,
-                          onChanged: (value) => _onLanguageChanged(ctx, value),
-                        ),
-                        RadioListTile<Locale>(
-                          title: const Text('Русский'),
-                          value: const Locale('ru'),
-                          groupValue: state.locale,
-                          onChanged: (value) => _onLanguageChanged(ctx, value),
-                        ),
-                        RadioListTile<Locale>(
-                          title: const Text('Türkçe'),
-                          value: const Locale('tr'),
-                          groupValue: state.locale,
-                          onChanged: (value) => _onLanguageChanged(ctx, value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  _buildLanguageOption(ctx, 'English', const Locale('en'), state.locale),
+                  _buildLanguageOption(ctx, 'العربية', const Locale('ar'), state.locale),
+                  _buildLanguageOption(ctx, 'Français', const Locale('fr'), state.locale),
+                  _buildLanguageOption(ctx, 'Русский', const Locale('ru'), state.locale),
+                  _buildLanguageOption(ctx, 'Türkçe', const Locale('tr'), state.locale),
                 ],
               ),
-            );
-          },
-        );
-      },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption(BuildContext context, String title, Locale locale, Locale currentLocale) {
+    final isSelected = locale == currentLocale;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return InkWell(
+      onTap: () => _onLanguageChanged(context, locale),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          // استخدام لون الثيم الأساسي بشفافية خفيفة جداً بدلاً من البرتقالي
+          color: isSelected ? colorScheme.primary.withOpacity(0.08) : Colors.transparent,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          children: [
+            Text(title, style: TextStyle(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? colorScheme.primary : colorScheme.onSurface)),
+            const Spacer(),
+            if (isSelected) Icon(Icons.check_circle_rounded, color: colorScheme.primary, size: 20),
+          ],
+        ),
+      ),
     );
   }
 
@@ -239,113 +281,78 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
-// ... (theme switcher widgets remain the same)
-class _ThemeSwitcher extends StatelessWidget {
-  final ThemeMode currentThemeMode;
-  const _ThemeSwitcher({required this.currentThemeMode});
-
-  ThemeOption _getOptionForThemeMode(ThemeMode mode) {
-    if (mode == ThemeMode.light) return ThemeOption.light;
-    if (mode == ThemeMode.dark) return ThemeOption.dark;
-    return ThemeOption.system;
-  }
+class UserProfileImage extends StatelessWidget {
+  final String imageUrl;
+  final double size;
+  const UserProfileImage({super.key, required this.imageUrl, this.size = 50.0});
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color:
-            isDarkMode ? Colors.black.withOpacity(0.2) : Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          _ThemeOption(
-            option: ThemeOption.light,
-            currentOption: _getOptionForThemeMode(currentThemeMode),
-            title: 'Light',
-            icon: Icons.wb_sunny_rounded,
+    return FutureBuilder<String?>(
+      future: sl<AuthLocalDatasource>().getCachedToken(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) return SizedBox(width: size, height: size);
+        final token = snapshot.data;
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(size / 2),
+          child: Image.network(
+            imageUrl,
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
+            headers: {'Authorization': 'Bearer ${token?.trim()}', 'Accept': 'application/json'},
+            errorBuilder: (context, error, stackTrace) => Icon(Icons.person, color: Colors.grey.shade400, size: size * 0.6),
           ),
-          const SizedBox(width: 4),
-          _ThemeOption(
-            option: ThemeOption.dark,
-            currentOption: _getOptionForThemeMode(currentThemeMode),
-            title: 'Dark',
-            icon: Icons.nightlight_round,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
-class _ThemeOption extends StatelessWidget {
-  final ThemeOption option;
-  final ThemeOption currentOption;
-  final String title;
-  final IconData icon;
-
-  const _ThemeOption({
-    required this.option,
-    required this.currentOption,
-    required this.title,
-    required this.icon,
-  });
-
-  ThemeMode _getThemeModeForOption(ThemeOption option) {
-    if (option == ThemeOption.light) return ThemeMode.light;
-    if (option == ThemeOption.dark) return ThemeMode.dark;
-    return ThemeMode.system;
-  }
-
+class _ThemeSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isSelected = option == currentOption;
     final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    return Container(
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+          color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(20)
+      ),
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return Row(
+            children: [
+              _buildThemeToggle(context, 'Light', Icons.wb_sunny_rounded, state.themeMode == ThemeMode.light, ThemeMode.light),
+              _buildThemeToggle(context, 'Dark', Icons.nightlight_round, state.themeMode == ThemeMode.dark, ThemeMode.dark),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildThemeToggle(BuildContext context, String title, IconData icon, bool isSelected, ThemeMode mode) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
       child: GestureDetector(
-        onTap: () {
-          final newThemeMode = _getThemeModeForOption(option);
-          context.read<ThemeCubit>().changeTheme(newThemeMode);
-        },
+        onTap: () => context.read<ThemeCubit>().changeTheme(mode),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 250),
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: isSelected ? colorScheme.surface : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4))
-                  ]
-                : [],
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: isSelected ? [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)] : [],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                color: isSelected
-                    ? colorScheme.primary
-                    : colorScheme.onSurface.withOpacity(0.6),
-                size: 20,
-              ),
+              Icon(icon, color: isSelected ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.4), size: 18),
               const SizedBox(width: 8),
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color: isSelected
-                      ? colorScheme.onSurface
-                      : colorScheme.onSurface.withOpacity(0.6),
-                ),
-              ),
+              Text(title, style: TextStyle(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? colorScheme.onSurface : colorScheme.onSurface.withOpacity(0.4))),
             ],
           ),
         ),

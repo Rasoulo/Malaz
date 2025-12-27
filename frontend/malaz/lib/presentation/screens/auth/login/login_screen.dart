@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           // Header Texts welcome_back
                           ShaderMask(
                             shaderCallback: (bounds) =>
-                                AppColors.realGoldGradient.createShader(bounds),
+                                AppColors.premiumGoldGradient.createShader(bounds),
                             child: Text(
                                 tr.welcome_back, // Using getter
                                 style: TextStyle(
@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           // Header Texts login_to_continue
                           ShaderMask(
                             shaderCallback: (bounds) =>
-                                AppColors.realGoldGradient.createShader(bounds),
+                                AppColors.premiumGoldGradient.createShader(bounds),
                             child: Text(
                               tr.login_to_continue, // Using getter
                               style: TextStyle(

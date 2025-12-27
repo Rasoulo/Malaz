@@ -1,5 +1,7 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
@@ -7,8 +9,12 @@ import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
 import 'package:malaz/domain/usecases/auth/get_current_user_usecase.dart';
 import 'package:malaz/domain/usecases/auth/login_usecase.dart';
 import 'package:malaz/domain/usecases/auth/logout_usecase.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../core/errors/failures.dart';
+import '../../../core/service_locator/service_locator.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../../data/datasources/local/auth_local_datasource.dart';
+import '../../../domain/repositories/auth_repository.dart';
 import '../../../domain/usecases/auth/register_usecase.dart';
 import '../../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../../domain/usecases/auth/verify_otp_usecase.dart';
@@ -65,6 +71,10 @@ class OtpVerifyError extends AuthState {
   OtpVerifyError(this.message);
 }
 
+class OtpSentSuccess extends AuthState {}
+
+class PasswordUpdatedSuccess extends AuthState {}
+
 // --- Cubit --- //
 
 class AuthCubit extends Cubit<AuthState> {
@@ -75,6 +85,7 @@ class AuthCubit extends Cubit<AuthState> {
   final RegisterUsecase registerUsecase;
   final SendOtpUsecase sendOtpUsecase;
   final VerifyOtpUsecase verifyOtpUsecase;
+  final AuthRepository repository;
 
   AuthCubit(
       {required this.loginUsecase,
@@ -83,8 +94,8 @@ class AuthCubit extends Cubit<AuthState> {
       required this.checkAuthUsecase,
       required this.registerUsecase,
       required this.sendOtpUsecase,
-      required this.verifyOtpUsecase})
-      : super(AuthInitial());
+      required this.verifyOtpUsecase,
+      required this.repository}) : super(AuthInitial());
 
   Future<void> checkAuth() async {
     final res = await checkAuthUsecase(NoParams());
@@ -106,8 +117,6 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
-
-
 
   Future<void> register({
     required String phone,
@@ -153,10 +162,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> login({
-    required String phone,
-    required String password,
-  }) async {
+  Future<void> login({required String phone, required String password,}) async {
     emit(AuthLoading());
 
     final res = await loginUsecase(
@@ -201,7 +207,6 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-
   Future<void> sendOtp(String phone) async {
     emit(OtpSending());
     final res = await sendOtpUsecase(SendOtpParams(phone));
@@ -225,10 +230,18 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> checkRoleUsingLogin({
-    required String phone,
-    required String password,
-  }) async {
+  Future<void> sendPasswordResetOtp(String phone) async {
+    emit(AuthLoading());
+
+    final result = await repository.sendPasswordResetOtp(phone);
+
+    result.fold(
+          (failure) => emit(AuthError(message: failure.message.toString())),
+          (message) => emit(OtpSentSuccess()),
+    );
+  }
+
+  Future<void> checkRoleUsingLogin({required String phone, required String password}) async {
     emit(AuthLoading());
 
     final res = await loginUsecase(
@@ -249,6 +262,119 @@ class AuthCubit extends Cubit<AuthState> {
         }
       },
     );
+  }
+
+  Future<bool> verifyPasswordSilently(String password) async {
+    final currentState = state;
+    if (currentState is AuthAuthenticated) {
+      final result = await loginUsecase(LoginParams(
+        phoneNumber: currentState.user.phone,
+        password: password,
+      ));
+      return result.isRight();
+    }
+    return false;
+  }
+
+  Future<void> updatePassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  }) async {
+    emit(AuthLoading());
+
+    final result = await repository.updatePassword(
+      phone: phone,
+      otp: otp,
+      newPassword: newPassword,
+    );
+
+    result.fold(
+          (failure) => emit(AuthError(message: failure.message.toString())),
+          (message) => emit(PasswordUpdatedSuccess()), // حالة نجاح جديدة
+    );
+  }
+
+  Future<void> updateUserData({
+    required String firstName,
+    required String lastName,
+    String? imagePath,
+    String? existingImageUrl,
+  }) async {
+    emit(AuthLoading());
+    try {
+      // 1. إنشاء الـ FormData مع الحقول النصية وإضافة _method لـ Laravel
+      FormData formData = FormData.fromMap({
+        "first_name": firstName,
+        "last_name": lastName,
+      });
+
+      // 2. منطق إضافة ملف الصورة
+      if (imagePath != null && imagePath.isNotEmpty) {
+        // حالة اختيار صورة جديدة من المعرض
+        formData.files.add(MapEntry(
+          "profile_image",
+          await MultipartFile.fromFile(imagePath, filename: "new_profile.jpg"),
+        ));
+      } else if (existingImageUrl != null) {
+        // حالة تحديث الاسم فقط: تحميل الصورة الحالية وإرسالها كملف لإرضاء الباك-إند
+        final File? tempFile = await _downloadFile(existingImageUrl);
+        if (tempFile != null) {
+          formData.files.add(MapEntry(
+            "profile_image",
+            await MultipartFile.fromFile(tempFile.path, filename: "existing_profile.jpg"),
+          ));
+        }
+      }
+
+      print("Final Check - Files count: ${formData.files.length}");
+
+      // التحقق من وجود ملف قبل الإرسال لتجنب خطأ السيرفر
+      if (formData.files.isEmpty) {
+        emit(AuthError(message: "Profile image is required by the server."));
+        return;
+      }
+
+      // 3. إرسال الطلب عبر المستودع
+      final result = await repository.updateProfile(formData);
+
+      result.fold(
+            (failure) => emit(AuthError(message: failure.message.toString())),
+            (user) {
+          sl<AuthLocalDatasource>().cacheUser(user);
+          emit(AuthAuthenticated(user));
+        },
+      );
+    } catch (e) {
+      emit(AuthError(message: "Update Error: ${e.toString()}"));
+    }
+  }
+
+  Future<File?> _downloadFile(String url) async {
+    try {
+      final token = await sl<AuthLocalDatasource>().getCachedToken();
+
+      final response = await Dio().get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/temp_profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
+      await file.writeAsBytes(response.data);
+
+      print("Download Success. File size: ${await file.length()} bytes");
+      return file;
+    } catch (e) {
+      print("Download error in _downloadFile: $e");
+      return null;
+    }
   }
 
   String _mapFailureToMessage(Failure f) {

@@ -16,6 +16,7 @@ import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:path/path.dart';
 
 import '../../../domain/entities/apartment.dart';
+import '../../../presentation/screens/auth/reset_password_screen/ResetPasswordScreen.dart';
 import '../../../presentation/screens/auth/under_review/under_review.dart';
 import '../../service_locator/service_locator.dart';
 
@@ -151,6 +152,11 @@ GoRouter buildAppRouter() {
         path: '/one_chat',
         name: 'one_chat',
         builder: (context, state) => ChatWithAPerson(),
+      ),
+
+      GoRoute(
+        path: '/reset-password',
+        builder: (context, state) => ResetPasswordScreen(phoneNumber: state.extra as String),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

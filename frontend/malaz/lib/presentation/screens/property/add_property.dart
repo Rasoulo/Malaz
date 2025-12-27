@@ -143,14 +143,14 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ShaderMask(
-                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                 child: Text(
                   tr.malaz,
                   style: TextStyle(color: colorScheme.onPrimary, fontSize: 40, fontWeight: FontWeight.w500),
                 ),
               ),
               ShaderMask(
-                  shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                  shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                   child: SizedBox(
                     height: 70,
                     width: 60,
@@ -162,7 +162,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             ]),
             const SizedBox(height: 10),
             ShaderMask(
-              shaderCallback: (bounds) => AppColors.goldGradientbut.createShader(bounds),
+              shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
               child: Center(
                 child: Text(
                   tr.share_your_property,
@@ -459,7 +459,7 @@ class _PrimaryGradientButton extends StatelessWidget {
           children: [
             Positioned.fill(
               child: ShaderMask(
-                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -887,7 +887,7 @@ class _GradientFab extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: AppColors.realGoldGradient,
+          gradient: AppColors.premiumGoldGradient,
           boxShadow: const [
             BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
           ],

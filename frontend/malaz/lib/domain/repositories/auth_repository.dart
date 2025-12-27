@@ -1,5 +1,6 @@
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/failures.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
@@ -38,4 +39,15 @@ abstract class AuthRepository {
 
   Future<Either<Failure, bool>> verifyOtp({ required String phone, required String otp });
 
+  Future<Either<Failure, UserEntity>> updateProfile(FormData formData);
+
+  Future<void> updateCachedUser(UserEntity user);
+
+  Future<Either<Failure, String>> sendPasswordResetOtp(String phone);
+
+  Future<Either<Failure, String>> updatePassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  });
 }

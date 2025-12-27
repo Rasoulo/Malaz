@@ -81,7 +81,7 @@ class RegisterScreen5State extends State<RegisterScreen5> {
                   // Create Account - Header Text 1
                   ShaderMask(
                     shaderCallback: (bounds) =>
-                        AppColors.realGoldGradient.createShader(bounds),
+                        AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(tr.create_account, // Using getter
                         style: TextStyle(
                           fontSize: 28,
@@ -96,7 +96,7 @@ class RegisterScreen5State extends State<RegisterScreen5> {
                   // Join To Find - Header Text 2
                   ShaderMask(
                     shaderCallback: (bounds) =>
-                        AppColors.realGoldGradient.createShader(bounds),
+                        AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(
                       tr.join_to_find, // Using getter
                       style: TextStyle(color: Colors.grey.shade600),
@@ -108,7 +108,7 @@ class RegisterScreen5State extends State<RegisterScreen5> {
 
                   // Profile Image Message
                   ShaderMask(
-                    shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                    shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(
                         tr.profile_image_message, // Using getter
                         style: TextStyle(
@@ -228,7 +228,7 @@ class DottedBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShaderMask(
-      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+      shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(150)),
         child: Container(

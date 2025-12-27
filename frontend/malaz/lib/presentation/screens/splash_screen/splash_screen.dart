@@ -129,7 +129,7 @@ class _BuildAnimatedLogoAndLoader extends StatelessWidget {
             child: FadeTransition(
               opacity: fadeAnimation,
               child: ShaderMask(
-                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                shaderCallback: (bounds) => AppColors.premiumGoldGradient2.createShader(bounds),
                 child: Image.asset(
                   'assets/icons/key_logo.png',
                   width: 150,
@@ -148,7 +148,7 @@ class _BuildAnimatedLogoAndLoader extends StatelessWidget {
             child: SizedBox(
               width: 120,
               child: ShaderMask(
-                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                 child: LinearProgressIndicator(
                   backgroundColor: Theme.of(
                     context,

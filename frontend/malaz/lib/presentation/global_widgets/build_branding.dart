@@ -14,7 +14,7 @@ class BuildBranding extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ShaderMask(
-              shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+              shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
               child: Text(
                 'FROM',
                 style: TextStyle(
@@ -26,7 +26,7 @@ class BuildBranding extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             ShaderMask(
-              shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+              shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
               child: Text(
                 'MALAZ',
                 style: TextStyle(

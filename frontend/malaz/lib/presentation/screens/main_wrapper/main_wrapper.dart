@@ -19,7 +19,6 @@ class MainWrapper extends StatefulWidget {
 class _MainWrapperState extends State<MainWrapper> {
   int _currentIndex = 0;
 
-  // قائمة الصفحات مرتبة حسب الترتيب في شريط التنقل
   final List<Widget> _screens = const [
     HomeScreen(),             // 0
     ChatsScreen(),            // 1
@@ -34,12 +33,10 @@ class _MainWrapperState extends State<MainWrapper> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    // إعداد ألوان الأيقونات بناءً على الثيم
 
 
     return SafeArea(child:
       Scaffold(
-      // تم حذف الـ FloatingActionButton من هنا بناءً على طلبك
       drawer: const AppDrawer(),
       body: IndexedStack(
         index: _currentIndex,
@@ -48,18 +45,18 @@ class _MainWrapperState extends State<MainWrapper> {
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         index: _currentIndex,
-        height: 45,
+        height: 55,
         items: <Widget>[
           Icon(Icons.home_outlined,
-              size: _currentIndex == 0 ? 30:24,color: colorScheme.surface,),
+              size: _currentIndex == 0 ? 30:24,color: colorScheme.onSurface,),
           Icon(Icons.chat_bubble_outline,
-              size: _currentIndex == 1 ? 30:24,color: colorScheme.surface,),
+              size: _currentIndex == 1 ? 30:24,color: colorScheme.onSurface,),
           Icon(Icons.favorite_outline,
-              size: _currentIndex == 2 ? 30:24,color: colorScheme.surface,),
+              size: _currentIndex == 2 ? 30:24,color: colorScheme.onSurface,),
           Icon(Icons.calendar_today_outlined,
-              size: _currentIndex == 3 ? 30:24,color: colorScheme.surface,),
+              size: _currentIndex == 3 ? 30:24,color: colorScheme.onSurface,),
           Icon(Icons.person_outline,
-              size: _currentIndex == 4 ? 30:24,color: colorScheme.surface,),
+              size: _currentIndex == 4 ? 30:24,color: colorScheme.onSurface,),
         ],
         color: colorScheme.secondary,
         buttonBackgroundColor: colorScheme.primary,

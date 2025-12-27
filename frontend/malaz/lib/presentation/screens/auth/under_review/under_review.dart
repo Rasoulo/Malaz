@@ -31,7 +31,6 @@ class _UnderReviewState extends State<UnderReview> {
     });
   }
 
-
   Future<void> _checkNow() async {
     if (modalProgressHUDisOn) return;
     setState(() => modalProgressHUDisOn = true);
@@ -72,7 +71,7 @@ class _UnderReviewState extends State<UnderReview> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ShaderMask(
-                  shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                  shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                   child: Icon(
                     Icons.hourglass_top_rounded,
                     size: 80,
@@ -83,7 +82,7 @@ class _UnderReviewState extends State<UnderReview> {
                   height: 16,
                 ),
                 ShaderMask(
-                  shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                  shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                   child: Text(
                     'Your request is under review by the application administrators. We will notify you when it is approved.',
                     textAlign: TextAlign.center,

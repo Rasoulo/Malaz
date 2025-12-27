@@ -192,7 +192,7 @@ class _HomeRegisterScreenState extends State<HomeRegisterScreen> {
             ),
             Center(
               child: ShaderMask(
-                shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+                shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                 child: SmoothPageIndicator(
                   controller: _controller,
                   count: 5,

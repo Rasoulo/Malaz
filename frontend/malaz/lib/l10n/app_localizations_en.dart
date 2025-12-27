@@ -253,4 +253,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get warring => 'warring';
+
+  @override
+  String get edit_profile => 'Edit Profile';
+
+  @override
+  String get identity_verification => 'Identity verification';
+
+  @override
+  String get identity_verification_input =>
+      'Please enter your password to confirm identity';
+
+  @override
+  String get current_password => 'Current password';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get incorrect_password => 'Incorrect Password';
+
+  @override
+  String get verify => 'verification';
+
+  @override
+  String get profile_updated_success => 'Profile Updated & Cached Successfully';
+
+  @override
+  String get change_password => 'Change Password';
+
+  @override
+  String get otp_sent_success => 'Verification code sent to your phone';
+
+  @override
+  String get enter_otp_hint => 'Enter the 6-digit code sent to you';
+
+  @override
+  String get new_password => 'New Password';
+
+  @override
+  String get confirm_new_password => 'Confirm New Password';
+
+  @override
+  String get password_mismatch => 'Passwords do not match';
+
+  @override
+  String get password_changed_success => 'Password changed successfully';
+
+  @override
+  String get resend_code => 'Resend Code';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get please_enter_password => 'Please enter your password';
+
+  @override
+  String get passwords_do_not_match => 'Passwords do not match';
+
+  @override
+  String get wronge_otp => 'The entered code is incorrect, please try again';
+
+  @override
+  String get otp_verified_success => 'OTP verified successfully';
 }

@@ -254,4 +254,69 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get warring => 'Uyarı';
+
+  @override
+  String get edit_profile => 'Profil Düzenle';
+
+  @override
+  String get identity_verification => 'kimlik doğrulama';
+
+  @override
+  String get identity_verification_input =>
+      'Kimliğinizi doğrulamak için lütfen şifrenizi girin';
+
+  @override
+  String get current_password => 'Mevcut Şifre';
+
+  @override
+  String get cancel => 'Iptal';
+
+  @override
+  String get incorrect_password => 'Yanlış Şifre';
+
+  @override
+  String get verify => 'doğrulama';
+
+  @override
+  String get profile_updated_success =>
+      'Profil başarıyla güncellendi ve önbelleğe alındı';
+
+  @override
+  String get change_password => 'Şifreyi Değiştir';
+
+  @override
+  String get otp_sent_success => 'Doğrulama kodu telefonunuza gönderildi';
+
+  @override
+  String get enter_otp_hint => 'Size gönderilen 6 haneli kodu girin';
+
+  @override
+  String get new_password => 'Yeni Şifre';
+
+  @override
+  String get confirm_new_password => 'Yeni Şifreyi Onayla';
+
+  @override
+  String get password_mismatch => 'Şifreler eşleşmiyor';
+
+  @override
+  String get password_changed_success => 'Şifre başarıyla değiştirildi';
+
+  @override
+  String get resend_code => 'Kodu Tekrar Gönder';
+
+  @override
+  String get done => 'Tamamlandı';
+
+  @override
+  String get please_enter_password => 'Lütfen şifrenizi giriniz';
+
+  @override
+  String get passwords_do_not_match => 'Şifreler eşleşmiyor';
+
+  @override
+  String get wronge_otp => 'Girilen kod yanlış, lütfen tekrar deneyin';
+
+  @override
+  String get otp_verified_success => 'Doğrulama kodu başarıyla onaylandı';
 }

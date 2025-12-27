@@ -78,7 +78,7 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                   // Create Account - Header Text 1
                   ShaderMask(
                     shaderCallback: (bounds) =>
-                        AppColors.realGoldGradient.createShader(bounds),
+                        AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(tr.create_account, // Using getter
                         style: TextStyle(
                           fontSize: 28,
@@ -93,7 +93,7 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                   // Join To Find - Header Text 2
                   ShaderMask(
                     shaderCallback: (bounds) =>
-                        AppColors.realGoldGradient.createShader(bounds),
+                        AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(
                       tr.join_to_find, // Using getter
                       style: TextStyle(color: Colors.grey.shade600),
@@ -106,7 +106,7 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                   // ID Document Message
                   ShaderMask(
                     shaderCallback: (bounds) =>
-                        AppColors.realGoldGradient.createShader(bounds),
+                        AppColors.premiumGoldGradient.createShader(bounds),
                     child: Text(tr.id_document_message, // Using getter
                         style: TextStyle(
                           fontSize: 16,
@@ -238,7 +238,7 @@ class DottedBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShaderMask(
       shaderCallback: (bounds) =>
-          AppColors.realGoldGradient.createShader(bounds),
+          AppColors.premiumGoldGradient.createShader(bounds),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),

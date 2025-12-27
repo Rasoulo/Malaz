@@ -24,8 +24,8 @@ class BuildCard extends StatelessWidget {
 
 class BuildPincodeTextfield extends StatefulWidget {
   final GlobalKey<BuildPincodeTextfieldState>? pinKey;
-  final Function(String)? onChanged;      // <-- callback لتمرير نص الـ PIN عند التغيير
-  final Function(bool)? onVerified;       // <-- اختياري: للإبلاغ إن تم التحقق ناجحًا
+  final Function(String)? onChanged;
+  final Function(bool)? onVerified;
 
   const BuildPincodeTextfield({super.key, this.pinKey, this.onChanged, this.onVerified});
 
@@ -86,10 +86,11 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = _errorMessage == null ? Colors.yellow : Colors.red;
+    final colorScheme = Theme.of(context).colorScheme;
+    final borderColor = _errorMessage == null ? colorScheme.primary : Colors.red;
 
     return ShaderMask(
-      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+      shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -100,8 +101,8 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
             controller: _pinController,
             focusNode: _focusNode,
             keyboardType: TextInputType.number,
-            textStyle: const TextStyle(
-              color: Colors.yellow,
+            textStyle: TextStyle(
+              color: colorScheme.primary,
               fontSize: 18,
             ),
             pinTheme: PinTheme(
@@ -110,12 +111,12 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
               activeBorderWidth: 2,
               shape: PinCodeFieldShape.box,
               borderRadius: BorderRadius.circular(16),
-              fieldHeight: 50,
-              fieldWidth: 40,
-              activeFillColor: Colors.yellow,
-              inactiveColor: Colors.yellow.withOpacity(0.5),
+              fieldHeight: 45,
+              fieldWidth: 35,
+              activeFillColor: colorScheme.primary,
+              inactiveColor: colorScheme.primary.withOpacity(0.5),
               selectedColor: borderColor,
-              selectedFillColor: Colors.yellow,
+              selectedFillColor: colorScheme.primary,
               activeColor: borderColor,
             ),
             onChanged: (value) {
@@ -150,7 +151,6 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
   }
 }
 
-
 class BuildRegisterRow extends StatelessWidget {
   const BuildRegisterRow({super.key});
 
@@ -162,7 +162,7 @@ class BuildRegisterRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+          shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
           child: Text(
             tr.dont_have_account,
             style: TextStyle(color: colorScheme.secondary),
@@ -173,7 +173,7 @@ class BuildRegisterRow extends StatelessWidget {
             context.go('/home_register');
           },
           child: ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+            shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
             child: Text(
               tr.register,
               style: TextStyle(color: colorScheme.primary),
@@ -197,7 +197,7 @@ class BuildLoginRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+          shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
           child: Text(
             tr.have_account,
             style: TextStyle(color: colorScheme.secondary),
@@ -208,7 +208,7 @@ class BuildLoginRow extends StatelessWidget {
             context.go('/login');
           },
           child: ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+            shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
             child: Text(
               tr.login,
               style: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.bold),
@@ -301,7 +301,7 @@ class _BuildTextfieldState extends State<BuildTextfield> {
     final tr = AppLocalizations.of(context)!;
 
     return ShaderMask(
-      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+      shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
       child: TextFormField(
         controller: _effectiveController,
         validator: (data) {
@@ -350,7 +350,7 @@ class _BuildTextfieldState extends State<BuildTextfield> {
             color: colorScheme.onSurface.withOpacity(0.6),
           ),
           prefixIcon: ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+            shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
             child: Icon(
               widget.icon,
               color: Colors.yellow,
@@ -358,7 +358,7 @@ class _BuildTextfieldState extends State<BuildTextfield> {
           ),
           suffixIcon: _haveSuffixEyeIcon == true
               ? ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+            shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
             child: GestureDetector(
               onTap: () {
                 setState(() {
@@ -446,12 +446,12 @@ class BuildVerficationCodeButton extends StatelessWidget {
       child: TextButton.icon(
         onPressed: onPressed,
         icon: ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+          shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
           child: Icon(Icons.send, color: colorScheme.primary
           ),
         ),
         label: ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+          shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
           child: Text(tr.send_code,
               style: TextStyle(color: colorScheme.primary)),
         ),

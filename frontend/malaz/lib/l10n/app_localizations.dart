@@ -589,6 +589,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'warring'**
   String get warring;
+
+  /// No description provided for @edit_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get edit_profile;
+
+  /// No description provided for @identity_verification.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity verification'**
+  String get identity_verification;
+
+  /// No description provided for @identity_verification_input.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password to confirm identity'**
+  String get identity_verification_input;
+
+  /// No description provided for @current_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get current_password;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @incorrect_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect Password'**
+  String get incorrect_password;
+
+  /// No description provided for @verify.
+  ///
+  /// In en, this message translates to:
+  /// **'verification'**
+  String get verify;
+
+  /// No description provided for @profile_updated_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Updated & Cached Successfully'**
+  String get profile_updated_success;
+
+  /// No description provided for @change_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get change_password;
+
+  /// No description provided for @otp_sent_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent to your phone'**
+  String get otp_sent_success;
+
+  /// No description provided for @enter_otp_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code sent to you'**
+  String get enter_otp_hint;
+
+  /// No description provided for @new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get new_password;
+
+  /// No description provided for @confirm_new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirm_new_password;
+
+  /// No description provided for @password_mismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get password_mismatch;
+
+  /// No description provided for @password_changed_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get password_changed_success;
+
+  /// No description provided for @resend_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get resend_code;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @please_enter_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get please_enter_password;
+
+  /// No description provided for @passwords_do_not_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwords_do_not_match;
+
+  /// No description provided for @wronge_otp.
+  ///
+  /// In en, this message translates to:
+  /// **'The entered code is incorrect, please try again'**
+  String get wronge_otp;
+
+  /// No description provided for @otp_verified_success.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP verified successfully'**
+  String get otp_verified_success;
 }
 
 class _AppLocalizationsDelegate
