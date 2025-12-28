@@ -6,6 +6,7 @@ use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PropertyController extends Controller
 {
@@ -17,10 +18,40 @@ class PropertyController extends Controller
         $user = auth()->user();
         $perPage = (int) $request->input('per_page', 20);
 
-        $properties = $user->property()
+        $query = $user->property()
+            ->with(['images', 'user'])
             ->where('status', 'approved')
-            ->orderBy('id', 'desc')
-            ->cursorPaginate($perPage);
+            ->when($request->filled('type'), fn($q) => $q->where('type', $request->input('type')))
+            ->when($request->filled('price_min'), fn($q) => $q->where('price', '>=', (int)$request->input('price_min')))
+            ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int)$request->input('price_max')))
+            ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int)$request->input('rooms_min')))
+            ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int)$request->input('rooms_max')))
+            ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int)$request->input('baths_min')))
+            ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int)$request->input('baths_max')))
+            ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int)$request->input('area_min')))
+            ->when($request->filled('area_max'), fn($q) => $q->where('area', '<=', (int)$request->input('area_max')))
+            ->when($request->filled('city'), fn($q) => $q->where('city', $request->input('city')))
+            ->when($request->filled('governorate'), fn($q) => $q->where('governorate', $request->input('governorate')));
+
+        // If sort nearest and lat/lng provided, compute distance and order by it
+        if ($request->input('sort') === 'nearest' && $request->filled('lat') && $request->filled('lng')) {
+            $lat = (float) $request->input('lat');
+            $lng = (float) $request->input('lng');
+            $haversine = "(6371 * acos(cos(radians(?)) * cos(radians(latitude+0)) * cos(radians(longitude+0) - radians(?)) + sin(radians(?)) * sin(radians(latitude+0))))";
+            $query->selectRaw('properties.*,' . $haversine . ' AS distance', [$lat, $lng, $lat]);
+            $query->whereNotNull('latitude')->whereNotNull('longitude');
+            $query->orderBy('distance')->orderBy('id', 'desc');
+        } else {
+            if ($request->input('sort') === 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif ($request->input('sort') === 'price_desc') {
+                $query->orderBy('price', 'desc');
+            } else {
+                $query->orderBy('id', 'desc');
+            }
+        }
+
+        $properties = $query->cursorPaginate($perPage);
 
         return response()->json(
             [
@@ -41,9 +72,84 @@ class PropertyController extends Controller
 
         $perPage = (int) $request->input('per_page', 20);
 
-        $properties = Property::where('status', 'approved')
-            ->orderBy('id', 'desc')
-            ->cursorPaginate($perPage);
+        $query = Property::with(['images', 'user'])->where('status', 'approved')
+            ->when($request->filled('search'), fn($q) => $q->where(function ($sub) use ($request) {
+                $s = $request->input('search');
+                $sub->where('address', 'like', "%{$s}%")
+                    ->orWhere('city', 'like', "%{$s}%")
+                    ->orWhere('governorate', 'like', "%{$s}%")
+                    ->orWhere('description', 'like', "%{$s}%")
+                    ->orWhere('title', 'like', "%{$s}%");
+            }))
+            ->when($request->filled('type'), fn($q) => $q->where('type', $request->input('type')))
+            ->when($request->filled('price_min'), fn($q) => $q->where('price', '>=', (int)$request->input('price_min')))
+            ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int)$request->input('price_max')))
+            ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int)$request->input('rooms_min')))
+            ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int)$request->input('rooms_max')))
+            ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int)$request->input('baths_min')))
+            ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int)$request->input('baths_max')))
+            ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int)$request->input('area_min')))
+            ->when($request->filled('area_max'), fn($q) => $q->where('area', '<=', (int)$request->input('area_max')))
+            ->when($request->filled('city'), fn($q) => $q->where('city', $request->input('city')))
+            ->when($request->filled('governorate'), fn($q) => $q->where('governorate', $request->input('governorate')));
+
+        // Map JSON mode: return properties with coords (no pagination)
+        if ($request->boolean('map')) {
+            $mapQuery = (clone $query)->whereNotNull('latitude')->whereNotNull('longitude');
+            if ($request->filled('lat') && $request->filled('lng')) {
+                $lat = (float) $request->input('lat');
+                $lng = (float) $request->input('lng');
+                $haversine = "(6371 * acos(cos(radians(?)) * cos(radians(latitude+0)) * cos(radians(longitude+0) - radians(?)) + sin(radians(?)) * sin(radians(latitude+0))))";
+                $mapQuery->selectRaw('properties.*,' . $haversine . ' AS distance', [$lat, $lng, $lat]);
+                if ($request->filled('radius_km')) {
+                    $mapQuery->having('distance', '<=', (float)$request->input('radius_km'));
+                }
+                $mapQuery->orderBy('distance');
+            }
+
+            $results = $mapQuery->get();
+            return response()->json([
+                'data' => $results->map(function ($p) {
+                    return [
+                        'id' => $p->id,
+                        'title' => $p->title,
+                        'price' => $p->price,
+                        'type' => $p->type,
+                        'latitude' => $p->latitude,
+                        'longitude' => $p->longitude,
+                        'number_of_rooms' => $p->number_of_rooms,
+                        'number_of_baths' => $p->number_of_baths,
+                        'area' => $p->area,
+                        'main_image_url' => $p->main_image_url,
+                        'distance' => $p->distance ?? null,
+                    ];
+                }),
+                'message' => __('validation.property.all_list'),
+                'status' => 200,
+            ]);
+        }
+
+
+
+        // Sorting: nearest requires lat & lng
+        if ($request->input('sort') === 'nearest' && $request->filled('lat') && $request->filled('lng')) {
+            $lat = (float) $request->input('lat');
+            $lng = (float) $request->input('lng');
+            $haversine = "(6371 * acos(cos(radians(?)) * cos(radians(latitude+0)) * cos(radians(longitude+0) - radians(?)) + sin(radians(?)) * sin(radians(latitude+0))))";
+            $query->selectRaw('properties.*,' . $haversine . ' AS distance', [$lat, $lng, $lat]);
+            $query->whereNotNull('latitude')->whereNotNull('longitude');
+            $query->orderBy('distance')->orderBy('id', 'desc');
+        } else {
+            if ($request->input('sort') === 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif ($request->input('sort') === 'price_desc') {
+                $query->orderBy('price', 'desc');
+            } else {
+                $query->orderBy('id', 'desc');
+            }
+        }
+
+        $properties = $query->cursorPaginate($perPage);
 
         return response()->json(
             [
@@ -59,13 +165,19 @@ class PropertyController extends Controller
         );
     }
 
+    public function all_booked_properties(Property $property)
+    {
+        return response()->json([
+            'data' => $property->bookings->where('status', 'confirmed'),
+            'message' => "__('validation.property.returned')",
+            'status' => 200,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.

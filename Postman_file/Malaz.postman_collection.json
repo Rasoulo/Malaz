@@ -3,8 +3,8 @@
 		"_postman_id": "f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2",
 		"name": "Malaz",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "50107412",
-		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107412"
+		"_exporter_id": "50107547",
+		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107547"
 	},
 	"item": [
 		{
@@ -1209,7 +1209,7 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+1111111128"
+									"value": "+1111111117"
 								},
 								{
 									"key": "first_name",
@@ -1244,7 +1244,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111111&role=USER&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
+									"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111111&role=OWNER&first_name=Maher&last_name=Alnouri&password=12345678&identity_card_image=123&profile_image=123&date_of_birth=1-1-1&password_confirmation=12345678",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1265,7 +1265,7 @@
 										},
 										{
 											"key": "role",
-											"value": "USER"
+											"value": "OWNER"
 										},
 										{
 											"key": "first_name",
@@ -1454,25 +1454,20 @@
 								{
 									"key": "profile_image",
 									"type": "file",
-									"src": "postman-cloud:///1f0d7776-4457-4900-875b-19e8b240cccb"
+									"src": "postman-cloud:///1f0d7df2-e7b3-4270-bca5-1b669ade56e8"
 								},
 								{
 									"key": "identity_card_image",
 									"type": "file",
-									"src": "postman-cloud:///1f0d7719-8fb5-45d0-b60a-adcb1fb598ae"
+									"src": "postman-cloud:///1f0d7df3-23f6-4660-95ea-f3abe04bf9b3"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/users/register?phone=+1111111128&first_name=Maher&last_name=Alnouri&password=12345678&date_of_birth=1-1-1&password_confirmation=12345678",
-							"protocol": "http",
+							"raw": "{{localhost}}/api/users/register?phone=+99920200127&first_name=anya&last_name=petrrva&password=12345678&date_of_birth=1-1-1&password_confirmation=12345678&lang=en",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{localhost}}"
 							],
-							"port": "8000",
 							"path": [
 								"api",
 								"users",
@@ -1481,15 +1476,15 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+1111111128"
+									"value": "+99920200127"
 								},
 								{
 									"key": "first_name",
-									"value": "Maher"
+									"value": "anya"
 								},
 								{
 									"key": "last_name",
-									"value": "Alnouri"
+									"value": "petrrva"
 								},
 								{
 									"key": "password",
@@ -1502,6 +1497,10 @@
 								{
 									"key": "password_confirmation",
 									"value": "12345678"
+								},
+								{
+									"key": "lang",
+									"value": "en"
 								}
 							]
 						}
@@ -1954,7 +1953,7 @@
 							"formdata": [
 								{
 									"key": "password",
-									"value": "admin123",
+									"value": "Admin@123",
 									"type": "text"
 								}
 							]
@@ -3252,7 +3251,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message\": \"Message created successfully\",\n    \"data\": {\n        \"sender_id\": 3,\n        \"conversation_id\": 1,\n        \"body\": \"Welcome back\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"id\": 1,\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"USER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 201\n}"
+							"body": "{\n    \"message\": \"Message created successfully\",\n    \"data\": {\n        \"sender_id\": 3,\n        \"conversation_id\": 1,\n        \"body\": \"Welcome back\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"id\": 1,\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 201\n}"
 						}
 					]
 				},
@@ -3352,7 +3351,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message_data\": {\n        \"id\": 1,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": null,\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"USER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"info\": \"Message retrieved successfully\",\n    \"status\": 200\n}"
+							"body": "{\n    \"message_data\": {\n        \"id\": 1,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": null,\n        \"created_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"updated_at\": \"2025-12-09T06:04:30.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"info\": \"Message retrieved successfully\",\n    \"status\": 200\n}"
 						}
 					]
 				},
@@ -3707,7 +3706,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"message\": \"Message marked as read\",\n    \"data\": {\n        \"id\": 8,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": \"2025-12-09T06:18:09.330360Z\",\n        \"created_at\": \"2025-12-09T06:15:07.000000Z\",\n        \"updated_at\": \"2025-12-09T06:18:09.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"USER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 200\n}"
+							"body": "{\n    \"message\": \"Message marked as read\",\n    \"data\": {\n        \"id\": 8,\n        \"conversation_id\": 1,\n        \"sender_id\": 3,\n        \"body\": \"Welcome back\",\n        \"read_at\": \"2025-12-09T06:18:09.330360Z\",\n        \"created_at\": \"2025-12-09T06:15:07.000000Z\",\n        \"updated_at\": \"2025-12-09T06:18:09.000000Z\",\n        \"conversation\": {\n            \"id\": 1,\n            \"user_one_id\": 2,\n            \"user_two_id\": 3,\n            \"created_at\": \"2025-12-09T06:01:30.000000Z\",\n            \"updated_at\": \"2025-12-09T06:01:30.000000Z\"\n        },\n        \"sender\": {\n            \"id\": 3,\n            \"first_name\": \"Pixel\",\n            \"last_name\": \"Master\",\n            \"phone\": \"1111111112\",\n            \"role\": \"OWNER\",\n            \"date_of_birth\": \"0002-02-02\",\n            \"profile_image\": \"123\",\n            \"identity_card_image\": \"123\",\n            \"phone_verified_at\": \"2025-12-09T00:34:28.000000Z\",\n            \"created_at\": \"2025-12-08T21:28:23.000000Z\",\n            \"updated_at\": \"2025-12-08T21:34:28.000000Z\"\n        }\n    },\n    \"status\": 200\n}"
 						}
 					]
 				}
@@ -4075,6 +4074,626 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": [\n        {\n            \"id\": 16,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:11:10.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:45.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/16\"\n        },\n        {\n            \"id\": 15,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:10:05.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:51.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/15\"\n        }\n    ],\n    \"message\": \"here all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0\",\n        \"prev_cursor\": \"eyJpZCI6MTYsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9\",\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "price filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&price_min=200000&price_max=1500000000",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "price_min",
+											"value": "200000"
+										},
+										{
+											"key": "price_max",
+											"value": "1500000000"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:22:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 2,\n            \"owner_id\": 3,\n            \"status\": \"approved\",\n            \"title\": \"فيلا على شاطئ ميامي\",\n            \"price\": 1200000,\n            \"city\": \"ميامي\",\n            \"governorate\": \"فلوريدا\",\n            \"address\": \"شاطئ ميامي، فلوريدا\",\n            \"description\": \"فيلا فاخرة مع مسبح خاص وإطلالة على المحيط الأطلسي.\",\n            \"latitude\": \"25.7906\",\n            \"longitude\": \"-80.1300\",\n            \"type\": \"Villa\",\n            \"number_of_rooms\": 8,\n            \"number_of_baths\": 4,\n            \"number_of_bedrooms\": 5,\n            \"area\": 350,\n            \"rating\": 5,\n            \"number_of_reviews\": 40,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/2\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 3,\n                \"first_name\": \"Kwame\",\n                \"last_name\": \"Adebyo\",\n                \"phone\": \"22300465\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1998-05-26T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/3/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/3/identity_card_image\"\n            }\n        }\n    ],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": null,\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "rooms filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&rooms_min=2&rooms_max=5",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "rooms_min",
+											"value": "2"
+										},
+										{
+											"key": "rooms_max",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:32:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 4,\n            \"owner_id\": 3,\n            \"status\": \"approved\",\n            \"title\": \"مزرعة زيتون في ريف دمشق\",\n            \"price\": 300000,\n            \"city\": \"ريف دمشق\",\n            \"governorate\": \"دمشق\",\n            \"address\": \"الغوطة الشرقية\",\n            \"description\": \"مزرعة واسعة مزروعة بأشجار الزيتون مع بيت ريفي صغير.\",\n            \"latitude\": \"33.5138\",\n            \"longitude\": \"36.2765\",\n            \"type\": \"Farm\",\n            \"number_of_rooms\": 4,\n            \"number_of_baths\": 2,\n            \"number_of_bedrooms\": 2,\n            \"area\": 500,\n            \"rating\": 4,\n            \"number_of_reviews\": 15,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/4\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 3,\n                \"first_name\": \"Kwame\",\n                \"last_name\": \"Adebyo\",\n                \"phone\": \"22300465\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1998-05-26T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/3/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/3/identity_card_image\"\n            }\n        },\n        {\n            \"id\": 1,\n            \"owner_id\": 4,\n            \"status\": \"approved\",\n            \"title\": \"شقة في برج خليفة - دبي\",\n            \"price\": 2000000,\n            \"city\": \"دبي\",\n            \"governorate\": \"دبي\",\n            \"address\": \"برج خليفة، وسط مدينة دبي\",\n            \"description\": \"شقة حديثة في أعلى برج بالعالم مع إطلالة بانورامية على دبي.\",\n            \"latitude\": \"25.1972\",\n            \"longitude\": \"55.2744\",\n            \"type\": \"Residential Tower\",\n            \"number_of_rooms\": 5,\n            \"number_of_baths\": 3,\n            \"number_of_bedrooms\": 3,\n            \"area\": 180,\n            \"rating\": 5,\n            \"number_of_reviews\": 70,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/1\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 4,\n                \"first_name\": \"Priya\",\n                \"last_name\": \"Sharna\",\n                \"phone\": \"203310439\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1999-10-10T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/4/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/4/identity_card_image\"\n            }\n        }\n    ],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": null,\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "baths filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&baths_min=1&baths_max=5",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "baths_min",
+											"value": "1"
+										},
+										{
+											"key": "baths_max",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:32:52 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 4,\n            \"owner_id\": 3,\n            \"status\": \"approved\",\n            \"title\": \"مزرعة زيتون في ريف دمشق\",\n            \"price\": 300000,\n            \"city\": \"ريف دمشق\",\n            \"governorate\": \"دمشق\",\n            \"address\": \"الغوطة الشرقية\",\n            \"description\": \"مزرعة واسعة مزروعة بأشجار الزيتون مع بيت ريفي صغير.\",\n            \"latitude\": \"33.5138\",\n            \"longitude\": \"36.2765\",\n            \"type\": \"Farm\",\n            \"number_of_rooms\": 4,\n            \"number_of_baths\": 2,\n            \"number_of_bedrooms\": 2,\n            \"area\": 500,\n            \"rating\": 4,\n            \"number_of_reviews\": 15,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/4\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 3,\n                \"first_name\": \"Kwame\",\n                \"last_name\": \"Adebyo\",\n                \"phone\": \"22300465\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1998-05-26T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/3/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/3/identity_card_image\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"owner_id\": 3,\n            \"status\": \"approved\",\n            \"title\": \"فيلا على شاطئ ميامي\",\n            \"price\": 1200000,\n            \"city\": \"ميامي\",\n            \"governorate\": \"فلوريدا\",\n            \"address\": \"شاطئ ميامي، فلوريدا\",\n            \"description\": \"فيلا فاخرة مع مسبح خاص وإطلالة على المحيط الأطلسي.\",\n            \"latitude\": \"25.7906\",\n            \"longitude\": \"-80.1300\",\n            \"type\": \"Villa\",\n            \"number_of_rooms\": 8,\n            \"number_of_baths\": 4,\n            \"number_of_bedrooms\": 5,\n            \"area\": 350,\n            \"rating\": 5,\n            \"number_of_reviews\": 40,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/2\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 3,\n                \"first_name\": \"Kwame\",\n                \"last_name\": \"Adebyo\",\n                \"phone\": \"22300465\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1998-05-26T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/3/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/3/identity_card_image\"\n            }\n        }\n    ],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6MiwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ\",\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "area filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&area_min=1000&area_max=2000",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "area_min",
+											"value": "1000"
+										},
+										{
+											"key": "area_max",
+											"value": "2000"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:33:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 5,\n            \"owner_id\": 1,\n            \"status\": \"approved\",\n            \"title\": \"any thing\",\n            \"price\": 101,\n            \"city\": \"duma\",\n            \"governorate\": \"damascus\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"number_of_bedrooms\": 3,\n            \"area\": 1500,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n            \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/5\",\n            \"images\": [\n                {\n                    \"id\": 1,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/1\"\n                },\n                {\n                    \"id\": 2,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/2\"\n                },\n                {\n                    \"id\": 3,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/3\"\n                },\n                {\n                    \"id\": 4,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/4\"\n                },\n                {\n                    \"id\": 5,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/5\"\n                },\n                {\n                    \"id\": 6,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/jpeg\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/6\"\n                }\n            ],\n            \"user\": {\n                \"id\": 1,\n                \"first_name\": \"Super\",\n                \"last_name\": \"Admin\",\n                \"phone\": \"0999999999\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"ADMIN\",\n                \"date_of_birth\": \"1990-01-01T00:00:00.000000Z\",\n                \"profile_image_mime\": null,\n                \"identity_card_mime\": null,\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/1/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/1/identity_card_image\"\n            }\n        }\n    ],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": null,\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "city filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&city=Damascus",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "city",
+											"value": "Damascus"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:34:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": null,\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "sort by price filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&sort=price_asc",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "sort",
+											"value": "price_asc"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:34:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 5,\n            \"owner_id\": 1,\n            \"status\": \"approved\",\n            \"title\": \"any thing\",\n            \"price\": 101,\n            \"city\": \"duma\",\n            \"governorate\": \"damascus\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"number_of_bedrooms\": 3,\n            \"area\": 1500,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n            \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/5\",\n            \"images\": [\n                {\n                    \"id\": 1,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/1\"\n                },\n                {\n                    \"id\": 2,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/2\"\n                },\n                {\n                    \"id\": 3,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/3\"\n                },\n                {\n                    \"id\": 4,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/4\"\n                },\n                {\n                    \"id\": 5,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/5\"\n                },\n                {\n                    \"id\": 6,\n                    \"property_id\": 5,\n                    \"mime_type\": \"image/jpeg\",\n                    \"created_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"updated_at\": \"2025-12-28T11:12:06.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/6\"\n                }\n            ],\n            \"user\": {\n                \"id\": 1,\n                \"first_name\": \"Super\",\n                \"last_name\": \"Admin\",\n                \"phone\": \"0999999999\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"ADMIN\",\n                \"date_of_birth\": \"1990-01-01T00:00:00.000000Z\",\n                \"profile_image_mime\": null,\n                \"identity_card_mime\": null,\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/1/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/1/identity_card_image\"\n            }\n        },\n        {\n            \"id\": 4,\n            \"owner_id\": 3,\n            \"status\": \"approved\",\n            \"title\": \"مزرعة زيتون في ريف دمشق\",\n            \"price\": 300000,\n            \"city\": \"ريف دمشق\",\n            \"governorate\": \"دمشق\",\n            \"address\": \"الغوطة الشرقية\",\n            \"description\": \"مزرعة واسعة مزروعة بأشجار الزيتون مع بيت ريفي صغير.\",\n            \"latitude\": \"33.5138\",\n            \"longitude\": \"36.2765\",\n            \"type\": \"Farm\",\n            \"number_of_rooms\": 4,\n            \"number_of_baths\": 2,\n            \"number_of_bedrooms\": 2,\n            \"area\": 500,\n            \"rating\": 4,\n            \"number_of_reviews\": 15,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/4\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 3,\n                \"first_name\": \"Kwame\",\n                \"last_name\": \"Adebyo\",\n                \"phone\": \"22300465\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1998-05-26T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/3/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/3/identity_card_image\"\n            }\n        }\n    ],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJwcmljZSI6MzAwMDAwLCJfcG9pbnRzVG9OZXh0SXRlbXMiOnRydWV9\",\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "nearest filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&sort=nearest&lat=30.0444&lng=31.2357",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "sort",
+											"value": "nearest"
+										},
+										{
+											"key": "lat",
+											"value": "30.0444"
+										},
+										{
+											"key": "lng",
+											"value": "31.2357"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:35:38 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 4,\n            \"owner_id\": 3,\n            \"status\": \"approved\",\n            \"title\": \"مزرعة زيتون في ريف دمشق\",\n            \"price\": 300000,\n            \"city\": \"ريف دمشق\",\n            \"governorate\": \"دمشق\",\n            \"address\": \"الغوطة الشرقية\",\n            \"description\": \"مزرعة واسعة مزروعة بأشجار الزيتون مع بيت ريفي صغير.\",\n            \"latitude\": \"33.5138\",\n            \"longitude\": \"36.2765\",\n            \"type\": \"Farm\",\n            \"number_of_rooms\": 4,\n            \"number_of_baths\": 2,\n            \"number_of_bedrooms\": 2,\n            \"area\": 500,\n            \"rating\": 4,\n            \"number_of_reviews\": 15,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"distance\": 612.9203529427546,\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/4\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 3,\n                \"first_name\": \"Kwame\",\n                \"last_name\": \"Adebyo\",\n                \"phone\": \"22300465\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1998-05-26T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/3/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/3/identity_card_image\"\n            }\n        },\n        {\n            \"id\": 1,\n            \"owner_id\": 4,\n            \"status\": \"approved\",\n            \"title\": \"شقة في برج خليفة - دبي\",\n            \"price\": 2000000,\n            \"city\": \"دبي\",\n            \"governorate\": \"دبي\",\n            \"address\": \"برج خليفة، وسط مدينة دبي\",\n            \"description\": \"شقة حديثة في أعلى برج بالعالم مع إطلالة بانورامية على دبي.\",\n            \"latitude\": \"25.1972\",\n            \"longitude\": \"55.2744\",\n            \"type\": \"Residential Tower\",\n            \"number_of_rooms\": 5,\n            \"number_of_baths\": 3,\n            \"number_of_bedrooms\": 3,\n            \"area\": 180,\n            \"rating\": 5,\n            \"number_of_reviews\": 70,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n            \"distance\": 2423.961429358208,\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/1\",\n            \"images\": [],\n            \"user\": {\n                \"id\": 4,\n                \"first_name\": \"Priya\",\n                \"last_name\": \"Sharna\",\n                \"phone\": \"203310439\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1999-10-10T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2025-12-28T10:58:54.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2025-12-28T10:58:55.000000Z\",\n                \"updated_at\": \"2025-12-28T10:58:55.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/4/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/4/identity_card_image\"\n            }\n        }\n    ],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJkaXN0YW5jZSI6MjQyMy45NjE0MjkzNTgyMDgsImlkIjoxLCJfcG9pbnRzVG9OZXh0SXRlbXMiOnRydWV9\",\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "map filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&map=1&lat=30.0444&lng=31.2357&radius_km=5",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "map",
+											"value": "1"
+										},
+										{
+											"key": "lat",
+											"value": "30.0444"
+										},
+										{
+											"key": "lng",
+											"value": "31.2357"
+										},
+										{
+											"key": "radius_km",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:37:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [],\n    \"message\": \"Here are all properties\",\n    \"status\": 200\n}"
 						}
 					]
 				},
@@ -5333,6 +5952,69 @@
 							"body": "{\n    \"message\": \"Property deleted\",\n    \"status\": 200\n}"
 						}
 					]
+				},
+				{
+					"name": "booked_properties",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": [
+						{
+							"name": "booked properties",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all_booked/1",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all_booked",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 28 Dec 2025 11:51:28 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [],\n    \"message\": \"__('validation.property.returned')\",\n    \"status\": 200\n}"
+						}
+					]
 				}
 			]
 		},
@@ -5394,14 +6076,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{localhost}}/api/users/4/profile_image",
+					"raw": "{{localhost}}/api/users/2/profile_image",
 					"host": [
 						"{{localhost}}"
 					],
 					"path": [
 						"api",
 						"users",
-						"4",
+						"2",
 						"profile_image"
 					]
 				}

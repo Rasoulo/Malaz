@@ -52,6 +52,8 @@ Route::prefix('reviews')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->contr
 
 Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(PropertyController::class)->group(function () {
     Route::get('all', 'all_properties')->name('properties.all');
+    //all_booked_properties
+    Route::get('all_booked/{property}', 'all_booked_properties')->name('properties.all_booked');
     Route::get('{property}', 'show')->name('properties.show');
     Route::get('{property}/favorites', 'favonwho')->name('properties.favonwho');
     Route::middleware('role:ADMIN,USER')->group(function () {
