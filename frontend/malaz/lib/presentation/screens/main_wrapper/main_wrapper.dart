@@ -19,8 +19,8 @@ class _MainWrapperScreenState extends State<MainWrapper> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const ChatsScreen(),
-    const BookingsScreen(),
     const FavoritesScreen(),
+    const BookingsScreen(),
     const ManagePropertiesScreen(),
   ];
 
@@ -109,12 +109,12 @@ class _BuildModernNavBar extends StatelessWidget {
                 text: 'Chats',
               ),
               GButton(
-                icon: Icons.edit_calendar_sharp,
-                text: 'Booking',
-              ),
-              GButton(
                 icon: Icons.favorite_border_rounded,
                 text: 'Saved',
+              ),
+              GButton(
+                icon: Icons.edit_calendar_sharp,
+                text: 'Booking',
               ),
               GButton(
                 icon: Icons.paid_outlined,

@@ -18,7 +18,7 @@ class MyProfileScreen extends StatefulWidget {
   State<MyProfileScreen> createState() => _MyProfileScreenState();
 }
 
-class _MyProfileScreenState extends State<MyProfileScreen> {
+class _MyProfileScreenState  extends State<MyProfileScreen> {
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   bool _isEditable = false;
