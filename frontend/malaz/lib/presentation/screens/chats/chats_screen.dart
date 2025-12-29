@@ -1,165 +1,183 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:malaz/presentation/screens/chats/ChatWithAPerson.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:malaz/domain/entities/user_entity.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../../core/service_locator/service_locator.dart';
+import '../../../data/models/conversation_model.dart';
+import '../../cubits/chat/chat_cubit.dart';
+import '../../cubits/auth/auth_cubit.dart';
+import '../../global_widgets/user_profile_image/user_profile_image.dart';
 
-class ChatModel {
-  final String name;
-  final String message;
-  final String time;
-  final String imageUrl;
-  final int unreadCount;
-
-  ChatModel({required this.name, required this.message, required this.time, required this.imageUrl, this.unreadCount = 0});
+class ChatsColors {
+  static const Color creamBg = Color(0xFFFDFBF7);
+  static const Color darkCoffee = Color(0xFF3E2723);
+  static const Color caramel = Color(0xFFAF895F);
+  static const Color softAmber = Color(0xFFE4C59E);
 }
 
 class ChatsScreen extends StatelessWidget {
   const ChatsScreen({Key? key}) : super(key: key);
 
+  UserEntity? _getCurrentUser(BuildContext context) {
+    final authState = context.read<AuthCubit>().state;
+    if (authState is AuthAuthenticated) return authState.user;
+    if (authState is AuthPending) return authState.user;
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : ChatsColors.darkCoffee;
+    final myUser = _getCurrentUser(context);
 
-    // Mock Data
-    final List<ChatModel> chats = [
-      ChatModel(name: 'Sarah Johnson', message: 'Yes, the apartment is still available...', time: '2 min ago', unreadCount: 2, imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&fit=crop'),
-      ChatModel(name: 'Michael Chen', message: 'Thank you for your interest.', time: '1 hour ago', imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&fit=crop'),
-    ];
-
-    return Scaffold(
-      backgroundColor: colorScheme.background,
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: const Text('Chat', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 36)),
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.surface,
-      ),
-      body: ListView(
-        children: [
-          _buildHeader(colorScheme: colorScheme, title: 'Activities'),
-          _buildActivitiesListView(colorScheme: colorScheme, chats: chats),
-          _buildHeader(colorScheme: colorScheme, title: 'Messages'),
-          _buildMessagesListView(chats: chats, colorScheme: colorScheme),
-        ]
+    return BlocProvider(
+      create: (context) => sl<ChatCubit>()..getConversations(),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: BlocBuilder<ChatCubit, ChatState>(
+          builder: (context, state) {
+            return RefreshIndicator(
+              color: ChatsColors.caramel,
+              onRefresh: () async => await context.read<ChatCubit>().getConversations(),
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                slivers: [
+                  _buildAppBar(isDark),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _BuildHeader(title: 'Active Partners', textColor: textColor),
+                        _buildActivitySection(state, isDark, myUser?.id),
+                        _BuildHeader(title: 'Recent Messages', textColor: textColor),
+                      ],
+                    ),
+                  ),
+                  _buildMessagesContent(state, isDark, textColor, myUser?.id),
+                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
-}
 
-class _buildMessagesListView extends StatelessWidget {
-  const _buildMessagesListView({
-    super.key,
-    required this.chats,
-    required this.colorScheme,
-  });
-
-  final List<ChatModel> chats;
-  final ColorScheme colorScheme;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 12,//chats.length,
-      itemBuilder: (context, index) {
-        final chat = chats[0];
-        return Padding(
-          padding: EdgeInsets.all(8),
-          child: GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatWithAPerson()));
-              //context.push('/one_chat');
-            },
-            child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: colorScheme.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: BoxBorder.all(color: colorScheme.primary),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))],
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(chat.imageUrl),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(chat.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: colorScheme.primary)),
-                              Text(chat.time, style: TextStyle(fontSize: 12, color: colorScheme.onSurface.withOpacity(0.6))),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            chat.message,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: chat.unreadCount > 0 ? colorScheme.onSurface : colorScheme.onSurface.withOpacity(0.6),
-                              fontWeight: chat.unreadCount > 0 ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (chat.unreadCount > 0) ...[
-                      const SizedBox(width: 12),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(color: colorScheme.primary, shape: BoxShape.circle),
-                        child: Text(
-                          chat.unreadCount.toString(),
-                          style: TextStyle(color: colorScheme.onPrimary, fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ]
-                  ],
-                ),
-            ),
+  Widget _buildAppBar(bool isDark) {
+    return SliverAppBar(
+      expandedHeight: 100,
+      floating: true,
+      pinned: true,
+      elevation: 0,
+      backgroundColor: isDark ? const Color(0xFF0C0D10).withOpacity(0.9) : ChatsColors.creamBg.withOpacity(0.9),
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: false,
+        titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
+        title: Text(
+          'Malaz Chat',
+          style: TextStyle(
+            color: ChatsColors.caramel,
+            fontWeight: FontWeight.w900,
+            fontSize: 22,
+            letterSpacing: 0.5,
           ),
+        ),
+      ),
+      actions: [
+        _buildActionIcon(Icons.search_rounded),
+        const SizedBox(width: 16),
+      ],
+    );
+  }
+
+  Widget _buildActionIcon(IconData icon) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(color: ChatsColors.caramel.withOpacity(0.1), shape: BoxShape.circle),
+      child: IconButton(
+        icon: Icon(icon, color: ChatsColors.caramel, size: 22),
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _buildActivitySection(ChatState state, bool isDark, int? myId) {
+    if (state is ChatConversationsLoading) return _buildHorizontalShimmer(isDark);
+    if (state is ChatConversationsLoaded) {
+      return _BuildActivitiesSection(conversations: state.conversations, isDark: isDark, myId: myId);
+    }
+    return const SizedBox(height: 110);
+  }
+
+  Widget _buildMessagesContent(ChatState state, bool isDark, Color textColor, int? myId) {
+    if (state is ChatConversationsLoading) return _BuildShimmerList(isDark: isDark);
+    if (state is ChatConversationsLoaded) {
+      if (state.conversations.isEmpty) {
+        return const SliverToBoxAdapter(
+          child: Center(child: Padding(padding: EdgeInsets.only(top: 80), child: Center(child: Text("No conversations yet")))),
         );
       }
+      return _BuildMessagesList(conversations: state.conversations, isDark: isDark, textColor: textColor, myId: myId);
+    }
+    if (state is ChatConversationsError) {
+      return SliverToBoxAdapter(child: Center(child: Text(state.message, style: const TextStyle(color: Colors.red))));
+    }
+    return const SliverToBoxAdapter(child: SizedBox());
+  }
+
+  Widget _buildHorizontalShimmer(bool isDark) {
+    return SizedBox(
+      height: 110,
+      child: Shimmer.fromColors(
+        baseColor: isDark ? Colors.grey[900]! : Colors.grey[300]!,
+        highlightColor: isDark ? Colors.grey[800]! : Colors.grey[100]!,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          itemCount: 5,
+          itemBuilder: (_, __) => const Padding(
+            padding: EdgeInsets.only(right: 18),
+            child: CircleAvatar(radius: 32, backgroundColor: Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }
 
-class _buildActivitiesListView extends StatelessWidget {
-  const _buildActivitiesListView({
-    super.key,
-    required this.colorScheme,
-    required this.chats,
-  });
-
-  final ColorScheme colorScheme;
-  final List<ChatModel> chats;
+class _BuildActivitiesSection extends StatelessWidget {
+  final List<ConversationModel> conversations;
+  final bool isDark;
+  final int? myId;
+  const _BuildActivitiesSection({required this.conversations, required this.isDark, this.myId});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 90,
+      height: 110,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 12,
-        itemBuilder: (context, index){
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: conversations.length,
+        itemBuilder: (context, index) {
+          final otherUser = conversations[index].userOne.id == myId ? conversations[index].userTwo : conversations[index].userOne;
           return Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: CircleAvatar(
-              radius: 43,
-              backgroundColor: colorScheme.primary,
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor: colorScheme.surface,
-                child: CircleAvatar(
-                  radius: 35,
-                  backgroundImage: NetworkImage(chats[0].imageUrl),
+            padding: const EdgeInsets.only(right: 18),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: ChatsColors.caramel, width: 2)),
+                  child: UserProfileImage(userId: otherUser.id, radius: 28),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Text(otherUser.first_name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isDark ? Colors.white70 : ChatsColors.darkCoffee)),
+              ],
             ),
           );
         },
@@ -168,26 +186,145 @@ class _buildActivitiesListView extends StatelessWidget {
   }
 }
 
-class _buildHeader extends StatelessWidget {
-  const _buildHeader({
-    super.key,
-    required this.colorScheme, required this.title,
-  });
+class _BuildMessagesList extends StatelessWidget {
+  final List<ConversationModel> conversations;
+  final bool isDark;
+  final Color textColor;
+  final int? myId;
 
-  final ColorScheme colorScheme;
+  const _BuildMessagesList({required this.conversations, required this.isDark, required this.textColor, this.myId});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final conv = conversations[index];
+          final otherUser = conv.userOne.id == myId ? conv.userTwo : conv.userOne;
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Dismissible(
+              key: Key(conv.id.toString()),
+              direction: DismissDirection.endToStart,
+              confirmDismiss: (direction) async {
+                HapticFeedback.heavyImpact();
+                return await _showDeleteConfirm(context);
+              },
+              onDismissed: (direction) {
+                context.read<ChatCubit>().deleteConversation(conv.id);
+              },
+              background: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                alignment: Alignment.centerRight,
+                decoration: BoxDecoration(color: Colors.redAccent, borderRadius: BorderRadius.circular(28)),
+                child: const Icon(Icons.delete_sweep_rounded, color: Colors.white, size: 30),
+              ),
+              child: GestureDetector(
+                onTap: () async {
+                  await context.push('/one_chat', extra: {
+                    'id': conv.id,
+                    'name': '${otherUser.first_name} ${otherUser.last_name}',
+                    'otherUserId': otherUser.id,
+                  });
+                  if (context.mounted) {
+                    context.read<ChatCubit>().getConversations();
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF1A1B21) : Colors.white,
+                    borderRadius: BorderRadius.circular(28),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withOpacity(isDark ? 0.3 : 0.05), blurRadius: 15, offset: const Offset(0, 8))
+                    ],
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    leading: UserProfileImage(userId: otherUser.id, radius: 28),
+                    title: Text('${otherUser.first_name} ${otherUser.last_name}',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: textColor)),
+                    subtitle: const Text("Click to view messages", style: TextStyle(fontSize: 13, color: Colors.grey)),
+                    trailing: _buildTrailing(conv),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }, childCount: conversations.length),
+      ),
+    );
+  }
+
+  Widget _buildTrailing(ConversationModel conv) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        const Text('Active', style: TextStyle(fontSize: 10, color: Colors.green, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 6),
+        if (conv.unreadCount > 0)
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: const BoxDecoration(color: ChatsColors.caramel, shape: BoxShape.circle),
+            child: Text('${conv.unreadCount}', style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+          )
+        else
+          const Icon(Icons.done_all_rounded, size: 18, color: ChatsColors.caramel),
+      ],
+    );
+  }
+
+  Future<bool?> _showDeleteConfirm(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete Chat?"),
+        content: const Text("This will permanently remove the conversation."),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text("Cancel")),
+          TextButton(onPressed: () => Navigator.pop(context, true), child: const Text("Delete", style: TextStyle(color: Colors.red))),
+        ],
+      ),
+    );
+  }
+}
+
+class _BuildShimmerList extends StatelessWidget {
+  final bool isDark;
+  const _BuildShimmerList({required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) => Shimmer.fromColors(
+          baseColor: isDark ? Colors.grey[900]! : Colors.grey[300]!,
+          highlightColor: isDark ? Colors.grey[800]! : Colors.grey[100]!,
+          child: Container(height: 90, margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(28))),
+        ), childCount: 6),
+      ),
+    );
+  }
+}
+
+class _BuildHeader extends StatelessWidget {
   final String title;
+  final Color textColor;
+  const _BuildHeader({required this.title, required this.textColor});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: colorScheme.primary,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+      padding: const EdgeInsets.fromLTRB(22, 25, 22, 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title, style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w900)),
+          const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: ChatsColors.caramel),
+        ],
       ),
     );
   }

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/constants/app_constants.dart';
@@ -7,8 +5,6 @@ import 'package:malaz/core/errors/exceptions.dart';
 import 'package:path/path.dart';
 
 import '../../../core/network/network_service.dart';
-import '../../../core/service_locator/service_locator.dart';
-import '../../../domain/entities/user_entity.dart';
 import '../../models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
@@ -16,7 +12,6 @@ abstract class AuthRemoteDatasource {
     required String phone,
     required String password,
   });
-
   Future<Map<String, dynamic>> registerUser({
     required String phone,
     required String role,
@@ -28,17 +23,11 @@ abstract class AuthRemoteDatasource {
     required XFile profileImage,
     required XFile identityImage,
   });
-
   Future<void> logout();
-
   Future<void> sendOtp({required String phone});
-
   Future<Map<String, dynamic>> verifyOtp({required String phone, required String otp});
-
   Future<UserModel> updateProfile(FormData formData);
-
   Future<Map<String, dynamic>> sendPasswordResetOtp(String phone);
-
   Future<Map<String, dynamic>> updatePassword({
     required String phone,
     required String otp,
@@ -178,7 +167,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       if (response.data != null) {
         return UserModel.fromJson(response.data['data'] ?? response.data);
       } else {
-        throw ServerException(message: 'لم يتم استلام بيانات من السيرفر');
+        throw ServerException(message: 'No Data');
       }
     } on DioException catch (e) {
       final errorMessage = e.response?.data['message'];
@@ -214,7 +203,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
           'phone': phone,
           'otp': otp,
           'new_password': newPassword,
-          'new_password_confirmation': newPassword, // تأكد من مسمى الحقل في الباك إند
+          'new_password_confirmation': newPassword,
         },
       );
       return response.data;

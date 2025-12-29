@@ -151,7 +151,15 @@ GoRouter buildAppRouter() {
       GoRoute(
         path: '/one_chat',
         name: 'one_chat',
-        builder: (context, state) => ChatWithAPerson(),
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>;
+
+          return ChatWithAPerson(
+            conversationId: extras['id'] as int,
+            userName: extras['name'] as String,
+            otherUserId: extras['otherUserId'] as int,
+          );
+        },
       ),
 
       GoRoute(

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
 import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
@@ -147,7 +149,11 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(message: _mapFailureToMessage(failure)));
           emit(AuthUnauthenticated());
         },
-        (user) {
+        (user) async {
+          final storage = FlutterSecureStorage();
+          await storage.write(key: '_USER_PASSWORD', value: password);
+          await storage.write(key: '_USER_PHONE', value: phone);
+
           final role = user.role.toLowerCase();
           if (role == 'pending') {
             emit(AuthPending(user));
@@ -185,8 +191,11 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(message: _mapFailureToMessage(failure)));
         }
       },
-          (user) {
+          (user) async {
         if (user.role.toUpperCase() == 'PENDING') {
+          final storage = FlutterSecureStorage();
+          await storage.write(key: '_USER_PASSWORD', value: password);
+          await storage.write(key: '_USER_PHONE', value: phone);
           emit(AuthPending(user));
         } else {
           emit(AuthAuthenticated(user));
@@ -264,6 +273,29 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  Future<void> silentRoleCheck() async {
+    final storage = FlutterSecureStorage();
+    final password = await storage.read(key: '_USER_PASSWORD');
+    final phone = await storage.read(key: '_USER_PHONE');
+
+    final res = await loginUsecase(
+      LoginParams(phoneNumber: phone.toString(), password: password.toString()),
+    );
+
+    res.fold(
+          (failure) {
+        debugPrint("Silent check failed: ${_mapFailureToMessage(failure)}");
+      },
+          (user) {
+        if (user.role == 'USER') {
+          emit(AuthAuthenticated(user));
+        } else if (user.role == 'PENDING') {
+          emit(AuthPending(user));
+        }
+      },
+    );
+  }
+
   Future<bool> verifyPasswordSilently(String password) async {
     final currentState = state;
     if (currentState is AuthAuthenticated) {
@@ -303,21 +335,17 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      // 1. إنشاء الـ FormData مع الحقول النصية وإضافة _method لـ Laravel
       FormData formData = FormData.fromMap({
         "first_name": firstName,
         "last_name": lastName,
       });
 
-      // 2. منطق إضافة ملف الصورة
       if (imagePath != null && imagePath.isNotEmpty) {
-        // حالة اختيار صورة جديدة من المعرض
         formData.files.add(MapEntry(
           "profile_image",
           await MultipartFile.fromFile(imagePath, filename: "new_profile.jpg"),
         ));
       } else if (existingImageUrl != null) {
-        // حالة تحديث الاسم فقط: تحميل الصورة الحالية وإرسالها كملف لإرضاء الباك-إند
         final File? tempFile = await _downloadFile(existingImageUrl);
         if (tempFile != null) {
           formData.files.add(MapEntry(
@@ -329,13 +357,11 @@ class AuthCubit extends Cubit<AuthState> {
 
       print("Final Check - Files count: ${formData.files.length}");
 
-      // التحقق من وجود ملف قبل الإرسال لتجنب خطأ السيرفر
       if (formData.files.isEmpty) {
         emit(AuthError(message: "Profile image is required by the server."));
         return;
       }
 
-      // 3. إرسال الطلب عبر المستودع
       final result = await repository.updateProfile(formData);
 
       result.fold(

@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../core/config/color/app_color.dart';
 
@@ -19,34 +17,49 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDarkMode = theme.brightness == Brightness.dark;
+    final isDeactivated = onPressed == null;
 
-    final bool isDeactivated = onPressed == null;
-
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
       width: double.infinity,
-      height: 56,
+      height: 58,
       decoration: BoxDecoration(
-        gradient: isOutline || isDeactivated
-            ? null
-            : (isDarkMode ? AppColors.premiumGoldGradient : AppColors.premiumGoldGradient),
-        color: isDeactivated ? Colors.grey.shade400 : null,
-        borderRadius: BorderRadius.circular(16),
-        border: isOutline ? Border.all(color: colorScheme.primary, width: 2) : null,
+        borderRadius: BorderRadius.circular(18),
+        border: isOutline ? Border.all(color: const Color(0xFFD4AF37).withOpacity(0.5), width: 1.5) : null,
+        gradient: isOutline || isDeactivated ? null : AppColors.premiumGoldGradient2,
+        color: isOutline ? Colors.transparent : (isDeactivated ? Colors.grey.shade300 : null),
+        boxShadow: isDeactivated || isOutline ? [] : [
+           BoxShadow(
+             color: const Color(0xFFD4AF37).withOpacity(0.3),
+             blurRadius: 15,
+             offset: const Offset(0, 8),
+             spreadRadius: -2,
+           ),
+        ],
       ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: isOutline ? colorScheme.primary : colorScheme.onPrimary,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(18),
+          splashColor: Colors.white12,
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+                color: isOutline ? const Color(0xFFD4AF37) : (isDeactivated ? Colors.grey.shade600 : Colors.white),
+                shadows: isOutline || isDeactivated ? [] : [
+                   const Shadow(
+                     color: Colors.black26,
+                     offset: Offset(0, 1),
+                     blurRadius: 2,
+                   )
+                ],
+              ),
+            ),
           ),
         ),
       ),
