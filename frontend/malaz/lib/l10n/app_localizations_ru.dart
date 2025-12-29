@@ -319,4 +319,8 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'OTP-код успешно подтвержден';
+
+  @override
+  String get booking_request_sent =>
+      'Запрос на бронирование отправлен владельцу';
 }

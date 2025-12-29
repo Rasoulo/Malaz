@@ -319,4 +319,8 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'Doğrulama kodu başarıyla onaylandı';
+
+  @override
+  String get booking_request_sent =>
+      'Rezervasyon talebi ev sahibine gönderildi';
 }

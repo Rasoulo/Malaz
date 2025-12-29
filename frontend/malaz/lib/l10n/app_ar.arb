@@ -80,7 +80,6 @@
   "unexpected_error_message": "حدث خطأ غير متوقع",
   "retry": "إعادة المحاولة",
   "warring": "تنبيه",
-  "new_": "جديد",
   "edit_profile": "تعديل الحساب",
   "identity_verification": "التحقق من الهوية",
   "identity_verification_input": "يرجى إدخال كلمة المرور الخاصة بك لتأكيد هويتك",
@@ -101,5 +100,6 @@
   "please_enter_password": "الرجاء إدخال كلمة المرور",
   "passwords_do_not_match": "كلمتا السر غير متطابقتين",
   "wronge_otp": "الرمز المدخل غير صحيح، يرجى المحاولة مرة أخرى",
-  "otp_verified_success": "تم التحقق من الرمز بنجاح"
+  "otp_verified_success": "تم التحقق من الرمز بنجاح",
+  "booking_request_sent": "تم إرسال طلب الحجز إلى المالك"
 }

@@ -80,7 +80,6 @@
   "unexpected_error_message": "Unexpected error occurred",
   "retry": "Retry",
   "warring": "warring",
-  "new_": "New",
   "edit_profile": "Edit Profile",
   "identity_verification": "Identity verification",
   "identity_verification_input": "Please enter your password to confirm identity",
@@ -101,5 +100,6 @@
   "please_enter_password": "Please enter your password",
   "passwords_do_not_match": "Passwords do not match",
   "wronge_otp": "The entered code is incorrect, please try again",
-  "otp_verified_success": "OTP verified successfully"
+  "otp_verified_success": "OTP verified successfully",
+  "booking_request_sent": "Booking Request Sent To The Owner"
 }

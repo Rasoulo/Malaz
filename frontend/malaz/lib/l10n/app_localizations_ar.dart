@@ -316,4 +316,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'تم التحقق من الرمز بنجاح';
+
+  @override
+  String get booking_request_sent => 'تم إرسال طلب الحجز إلى المالك';
 }

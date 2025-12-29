@@ -715,6 +715,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OTP verified successfully'**
   String get otp_verified_success;
+
+  /// No description provided for @booking_request_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Request Sent To The Owner'**
+  String get booking_request_sent;
 }
 
 class _AppLocalizationsDelegate

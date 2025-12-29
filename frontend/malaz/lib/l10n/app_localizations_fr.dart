@@ -326,4 +326,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'Code OTP vérifié avec succès';
+
+  @override
+  String get booking_request_sent =>
+      'La demande de réservation a été envoyée au propriétaire';
 }

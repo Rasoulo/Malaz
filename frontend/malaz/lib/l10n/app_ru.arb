@@ -80,7 +80,6 @@
   "unexpected_error_message": "Произошла непредвиденная ошибка",
   "retry": "Повторить",
   "warring": "Предупреждение",
-  "new_": "Новое",
   "edit_profile": "Редактировать профиль",
   "identity_verification": "проверка личности",
   "identity_verification_input": "Пожалуйста, введите свой пароль для подтверждения личности",
@@ -101,5 +100,6 @@
   "please_enter_password": "Пожалуйста, введите пароль",
   "passwords_do_not_match": "Пароли не совпадают",
   "wronge_otp": "Введенный код неверный, пожалуйста, попробуйте еще раз",
-  "otp_verified_success": "OTP-код успешно подтвержден"
+  "otp_verified_success": "OTP-код успешно подтвержден",
+  "booking_request_sent": "Запрос на бронирование отправлен владельцу"
 }

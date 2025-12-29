@@ -80,7 +80,6 @@
   "unexpected_error_message": "Beklenmedik bir hata oluştu",
   "retry": "Tekrar dene",
   "warring": "Uyarı",
-  "new_": "Yeni",
   "edit_profile": "Profil Düzenle",
   "identity_verification": "kimlik doğrulama",
   "identity_verification_input": "Kimliğinizi doğrulamak için lütfen şifrenizi girin",
@@ -101,5 +100,6 @@
   "please_enter_password": "Lütfen şifrenizi giriniz",
   "passwords_do_not_match": "Şifreler eşleşmiyor",
   "wronge_otp": "Girilen kod yanlış, lütfen tekrar deneyin",
-  "otp_verified_success": "Doğrulama kodu başarıyla onaylandı"
+  "otp_verified_success": "Doğrulama kodu başarıyla onaylandı",
+  "booking_request_sent": "Rezervasyon talebi ev sahibine gönderildi"
 }

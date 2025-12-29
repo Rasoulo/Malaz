@@ -317,4 +317,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'OTP verified successfully';
+
+  @override
+  String get booking_request_sent => 'Booking Request Sent To The Owner';
 }
