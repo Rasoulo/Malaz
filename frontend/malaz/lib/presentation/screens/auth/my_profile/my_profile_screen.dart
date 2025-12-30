@@ -18,7 +18,7 @@ class MyProfileScreen extends StatefulWidget {
   State<MyProfileScreen> createState() => _MyProfileScreenState();
 }
 
-class _MyProfileScreenState extends State<MyProfileScreen> {
+class _MyProfileScreenState  extends State<MyProfileScreen> {
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   bool _isEditable = false;
@@ -94,7 +94,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
                         onPressed: () async {
-                          HapticFeedback.mediumImpact(); // اهتزاز عند الحفظ
+                          HapticFeedback.mediumImpact();
                           await context.read<AuthCubit>().updateUserData(
                             firstName: _firstNameController.text,
                             lastName: _lastNameController.text,
@@ -158,7 +158,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             )
                         ),
                         const SizedBox(height: 35),
-                        _buildInfoCard(colorScheme, tr, state),                        const SizedBox(height: 40),
+                        _buildInfoCard(colorScheme, tr, state),
+                        const SizedBox(height: 40),
                         if (!_isEditable) _buildPremiumEditButton(context, tr),
                         const SizedBox(height: 50),
                       ],
@@ -210,7 +211,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               right: 5,
               child: GestureDetector(
                 onTap: () {
-                  HapticFeedback.lightImpact(); // اهتزاز خفيف عند الضغط
+                  HapticFeedback.lightImpact();
                   _pickImage();
                 },
                 child: Container(
@@ -395,17 +396,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
     showDialog(
       context: context,
-      barrierDismissible: !isLoading, // منع الإغلاق أثناء التحميل
+      barrierDismissible: !isLoading,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            surfaceTintColor: Colors.transparent, // منع اللون المزعج في Material 3
+            surfaceTintColor: Colors.transparent,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
             contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 10),
             title: Column(
               children: [
-                // أيقونة قفل علوية لتعزيز الشكل البصري
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -468,7 +468,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             actionsAlignment: MainAxisAlignment.spaceEvenly,
             actionsPadding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
             actions: [
-              // زر الإلغاء الشفاف
               TextButton(
                 onPressed: isLoading ? null : () => Navigator.pop(context),
                 style: TextButton.styleFrom(
@@ -477,7 +476,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 ),
                 child: Text(tr.cancel, style: const TextStyle(fontWeight: FontWeight.w600)),
               ),
-              // زر التأكيد الفخم
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colorScheme.primary,
@@ -487,9 +485,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
-                onPressed: isLoading
-                    ? null
-                    : () async {
+                onPressed: isLoading ? null : () async {
                   setState(() => isLoading = true);
                   final bool isCorrect = await context.read<AuthCubit>().verifyPasswordSilently(passwordController.text);
                   if (isCorrect) {
@@ -569,7 +565,6 @@ class UserProfileImage extends StatelessWidget {
   }
 
   Widget _buildInitialsPlaceholder() {
-    // استخراج أول حرف من الاسم الأول والأخير
     final String initial1 = (firstName != null && firstName!.isNotEmpty) ? firstName![0].toUpperCase() : '';
     final String initial2 = (lastName != null && lastName!.isNotEmpty) ? lastName![0].toUpperCase() : '';
 
@@ -578,7 +573,7 @@ class UserProfileImage extends StatelessWidget {
       height: size,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        gradient: AppColors.premiumGoldGradient2, // استخدام التدرج الذهبي الفخم
+        gradient: AppColors.premiumGoldGradient2,
       ),
       alignment: Alignment.center,
       child: Text(

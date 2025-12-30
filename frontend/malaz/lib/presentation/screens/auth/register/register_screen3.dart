@@ -1,5 +1,6 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:malaz/core/config/color/app_color.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../global_widgets/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
@@ -16,7 +17,7 @@ class RegisterScreen3 extends StatelessWidget {
     final tr = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -29,51 +30,55 @@ class RegisterScreen3 extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 40,
+                    height: 25,
                   ),
 
                   // Logo
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(blurRadius: 20, color: Colors.black12)
-                        ]),
-                    child: Image.asset('assets/icons/key_logo.png'),
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primary.withOpacity(0.05),
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(
+                                color: colorScheme.primary.withOpacity(0.1)),
+                          ),
+                          child: Image.asset('assets/icons/key_logo.png',
+                              width: 65, color: colorScheme.primary),
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 24,
                   ),
 
                   // Create Account - Header Text 1
-                  ShaderMask(
-                    shaderCallback: (bounds) =>
-                        AppColors.premiumGoldGradient.createShader(bounds),
-                    child: Text(tr.create_account, // Using getter
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.yellow,
-                        )),
+                  Text(
+                    tr.create_account,
+                    style: TextStyle(
+                      fontFamily: 'PlayfairDisplay',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                      letterSpacing: -1,
+                    ),
                   ),
                   const SizedBox(
                     height: 8,
                   ),
 
                   // Join To Find - Header Text 2
-                  ShaderMask(
-                    shaderCallback: (bounds) =>
-                        AppColors.premiumGoldGradient.createShader(bounds),
-                    child: Text(
-                      tr.join_to_find, // Using getter
-                      style: TextStyle(color: Colors.grey.shade600),
-                    ),
+                  Text(
+                    tr.join_to_find,
+                    style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 12),
                   ),
                   const SizedBox(
-                    height: 135,
+                    height: 100,
                   ),
 
                   // Password Field
@@ -85,9 +90,6 @@ class RegisterScreen3 extends StatelessWidget {
                     formKey: formKey,
                     onChanged: (value) => registerData.password = value,
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
 
                   //  Confirm Password Field
                   BuildTextfield(
@@ -98,18 +100,10 @@ class RegisterScreen3 extends StatelessWidget {
                     formKey: formKey,
                     onChanged: (value) => registerData.confirmPassword = value,
                   ),
-                  const SizedBox(
-                    height: 100,
-                  ),
-
-                  // Navigator.push to Login Page
+                  const SizedBox(height: 40),
                   const BuildLoginRow(),
-                  const SizedBox(
-                    height: 135,
-                  ),
-
-                  // Branding
-                  BuildBranding()
+                  const SizedBox(height: 80),
+                  BuildBranding(),
                 ],
               ),
             ),

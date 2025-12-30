@@ -715,6 +715,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OTP verified successfully'**
   String get otp_verified_success;
+
+  /// No description provided for @booking_request_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Request Sent To The Owner'**
+  String get booking_request_sent;
+
+  /// No description provided for @nights.
+  ///
+  /// In en, this message translates to:
+  /// **'nights'**
+  String get nights;
+
+  /// No description provided for @confirm_booking.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Booking'**
+  String get confirm_booking;
+
+  /// No description provided for @reviews_count.
+  ///
+  /// In en, this message translates to:
+  /// **'({count} reviews)'**
+  String reviews_count(int count);
+
+  /// No description provided for @no_description.
+  ///
+  /// In en, this message translates to:
+  /// **'No description provided.'**
+  String get no_description;
+
+  /// No description provided for @baths.
+  ///
+  /// In en, this message translates to:
+  /// **'Baths'**
+  String get baths;
+
+  /// No description provided for @click_to_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Click to view messages'**
+  String get click_to_view;
+
+  /// No description provided for @active_partners.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Partners'**
+  String get active_partners;
+
+  /// No description provided for @recent_messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Messages'**
+  String get recent_messages;
+
+  /// No description provided for @malaz_chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Malaz Chat'**
+  String get malaz_chat;
+
+  /// No description provided for @no_conversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet'**
+  String get no_conversations;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @delete_chat_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Chat?'**
+  String get delete_chat_title;
+
+  /// No description provided for @delete_chat_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently remove the conversation.'**
+  String get delete_chat_confirm;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @online_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Online now'**
+  String get online_now;
+
+  /// No description provided for @editing_message_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing message...'**
+  String get editing_message_hint;
+
+  /// No description provided for @type_message_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message...'**
+  String get type_message_hint;
+
+  /// No description provided for @edit_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Message'**
+  String get edit_message;
+
+  /// No description provided for @copy_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Text'**
+  String get copy_text;
+
+  /// No description provided for @text_copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Text copied'**
+  String get text_copied;
+
+  /// No description provided for @delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Message'**
+  String get delete_message;
+
+  /// No description provided for @edited.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited'**
+  String get edited;
 }
 
 class _AppLocalizationsDelegate

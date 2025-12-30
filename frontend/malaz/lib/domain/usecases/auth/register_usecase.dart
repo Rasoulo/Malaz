@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/failures.dart';
 import 'package:malaz/core/usecases/usecase.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
-import 'package:malaz/domain/repositories/auth_repository.dart';
+import 'package:malaz/domain/repositories/auth/auth_repository.dart';
 
 class RegisterUsecase implements UseCase<UserEntity, RegisterParams> {
   final AuthRepository repository;

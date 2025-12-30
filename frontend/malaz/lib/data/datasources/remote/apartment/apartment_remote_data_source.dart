@@ -1,8 +1,8 @@
 import 'package:malaz/core/constants/app_constants.dart';
 
-import '../../../../core/network/network_service.dart';
-import '../../../domain/entities/apartments_list.dart';
-import '../../models/apartment_model.dart';
+import '../../../../../core/network/network_service.dart';
+import '../../../../domain/entities/apartments_list.dart';
+import '../../../models/apartment_model.dart';
 
 abstract class ApartmentRemoteDataSource {
   Future<ApartmentsList> getApartments({String? cursor});

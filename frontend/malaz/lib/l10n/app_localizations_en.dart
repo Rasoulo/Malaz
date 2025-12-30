@@ -317,4 +317,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'OTP verified successfully';
+
+  @override
+  String get booking_request_sent => 'Booking Request Sent To The Owner';
+
+  @override
+  String get nights => 'nights';
+
+  @override
+  String get confirm_booking => 'Confirm Booking';
+
+  @override
+  String reviews_count(int count) {
+    return '($count reviews)';
+  }
+
+  @override
+  String get no_description => 'No description provided.';
+
+  @override
+  String get baths => 'Baths';
+
+  @override
+  String get click_to_view => 'Click to view messages';
+
+  @override
+  String get active_partners => 'Active Partners';
+
+  @override
+  String get recent_messages => 'Recent Messages';
+
+  @override
+  String get malaz_chat => 'Malaz Chat';
+
+  @override
+  String get no_conversations => 'No conversations yet';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get delete_chat_title => 'Delete Chat?';
+
+  @override
+  String get delete_chat_confirm =>
+      'This will permanently remove the conversation.';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get online_now => 'Online now';
+
+  @override
+  String get editing_message_hint => 'Editing message...';
+
+  @override
+  String get type_message_hint => 'Type a message...';
+
+  @override
+  String get edit_message => 'Edit Message';
+
+  @override
+  String get copy_text => 'Copy Text';
+
+  @override
+  String get text_copied => 'Text copied';
+
+  @override
+  String get delete_message => 'Delete Message';
+
+  @override
+  String get edited => 'Edited';
 }

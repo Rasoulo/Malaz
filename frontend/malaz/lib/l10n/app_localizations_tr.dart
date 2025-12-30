@@ -319,4 +319,77 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'Doğrulama kodu başarıyla onaylandı';
+
+  @override
+  String get booking_request_sent =>
+      'Rezervasyon talebi ev sahibine gönderildi';
+
+  @override
+  String get nights => 'gece';
+
+  @override
+  String get confirm_booking => 'Rezervasyonu Onayla';
+
+  @override
+  String reviews_count(int count) {
+    return '($count değerlendirme)';
+  }
+
+  @override
+  String get no_description => 'Açıklama belirtilmedi.';
+
+  @override
+  String get baths => 'Banyolar';
+
+  @override
+  String get click_to_view => 'Mesajları görmek için tıklayın';
+
+  @override
+  String get active_partners => 'Aktif Ortaklar';
+
+  @override
+  String get recent_messages => 'Son Mesajlar';
+
+  @override
+  String get malaz_chat => 'Malaz Sohbet';
+
+  @override
+  String get no_conversations => 'Henüz konuşma yok';
+
+  @override
+  String get active => 'Aktif';
+
+  @override
+  String get delete_chat_title => 'Sohbeti Sil?';
+
+  @override
+  String get delete_chat_confirm =>
+      'Bu işlem konuşmayı kalıcı olarak silecektir.';
+
+  @override
+  String get delete => 'Sil';
+
+  @override
+  String get online_now => 'Şimdi çevrimiçi';
+
+  @override
+  String get editing_message_hint => 'Mesajı düzenle...';
+
+  @override
+  String get type_message_hint => 'Mesajınızı yazın...';
+
+  @override
+  String get edit_message => 'Mesajı Düzenle';
+
+  @override
+  String get copy_text => 'Metni Kopyala';
+
+  @override
+  String get text_copied => 'Metin kopyalandı';
+
+  @override
+  String get delete_message => 'Mesajı Sil';
+
+  @override
+  String get edited => 'Düzenlendi';
 }

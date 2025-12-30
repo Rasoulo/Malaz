@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/config/color/app_color.dart';
@@ -43,7 +44,7 @@ class RegisterScreen4State extends State<RegisterScreen4> {
     final tr = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -56,63 +57,65 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 40,
+                    height: 25,
                   ),
 
                   // Logo
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(blurRadius: 20, color: Colors.black12)
-                        ]),
-                    child: Image.asset('assets/icons/key_logo.png'),
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primary.withOpacity(0.05),
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(
+                                color: colorScheme.primary.withOpacity(0.1)),
+                          ),
+                          child: Image.asset('assets/icons/key_logo.png',
+                              width: 65, color: colorScheme.primary),
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 24,
                   ),
 
                   // Create Account - Header Text 1
-                  ShaderMask(
-                    shaderCallback: (bounds) =>
-                        AppColors.premiumGoldGradient.createShader(bounds),
-                    child: Text(tr.create_account, // Using getter
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.yellow,
-                        )),
+                  Text(
+                    tr.create_account,
+                    style: TextStyle(
+                      fontFamily: 'PlayfairDisplay',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                      letterSpacing: -1,
+                    ),
                   ),
                   const SizedBox(
                     height: 8,
                   ),
 
                   // Join To Find - Header Text 2
-                  ShaderMask(
-                    shaderCallback: (bounds) =>
-                        AppColors.premiumGoldGradient.createShader(bounds),
-                    child: Text(
-                      tr.join_to_find, // Using getter
-                      style: TextStyle(color: Colors.grey.shade600),
-                    ),
+                  Text(
+                    tr.join_to_find,
+                    style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 12),
                   ),
                   const SizedBox(
                     height: 100,
                   ),
 
                   // ID Document Message
-                  ShaderMask(
-                    shaderCallback: (bounds) =>
-                        AppColors.premiumGoldGradient.createShader(bounds),
-                    child: Text(tr.id_document_message, // Using getter
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.yellow,
-                        )),
+                  Text(
+                    tr.id_document_message, // Using getter
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
                   ),
                   const SizedBox(
                     height: 24,
@@ -186,28 +189,31 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
     }
   }
 
-  Widget _uploadBox(
-      {required IconData icon, required String label, String? sub}) {
+  Widget _uploadBox({required IconData icon, required String label, String? sub, required Color color}) {
     return InkWell(
       onTap: _pickImage,
       child: DottedBox(
         isError: widget.isError,
+        hasImage: _image != null,
         child: _image == null
             ? Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 36, color: Colors.yellow),
+            Icon(icon, size: 36, color: color),
             const SizedBox(height: 8),
-            Text(label,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, color: Colors.yellow)),
+            Text(label, style: TextStyle(fontWeight: FontWeight.w600, color: color)),
             if (sub != null) ...[
               const SizedBox(height: 6),
-              Text(sub,
-                  style: TextStyle(fontSize: 12, color: Colors.yellow)),
+              Text(sub, style: TextStyle(fontSize: 12, color: color)),
             ],
           ],
-        ) : Image.file(File(_image!.path), fit: BoxFit.cover),
+        )
+            : Image.file(
+          File(_image!.path),
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
       ),
     );
   }
@@ -219,8 +225,9 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
 
     return SizedBox(
       width: 350,
-      height: 150,
+      height: 145,
       child: _uploadBox(
+        color: colorScheme.primary,
         icon: Icons.cloud_upload_outlined,
         label: tr.upload_id_message,
         sub: tr.png_jpg,
@@ -232,25 +239,39 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
 class DottedBox extends StatelessWidget {
   final Widget child;
   final bool isError;
-  const DottedBox({required this.child, this.isError = false, Key? key}) : super(key: key);
+  final bool hasImage;
+
+  const DottedBox({
+    required this.child,
+    this.isError = false,
+    this.hasImage = false,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (bounds) =>
-          AppColors.premiumGoldGradient.createShader(bounds),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white12,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isError ? Colors.red : Colors.yellow,
-            style: BorderStyle.solid,
-          ),
+    final colorScheme = Theme.of(context).colorScheme;
+    Widget content = hasImage
+        ? child
+        : ShaderMask(
+      shaderCallback: (bounds) => AppColors.premiumGoldGradient2.createShader(bounds),
+      child: child,
+    );
+
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        color: colorScheme.primary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isError ? colorScheme.error : colorScheme.primary,
+          style: BorderStyle.solid,
         ),
-        child: child,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: content,
       ),
     );
   }

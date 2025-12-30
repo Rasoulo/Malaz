@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:malaz/presentation/global_widgets/custom_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../core/config/color/app_color.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
 
 class UnderReview extends StatefulWidget {
@@ -16,39 +17,21 @@ class UnderReview extends StatefulWidget {
 
 class _UnderReviewState extends State<UnderReview> {
   Timer? _timer;
-  final int _intervalSeconds = 10; /// We check every 10 seconds
   bool modalProgressHUDisOn = false;
 
   @override
   void initState() {
     super.initState();
-    /// Immediate call first
-    _checkNow();
-
-    /// Set up a periodic timer for verification
-    _timer = Timer.periodic(Duration(seconds: _intervalSeconds), (_) {
-      _checkNow();
-    });
+    _startSilentTimer();
   }
 
-  Future<void> _checkNow() async {
-    if (modalProgressHUDisOn) return;
-    setState(() => modalProgressHUDisOn = true);
-
-    try {
-      await context.read<AuthCubit>().checkAuth();
-
-       await Future.delayed(const Duration(milliseconds: 400));
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Verification error : $e')),
-        );
+  void _startSilentTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      final state = context.read<AuthCubit>().state;
+      if (state is AuthPending) {
+        context.read<AuthCubit>().silentRoleCheck();
       }
-    } finally {
-      if (!mounted) return;
-      setState(() => modalProgressHUDisOn = false);
-    }
+    });
   }
 
   @override
@@ -59,29 +42,36 @@ class _UnderReviewState extends State<UnderReview> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      color: Colors.white,
-      inAsyncCall: modalProgressHUDisOn,
-      child: Scaffold(
-        backgroundColor: ColorScheme.of(context).surface,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:24.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ShaderMask(
+
+    return BlocListener<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthAuthenticated) {
+            context.go('/home');
+          }
+        },
+        child:ModalProgressHUD(
+          color: Colors.white,
+          inAsyncCall: modalProgressHUDisOn,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal:24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ShaderMask(
                   shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                   child: Icon(
                     Icons.hourglass_top_rounded,
                     size: 80,
-                    color: Colors.white,
+                    color: Colors.yellow,
                   ),
                 ),
-                const SizedBox(
+                  const SizedBox(
                   height: 16,
                 ),
-                ShaderMask(
+                  ShaderMask(
                   shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
                   child: Text(
                     'Your request is under review by the application administrators. We will notify you when it is approved.',
@@ -89,21 +79,21 @@ class _UnderReviewState extends State<UnderReview> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
-                const SizedBox(
+                  const SizedBox(
                   height: 100,
                 ),
-                SizedBox(
+                  SizedBox(
                   width: 250,
                   height: 50,
                   child: CustomButton(
                     text: 'Check Now',
-                    onPressed: modalProgressHUDisOn ? null : _checkNow, /// Disable the button during execution
+                    onPressed: modalProgressHUDisOn ? null : _startSilentTimer, /// Disable the button during execution
                   ),
                 ),
-                const SizedBox(
+                  const SizedBox(
                   height: 14,
                 ),
-                SizedBox(
+                  SizedBox(
                   width: 250,
                   height: 50,
                   child: CustomButton(
@@ -111,11 +101,12 @@ class _UnderReviewState extends State<UnderReview> {
                     onPressed: () => context.read<AuthCubit>().logout(),
                   ),
                 ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      )
     );
   }
 }

@@ -139,23 +139,30 @@ class _HomeRegisterScreenState extends State<HomeRegisterScreen> {
     final tr = AppLocalizations.of(context)!;
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
+        if (!mounted) return;
+
         if (state is AuthPending) {
           context.go('/pending');
         } else if (state is AuthAuthenticated) {
           context.go('/home');
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+              )
+          );
         }
       },
       child: Scaffold(
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: ListView(
           children: [
             SizedBox(
               height: 800,
               width: 450,
               child: PageView(
-                //physics: NeverScrollableScrollPhysics(),
                 controller: _controller,
                 onPageChanged: _onPageChanged,
                 children: [
@@ -199,16 +206,13 @@ class _HomeRegisterScreenState extends State<HomeRegisterScreen> {
                   effect: ExpandingDotsEffect(
                       activeDotColor: Colors.white,
                       dotColor: Colors.yellow,
-                      dotHeight: 25,
-                      dotWidth: 25,
+                      dotHeight: 15,
+                      dotWidth: 20,
                       spacing: 15
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 25,
-            )
           ],
         ),
       ),

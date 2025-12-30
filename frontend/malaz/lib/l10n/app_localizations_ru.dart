@@ -319,4 +319,77 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get otp_verified_success => 'OTP-код успешно подтвержден';
+
+  @override
+  String get booking_request_sent =>
+      'Запрос на бронирование отправлен владельцу';
+
+  @override
+  String get nights => 'ночи';
+
+  @override
+  String get confirm_booking => 'Подтвердить бронирование';
+
+  @override
+  String reviews_count(int count) {
+    return '($count отзывов)';
+  }
+
+  @override
+  String get no_description => 'Описание не предоставлено.';
+
+  @override
+  String get baths => 'Ванны';
+
+  @override
+  String get click_to_view => 'Нажмите, чтобы прочитать';
+
+  @override
+  String get active_partners => 'Активные партнеры';
+
+  @override
+  String get recent_messages => 'Последние сообщения';
+
+  @override
+  String get malaz_chat => 'Малаз Чат';
+
+  @override
+  String get no_conversations => 'Пока нет чатов';
+
+  @override
+  String get active => 'Активен';
+
+  @override
+  String get delete_chat_title => 'Удалить чат?';
+
+  @override
+  String get delete_chat_confirm =>
+      'Это приведет к безвозвратному удалению беседы.';
+
+  @override
+  String get delete => 'Удалить';
+
+  @override
+  String get online_now => 'В сети';
+
+  @override
+  String get editing_message_hint => 'Редактирование...';
+
+  @override
+  String get type_message_hint => 'Напишите сообщение...';
+
+  @override
+  String get edit_message => 'Изменить сообщение';
+
+  @override
+  String get copy_text => 'Копировать текст';
+
+  @override
+  String get text_copied => 'Текст скопирован';
+
+  @override
+  String get delete_message => 'Удалить сообщение';
+
+  @override
+  String get edited => 'Изменено';
 }
