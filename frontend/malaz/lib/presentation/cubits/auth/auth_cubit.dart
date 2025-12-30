@@ -16,7 +16,7 @@ import '../../../core/errors/failures.dart';
 import '../../../core/service_locator/service_locator.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../data/datasources/local/auth_local_datasource.dart';
-import '../../../domain/repositories/auth_repository.dart';
+import '../../../domain/repositories/auth/auth_repository.dart';
 import '../../../domain/usecases/auth/register_usecase.dart';
 import '../../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../../domain/usecases/auth/verify_otp_usecase.dart';

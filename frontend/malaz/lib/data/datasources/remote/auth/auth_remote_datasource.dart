@@ -4,8 +4,8 @@ import 'package:malaz/core/constants/app_constants.dart';
 import 'package:malaz/core/errors/exceptions.dart';
 import 'package:path/path.dart';
 
-import '../../../core/network/network_service.dart';
-import '../../models/user_model.dart';
+import '../../../../core/network/network_service.dart';
+import '../../../models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
   Future<Map<String, dynamic>> login({

@@ -1,4 +1,4 @@
-import '../../../../core/network/network_service.dart';
+import '../../../../../core/network/network_service.dart';
 
 abstract class ChatRemoteDataSource {
   Future<Map<String, dynamic>> getConversations();
