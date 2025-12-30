@@ -22,14 +22,14 @@ class PropertyController extends Controller
             ->with(['images', 'user'])
             ->where('status', 'approved')
             ->when($request->filled('type'), fn($q) => $q->where('type', $request->input('type')))
-            ->when($request->filled('price_min'), fn($q) => $q->where('price', '>=', (int)$request->input('price_min')))
-            ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int)$request->input('price_max')))
-            ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int)$request->input('rooms_min')))
-            ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int)$request->input('rooms_max')))
-            ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int)$request->input('baths_min')))
-            ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int)$request->input('baths_max')))
-            ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int)$request->input('area_min')))
-            ->when($request->filled('area_max'), fn($q) => $q->where('area', '<=', (int)$request->input('area_max')))
+            ->when($request->filled('price_min'), fn($q) => $q->where('price', '>=', (int) $request->input('price_min')))
+            ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int) $request->input('price_max')))
+            ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int) $request->input('rooms_min')))
+            ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int) $request->input('rooms_max')))
+            ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int) $request->input('baths_min')))
+            ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int) $request->input('baths_max')))
+            ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int) $request->input('area_min')))
+            ->when($request->filled('area_max'), fn($q) => $q->where('area', '<=', (int) $request->input('area_max')))
             ->when($request->filled('city'), fn($q) => $q->where('city', $request->input('city')))
             ->when($request->filled('governorate'), fn($q) => $q->where('governorate', $request->input('governorate')));
 
@@ -82,14 +82,14 @@ class PropertyController extends Controller
                     ->orWhere('title', 'like', "%{$s}%");
             }))
             ->when($request->filled('type'), fn($q) => $q->where('type', $request->input('type')))
-            ->when($request->filled('price_min'), fn($q) => $q->where('price', '>=', (int)$request->input('price_min')))
-            ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int)$request->input('price_max')))
-            ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int)$request->input('rooms_min')))
-            ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int)$request->input('rooms_max')))
-            ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int)$request->input('baths_min')))
-            ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int)$request->input('baths_max')))
-            ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int)$request->input('area_min')))
-            ->when($request->filled('area_max'), fn($q) => $q->where('area', '<=', (int)$request->input('area_max')))
+            ->when($request->filled('price_min'), fn($q) => $q->where('price', '>=', (int) $request->input('price_min')))
+            ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int) $request->input('price_max')))
+            ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int) $request->input('rooms_min')))
+            ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int) $request->input('rooms_max')))
+            ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int) $request->input('baths_min')))
+            ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int) $request->input('baths_max')))
+            ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int) $request->input('area_min')))
+            ->when($request->filled('area_max'), fn($q) => $q->where('area', '<=', (int) $request->input('area_max')))
             ->when($request->filled('city'), fn($q) => $q->where('city', $request->input('city')))
             ->when($request->filled('governorate'), fn($q) => $q->where('governorate', $request->input('governorate')));
 
@@ -102,7 +102,7 @@ class PropertyController extends Controller
                 $haversine = "(6371 * acos(cos(radians(?)) * cos(radians(latitude+0)) * cos(radians(longitude+0) - radians(?)) + sin(radians(?)) * sin(radians(latitude+0))))";
                 $mapQuery->selectRaw('properties.*,' . $haversine . ' AS distance', [$lat, $lng, $lat]);
                 if ($request->filled('radius_km')) {
-                    $mapQuery->having('distance', '<=', (float)$request->input('radius_km'));
+                    $mapQuery->having('distance', '<=', (float) $request->input('radius_km'));
                 }
                 $mapQuery->orderBy('distance');
             }
@@ -177,7 +177,9 @@ class PropertyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -253,12 +255,12 @@ class PropertyController extends Controller
         });
 
 
-        $isFav = $property->favoritedBy()->where('user_id', auth()->id())->exists();
+        //$isFav = $property->favoritedBy()->where('user_id', auth()->id())->exists();
         $user = $property->user;
         return response()->json([
             'data' => $property,
             'rate' => $rate,
-            'isFav' => $isFav,
+            //'isFav' => $isFav,
             'owner' => $user,
             'message' => __('validation.property.returned'),
         ], 200);
