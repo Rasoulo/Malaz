@@ -17,7 +17,7 @@ class Property extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'owner_id','id');
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 
     public function bookings()
@@ -67,8 +67,12 @@ class Property extends Model
             ? route('property.main_pic', $this->id)
             : null;
     }
+    public function getIsFavAttribute()
+    {
+        return $this->favoritedBy()->where('user_id', auth()->id())->exists();
+    }
 
-    protected $appends = ['main_image_url'];
+    protected $appends = ['main_image_url','isFav'];
     protected $hidden = ['main_image'];
 
 

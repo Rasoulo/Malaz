@@ -65,14 +65,20 @@ class UserController extends Controller
         ]);
     }
 
-    public function getfav()
+    public function getfav(Request $request)
     {
         $user = auth()->user();
-        $favorites = $user->favorites;
+        $perPage = (int) $request->input('per_page', 20);
+        $favorites = $user->favorites()->cursorPaginate($perPage);
 
         return response()->json([
-            'favorite' => $favorites,
+            'favorite' => $favorites->items(),
             'message' => __('validation.user.favorite_list'),
+            'meta' => [
+                'next_cursor' => $favorites->nextCursor()?->encode(),
+                'prev_cursor' => $favorites->previousCursor()?->encode(),
+                'per_page' => $favorites->perPage(),
+            ],
             'status' => 200,
         ]);
     }
@@ -279,7 +285,7 @@ class UserController extends Controller
         ]);
 
         auth()->user()->tokens()->delete();
-        
+
         return response()->json(['message' => __('validation.user.password_updated')], 200);
     }
 
