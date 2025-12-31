@@ -90,8 +90,8 @@ return [
     // Tür
     'type.required' => 'Tür gereklidir.',
     'type.string' => 'Tür geçerli bir metin olmalıdır.',
-    'type.in' => 'Tür şu seçeneklerden biri olmalıdır: Daire, Çiftlik, Villa, Restoran, Yol kenarı dinlenme tesisi, Konut kulesi, Kırsal mülk.',
-
+    'type.in' => 'Tür şunlardan biri olmalıdır: Daire, Çiftlik, Villa, Ev, Kır evi.',
+    
     // Odalar
     'number_of_rooms.required' => 'Oda sayısı gereklidir.',
     'number_of_rooms.integer' => 'Oda sayısı bir tam sayı olmalıdır.',
@@ -201,4 +201,9 @@ return [
         'token_failed' => 'Token oluşturulamadı',
         'logged_out' => 'Başarıyla çıkış yapıldı',
     ],
+
+    'bookings' => [
+        'returned' => 'Onaylanmış rezervasyonlar başarıyla getirildi.',
+    ],
+
 ];

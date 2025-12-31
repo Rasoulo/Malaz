@@ -52,16 +52,13 @@ Route::prefix('reviews')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->contr
 
 Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(PropertyController::class)->group(function () {
     Route::get('all', 'all_properties')->name('properties.all');
-    //all_booked_properties
     Route::get('all_booked/{property}', 'all_booked_properties')->name('properties.all_booked');
     Route::get('{property}', 'show')->name('properties.show');
     Route::get('{property}/favorites', 'favonwho')->name('properties.favonwho');
-    Route::middleware('role:ADMIN,USER')->group(function () {
-        Route::get('all/my', 'my_properties')->name('properties.my');
-        Route::post('/', 'store')->name('properties.store');
-        Route::post('{property}', 'update')->name('properties.update');
-        Route::delete('{property}', 'destroy')->name('properties.destroy');
-    });
+    Route::get('all/my', 'my_properties')->name('properties.my');
+    Route::post('/', 'store')->name('properties.store');
+    Route::post('{property}', 'update')->name('properties.update');
+    Route::delete('{property}', 'destroy')->name('properties.destroy');
 });
 
 Route::prefix('conversations')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(ConversationController::class)->group(function () {
@@ -110,7 +107,10 @@ Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->cont
 // Route::get('/users/{id}/identity-image', [UserController::class, 'identityImage'])
 //     ->name('users.identity_image');
 
-Route::get('/images/{id}', [ImageController::class, 'show'])->name('images.show');
+Route::middleware(['auth:sanctum', 'role:ADMIN'])
+    ->patch('/property_status/{property}', [PropertyController::class, 'updatestatus']);
+Route::get('/images/{id}', [ImageController::class, 'show'])
+    ->name('images.show');
 
 Route::get('/main_pic/{property}', [PropertyController::class, 'showmainpic'])
     ->name('property.main_pic');

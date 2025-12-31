@@ -90,7 +90,7 @@ return [
     // Type
     'type.required' => 'Le type est requis.',
     'type.string' => 'Le type doit être une chaîne valide.',
-    'type.in' => 'Le type doit être l’un de : Appartement, Ferme, Villa, Restaurant, Aire de repos, Tour résidentielle, Domaine rural.',
+    'type.in' => 'Le type doit être l’un de : Appartement, Ferme, Villa, Maison, Maison de campagne.',
 
     // Pièces
     'number_of_rooms.required' => 'Le nombre de pièces est requis.',
@@ -200,5 +200,9 @@ return [
         'pending_approval' => 'Veuillez attendre l’approbation des responsables',
         'token_failed' => 'Échec de la création du jeton',
         'logged_out' => 'Déconnexion réussie',
+    ],
+
+    'bookings' => [
+        'returned' => 'Les réservations confirmées ont été renvoyées avec succès.',
     ],
 ];
