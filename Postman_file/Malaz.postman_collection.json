@@ -4111,6 +4111,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Show Bookings For A User's Properties",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/bookings/owner/1",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"owner",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
