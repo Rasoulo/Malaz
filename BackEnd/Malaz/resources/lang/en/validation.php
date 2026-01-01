@@ -73,8 +73,8 @@ return [
 
     'type.required' => 'Type is required.',
     'type.string' => 'Type must be a valid string.',
-    'type.in' => 'Type must be one of: Apartment, Farm, Villa, Restaurant, Travel Rest Stop, Residential Tower, Country Estate.',
-
+    'type.in' => 'Type must be one of: Apartment, Farm, Villa, House, Country House.',
+    
     'number_of_rooms.required' => 'Number of rooms is required.',
     'number_of_rooms.integer' => 'Number of rooms must be an integer.',
     'number_of_rooms.min' => 'Number of rooms must be at least 0.',
@@ -177,4 +177,9 @@ return [
         'token_failed' => 'Token creation failed',
         'logged_out' => 'Logged out successfully',
     ],
+
+     'bookings' => [
+        'returned' => 'Confirmed bookings have been returned successfully.',
+    ],
+
 ];

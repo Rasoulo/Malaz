@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malaz/presentation/global_widgets/user_profile_image/user_profile_image.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../cubits/property/property_cubit.dart';
 import '../../global_widgets/apartment_cards/apartment_card.dart';
-import '../auth/my_profile/my_profile_screen.dart';
 import '../details/details_screen.dart';
 import '../property/add_property.dart';
 
@@ -268,7 +268,8 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         String? img;
-        if (state is AuthAuthenticated) img = state.user.profile_image_url;
+        int? id;
+        if (state is AuthAuthenticated){ img = state.user.profile_image_url; id = state.user.id;}
         return Container(
           decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
             BoxShadow(color: colorScheme.primary.withOpacity(0.15), blurRadius: 15)
@@ -285,7 +286,7 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                 backgroundColor: colorScheme.surfaceVariant,
                 child: (img == null || img.isEmpty)
                     ? Icon(Icons.person_rounded, size: 55, color: colorScheme.primary.withOpacity(0.5))
-                    : ClipOval(child: UserProfileImage(imageUrl: img, size: 132.0)),
+                    : ClipOval(child: UserProfileImage(userId: id!)),//UserProfileImage(imageUrl: img, size: 132.0)),
               ),
             ],
           ),

@@ -3,8 +3,8 @@
 		"_postman_id": "f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2",
 		"name": "Malaz",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "50107547",
-		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107547"
+		"_exporter_id": "50107412",
+		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107412"
 	},
 	"item": [
 		{
@@ -975,7 +975,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{localhost}}/api/users/favorites",
+									"raw": "{{localhost}}/api/users/favorites?perpage=20&cursor=null",
 									"host": [
 										"{{localhost}}"
 									],
@@ -983,6 +983,16 @@
 										"api",
 										"users",
 										"favorites"
+									],
+									"query": [
+										{
+											"key": "perpage",
+											"value": "20"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										}
 									]
 								}
 							},
@@ -999,19 +1009,24 @@
 											}
 										],
 										"url": {
-											"raw": "http://127.0.0.1:8000/api/users/favorites",
-											"protocol": "http",
+											"raw": "{{localhost}}/api/users/favorites?perpage=20&cursor=null",
 											"host": [
-												"127",
-												"0",
-												"0",
-												"1"
+												"{{localhost}}"
 											],
-											"port": "8000",
 											"path": [
 												"api",
 												"users",
 												"favorites"
+											],
+											"query": [
+												{
+													"key": "perpage",
+													"value": "20"
+												},
+												{
+													"key": "cursor",
+													"value": "null"
+												}
 											]
 										}
 									},
@@ -1037,7 +1052,7 @@
 										},
 										{
 											"key": "Date",
-											"value": "Sat, 13 Dec 2025 03:41:44 GMT"
+											"value": "Wed, 31 Dec 2025 20:41:59 GMT"
 										},
 										{
 											"key": "Content-Type",
@@ -1049,7 +1064,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"favorite\": [\n        {\n            \"id\": 2,\n            \"owner_id\": 11,\n            \"status\": \"pending\",\n            \"title\": \"any thing\",\n            \"price\": 101,\n            \"city\": \"duma\",\n            \"governorate\": \"damascus\",\n            \"address\": \"Alnasur street\",\n            \"description\": \"have a swimming pool\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Apartment\",\n            \"number_of_rooms\": 12,\n            \"number_of_baths\": 6,\n            \"number_of_bedrooms\": 3,\n            \"area\": 1500,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": null,\n            \"created_at\": \"2025-12-12T18:56:09.000000Z\",\n            \"updated_at\": \"2025-12-12T18:56:09.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/2\",\n            \"pivot\": {\n                \"user_id\": 11,\n                \"property_id\": 2,\n                \"created_at\": \"2025-12-13T03:41:01.000000Z\",\n                \"updated_at\": \"2025-12-13T03:41:01.000000Z\"\n            }\n        },\n        {\n            \"id\": 18,\n            \"owner_id\": 11,\n            \"status\": \"approved\",\n            \"title\": \"i don't know\",\n            \"price\": 300,\n            \"city\": \"damas\",\n            \"governorate\": \"damascus\",\n            \"address\": \"123\",\n            \"description\": \"hello\",\n            \"latitude\": null,\n            \"longitude\": null,\n            \"type\": \"Restaurant\",\n            \"number_of_rooms\": 19,\n            \"number_of_baths\": 12,\n            \"number_of_bedrooms\": 1,\n            \"area\": 3,\n            \"rating\": 0,\n            \"number_of_reviews\": 0,\n            \"mime_type\": \"image/jpeg\",\n            \"created_at\": \"2025-12-12T19:17:16.000000Z\",\n            \"updated_at\": \"2025-12-13T03:10:30.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/18\",\n            \"pivot\": {\n                \"user_id\": 11,\n                \"property_id\": 18,\n                \"created_at\": \"2025-12-13T03:41:09.000000Z\",\n                \"updated_at\": \"2025-12-13T03:41:09.000000Z\"\n            }\n        }\n    ],\n    \"message\": \"here all your favorite list\",\n    \"status\": 200\n}"
+									"body": "{\n    \"favorite\": [],\n    \"message\": \"Here is your favorite list\",\n    \"meta\": {\n        \"next_cursor\": null,\n        \"prev_cursor\": null,\n        \"per_page\": 20\n    },\n    \"status\": 200\n}"
 								}
 							]
 						},
@@ -1197,7 +1212,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{localhost}}/api/users/register?phone=+1111111117&first_name=Maher&last_name=Alnouri&date_of_birth=1-1-1",
+							"raw": "{{localhost}}/api/users/register?phone=+1111111118&first_name=mohamad&last_name=Alnouri&date_of_birth=1-1-1",
 							"host": [
 								"{{localhost}}"
 							],
@@ -1209,11 +1224,11 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+1111111117"
+									"value": "+1111111118"
 								},
 								{
 									"key": "first_name",
-									"value": "Maher"
+									"value": "mohamad"
 								},
 								{
 									"key": "last_name",
@@ -1728,13 +1743,13 @@
 							"formdata": [
 								{
 									"key": "password",
-									"value": "password",
+									"value": "12345678",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{localhost}}/api/users/login?phone=+7056585603",
+							"raw": "{{localhost}}/api/users/login?phone=+1111111118",
 							"host": [
 								"{{localhost}}"
 							],
@@ -1746,7 +1761,12 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+7056585603"
+									"value": "+1111111118"
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
 								}
 							]
 						}
@@ -1905,6 +1925,16 @@
 				{
 					"name": "LogIn Copy",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admintoken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -1914,7 +1944,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/users/login?phone=&password=password",
+							"raw": "{{localhost}}/api/users/login?phone=+1111111117&password=12345678",
 							"host": [
 								"{{localhost}}"
 							],
@@ -1926,11 +1956,11 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": ""
+									"value": "+1111111117"
 								},
 								{
 									"key": "password",
-									"value": "password"
+									"value": "12345678"
 								}
 							]
 						}
@@ -2581,7 +2611,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/bookings/update/3?status=completed&payment_status=paid",
+							"raw": "{{localhost}}/api/bookings/update/2?status=pending&payment_status=paid",
 							"host": [
 								"{{localhost}}"
 							],
@@ -2589,12 +2619,12 @@
 								"api",
 								"bookings",
 								"update",
-								"3"
+								"2"
 							],
 							"query": [
 								{
 									"key": "status",
-									"value": "completed"
+									"value": "pending"
 								},
 								{
 									"key": "payment_status",
@@ -2843,7 +2873,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/conversations/",
+							"raw": "{{localhost}}/api/conversations/?cursur=null&perpage=15",
 							"host": [
 								"{{localhost}}"
 							],
@@ -2851,6 +2881,16 @@
 								"api",
 								"conversations",
 								""
+							],
+							"query": [
+								{
+									"key": "cursur",
+									"value": "null"
+								},
+								{
+									"key": "perpage",
+									"value": "15"
+								}
 							]
 						}
 					},
@@ -2906,6 +2946,75 @@
 								{
 									"key": "Date",
 									"value": "Tue, 09 Dec 2025 05:44:01 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"conversations\": [],\n    \"meta\": {\n        \"next_cursor\": null,\n        \"prev_cursor\": null,\n        \"per_page\": 20\n    },\n    \"status\": 200\n}"
+						},
+						{
+							"name": "success but there is no chats",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/conversations/?cursur=null&perpage=15",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										""
+									],
+									"query": [
+										{
+											"key": "cursur",
+											"value": "null"
+										},
+										{
+											"key": "perpage",
+											"value": "15"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 31 Dec 2025 20:11:55 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -2978,7 +3087,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/conversations/3/messages",
+							"raw": "{{localhost}}/api/conversations/3/messages?cursor=null&perpage=1",
 							"host": [
 								"{{localhost}}"
 							],
@@ -2987,10 +3096,91 @@
 								"conversations",
 								"3",
 								"messages"
+							],
+							"query": [
+								{
+									"key": "cursor",
+									"value": "null"
+								},
+								{
+									"key": "perpage",
+									"value": "1"
+								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "someone else conversation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/conversations/3/messages?cursor=null&perpage=1",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										"3",
+										"messages"
+									],
+									"query": [
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "perpage",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 31 Dec 2025 20:12:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Unauthorized\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete A Conversation",
@@ -3716,7 +3906,7 @@
 			"name": "BookingAPI",
 			"item": [
 				{
-					"name": "Get All Bookings From The User",
+					"name": "User's Bookings",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -3737,21 +3927,22 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/bookings/",
+							"raw": "{{localhost}}/api/bookings/user/37",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
 								"bookings",
-								""
+								"user",
+								"37"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Show My Booking Info",
+					"name": "Show Booking Info",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -3829,7 +4020,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{usertoken}}",
+									"value": "3|f3Za2q8x5FKY9sLSgc1rhIjNXRdXhXLxz9qcbV0J7948e75f",
 									"type": "string"
 								}
 							]
@@ -3843,7 +4034,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/bookings/store?property_id=1&check_in=2030-1-5&check_out=2030-1-6&total_price=100&currency=432",
+							"raw": "{{localhost}}/api/bookings/store?property_id=5&check_in=2030-1-5&check_out=2030-1-6&total_price=100&currency=432",
 							"host": [
 								"{{localhost}}"
 							],
@@ -3855,7 +4046,7 @@
 							"query": [
 								{
 									"key": "property_id",
-									"value": "1"
+									"value": "5"
 								},
 								{
 									"key": "check_in",
@@ -3873,6 +4064,85 @@
 									"key": "currency",
 									"value": "432"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Property's Bookings",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{localhost}}/api/bookings/property/5",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"property",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Bookings For A User's Properties",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/bookings/owner/1",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"owner",
+								"1"
 							]
 						}
 					},
@@ -3905,7 +4175,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/properties/all?per_page=300&cursor=null",
+							"raw": "{{localhost}}/api/properties/all?per_page=30&cursor=null",
 							"host": [
 								"{{localhost}}"
 							],
@@ -3917,11 +4187,16 @@
 							"query": [
 								{
 									"key": "per_page",
-									"value": "300"
+									"value": "30"
 								},
 								{
 									"key": "cursor",
 									"value": "null"
+								},
+								{
+									"key": "rooms_min",
+									"value": "2",
+									"disabled": true
 								}
 							]
 						}
@@ -4468,7 +4743,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&sort=price_asc",
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&sort=nearest&lat=30.0444&lng=31.2357",
 									"host": [
 										"{{localhost}}"
 									],
@@ -4488,7 +4763,15 @@
 										},
 										{
 											"key": "sort",
-											"value": "price_asc"
+											"value": "nearest"
+										},
+										{
+											"key": "lat",
+											"value": "30.0444"
+										},
+										{
+											"key": "lng",
+											"value": "31.2357"
 										}
 									]
 								}
@@ -5018,7 +5301,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/properties/18/favorites",
+									"raw": "http://127.0.0.1:8000/api/properties/18/favorites?perpage=20&cursor=null",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -5032,6 +5315,16 @@
 										"properties",
 										"18",
 										"favorites"
+									],
+									"query": [
+										{
+											"key": "perpage",
+											"value": "20"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										}
 									]
 								}
 							},
@@ -5314,7 +5607,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{localhost}}/api/properties",
+							"raw": "{{localhost}}/api/properties?price=101&city=duma&address=Alnasur street&governorate=damascus&description=have a swimming pool&type=Apartment&number_of_rooms=12&number_of_baths=6&area=1500&title=any thing&number_of_bedrooms=3",
 							"host": [
 								"{{localhost}}"
 							],
@@ -5325,58 +5618,47 @@
 							"query": [
 								{
 									"key": "price",
-									"value": "101",
-									"disabled": true
+									"value": "101"
 								},
 								{
 									"key": "city",
-									"value": "duma",
-									"disabled": true
+									"value": "duma"
 								},
 								{
 									"key": "address",
-									"value": "Alnasur street",
-									"disabled": true
+									"value": "Alnasur street"
 								},
 								{
 									"key": "governorate",
-									"value": "damascus",
-									"disabled": true
+									"value": "damascus"
 								},
 								{
 									"key": "description",
-									"value": "have a swimming pool",
-									"disabled": true
+									"value": "have a swimming pool"
 								},
 								{
 									"key": "type",
-									"value": "Apartment",
-									"disabled": true
+									"value": "Apartment"
 								},
 								{
 									"key": "number_of_rooms",
-									"value": "12",
-									"disabled": true
+									"value": "12"
 								},
 								{
 									"key": "number_of_baths",
-									"value": "6",
-									"disabled": true
+									"value": "6"
 								},
 								{
 									"key": "area",
-									"value": "1500",
-									"disabled": true
+									"value": "1500"
 								},
 								{
 									"key": "title",
-									"value": "any thing",
-									"disabled": true
+									"value": "any thing"
 								},
 								{
 									"key": "number_of_bedrooms",
-									"value": "3",
-									"disabled": true
+									"value": "3"
 								}
 							]
 						}
@@ -5956,8 +6238,30 @@
 				{
 					"name": "booked_properties",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/api/properties/all_booked/5",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"all_booked",
+								"5"
+							]
+						}
 					},
 					"response": [
 						{
@@ -6015,6 +6319,86 @@
 							"body": "{\n    \"data\": [],\n    \"message\": \"__('validation.property.returned')\",\n    \"status\": 200\n}"
 						}
 					]
+				},
+				{
+					"name": "change status only admins",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/api/property_status/26",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"property_status",
+								"26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "properties.favonwho",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/properties/18/favorites?perpage=20&cursor=null",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"properties",
+								"18",
+								"favorites"
+							],
+							"query": [
+								{
+									"key": "perpage",
+									"value": "20"
+								},
+								{
+									"key": "cursor",
+									"value": "null"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

@@ -11,9 +11,30 @@ class BookingController extends Controller
     /**
      * Display a list of bookings.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Show all bookings for the authenticated user
+        // If filtering by user_id, allow only the user themselves or admins (view-only)
+        if ($request->has('user_id')) {
+            $userId = $request->query('user_id');
+            if (auth()->id() != $userId && auth()->user()->role !== 'ADMIN') {
+                return response()->json(['error' => 'Forbidden'], 403);
+            }
+
+            return Booking::where('user_id', $userId)->with('property')->get();
+        }
+
+        // If filtering by property_id, allow property owner or admin (view-only)
+        if ($request->has('property_id')) {
+            $propertyId = $request->query('property_id');
+            $property = Property::findOrFail($propertyId);
+            if (auth()->id() != $property->owner_id && auth()->user()->role !== 'ADMIN') {
+                return response()->json(['error' => 'Forbidden'], 403);
+            }
+
+            return Booking::where('property_id', $propertyId)->with('property')->get();
+        }
+
+        // Default: show all bookings for the authenticated user
         return Booking::where('user_id', auth()->id())->with('property')->get();
     }
 
@@ -27,7 +48,6 @@ class BookingController extends Controller
             'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
             'total_price' => 'required|numeric|min:0',
-            'currency' => 'string|size:3',
         ]);
 
         $propertyId = $request->property_id;
@@ -64,6 +84,49 @@ class BookingController extends Controller
         ]);
 
         return response()->json($booking, 201);
+    }
+
+    /**
+     * List bookings for a specific user (authorized).
+     */
+    public function userBookings($userId)
+    {
+        if (auth()->id() != $userId && auth()->user()->role !== 'ADMIN') {
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
+
+        return Booking::where('user_id', $userId)->with('property')->get();
+    }
+
+    /**
+     * List bookings for a specific property (authorized: owner or admin).
+     */
+    public function propertyBookings($propertyId)
+    {
+        $property = Property::findOrFail($propertyId);
+        if (auth()->id() != $property->owner_id && auth()->user()->role !== 'ADMIN') {
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
+
+        return Booking::where('property_id', $propertyId)->with('property')->get();
+    }
+
+    /**
+     * List all bookings for properties owned by a specific user (owner).
+     */
+    public function ownerBookings($ownerId)
+    {
+        if (auth()->id() != $ownerId && auth()->user()->role !== 'ADMIN') {
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
+
+        $propertyIds = Property::where('owner_id', $ownerId)->pluck('id');
+
+        $bookings = Booking::whereIn('property_id', $propertyIds)
+            ->with('property')
+            ->get();
+
+        return response()->json(['bookings' => $bookings]);
     }
 
     /**

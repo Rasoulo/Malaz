@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('description')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->string('type')->default('flat');
+            $table->string('type')->default('Apartment');
             $table->integer('number_of_rooms')->default(0);
             $table->integer('number_of_baths')->default(0);
             $table->integer('number_of_bedrooms')->default(0);

@@ -95,15 +95,15 @@ class _AppDrawerState extends State<AppDrawer> {
               const SizedBox(height: 20),
               Text(
                 name,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: colorScheme.surface,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.5,
                 ),
               ),
               const SizedBox(height: 12),
-              _buildEditButton(context, tr),
+              //_buildEditButton(context, tr, colorScheme),
             ],
           ),
         );
@@ -128,35 +128,35 @@ class _AppDrawerState extends State<AppDrawer> {
           radius: 42,
           backgroundColor: isDark ? Colors.white10 : Colors.white24,
           child: (img == null || img.isEmpty)
-              ? const Icon(Icons.person, size: 45, color: Colors.white)
+              ? Icon(Icons.person, size: 45, color: colorScheme.surface)
               : ClipOval(child: UserProfileImage(imageUrl: img, size: 84)),
         ),
       ),
     );
   }
 
-  Widget _buildEditButton(BuildContext context, AppLocalizations tr) {
-    return InkWell(
-      onTap: () => context.push('/profile'),
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.12),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.2)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.edit_note_rounded, color: Colors.white, size: 18),
-            const SizedBox(width: 6),
-            Text(tr.edit_profile, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500)),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildEditButton(BuildContext context, AppLocalizations tr, ColorScheme colorScheme) {
+  //   return InkWell(
+  //     onTap: () => context.push('/profile'),
+  //     borderRadius: BorderRadius.circular(20),
+  //     child: Container(
+  //       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+  //       decoration: BoxDecoration(
+  //         color: Colors.white.withOpacity(0.12),
+  //         borderRadius: BorderRadius.circular(20),
+  //         border: Border.all(color: Colors.white.withOpacity(0.2)),
+  //       ),
+  //       child: Row(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           Icon(Icons.edit_note_rounded, color: colorScheme.surface, size: 18),
+  //           const SizedBox(width: 6),
+  //           Text(tr.edit_profile, style: TextStyle(color: colorScheme.surface, fontSize: 12, fontWeight: FontWeight.w500)),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildDrawerItem(BuildContext context, IconData icon, String title, VoidCallback onTap) {
     final colorScheme = Theme.of(context).colorScheme;

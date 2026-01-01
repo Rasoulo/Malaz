@@ -21,8 +21,8 @@ class BookingPolicy
      */
     public function create(User $user)
     {
-        // Any authenticated user can create a booking
-        return $user->role === 'USER' || $user->role === 'ADMIN';
+        // Only normal users may create bookings; admins are view-only
+        return $user->role === 'USER';
     }
 
     /**
@@ -30,10 +30,8 @@ class BookingPolicy
      */
     public function update(User $user, Booking $booking)
     {
-        // Users can update their own bookings (e.g., cancel),
-        // Admins can update any booking
-
-        return $user->id === $booking->property->owner_id || $user->role === 'ADMIN';
+        // Allow property owner or the booking owner to update (admins not allowed)
+        return $user->id === $booking->property->owner_id || $user->id === $booking->user_id;
     }
 
     /**
@@ -41,8 +39,7 @@ class BookingPolicy
      */
     public function delete(User $user, Booking $booking)
     {
-        // Users can cancel their own bookings,
-        // Admins can cancel any booking
-        return $user->id === $booking->user_id || $user->role === 'ADMIN';
+        // Only the booking owner can delete/cancel their booking (admins are view-only)
+        return $user->id === $booking->user_id;
     }
 }
