@@ -26,7 +26,7 @@ void showLoadingDialog(BuildContext context) {
             Lottie.asset('assets/lottie/sending_booking.json', width: 100),
             const SizedBox(height: 20),
             Text(
-              l10n.booking_in_progress, // النص المترجم
+              l10n.booking_in_progress,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
@@ -53,12 +53,12 @@ void showSuccessDialog(BuildContext context, VoidCallback onClosed) {
           children: [
             const Icon(Icons.check_circle_outline, color: Colors.green, size: 80),
             const SizedBox(height: 16),
-            const Text(
-              l10n.booking_succ ess_title,
+             Text(
+              l10n.booking_success_title,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text(
+             Text(
               l10n.booking_success_message,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
@@ -72,7 +72,7 @@ void showSuccessDialog(BuildContext context, VoidCallback onClosed) {
                   onClosed();
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: theme.primary,foregroundColor: theme.onPrimary),
-                child: const Text(l10n.action_okay),
+                child: Text(l10n.action_okay),
               ),
             )
           ],
