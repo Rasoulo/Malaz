@@ -161,5 +161,8 @@
   "booking_in_progress": "Confirming your booking...",
   "booking_success_title": "Booking Successful!",
   "booking_success_message": "We will contact you soon to confirm the details.",
-  "action_okay": "Okay"
+  "action_okay": "Okay",
+  "location": "Location",
+  "verified_account": "VERIFIED ACCOUNT",
+  "unknown_location": "Unknown Location"
 }

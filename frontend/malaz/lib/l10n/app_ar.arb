@@ -161,5 +161,8 @@
   "booking_in_progress": "جاري تأكيد حجزك...",
   "booking_success_title": "تم الحجز بنجاح!",
   "booking_success_message": "سيتم التواصل معك قريباً لتأكيد التفاصيل.",
-  "action_okay": "حسناً"
+  "action_okay": "حسناً",
+  "location": "الموقع",
+  "verified_account": "حساب موثق",
+  "unknown_location": "موقع غير معروف"
 }

@@ -494,4 +494,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get action_okay => 'D\'accord';
+
+  @override
+  String get location => 'Emplacement';
+
+  @override
+  String get verified_account => 'COMPTE VÉRIFIÉ';
+
+  @override
+  String get unknown_location => 'Emplacement inconnu';
 }

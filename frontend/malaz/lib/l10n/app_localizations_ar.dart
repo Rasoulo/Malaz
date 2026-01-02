@@ -481,4 +481,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get action_okay => 'حسناً';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get verified_account => 'حساب موثق';
+
+  @override
+  String get unknown_location => 'موقع غير معروف';
 }

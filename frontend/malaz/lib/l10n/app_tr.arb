@@ -156,5 +156,8 @@
   "booking_in_progress": "Rezervasyonunuz onaylanıyor...",
   "booking_success_title": "Rezervasyon Başarılı!",
   "booking_success_message": "Detayları onaylamak için yakında sizinle iletişime geçeceğiz.",
-  "action_okay": "Tamam"
+  "action_okay": "Tamam",
+  "location": "Konum",
+  "verified_account": "DOĞRULANMIŞ HESAP",
+  "unknown_location": "Bilinmeyen Konum"
 }

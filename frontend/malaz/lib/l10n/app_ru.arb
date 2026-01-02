@@ -162,6 +162,8 @@
   "booking_in_progress": "Подтверждение бронирования...",
   "booking_success_title": "Бронирование успешно!",
   "booking_success_message": "Мы свяжемся с вами в ближайшее время для подтверждения деталей.",
-  "action_okay": "Хорошо"
-
+  "action_okay": "Хорошо",
+  "location": "Местоположение",
+  "verified_account": "ПОДТВЕРЖДЕННЫЙ АККАУНТ",
+  "unknown_location": "Неизвестное место"
 }

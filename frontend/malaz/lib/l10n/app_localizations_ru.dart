@@ -487,4 +487,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get action_okay => 'Хорошо';
+
+  @override
+  String get location => 'Местоположение';
+
+  @override
+  String get verified_account => 'ПОДТВЕРЖДЕННЫЙ АККАУНТ';
+
+  @override
+  String get unknown_location => 'Неизвестное место';
 }

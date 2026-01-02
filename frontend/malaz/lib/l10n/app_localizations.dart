@@ -1039,6 +1039,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Okay'**
   String get action_okay;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @verified_account.
+  ///
+  /// In en, this message translates to:
+  /// **'VERIFIED ACCOUNT'**
+  String get verified_account;
+
+  /// No description provided for @unknown_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Location'**
+  String get unknown_location;
 }
 
 class _AppLocalizationsDelegate

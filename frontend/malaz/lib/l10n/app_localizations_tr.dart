@@ -487,4 +487,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get action_okay => 'Tamam';
+
+  @override
+  String get location => 'Konum';
+
+  @override
+  String get verified_account => 'DOĞRULANMIŞ HESAP';
+
+  @override
+  String get unknown_location => 'Bilinmeyen Konum';
 }
