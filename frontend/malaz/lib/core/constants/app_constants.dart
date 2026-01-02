@@ -1,5 +1,5 @@
 class AppConstants {
-    static const baseurl = 'http://192.168.1.102:8000/api';
+  static const baseurl = 'http://192.168.1.100:8000/api';
   /// [SharedPreferences] Keys
   static const String themeKey = 'theme_mode';
   static const String languageKey = 'language_code';
@@ -9,6 +9,11 @@ class AppConstants {
   static const String networkFailureKey = 'NETWORK_FAILURE_KEY';
   static const String unknownFailureKey = 'UNKNOWN_FAILURE_KEY';
   static const String cancelledFailureKey = 'CANCELLED_FAILURE_KEY';
+
+  /// Location & Address Keys
+  static const String addressKey = 'USER_CASHED_ADDRESS';
+  static const String latKey = 'LAST_CACHED_LAT';
+  static const String lngKey = 'LAST_CACHED_LNG';
 
   static const numberOfApartmentsEachRequest = 2;
 

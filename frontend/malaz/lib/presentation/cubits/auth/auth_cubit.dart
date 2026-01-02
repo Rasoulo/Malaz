@@ -403,6 +403,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> saveAddressLocally(String address) async {
+    await sl<AuthLocalDatasource>().cacheUserAddress(address);
+  }
+
   String _mapFailureToMessage(Failure f) {
     if (f is PhoneNotFoundFailure)
       return 'This phone number does not exist in our records.';
