@@ -152,5 +152,9 @@
   "no_properties_found": "Mülk bulunamadı.",
   "guests": "Misafirler",
   "saved":"kaydedildi",
-  "title_hint":"Yasemin Apartmanı"
+  "title_hint":"Yasemin Apartmanı",
+  "booking_in_progress": "Rezervasyonunuz onaylanıyor...",
+  "booking_success_title": "Rezervasyon Başarılı!",
+  "booking_success_message": "Detayları onaylamak için yakında sizinle iletişime geçeceğiz.",
+  "action_okay": "Tamam"
 }

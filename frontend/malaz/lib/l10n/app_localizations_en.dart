@@ -471,4 +471,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get title_hint => 'Jasmine Apartment';
+
+  @override
+  String get booking_in_progress => 'Confirming your booking...';
+
+  @override
+  String get booking_success_title => 'Booking Successful!';
+
+  @override
+  String get booking_success_message =>
+      'We will contact you soon to confirm the details.';
+
+  @override
+  String get action_okay => 'Okay';
 }

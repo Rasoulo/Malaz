@@ -468,4 +468,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get title_hint => 'شقة الياسمين';
+
+  @override
+  String get booking_in_progress => 'جاري تأكيد حجزك...';
+
+  @override
+  String get booking_success_title => 'تم الحجز بنجاح!';
+
+  @override
+  String get booking_success_message =>
+      'سيتم التواصل معك قريباً لتأكيد التفاصيل.';
+
+  @override
+  String get action_okay => 'حسناً';
 }

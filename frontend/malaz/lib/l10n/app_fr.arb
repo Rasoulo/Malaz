@@ -157,5 +157,9 @@
   "no_properties_found": "Aucune propriété ajoutée.",
   "guests": "Invités",
   "saved":"sauvé",
-  "title_hint":"Appartement Jasmin"
+  "title_hint":"Appartement Jasmin",
+  "booking_in_progress": "Confirmation de votre réservation...",
+  "booking_success_title": "Réservation réussie !",
+  "booking_success_message": "Nous vous contacterons bientôt pour confirmer les détails.",
+  "action_okay": "D'accord"
 }

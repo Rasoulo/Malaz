@@ -1015,6 +1015,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Jasmine Apartment'**
   String get title_hint;
+
+  /// No description provided for @booking_in_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirming your booking...'**
+  String get booking_in_progress;
+
+  /// No description provided for @booking_success_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Successful!'**
+  String get booking_success_title;
+
+  /// No description provided for @booking_success_message.
+  ///
+  /// In en, this message translates to:
+  /// **'We will contact you soon to confirm the details.'**
+  String get booking_success_message;
+
+  /// No description provided for @action_okay.
+  ///
+  /// In en, this message translates to:
+  /// **'Okay'**
+  String get action_okay;
 }
 
 class _AppLocalizationsDelegate

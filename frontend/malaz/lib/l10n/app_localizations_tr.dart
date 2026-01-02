@@ -474,4 +474,17 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get title_hint => 'Yasemin Apartmanı';
+
+  @override
+  String get booking_in_progress => 'Rezervasyonunuz onaylanıyor...';
+
+  @override
+  String get booking_success_title => 'Rezervasyon Başarılı!';
+
+  @override
+  String get booking_success_message =>
+      'Detayları onaylamak için yakında sizinle iletişime geçeceğiz.';
+
+  @override
+  String get action_okay => 'Tamam';
 }

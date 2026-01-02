@@ -474,4 +474,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get title_hint => 'Апартаменты Жасмин';
+
+  @override
+  String get booking_in_progress => 'Подтверждение бронирования...';
+
+  @override
+  String get booking_success_title => 'Бронирование успешно!';
+
+  @override
+  String get booking_success_message =>
+      'Мы свяжемся с вами в ближайшее время для подтверждения деталей.';
+
+  @override
+  String get action_okay => 'Хорошо';
 }

@@ -157,5 +157,9 @@
   "no_properties_found": "لم يتم إضافة عقارات بعد.",
   "guests": "ضيوف",
   "saved":"المفضلة",
-  "title_hint":"شقة الياسمين"
+  "title_hint":"شقة الياسمين",
+  "booking_in_progress": "جاري تأكيد حجزك...",
+  "booking_success_title": "تم الحجز بنجاح!",
+  "booking_success_message": "سيتم التواصل معك قريباً لتأكيد التفاصيل.",
+  "action_okay": "حسناً"
 }

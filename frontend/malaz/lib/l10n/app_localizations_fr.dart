@@ -481,4 +481,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get title_hint => 'Appartement Jasmin';
+
+  @override
+  String get booking_in_progress => 'Confirmation de votre réservation...';
+
+  @override
+  String get booking_success_title => 'Réservation réussie !';
+
+  @override
+  String get booking_success_message =>
+      'Nous vous contacterons bientôt pour confirmer les détails.';
+
+  @override
+  String get action_okay => 'D\'accord';
 }

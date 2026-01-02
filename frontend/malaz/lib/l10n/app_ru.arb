@@ -158,6 +158,10 @@
   "no_properties_found": "Объекты не найдены.",
   "guests": "Гости",
   "saved":"сохранено",
-  "title_hint":"Апартаменты Жасмин"
+  "title_hint":"Апартаменты Жасмин",
+  "booking_in_progress": "Подтверждение бронирования...",
+  "booking_success_title": "Бронирование успешно!",
+  "booking_success_message": "Мы свяжемся с вами в ближайшее время для подтверждения деталей.",
+  "action_okay": "Хорошо"
 
 }
