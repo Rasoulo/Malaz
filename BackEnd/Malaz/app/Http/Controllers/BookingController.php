@@ -123,7 +123,7 @@ class BookingController extends Controller
         $propertyIds = Property::where('owner_id', $ownerId)->pluck('id');
 
         $bookings = Booking::whereIn('property_id', $propertyIds)
-            ->with('property')
+            ->with(['property', 'user:id,first_name,last_name'])
             ->get();
 
         return response()->json(['bookings' => $bookings]);
