@@ -144,15 +144,38 @@ class BookingController extends Controller
     public function update(Request $request, Booking $booking)
     {
         $this->authorize('update', $booking);
-
         $request->validate([
-            'status' => 'in:pending,confirmed,cancelled,completed',
-            'payment_status' => 'in:unpaid,paid,refunded',
+            'property_id' => 'sometimes|exists:properties,id',
+            'check_in' => 'sometimes|date|after_or_equal:today',
+            'check_out' => 'sometimes|date|after:check_in',
+            'status' => 'sometimes|in:pending,confirmed,cancelled,completed',
+            'total_price' => 'sometimes|numeric|min:0'
         ]);
 
-        $booking->update($request->only('status', 'payment_status'));
+        $propertyId = $request->filled('property_id') ? $request->property_id : $booking->property_id;
+        $checkIn = $request->filled('check_in') ? $request->check_in : $booking->check_in;
+        $checkOut = $request->filled('check_out') ? $request->check_out : $booking->check_out;
 
-        return response()->json($booking);
+        $overlap = Booking::where('property_id', $propertyId)
+            ->where('id', '!=', $booking->id)
+            ->where('status', 'confirmed')
+            ->where(function ($query) use ($checkIn, $checkOut) {
+                $query->whereBetween('check_in', [$checkIn, $checkOut])
+                    ->orWhereBetween('check_out', [$checkIn, $checkOut])
+                    ->orWhere(function ($q) use ($checkIn, $checkOut) {
+                        $q->where('check_in', '<', $checkIn)
+                            ->where('check_out', '>', $checkOut);
+                    });
+            })
+            ->exists();
+
+        if ($overlap) {
+            return response()->json(['error' => 'Property already booked for these dates'], 422);
+        }
+
+        $booking->update($request->only('property_id', 'check_in', 'check_out', 'status', 'total_price'));
+
+        return response()->json($booking->fresh()->load('property'));
     }
 
     /**

@@ -22,7 +22,6 @@ return new class extends Migration
 
             // Payment details
             $table->decimal('total_price', 10, 2);
-            $table->enum('payment_status', ['unpaid', 'paid', 'refunded'])->default('unpaid');
 
             $table->timestamps();
         });
