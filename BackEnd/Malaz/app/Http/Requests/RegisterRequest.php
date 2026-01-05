@@ -20,8 +20,8 @@ class RegisterRequest extends BaseFormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'password' => 'required|string|min:6|confirmed',
-            'identity_card_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'identity_card_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'date_of_birth' => [
                 'required',
                 'date',

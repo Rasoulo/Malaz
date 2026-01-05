@@ -61,7 +61,6 @@ class NetworkServiceImpl implements NetworkService {
   Future<Response> post(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
       final response = await _dio.post(endpoint, data: data, queryParameters: queryParameters);
-      print('>>>> ${response.data}');
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handle(e);

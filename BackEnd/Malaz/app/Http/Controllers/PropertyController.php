@@ -107,7 +107,7 @@ class PropertyController extends Controller
                 $mapQuery->orderBy('distance');
             }
 
-            $results = $mapQuery->get();
+            $results = $mapQuery->cursorPaginate($perPage);
             return response()->json([
                 'data' => $results->map(function ($p) {
                     return [
@@ -124,6 +124,11 @@ class PropertyController extends Controller
                         'distance' => $p->distance ?? null,
                     ];
                 }),
+                'meta' => [
+                    'next_cursor' => $results->nextCursor()?->encode(),
+                    'prev_cursor' => $results->previousCursor()?->encode(),
+                    'per_page' => $results->perPage(),
+                ],
                 'message' => __('validation.property.all_list'),
                 'status' => 200,
             ]);
@@ -165,11 +170,18 @@ class PropertyController extends Controller
         );
     }
 
-    public function all_booked_properties(Property $property)
+    public function all_booked_properties(Request $request, Property $property)
     {
+        $perPage = (int) $request->input('per_page', 20);
+        $bookings = $property->bookings()->where('status', 'confirmed')->cursorPaginate($perPage);
         return response()->json([
-            'data' => $property->bookings->where('status', 'confirmed'),
-            'message' => "__('validation.property.returned')",
+            'data' => $bookings->items(),
+            'meta' => [
+                'next_cursor' => $bookings->nextCursor()?->encode(),
+                'prev_cursor' => $bookings->previousCursor()?->encode(),
+                'per_page' => $bookings->perPage(),
+            ],
+            'message' => __('validation.bookings.returned'),
             'status' => 200,
         ]);
     }
@@ -216,13 +228,20 @@ class PropertyController extends Controller
             // return 1;
         }
 
-        $property->status = 'approved';
-        $property->save();
-
         return response()->json([
             'data' => $property,
             'message' => __('validation.property.created'),
         ], 201);
+    }
+
+    public function updatestatus(Property $property)
+    {
+        $property->status = 'approved';
+        $property->save();
+        return response()->json([
+            'message' => 'done',
+            'status' => 200,
+        ]);
     }
 
     public function showmainpic(Property $property)
@@ -266,8 +285,9 @@ class PropertyController extends Controller
         ], 200);
     }
 
-    public function favonwho($propertyId)
+    public function favonwho(Request $request, $propertyId)
     {
+        $perPage = (int) $request->input('per_page', 20);
 
         $property = Property::find($propertyId);
 
@@ -278,10 +298,15 @@ class PropertyController extends Controller
             ]);
         }
 
-        $users = $property->favoritedBy;
+        $users = $property->favoritedBy()->cursorPaginate($perPage);
 
         return response()->json([
-            'users' => $users,
+            'users' => $users->items(),
+            'meta' => [
+                'next_cursor' => $users->nextCursor()?->encode(),
+                'prev_cursor' => $users->previousCursor()?->encode(),
+                'per_page' => $users->perPage(),
+            ],
             'message' => __('validation.property.favorited_by'),
             'status' => 200,
         ]);

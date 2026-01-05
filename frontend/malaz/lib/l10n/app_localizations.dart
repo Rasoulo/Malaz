@@ -518,6 +518,12 @@ abstract class AppLocalizations {
   /// **'Rooms'**
   String get rooms;
 
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
   /// No description provided for @reviews.
   ///
   /// In en, this message translates to:
@@ -589,6 +595,468 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'warring'**
   String get warring;
+
+  /// No description provided for @edit_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get edit_profile;
+
+  /// No description provided for @identity_verification.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity verification'**
+  String get identity_verification;
+
+  /// No description provided for @identity_verification_input.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password to confirm identity'**
+  String get identity_verification_input;
+
+  /// No description provided for @current_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get current_password;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @incorrect_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect Password'**
+  String get incorrect_password;
+
+  /// No description provided for @verify.
+  ///
+  /// In en, this message translates to:
+  /// **'verification'**
+  String get verify;
+
+  /// No description provided for @profile_updated_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Updated & Cached Successfully'**
+  String get profile_updated_success;
+
+  /// No description provided for @change_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get change_password;
+
+  /// No description provided for @otp_sent_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent to your phone'**
+  String get otp_sent_success;
+
+  /// No description provided for @enter_otp_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code sent to you'**
+  String get enter_otp_hint;
+
+  /// No description provided for @new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get new_password;
+
+  /// No description provided for @confirm_new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirm_new_password;
+
+  /// No description provided for @password_mismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get password_mismatch;
+
+  /// No description provided for @password_changed_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get password_changed_success;
+
+  /// No description provided for @resend_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get resend_code;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @please_enter_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get please_enter_password;
+
+  /// No description provided for @passwords_do_not_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwords_do_not_match;
+
+  /// No description provided for @wronge_otp.
+  ///
+  /// In en, this message translates to:
+  /// **'The entered code is incorrect, please try again'**
+  String get wronge_otp;
+
+  /// No description provided for @otp_verified_success.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP verified successfully'**
+  String get otp_verified_success;
+
+  /// No description provided for @booking_request_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Request Sent To The Owner'**
+  String get booking_request_sent;
+
+  /// No description provided for @nights.
+  ///
+  /// In en, this message translates to:
+  /// **'nights'**
+  String get nights;
+
+  /// No description provided for @confirm_booking.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Booking'**
+  String get confirm_booking;
+
+  /// No description provided for @reviews_count.
+  ///
+  /// In en, this message translates to:
+  /// **'({count} reviews)'**
+  String reviews_count(int count);
+
+  /// No description provided for @no_description.
+  ///
+  /// In en, this message translates to:
+  /// **'No description provided.'**
+  String get no_description;
+
+  /// No description provided for @baths.
+  ///
+  /// In en, this message translates to:
+  /// **'Baths'**
+  String get baths;
+
+  /// No description provided for @click_to_view.
+  ///
+  /// In en, this message translates to:
+  /// **'Click to view messages'**
+  String get click_to_view;
+
+  /// No description provided for @active_partners.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Partners'**
+  String get active_partners;
+
+  /// No description provided for @recent_messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Messages'**
+  String get recent_messages;
+
+  /// No description provided for @malaz_chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Malaz Chat'**
+  String get malaz_chat;
+
+  /// No description provided for @no_conversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet'**
+  String get no_conversations;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @delete_chat_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Chat?'**
+  String get delete_chat_title;
+
+  /// No description provided for @delete_chat_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently remove the conversation.'**
+  String get delete_chat_confirm;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @online_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Online now'**
+  String get online_now;
+
+  /// No description provided for @editing_message_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing message...'**
+  String get editing_message_hint;
+
+  /// No description provided for @type_message_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message...'**
+  String get type_message_hint;
+
+  /// No description provided for @edit_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Message'**
+  String get edit_message;
+
+  /// No description provided for @copy_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Text'**
+  String get copy_text;
+
+  /// No description provided for @text_copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Text copied'**
+  String get text_copied;
+
+  /// No description provided for @delete_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Message'**
+  String get delete_message;
+
+  /// No description provided for @edited.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited'**
+  String get edited;
+
+  /// No description provided for @no_favorites_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Favorites Yet'**
+  String get no_favorites_yet;
+
+  /// No description provided for @explore_and_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Start exploring and save your apartments here.'**
+  String get explore_and_save;
+
+  /// No description provided for @damascus_countryside.
+  ///
+  /// In en, this message translates to:
+  /// **'Damascus Countryside'**
+  String get damascus_countryside;
+
+  /// No description provided for @jaramana.
+  ///
+  /// In en, this message translates to:
+  /// **'Jaramana'**
+  String get jaramana;
+
+  /// No description provided for @aleppo.
+  ///
+  /// In en, this message translates to:
+  /// **'Aleppo'**
+  String get aleppo;
+
+  /// No description provided for @homs.
+  ///
+  /// In en, this message translates to:
+  /// **'Homs'**
+  String get homs;
+
+  /// No description provided for @hama.
+  ///
+  /// In en, this message translates to:
+  /// **'Hama'**
+  String get hama;
+
+  /// No description provided for @latakia.
+  ///
+  /// In en, this message translates to:
+  /// **'Latakia'**
+  String get latakia;
+
+  /// No description provided for @tartous.
+  ///
+  /// In en, this message translates to:
+  /// **'Tartous'**
+  String get tartous;
+
+  /// No description provided for @idlib.
+  ///
+  /// In en, this message translates to:
+  /// **'Idlib'**
+  String get idlib;
+
+  /// No description provided for @deir_alZor.
+  ///
+  /// In en, this message translates to:
+  /// **'Deir ez-Zor'**
+  String get deir_alZor;
+
+  /// No description provided for @raqa.
+  ///
+  /// In en, this message translates to:
+  /// **'Alraqa'**
+  String get raqa;
+
+  /// No description provided for @al_hasakah.
+  ///
+  /// In en, this message translates to:
+  /// **'AL_Hasaka'**
+  String get al_hasakah;
+
+  /// No description provided for @daraa.
+  ///
+  /// In en, this message translates to:
+  /// **'Daraa'**
+  String get daraa;
+
+  /// No description provided for @sweida.
+  ///
+  /// In en, this message translates to:
+  /// **'Aweida'**
+  String get sweida;
+
+  /// No description provided for @quneitra.
+  ///
+  /// In en, this message translates to:
+  /// **'Quneitra'**
+  String get quneitra;
+
+  /// No description provided for @property_manager.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Manager'**
+  String get property_manager;
+
+  /// No description provided for @add_new.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New'**
+  String get add_new;
+
+  /// No description provided for @my_properties.
+  ///
+  /// In en, this message translates to:
+  /// **'My Properties'**
+  String get my_properties;
+
+  /// No description provided for @properties.
+  ///
+  /// In en, this message translates to:
+  /// **'Properties'**
+  String get properties;
+
+  /// No description provided for @inbound.
+  ///
+  /// In en, this message translates to:
+  /// **'Inbound'**
+  String get inbound;
+
+  /// No description provided for @history.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history;
+
+  /// No description provided for @no_properties_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No properties added yet.'**
+  String get no_properties_found;
+
+  /// No description provided for @guests.
+  ///
+  /// In en, this message translates to:
+  /// **'Guests'**
+  String get guests;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// No description provided for @title_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Jasmine Apartment'**
+  String get title_hint;
+
+  /// No description provided for @booking_in_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirming your booking...'**
+  String get booking_in_progress;
+
+  /// No description provided for @booking_success_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Successful!'**
+  String get booking_success_title;
+
+  /// No description provided for @booking_success_message.
+  ///
+  /// In en, this message translates to:
+  /// **'We will contact you soon to confirm the details.'**
+  String get booking_success_message;
+
+  /// No description provided for @action_okay.
+  ///
+  /// In en, this message translates to:
+  /// **'Okay'**
+  String get action_okay;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @verified_account.
+  ///
+  /// In en, this message translates to:
+  /// **'VERIFIED ACCOUNT'**
+  String get verified_account;
+
+  /// No description provided for @unknown_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Location'**
+  String get unknown_location;
 }
 
 class _AppLocalizationsDelegate

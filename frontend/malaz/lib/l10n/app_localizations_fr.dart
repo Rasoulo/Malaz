@@ -223,6 +223,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rooms => 'Pièces';
 
   @override
+  String get title => 'Titre';
+
+  @override
   String get reviews => 'Avis';
 
   @override
@@ -259,4 +262,245 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get warring => 'Avertissement';
+
+  @override
+  String get edit_profile => 'Modifier le profil';
+
+  @override
+  String get identity_verification => 'Vérification d\'identité';
+
+  @override
+  String get identity_verification_input =>
+      'Veuillez saisir votre mot de passe pour confirmer votre identité';
+
+  @override
+  String get current_password => 'Mot de passe actuel';
+
+  @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get incorrect_password => 'Mot de passe incorrect';
+
+  @override
+  String get verify => 'vérification';
+
+  @override
+  String get profile_updated_success =>
+      'Profil mis à jour et en cache avec succès';
+
+  @override
+  String get change_password => 'Changer le mot de passe';
+
+  @override
+  String get otp_sent_success =>
+      'Code de vérification envoyé sur votre téléphone';
+
+  @override
+  String get enter_otp_hint =>
+      'Entrez le code à 6 chiffres qui vous a été envoyé';
+
+  @override
+  String get new_password => 'Nouveau mot de passe';
+
+  @override
+  String get confirm_new_password => 'Confirmer le nouveau mot de passe';
+
+  @override
+  String get password_mismatch => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String get password_changed_success => 'Mot de passe changé avec succès';
+
+  @override
+  String get resend_code => 'Renvoyer le code';
+
+  @override
+  String get done => 'faite';
+
+  @override
+  String get please_enter_password => 'Veuillez saisir votre mot de passe';
+
+  @override
+  String get passwords_do_not_match => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String get wronge_otp => 'Le code saisi est incorrect, veuillez réessayer';
+
+  @override
+  String get otp_verified_success => 'Code OTP vérifié avec succès';
+
+  @override
+  String get booking_request_sent =>
+      'La demande de réservation a été envoyée au propriétaire';
+
+  @override
+  String get nights => 'nuits';
+
+  @override
+  String get confirm_booking => 'Confirmer la réservation';
+
+  @override
+  String reviews_count(int count) {
+    return '($count avis)';
+  }
+
+  @override
+  String get no_description => 'Aucune description fournie.';
+
+  @override
+  String get baths => 'Bains';
+
+  @override
+  String get click_to_view => 'Cliquez pour voir les messages';
+
+  @override
+  String get active_partners => 'Partenaires actifs';
+
+  @override
+  String get recent_messages => 'Messages récents';
+
+  @override
+  String get malaz_chat => 'Chat Malaz';
+
+  @override
+  String get no_conversations => 'Aucune conversation pour le moment';
+
+  @override
+  String get active => 'Actif';
+
+  @override
+  String get delete_chat_title => 'Supprimer le chat ?';
+
+  @override
+  String get delete_chat_confirm =>
+      'Cela supprimera définitivement la conversation.';
+
+  @override
+  String get delete => 'Supprimer';
+
+  @override
+  String get online_now => 'En ligne';
+
+  @override
+  String get editing_message_hint => 'Modifier le message...';
+
+  @override
+  String get type_message_hint => 'Écrivez votre message...';
+
+  @override
+  String get edit_message => 'Modifier le message';
+
+  @override
+  String get copy_text => 'Copier le texte';
+
+  @override
+  String get text_copied => 'Texte copié';
+
+  @override
+  String get delete_message => 'Supprimer le message';
+
+  @override
+  String get edited => 'Modifié';
+
+  @override
+  String get no_favorites_yet => 'Pas encore de favoris';
+
+  @override
+  String get explore_and_save =>
+      'Commencez à explorer et enregistrez vos appartements ici.';
+
+  @override
+  String get damascus_countryside => 'Damas rural';
+
+  @override
+  String get jaramana => 'Jaramana';
+
+  @override
+  String get aleppo => 'Alep';
+
+  @override
+  String get homs => 'Homs';
+
+  @override
+  String get hama => 'Hama';
+
+  @override
+  String get latakia => 'Lattaquié';
+
+  @override
+  String get tartous => 'Tartous';
+
+  @override
+  String get idlib => 'Idlib';
+
+  @override
+  String get deir_alZor => 'Deir ez-Zor';
+
+  @override
+  String get raqa => 'Raqqa';
+
+  @override
+  String get al_hasakah => 'AL_Hasaka';
+
+  @override
+  String get daraa => 'Daraa';
+
+  @override
+  String get sweida => 'Sweida';
+
+  @override
+  String get quneitra => 'Quneitra';
+
+  @override
+  String get property_manager => 'Gestionnaire immobilier';
+
+  @override
+  String get add_new => 'Ajouter';
+
+  @override
+  String get my_properties => 'Mes propriétés';
+
+  @override
+  String get properties => 'Propriétés';
+
+  @override
+  String get inbound => 'Entrant';
+
+  @override
+  String get history => 'Historique';
+
+  @override
+  String get no_properties_found => 'Aucune propriété ajoutée.';
+
+  @override
+  String get guests => 'Invités';
+
+  @override
+  String get saved => 'sauvé';
+
+  @override
+  String get title_hint => 'Appartement Jasmin';
+
+  @override
+  String get booking_in_progress => 'Confirmation de votre réservation...';
+
+  @override
+  String get booking_success_title => 'Réservation réussie !';
+
+  @override
+  String get booking_success_message =>
+      'Nous vous contacterons bientôt pour confirmer les détails.';
+
+  @override
+  String get action_okay => 'D\'accord';
+
+  @override
+  String get location => 'Emplacement';
+
+  @override
+  String get verified_account => 'COMPTE VÉRIFIÉ';
+
+  @override
+  String get unknown_location => 'Emplacement inconnu';
 }

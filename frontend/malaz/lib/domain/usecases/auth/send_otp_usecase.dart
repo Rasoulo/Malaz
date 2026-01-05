@@ -2,7 +2,7 @@
 import 'package:dartz/dartz.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../repositories/auth_repository.dart';
+import '../../repositories/auth/auth_repository.dart';
 
 class SendOtpParams {
   final String phone;

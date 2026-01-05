@@ -33,6 +33,14 @@ dependencies:
   another_flushbar: ^1.12.32
   curved_navigation_bar: ^1.0.6
   shimmer: ^3.0.0
+  path_provider: ^2.1.5
+  flutter_secure_storage: ^10.0.0
+  #cached_network_image: ^3.4.1
+  table_calendar: ^3.0.9
+  google_nav_bar: any
+  lottie: ^3.1.0
+  location: ^6.0.2
+  geocoding: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -44,5 +52,4 @@ flutter:
   generate: true
   assets:
     - assets/icons/key_logo.png
-    - assets/icons/ribbon.png
-    - assets/icons/card_box.png
+    - assets/lottie/sending_booking.json

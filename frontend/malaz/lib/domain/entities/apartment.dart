@@ -1,6 +1,9 @@
+import 'package:malaz/domain/entities/user_entity.dart';
+
 class Apartment {
   final int id;
   final int ownerId;
+  final UserEntity owner;
   final String status;
   final String title;
   final int price;
@@ -21,6 +24,7 @@ class Apartment {
   Apartment({
     required this.id,
     required this.ownerId,
+    required this.owner,
     required this.status,
     required this.title,
     required this.price,
@@ -38,4 +42,8 @@ class Apartment {
     required this.mainImageUrl,
     this.isFav = false,
   });
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id,ownerId,status,title,price,city,governorate,address,description,type,rooms,bathrooms,bedrooms,area,rating,numberOfReviews,mainImageUrl,isFav];
 }

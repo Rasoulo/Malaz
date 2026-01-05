@@ -1,9 +1,13 @@
+import 'package:malaz/data/models/user_model.dart';
+import 'package:malaz/domain/entities/user_entity.dart';
+
 import '../../domain/entities/apartment.dart';
 
 class ApartmentModel extends Apartment {
   ApartmentModel({
     required super.id,
     required super.ownerId,
+    required super.owner,
     required super.status,
     required super.title,
     required super.price,
@@ -26,6 +30,7 @@ class ApartmentModel extends Apartment {
     return ApartmentModel(
       id: json['id'] as int,
       ownerId: json['owner_id'] as int? ?? 0,
+      owner: UserModel.fromJson(json['user']) as UserEntity,
       status: json['status'] ?? '',
       title: json['title'] ?? '',
       price: (json['price'] as num?)?.toInt() ?? 0,
@@ -47,5 +52,27 @@ class ApartmentModel extends Apartment {
 
       isFav: json['is_favorite'] ?? false,
     );
+  }
+  Map<String, dynamic> toJson(){
+    return {
+      'id': id,
+      'ownerId': ownerId,
+      'status': status,
+      'title': title,
+      'price': price,
+      'city': city,
+      'governorate': governorate,
+      'address': address,
+      'description': description,
+      'type': type,
+      'rooms': rooms,
+      'bathrooms': bathrooms,
+      'bedrooms': bedrooms,
+      'area': area,
+      'rating': rating,
+      'numberOfReviews': numberOfReviews,
+      'mainImageUrl': mainImageUrl,
+      'isFav': isFav
+    };
   }
 }

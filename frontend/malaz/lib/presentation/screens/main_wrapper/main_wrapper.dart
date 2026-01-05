@@ -1,75 +1,134 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-
-// تأكد من صحة هذه المسارات بناءً على بنية ملفاتك
-import '../booking/booking_screen.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:malaz/presentation/screens/home/home_screen.dart';
+import '../../../l10n/app_localizations.dart';
 import '../chats/chats_screen.dart';
 import '../favorites/favorites_screen.dart';
-import '../home/home_screen.dart';
-import '../manage_property/manage_property.dart'; // هذا الملف يجب أن يحتوي على ManagePropertiesScreen
-import '../side_drawer/app_drawer.dart';
+import '../manage_property/manage_property.dart';
 
 class MainWrapper extends StatefulWidget {
   const MainWrapper({super.key});
 
   @override
-  State<MainWrapper> createState() => _MainWrapperState();
+  State<MainWrapper> createState() => _MainWrapperScreenState();
 }
 
-class _MainWrapperState extends State<MainWrapper> {
-  int _currentIndex = 0;
+class _MainWrapperScreenState extends State<MainWrapper> {
+  int _selectedIndex = 0;
 
-  // قائمة الصفحات مرتبة حسب الترتيب في شريط التنقل
-  final List<Widget> _screens = const [
-    HomeScreen(),             // 0
-    ChatsScreen(),            // 1
-    FavoritesScreen(),        // 2
-    BookingsScreen(),         // 3
-    ManagePropertiesScreen(), // 4
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const ChatsScreen(),
+    // const FavoritesScreen(),
+    const SizedBox.shrink(),
+    // const BookingsScreen(),
+    const ManagePropertiesScreen(),
   ];
-
-  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    // إعداد ألوان الأيقونات بناءً على الثيم
-
-
-    return SafeArea(child:
-      Scaffold(
-      // تم حذف الـ FloatingActionButton من هنا بناءً على طلبك
-      drawer: const AppDrawer(),
+    return Scaffold(
       body: IndexedStack(
-        index: _currentIndex,
+        index: _selectedIndex,
         children: _screens,
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        key: _bottomNavigationKey,
-        index: _currentIndex,
-        height: 45,
-        items: <Widget>[
-          Icon(Icons.home_outlined,
-              size: _currentIndex == 0 ? 30:24,color: colorScheme.surface,),
-          Icon(Icons.chat_bubble_outline,
-              size: _currentIndex == 1 ? 30:24,color: colorScheme.surface,),
-          Icon(Icons.favorite_outline,
-              size: _currentIndex == 2 ? 30:24,color: colorScheme.surface,),
-          Icon(Icons.calendar_today_outlined,
-              size: _currentIndex == 3 ? 30:24,color: colorScheme.surface,),
-          Icon(Icons.person_outline,
-              size: _currentIndex == 4 ? 30:24,color: colorScheme.surface,),
-        ],
-        color: colorScheme.secondary,
-        buttonBackgroundColor: colorScheme.primary,
-        backgroundColor: Colors.transparent,
-        onTap: (index) {
+      bottomNavigationBar: _BuildModernNavBar(
+        selectedIndex: _selectedIndex,
+        onTabChange: (index) {
           setState(() {
-            _currentIndex = index;
+            _selectedIndex = index;
           });
         },
       ),
-    ));
+    );
+  }
+}
+
+/// ============================================================================
+/// [_BuildModernNavBar]
+/// Modified to be Responsive using MediaQuery.
+/// ============================================================================
+class _BuildModernNavBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onTabChange;
+
+  const _BuildModernNavBar({
+    required this.selectedIndex,
+    required this.onTabChange,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tr = AppLocalizations.of(context)!;
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isSmallScreen = screenWidth < 400;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.scaffoldBackgroundColor,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 20,
+            color: Colors.black.withOpacity(0.1),
+          )
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: isSmallScreen ? 8.0 : 15.0,
+              vertical: 8
+          ),
+          child: GNav(
+            rippleColor: theme.colorScheme.primary.withOpacity(0.1),
+            hoverColor: theme.colorScheme.primary.withOpacity(0.1),
+
+            gap: isSmallScreen ? 4 : 8,
+
+            activeColor: theme.colorScheme.primary,
+
+            iconSize: isSmallScreen ? 22 : 24,
+
+            padding: EdgeInsets.symmetric(
+                horizontal: isSmallScreen ? 10 : 20,
+                vertical: 12
+            ),
+
+            duration: const Duration(milliseconds: 400),
+            tabBackgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+            color: Colors.grey,
+
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            tabs:  [
+              GButton(
+                icon: Icons.home_rounded,
+                text: tr.home,
+              ),
+              GButton(
+                icon: Icons.chat_bubble,
+                text: tr.chats,
+              ),
+              // GButton(
+              //   icon: Icons.favorite_border_rounded,
+              //   text: tr.saved,
+              // ),
+              GButton(
+                icon: Icons.edit_calendar_sharp,
+                text: tr.bookings,
+              ),
+              GButton(
+                icon: Icons.paid_outlined,
+                text: tr.my_properties,
+              ),
+            ],
+            selectedIndex: selectedIndex,
+            onTabChange: onTabChange,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -8,6 +8,7 @@ import 'package:malaz/presentation/screens/auth/my_profile/my_profile_screen.dar
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:malaz/presentation/screens/chats/ChatWithAPerson.dart';
 import 'package:malaz/presentation/screens/details/details_screen.dart';
+import 'package:malaz/presentation/screens/favorites/favorites_screen.dart';
 import 'package:malaz/presentation/screens/property/add_property.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
@@ -16,6 +17,7 @@ import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:path/path.dart';
 
 import '../../../domain/entities/apartment.dart';
+import '../../../presentation/screens/auth/reset_password_screen/ResetPasswordScreen.dart';
 import '../../../presentation/screens/auth/under_review/under_review.dart';
 import '../../service_locator/service_locator.dart';
 
@@ -128,12 +130,14 @@ GoRouter buildAppRouter() {
           builder: (context, state) {
             final apartment = state.extra as Apartment;
             return DetailsScreen(apartment: apartment);
-          }),
+          }
+      ),
 
       GoRoute(
           path: '/home_register',
           name: 'home_register',
-          builder: (context, state) => HomeRegisterScreen()),
+          builder: (context, state) => HomeRegisterScreen()
+      ),
 
       GoRoute(
         path: '/pending',
@@ -143,14 +147,47 @@ GoRouter buildAppRouter() {
 
       GoRoute(
         path: '/profile',
-        name: 'profile',
-        builder: (context, state) => MyProfileScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const MyProfileScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: animation.drive(
+                  Tween(begin: const Offset(0.1, 0), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.easeOutCubic)),
+                ),
+                child: child,
+              ),
+            );
+          },
+        ),
       ),
 
       GoRoute(
         path: '/one_chat',
         name: 'one_chat',
-        builder: (context, state) => ChatWithAPerson(),
+        builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>;
+
+          return ChatWithAPerson(
+            conversationId: extras['id'] as int,
+            firstName: extras['firstName'] as String,
+            lastName: extras['lastName'] as String,
+            otherUserId: extras['otherUserId'] as int,
+          );
+        },
+      ),
+
+      GoRoute(
+        path: '/reset-password',
+        builder: (context, state) => ResetPasswordScreen(phoneNumber: state.extra as String),
+      ),
+
+      GoRoute(
+        path: '/favorites',
+        builder: (context, state) => FavoritesScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

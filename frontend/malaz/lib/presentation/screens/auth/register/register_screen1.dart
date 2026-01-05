@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/core/config/color/app_color.dart';
@@ -30,18 +31,27 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
   bool _isSending = false;
   String? _pinError;
 
-  /// Calling the function to send code via cubit
+  void _showCustomSnackBar(BuildContext context, String message, {bool isError = false}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : Colors.green,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   void _sendVerificationCode() {
     final phone = widget.registerData.phone.trim();
     if (phone.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Colors.amber,content: Text('Please enter your phone first')));
+      _showCustomSnackBar(context, 'Please enter your phone first', isError: true);
       return;
     }
-    /// Here we ask the cubit to send the code
     context.read<AuthCubit>().sendOtp(phone);
   }
 
-  /// Calling a code validation function via AuthCubit
   void _verifyPin(String pin) {
     if (pin.length != 6) {
       setState(() => _pinError = 'Please enter a 6-digit PIN code');
@@ -49,11 +59,8 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
       return;
     }
     setState(() => _pinError = null);
-
     final phone = widget.registerData.phone.trim();
-    /// Here we tell the field that verification has started
-    widget.pinKey?.currentState?.verifyStarted();
-    /// Here we ask Cubit to check
+    widget.pinKey.currentState?.verifyStarted();
     context.read<AuthCubit>().verifyOtp(phone, pin);
   }
 
@@ -62,92 +69,74 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
     final colorScheme = Theme.of(context).colorScheme;
     final tr = AppLocalizations.of(context)!;
 
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        /// Send code
+        if (!mounted) return;
+
         if (state is OtpSending) {
           setState(() => _isSending = true);
         } else if (state is OtpSent) {
           setState(() => _isSending = false);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Colors.amber,content: Text('Verification code sent!')));
+          _showCustomSnackBar(context, tr.otp_sent_success);
         } else if (state is OtpSendError) {
           setState(() => _isSending = false);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.amber,content: Text(state.message)));
+          _showCustomSnackBar(context, state.message, isError: true);
         }
 
-        /// Verify Code
-        if (state is OtpVerifying) {
-          /// Ensure pin field shows progress
-          widget.pinKey?.currentState?.verifyStarted();
-        } else if (state is OtpVerified) {
-
-          /// Success: Inform the field, and inform the parent (HomeRegister) that the PIN is valid
-          widget.pinKey?.currentState?.verifyFinished(success: true);
+        if (state is OtpVerified) {
+          widget.pinKey.currentState?.verifyFinished(success: true);
           widget.onPinVerified?.call(true);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Colors.amber,content: Text('Code verified successfully')));
+          _showCustomSnackBar(context, tr.otp_verified_success);
         } else if (state is OtpVerifyError) {
-          /// Failed: The field was told an error message, and a local error occurred.
           final msg = state.message.isNotEmpty ? state.message : 'Invalid code';
-          widget.pinKey?.currentState?.verifyFinished(success: false, message: msg);
+          widget.pinKey.currentState?.verifyFinished(success: false, message: msg);
           widget.onPinVerified?.call(false);
           setState(() => _pinError = msg);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.amber,content: Text(msg)));
         }
       },
-      child: ModalProgressHUD(
-        color: Colors.white,
-        inAsyncCall: _isSending,
-        child: Scaffold(
-          backgroundColor: colorScheme.surface,
-          body: Padding(
-            padding: const EdgeInsets.all(6),
-            child: SingleChildScrollView(
+      builder: (context, state) {
+        return ModalProgressHUD(
+          color: Colors.white,
+          inAsyncCall: _isSending,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: SingleChildScrollView(
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Form(
                     key: widget.formKey,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        // Logo
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: const [BoxShadow(blurRadius: 20, color: Colors.black12)],
+                        const SizedBox(height: 25),
+                        Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primary.withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(24),
+                                  border: Border.all(color: colorScheme.primary.withOpacity(0.1)),
+                                ),
+                                child: Image.asset('assets/icons/key_logo.png', width: 65, color: colorScheme.primary),
+                              ),
+                            ),
                           ),
-                          child: Image.asset('assets/icons/key_logo.png'),
                         ),
-                        const SizedBox(
-                          height: 24,
+                        const SizedBox(height: 24),
+                        Text(
+                          tr.create_account,
+                          style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 30, fontWeight: FontWeight.bold, color: colorScheme.primary),
                         ),
-
-
-                        ShaderMask(
-                          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-                          child: Text(tr.create_account,
-                              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.yellow)),
+                        const SizedBox(height: 8),
+                        Text(
+                          tr.join_to_find,
+                          style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 12),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-
-
-                        ShaderMask(
-                          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-                          child: Text(tr.join_to_find, style: TextStyle(color: Colors.grey.shade600)),
-                        ),
-                        const SizedBox(
-                          height: 100,
-                        ),
-
-                        // Mobile Field
+                        const SizedBox(height: 100),
                         BuildTextfield(
                           label: tr.mobile_number,
                           icon: Icons.phone,
@@ -157,46 +146,28 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                           formKey: widget.formKey,
                           onChanged: (value) => widget.registerData.phone = value,
                         ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-
-                        // Send Verification Code Button
-
+                        const SizedBox(height: 16),
                         BuildVerficationCodeButton(
                           onPressed: _isSending ? null : _sendVerificationCode,
                         ),
-                        const SizedBox(
-                          height: 4,
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: BuildPincodeTextfield(
+                            key: widget.pinKey,
+                            onChanged: (pin) {
+                              if (pin.length == 6) _verifyPin(pin);
+                            },
+                            onVerified: (success) => widget.onPinVerified?.call(success),
+                          ),
                         ),
-
-                        // Pin Code TextField
-                        BuildPincodeTextfield(
-                          key: widget.pinKey,
-                          onChanged: (pin) {
-                            /// When the PIN length reaches 6 digits, we call Cubit verification.
-                            if (pin.length == 6) {
-                              _verifyPin(pin);
-                            }
-                          },
-                          onVerified: (success) {
-                            /// it is called after verifyFinished within the field
-                            /// UI update here too
-                            widget.onPinVerified?.call(success);
-                          },
-                        ),
-                        if (_pinError != null) Text(_pinError!, style: const TextStyle(color: Colors.red)),
-                        const SizedBox(
-                          height: 100,
-                        ),
-
-                        // Login Row
+                        if (_pinError != null)
+                        Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(_pinError!, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                          ),
+                        const SizedBox(height: 40),
                         const BuildLoginRow(),
-                        const SizedBox(
-                          height: 80,
-                        ),
-
-                        // Branding
+                        const SizedBox(height: 90),
                         BuildBranding(),
                       ],
                     ),
@@ -205,8 +176,8 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -17,15 +17,16 @@ class BuildCard extends StatelessWidget {
       height: 350,
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/icons/card_box.png'), fit: BoxFit.fill)),
+              image: AssetImage('assets/icons/card_box.png'),
+              fit: BoxFit.fill)),
     );
   }
 }
 
 class BuildPincodeTextfield extends StatefulWidget {
   final GlobalKey<BuildPincodeTextfieldState>? pinKey;
-  final Function(String)? onChanged;      // <-- callback لتمرير نص الـ PIN عند التغيير
-  final Function(bool)? onVerified;       // <-- اختياري: للإبلاغ إن تم التحقق ناجحًا
+  final Function(String)? onChanged;
+  final Function(bool)? onVerified;
 
   const BuildPincodeTextfield({super.key, this.pinKey, this.onChanged, this.onVerified});
 
@@ -36,7 +37,6 @@ class BuildPincodeTextfield extends StatefulWidget {
 class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  bool _showError = false;
   String? _errorMessage;
   bool _isVerifying = false;
 
@@ -50,17 +50,21 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _pinController.dispose();
+  //   _focusNode.dispose();
+  //   //super.dispose();
+  // }
 
   void _validatePin(String value) {
-    if (value.length != 6) {
-      setState(() => _errorMessage = 'Please enter a 6-digit PIN code');
-    } else {
-      setState(() => _errorMessage = null);
-    }
+    setState(() {
+      if (value.length != 6) {
+        _errorMessage = 'Please enter a 6-digit PIN code';
+      } else {
+        _errorMessage = null;
+      }
+    });
   }
 
   bool isPinValid() {
@@ -86,70 +90,78 @@ class BuildPincodeTextfieldState extends State<BuildPincodeTextfield> {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = _errorMessage == null ? Colors.yellow : Colors.red;
+    final colorScheme = Theme.of(context).colorScheme;
+    final bool hasError = _errorMessage != null;
 
-    return ShaderMask(
-      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          PinCodeTextField(
-            key: widget.pinKey,
-            appContext: context,
-            length: 6,
-            controller: _pinController,
-            focusNode: _focusNode,
-            keyboardType: TextInputType.number,
-            textStyle: const TextStyle(
-              color: Colors.yellow,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        PinCodeTextField(
+          key: widget.pinKey,
+          appContext: context,
+          length: 6,
+          controller: _pinController,
+          focusNode: _focusNode,
+          keyboardType: TextInputType.number,
+          cursorColor: colorScheme.primary,
+          animationType: AnimationType.fade,
+          textStyle: TextStyle(
+              fontWeight: FontWeight.w700,
               fontSize: 18,
-            ),
-            pinTheme: PinTheme(
-              selectedBorderWidth: 2,
-              inactiveBorderWidth: 2,
-              activeBorderWidth: 2,
-              shape: PinCodeFieldShape.box,
-              borderRadius: BorderRadius.circular(16),
-              fieldHeight: 50,
-              fieldWidth: 40,
-              activeFillColor: Colors.yellow,
-              inactiveColor: Colors.yellow.withOpacity(0.5),
-              selectedColor: borderColor,
-              selectedFillColor: Colors.yellow,
-              activeColor: borderColor,
-            ),
-            onChanged: (value) {
-              /// Important: We pass the change to the parent to which we passed onChanged
-              widget.onChanged?.call(value);
+              color: colorScheme.primary
+          ),
+          pinTheme: PinTheme(
+            shape: PinCodeFieldShape.box,
+            borderRadius: BorderRadius.circular(12),
+            fieldHeight: 48,
+            fieldWidth: 40,
+            borderWidth: 1,
+            inactiveFillColor: Colors.transparent,
+            selectedFillColor: Colors.transparent,
+            activeFillColor: Colors.transparent,
+            inactiveColor: colorScheme.outlineVariant.withOpacity(0.4),
+            selectedColor: hasError ? Colors.redAccent : colorScheme.primary,
+            activeColor: hasError ? Colors.redAccent : colorScheme.primary.withOpacity(0.4),
+          ),
+          enableActiveFill: true,
+          onChanged: (value) {
+            widget.onChanged?.call(value);
+            if (value.length != 6) {
+              setState(() => _errorMessage = 'Please enter a 6-digit PIN code');
+            } else {
+              setState(() => _errorMessage = null);
+            }
+          },
+          beforeTextPaste: (text) => true,
+        ),
 
-              /// We also maintain the interior facade
-              if (_showError && value.length == 6) {
-                setState(() => _showError = false);
-              }
-
-              /// Simple local check
-              if (value.length != 6) {
-                setState(() => _errorMessage = 'Please enter a 6-digit PIN code');
-              } else {
-                setState(() => _errorMessage = null);
-              }
-            },
-            beforeTextPaste: (text) => true,
+        if (hasError)
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              _errorMessage!,
+              style: const TextStyle(
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13
+              ),
+            ),
           ),
 
-          if (_errorMessage != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
+        if (_isVerifying)
+          const Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2.5)
             ),
-
-          if (_isVerifying) const Padding(padding: EdgeInsets.only(top: 8), child: SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
-
 
 class BuildRegisterRow extends StatelessWidget {
   const BuildRegisterRow({super.key});
@@ -161,21 +173,19 @@ class BuildRegisterRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-          child: Text(
-            tr.dont_have_account,
-            style: TextStyle(color: colorScheme.secondary),
-          ),
+        Text(
+          tr.dont_have_account,
+          style: TextStyle(color: colorScheme.onSurface),
         ),
         GestureDetector(
           onTap: () {
             context.go('/home_register');
           },
           child: ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
+            shaderCallback: (bounds) =>
+                AppColors.premiumGoldGradient.createShader(bounds),
             child: Text(
-              tr.register,
+              '   ' + tr.register,
               style: TextStyle(color: colorScheme.primary),
             ),
           ),
@@ -196,22 +206,18 @@ class BuildLoginRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-          child: Text(
-            tr.have_account,
-            style: TextStyle(color: colorScheme.secondary),
-          ),
+        Text(
+          tr.have_account,
+          style: TextStyle(color: colorScheme.onSurface),
         ),
         GestureDetector(
           onTap: () {
             context.go('/login');
           },
-          child: ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-            child: Text(
-              tr.login,
-              style: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.bold),
+          child: Text(
+            tr.login,
+            style: TextStyle(
+                color: colorScheme.primary, fontWeight: FontWeight.bold
             ),
           ),
         ),
@@ -269,10 +275,6 @@ class BuildTextfield extends StatefulWidget {
 
 class _BuildTextfieldState extends State<BuildTextfield> {
   late bool _obscureText;
-  late TextInputType _keyboardType;
-  late bool _haveSuffixEyeIcon;
-  late bool _onPressedForDate;
-  late final GlobalKey<FormState>? _formKey;
   late final TextEditingController _internalController;
 
   TextEditingController get _effectiveController =>
@@ -282,10 +284,6 @@ class _BuildTextfieldState extends State<BuildTextfield> {
   void initState() {
     super.initState();
     _obscureText = widget.obscure;
-    _keyboardType = widget.keyboardType;
-    _haveSuffixEyeIcon = widget.haveSuffixEyeIcon;
-    _onPressedForDate = widget.onPressedForDate;
-    _formKey = widget.formKey;
     _internalController = TextEditingController();
   }
 
@@ -300,137 +298,139 @@ class _BuildTextfieldState extends State<BuildTextfield> {
     final colorScheme = Theme.of(context).colorScheme;
     final tr = AppLocalizations.of(context)!;
 
-    return ShaderMask(
-      shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-      child: TextFormField(
-        controller: _effectiveController,
-        validator: (data) {
-          if (data == null || data.isEmpty) {
-            return tr.field_required;
-          }
-          return null;/// Returning null means the verification was successful
-        },
-        onChanged: (data) {
-          /// We update the form if it exists and pass an external callback if it exists
-          if (_formKey != null) {
-            _formKey?.currentState?.validate();
-          }
-          if (widget.onChanged != null) widget.onChanged!(data);
-        },
-        readOnly: _onPressedForDate == true ? true : false,
-        obscureText: _obscureText,
-        keyboardType: _keyboardType,
-        onTap: () async {
-          if (_onPressedForDate) {
-            DateTime? pickedDate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2100),
-            );
-            if (pickedDate != null) {
-              final formattedDate = "${pickedDate.year.toString().padLeft(4,'0')}-"
-                  "${pickedDate.month.toString().padLeft(2,'0')}-"
-                  "${pickedDate.day.toString().padLeft(2,'0')}";
-              _effectiveController.text = formattedDate;
-              if (_formKey != null) _formKey?.currentState?.validate();
-
-              /// Manually call onChanged
-              if (widget.onChanged != null) {
-                widget.onChanged!(formattedDate);
-              }
-
-              if (_formKey != null) _formKey?.currentState?.validate();
-            }
-          }
-        },
-        decoration: InputDecoration(
-          labelText: widget.label,
-          labelStyle: TextStyle(
-            color: colorScheme.onSurface.withOpacity(0.6),
-          ),
-          prefixIcon: ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-            child: Icon(
-              widget.icon,
-              color: Colors.yellow,
-            ),
-          ),
-          suffixIcon: _haveSuffixEyeIcon == true
-              ? ShaderMask(
-            shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-              child: Icon(
-                _obscureText ? Icons.remove_red_eye_outlined : Icons.remove_red_eye,
-                color: Colors.yellow,
-              ),
-            ),
-          )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-              color: Colors.yellow,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(8),
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(30),
-            ),
-            borderSide: BorderSide(
-              color: Colors.yellow,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(8),
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(30),
-            ),
-            borderSide: BorderSide(
-              color: Colors.yellow,
-              width: 2,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(8),
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(30),
-            ),
-            borderSide: BorderSide(
-              color: Colors.red,
-              width: 2,
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(8),
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(30),
-            ),
-            borderSide: BorderSide(
-              color: Colors.red,
-              width: 2,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 12, bottom: 8, right: 12),
+          child: Text(
+            widget.label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: colorScheme.primary.withOpacity(0.8),
+              letterSpacing: 0.5,
             ),
           ),
         ),
-      ),
+        Container(
+          decoration: BoxDecoration(
+            color: colorScheme.primary.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: TextFormField(
+            controller: _effectiveController,
+            obscureText: _obscureText,
+            keyboardType: widget.keyboardType,
+            readOnly: widget.onPressedForDate,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            validator: (data) {
+              if (data == null || data.isEmpty) {
+                return tr.field_required;
+              }
+              return null;
+            },
+            onChanged: (data) {
+              if (widget.formKey != null) {
+                widget.formKey!.currentState?.validate();
+              }
+              if (widget.onChanged != null) widget.onChanged!(data);
+            },
+            onTap: widget.onPressedForDate ? _handleDatePicker : null,
+            decoration: InputDecoration(
+              hintText: "Enter " + widget.label,
+              hintStyle: TextStyle(
+                  color: colorScheme.secondary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400),
+              prefixIcon:
+                  Icon(widget.icon, color: colorScheme.primary, size: 22),
+              suffixIcon: widget.haveSuffixEyeIcon
+                  ? IconButton(
+                      icon: Icon(
+                        _obscureText
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        color: colorScheme.primary.withOpacity(0.7),
+                        size: 20,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscureText = !_obscureText),
+                    )
+                  : null,
+              filled: true,
+              fillColor: Colors.transparent,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide(
+                    color: colorScheme.outlineVariant.withOpacity(0.4),
+                    width: 1.2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide:
+                    const BorderSide(color: Colors.redAccent, width: 1.2),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide:
+                    const BorderSide(color: Colors.redAccent, width: 1.5),
+              ),
+              errorStyle: const TextStyle(
+                color: Colors.redAccent,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
-}
 
+  Future<void> _handleDatePicker() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2008),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2008),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(context).colorScheme.primary,
+              onPrimary: Theme.of(context).colorScheme.onPrimary,
+              onSurface: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (pickedDate != null) {
+      final formattedDate = "${pickedDate.year.toString().padLeft(4, '0')}-"
+          "${pickedDate.month.toString().padLeft(2, '0')}-"
+          "${pickedDate.day.toString().padLeft(2, '0')}";
+      _effectiveController.text = formattedDate;
+
+      if (widget.formKey != null) widget.formKey!.currentState?.validate();
+      if (widget.onChanged != null) widget.onChanged!(formattedDate);
+    }
+  }
+}
 
 class BuildVerficationCodeButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -446,14 +446,15 @@ class BuildVerficationCodeButton extends StatelessWidget {
       child: TextButton.icon(
         onPressed: onPressed,
         icon: ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-          child: Icon(Icons.send, color: colorScheme.primary
-          ),
+          shaderCallback: (bounds) =>
+              AppColors.premiumGoldGradient.createShader(bounds),
+          child: Icon(Icons.send, color: colorScheme.primary),
         ),
         label: ShaderMask(
-          shaderCallback: (bounds) => AppColors.realGoldGradient.createShader(bounds),
-          child: Text(tr.send_code,
-              style: TextStyle(color: colorScheme.primary)),
+          shaderCallback: (bounds) =>
+              AppColors.premiumGoldGradient.createShader(bounds),
+          child:
+              Text(tr.send_code, style: TextStyle(color: colorScheme.primary)),
         ),
       ),
     );

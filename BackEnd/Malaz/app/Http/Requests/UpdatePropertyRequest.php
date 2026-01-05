@@ -26,10 +26,10 @@ class UpdatePropertyRequest extends BaseFormRequest
             'title' => 'string|max:255',
             'description' => 'nullable|string|max:1000',
             'images' => 'nullable|array',
-            'images.*' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'erase' => 'nullable|array',
             'erase.*' => 'integer',
-            'type' => 'string|in:Apartment,Farm,Villa,Restaurant,Travel Rest Stop,Residential Tower,Country Estate',
+            'type' => 'string|in:Apartment,Farm,Villa,House,Country House',
             'number_of_rooms' => 'integer|min:0',
             'status' => 'prohibited',
             'rating' => 'prohibited',
@@ -42,66 +42,66 @@ class UpdatePropertyRequest extends BaseFormRequest
             'number_of_baths' => 'integer|min:0',
             'number_of_bedrooms' => 'integer|min:0',
             'area' => 'numeric|min:0',
-            'main_pic' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_pic' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
         ];
     }
 
     public function messages()
-{
-    return [
-        'price.integer' => __('validation.price.integer'),
-        'price.min'     => __('validation.price.min'),
+    {
+        return [
+            'price.integer' => __('validation.price.integer'),
+            'price.min' => __('validation.price.min'),
 
-        'title.string' => __('validation.title.string'),
-        'title.max'    => __('validation.title.max'),
+            'title.string' => __('validation.title.string'),
+            'title.max' => __('validation.title.max'),
 
-        'description.string' => __('validation.description.string'),
-        'description.max'    => __('validation.description.max'),
+            'description.string' => __('validation.description.string'),
+            'description.max' => __('validation.description.max'),
 
-        'images.array'    => __('validation.images.array'),
-        'images.*.file'   => __('validation.images.file'),
-        'images.*.image'  => __('validation.images.image'),
-        'images.*.mimes'  => __('validation.images.mimes'),
-        'images.*.max'    => __('validation.images.max'),
+            'images.array' => __('validation.images.array'),
+            'images.*.file' => __('validation.images.file'),
+            'images.*.image' => __('validation.images.image'),
+            'images.*.mimes' => __('validation.images.mimes'),
+            'images.*.max' => __('validation.images.max'),
 
-        'erase.array'       => __('validation.erase.array'),
-        'erase.*.integer'   => __('validation.erase.integer'),
+            'erase.array' => __('validation.erase.array'),
+            'erase.*.integer' => __('validation.erase.integer'),
 
-        'type.string' => __('validation.type.string'),
-        'type.in'     => __('validation.type.in'),
+            'type.string' => __('validation.type.string'),
+            'type.in' => __('validation.type.in'),
 
-        'number_of_rooms.integer' => __('validation.number_of_rooms.integer'),
-        'number_of_rooms.min'     => __('validation.number_of_rooms.min'),
+            'number_of_rooms.integer' => __('validation.number_of_rooms.integer'),
+            'number_of_rooms.min' => __('validation.number_of_rooms.min'),
 
-        'status.prohibited'          => __('validation.status.prohibited'),
-        'rating.prohibited'          => __('validation.rating.prohibited'),
-        'number_of_reviews.prohibited' => __('validation.number_of_reviews.prohibited'),
+            'status.prohibited' => __('validation.status.prohibited'),
+            'rating.prohibited' => __('validation.rating.prohibited'),
+            'number_of_reviews.prohibited' => __('validation.number_of_reviews.prohibited'),
 
-        'city.string' => __('validation.city.string'),
-        'city.max'    => __('validation.city.max'),
+            'city.string' => __('validation.city.string'),
+            'city.max' => __('validation.city.max'),
 
-        'address.string' => __('validation.address.string'),
-        'address.max'    => __('validation.address.max'),
+            'address.string' => __('validation.address.string'),
+            'address.max' => __('validation.address.max'),
 
-        'governorate.string' => __('validation.governorate.string'),
-        'governorate.max'    => __('validation.governorate.max'),
+            'governorate.string' => __('validation.governorate.string'),
+            'governorate.max' => __('validation.governorate.max'),
 
-        'latitude.numeric'  => __('validation.latitude.numeric'),
-        'longitude.numeric' => __('validation.longitude.numeric'),
+            'latitude.numeric' => __('validation.latitude.numeric'),
+            'longitude.numeric' => __('validation.longitude.numeric'),
 
-        'number_of_baths.integer' => __('validation.number_of_baths.integer'),
-        'number_of_baths.min'     => __('validation.number_of_baths.min'),
+            'number_of_baths.integer' => __('validation.number_of_baths.integer'),
+            'number_of_baths.min' => __('validation.number_of_baths.min'),
 
-        'number_of_bedrooms.integer' => __('validation.number_of_bedrooms.integer'),
-        'number_of_bedrooms.min'     => __('validation.number_of_bedrooms.min'),
+            'number_of_bedrooms.integer' => __('validation.number_of_bedrooms.integer'),
+            'number_of_bedrooms.min' => __('validation.number_of_bedrooms.min'),
 
-        'area.numeric' => __('validation.area.numeric'),
-        'area.min'     => __('validation.area.min'),
+            'area.numeric' => __('validation.area.numeric'),
+            'area.min' => __('validation.area.min'),
 
-        'main_pic.file'  => __('validation.main_pic.file'),
-        'main_pic.image' => __('validation.main_pic.image'),
-        'main_pic.mimes' => __('validation.main_pic.mimes'),
-        'main_pic.max'   => __('validation.main_pic.max'),
-    ];
-}
+            'main_pic.file' => __('validation.main_pic.file'),
+            'main_pic.image' => __('validation.main_pic.image'),
+            'main_pic.mimes' => __('validation.main_pic.mimes'),
+            'main_pic.max' => __('validation.main_pic.max'),
+        ];
+    }
 }

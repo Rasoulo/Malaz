@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:malaz/core/errors/failures.dart';
 import 'package:malaz/core/usecases/usecase.dart';
-import 'package:malaz/domain/repositories/auth_repository.dart';
+import 'package:malaz/domain/repositories/auth/auth_repository.dart';
 
 import '../../entities/auth_state.dart';
 

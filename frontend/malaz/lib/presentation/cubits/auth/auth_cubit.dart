@@ -1,14 +1,22 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
 import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
 import 'package:malaz/domain/usecases/auth/get_current_user_usecase.dart';
 import 'package:malaz/domain/usecases/auth/login_usecase.dart';
 import 'package:malaz/domain/usecases/auth/logout_usecase.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../core/errors/failures.dart';
+import '../../../core/service_locator/service_locator.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../../data/datasources/local/auth_local_datasource.dart';
+import '../../../domain/repositories/auth/auth_repository.dart';
 import '../../../domain/usecases/auth/register_usecase.dart';
 import '../../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../../domain/usecases/auth/verify_otp_usecase.dart';
@@ -65,6 +73,10 @@ class OtpVerifyError extends AuthState {
   OtpVerifyError(this.message);
 }
 
+class OtpSentSuccess extends AuthState {}
+
+class PasswordUpdatedSuccess extends AuthState {}
+
 // --- Cubit --- //
 
 class AuthCubit extends Cubit<AuthState> {
@@ -75,6 +87,7 @@ class AuthCubit extends Cubit<AuthState> {
   final RegisterUsecase registerUsecase;
   final SendOtpUsecase sendOtpUsecase;
   final VerifyOtpUsecase verifyOtpUsecase;
+  final AuthRepository repository;
 
   AuthCubit(
       {required this.loginUsecase,
@@ -83,8 +96,8 @@ class AuthCubit extends Cubit<AuthState> {
       required this.checkAuthUsecase,
       required this.registerUsecase,
       required this.sendOtpUsecase,
-      required this.verifyOtpUsecase})
-      : super(AuthInitial());
+      required this.verifyOtpUsecase,
+      required this.repository}) : super(AuthInitial());
 
   Future<void> checkAuth() async {
     final res = await checkAuthUsecase(NoParams());
@@ -106,8 +119,6 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
-
-
 
   Future<void> register({
     required String phone,
@@ -138,7 +149,11 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(message: _mapFailureToMessage(failure)));
           emit(AuthUnauthenticated());
         },
-        (user) {
+        (user) async {
+          final storage = FlutterSecureStorage();
+          await storage.write(key: '_USER_PASSWORD', value: password);
+          await storage.write(key: '_USER_PHONE', value: phone);
+
           final role = user.role.toLowerCase();
           if (role == 'pending') {
             emit(AuthPending(user));
@@ -153,10 +168,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> login({
-    required String phone,
-    required String password,
-  }) async {
+  Future<void> login({required String phone, required String password,}) async {
     emit(AuthLoading());
 
     final res = await loginUsecase(
@@ -179,8 +191,11 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(message: _mapFailureToMessage(failure)));
         }
       },
-          (user) {
+          (user) async {
         if (user.role.toUpperCase() == 'PENDING') {
+          final storage = FlutterSecureStorage();
+          await storage.write(key: '_USER_PASSWORD', value: password);
+          await storage.write(key: '_USER_PHONE', value: phone);
           emit(AuthPending(user));
         } else {
           emit(AuthAuthenticated(user));
@@ -200,7 +215,6 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
-
 
   Future<void> sendOtp(String phone) async {
     emit(OtpSending());
@@ -225,10 +239,18 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> checkRoleUsingLogin({
-    required String phone,
-    required String password,
-  }) async {
+  Future<void> sendPasswordResetOtp(String phone) async {
+    emit(AuthLoading());
+
+    final result = await repository.sendPasswordResetOtp(phone);
+
+    result.fold(
+          (failure) => emit(AuthError(message: failure.message.toString())),
+          (message) => emit(OtpSentSuccess()),
+    );
+  }
+
+  Future<void> checkRoleUsingLogin({required String phone, required String password}) async {
     emit(AuthLoading());
 
     final res = await loginUsecase(
@@ -249,6 +271,140 @@ class AuthCubit extends Cubit<AuthState> {
         }
       },
     );
+  }
+
+  Future<void> silentRoleCheck() async {
+    final storage = FlutterSecureStorage();
+    final password = await storage.read(key: '_USER_PASSWORD');
+    final phone = await storage.read(key: '_USER_PHONE');
+
+    final res = await loginUsecase(
+      LoginParams(phoneNumber: phone.toString(), password: password.toString()),
+    );
+
+    res.fold(
+          (failure) {
+        debugPrint("Silent check failed: ${_mapFailureToMessage(failure)}");
+      },
+          (user) {
+        if (user.role == 'USER') {
+          emit(AuthAuthenticated(user));
+        } else if (user.role == 'PENDING') {
+          emit(AuthPending(user));
+        }
+      },
+    );
+  }
+
+  Future<bool> verifyPasswordSilently(String password) async {
+    final currentState = state;
+    if (currentState is AuthAuthenticated) {
+      final result = await loginUsecase(LoginParams(
+        phoneNumber: currentState.user.phone,
+        password: password,
+      ));
+      return result.isRight();
+    }
+    return false;
+  }
+
+  Future<void> updatePassword({
+    required String phone,
+    required String otp,
+    required String newPassword,
+  }) async {
+    emit(AuthLoading());
+
+    final result = await repository.updatePassword(
+      phone: phone,
+      otp: otp,
+      newPassword: newPassword,
+    );
+
+    result.fold(
+          (failure) => emit(AuthError(message: failure.message.toString())),
+          (message) => emit(PasswordUpdatedSuccess()), // حالة نجاح جديدة
+    );
+  }
+
+  Future<void> updateUserData({
+    required String firstName,
+    required String lastName,
+    String? imagePath,
+    String? existingImageUrl,
+  }) async {
+    emit(AuthLoading());
+    try {
+      FormData formData = FormData.fromMap({
+        "first_name": firstName,
+        "last_name": lastName,
+      });
+
+      if (imagePath != null && imagePath.isNotEmpty) {
+        formData.files.add(MapEntry(
+          "profile_image",
+          await MultipartFile.fromFile(imagePath, filename: "new_profile.jpg"),
+        ));
+      } else if (existingImageUrl != null) {
+        final File? tempFile = await _downloadFile(existingImageUrl);
+        if (tempFile != null) {
+          formData.files.add(MapEntry(
+            "profile_image",
+            await MultipartFile.fromFile(tempFile.path, filename: "existing_profile.jpg"),
+          ));
+        }
+      }
+
+      print("Final Check - Files count: ${formData.files.length}");
+
+      if (formData.files.isEmpty) {
+        emit(AuthError(message: "Profile image is required by the server."));
+        return;
+      }
+
+      final result = await repository.updateProfile(formData);
+
+      result.fold(
+            (failure) => emit(AuthError(message: failure.message.toString())),
+            (user) {
+          sl<AuthLocalDatasource>().cacheUser(user);
+          emit(AuthAuthenticated(user));
+        },
+      );
+    } catch (e) {
+      emit(AuthError(message: "Update Error: ${e.toString()}"));
+    }
+  }
+
+  Future<File?> _downloadFile(String url) async {
+    try {
+      final token = await sl<AuthLocalDatasource>().getCachedToken();
+
+      final response = await Dio().get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/temp_profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
+      await file.writeAsBytes(response.data);
+
+      print("Download Success. File size: ${await file.length()} bytes");
+      return file;
+    } catch (e) {
+      print("Download error in _downloadFile: $e");
+      return null;
+    }
+  }
+
+  Future<void> saveAddressLocally(String address) async {
+    await sl<AuthLocalDatasource>().cacheUserAddress(address);
   }
 
   String _mapFailureToMessage(Failure f) {

@@ -7,8 +7,8 @@ class UserEntity extends Equatable{
   final String phone;
   final String role;
   final String date_of_birth;
-  final String profile_image;
-  final String identity_card_image;
+  final String profile_image_url;
+  final String identity_card_image_url;
   final String phone_verified_at;
   final String created_at;
   final String updated_at;
@@ -20,8 +20,8 @@ class UserEntity extends Equatable{
     required this.phone,
     required this.role,
     required this.date_of_birth,
-    required this.profile_image,
-    required this.identity_card_image,
+    required this.profile_image_url,
+    required this.identity_card_image_url,
     required this.phone_verified_at,
     required this.created_at,
     required this.updated_at,
@@ -35,8 +35,8 @@ class UserEntity extends Equatable{
       last_name: '',
       phone: '',
       date_of_birth: '',
-      profile_image: '',
-      identity_card_image: '',
+      profile_image_url: '',
+      identity_card_image_url: '',
       phone_verified_at: '',
       created_at: '',
       updated_at: '',
@@ -50,8 +50,8 @@ class UserEntity extends Equatable{
     last_name,
     phone,role,
     date_of_birth,
-    profile_image,
-    identity_card_image,
+    profile_image_url,
+    identity_card_image_url,
     phone_verified_at,
     created_at,
     updated_at

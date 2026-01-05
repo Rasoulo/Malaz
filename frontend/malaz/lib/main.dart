@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
+import 'package:malaz/presentation/cubits/booking/booking_cubit.dart';
+import 'package:malaz/presentation/cubits/favorites/favorites_cubit.dart';
+import 'package:malaz/presentation/cubits/chat/chat_cubit.dart';
 
 import 'package:malaz/presentation/cubits/home/home_cubit.dart';
 import 'package:malaz/presentation/cubits/language/language_cubit.dart';
+import 'package:malaz/presentation/cubits/property/property_cubit.dart';
 import 'package:malaz/presentation/cubits/theme/theme_cubit.dart';
 
 import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
-import 'package:malaz/presentation/screens/auth/register/register_screen1.dart';
-import 'package:malaz/presentation/screens/auth/register/register_screen2.dart';
-import 'package:malaz/presentation/screens/auth/register/register_screen3.dart';
-import 'package:malaz/presentation/screens/auth/register/register_screen4.dart';
-import 'package:malaz/presentation/screens/auth/register/register_screen5.dart';
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
 
@@ -82,7 +81,12 @@ class RentalApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<ThemeCubit>()),
         BlocProvider(create: (context) => sl<LanguageCubit>()),
         BlocProvider(create: (context) => sl<HomeCubit>()),
+        BlocProvider(create: (context) => sl<FavoritesCubit>()..loadFavorites()),
         BlocProvider.value(value: sl<AuthCubit>()),
+        BlocProvider(create: (context) => sl<ChatCubit>()),
+        BlocProvider(create: (context) => sl<AddApartmentCubit>()),
+        BlocProvider(create: (context) => sl<MyApartmentsCubit>()),
+        BlocProvider(create: (context) => sl<BookingCubit>())
         //BlocProvider(create: (context) => sl<AuthCubit>()),// ..checkAuth()
       ],
       child: const RentalAppView(),
@@ -99,7 +103,7 @@ class RentalAppView extends StatelessWidget {
     final languageState = context.watch<LanguageCubit>().state;
     final authCubit = context.read<AuthCubit>();
 
-    final router = buildAppRouter(); // build router with authCubit
+    final router = buildAppRouter();
 
     return MaterialApp.router(
       title: 'Malaz Rental',

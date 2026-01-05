@@ -1,4 +1,3 @@
-// data/models/user_model.dart
 import 'package:malaz/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity{
@@ -9,28 +8,29 @@ class UserModel extends UserEntity{
     required super.phone,
     required super.role,
     required super.date_of_birth,
-    required super.profile_image,
-    required super.identity_card_image,
+    required super.profile_image_url,
+    required super.identity_card_image_url,
     required super.phone_verified_at,
     required super.created_at,
     required super.updated_at,
   });
-// Factory constructor للمستخدم Pending
+
   factory UserModel.pending({required String phone}) {
     return UserModel(
-      id: 0, // أو أي قيمة افتراضية
+      id: 0,
       first_name: '',
       last_name: '',
       phone: phone,
       role: 'PENDING',
       date_of_birth: '',
-      profile_image: '',
-      identity_card_image: '',
+      profile_image_url: '',
+      identity_card_image_url: '',
       phone_verified_at: '',
       created_at: '',
       updated_at: '',
     );
   }
+
   factory UserModel.fromEntity(UserEntity user) {
     return UserModel(
       id: user.id,
@@ -39,8 +39,8 @@ class UserModel extends UserEntity{
       phone: user.phone,
       role: user.role,
       date_of_birth: user.date_of_birth,
-      profile_image: user.profile_image,
-      identity_card_image: user.identity_card_image,
+      profile_image_url: user.profile_image_url,
+      identity_card_image_url: user.identity_card_image_url,
       phone_verified_at: user.phone_verified_at,
       created_at: user.created_at,
       updated_at: user.updated_at,
@@ -55,8 +55,8 @@ class UserModel extends UserEntity{
       phone: json['phone'] ?? '',
       role: json['role'] ?? '',
       date_of_birth: json['date_of_birth'] ?? '',
-      profile_image: json['profile_image'] ?? '',
-      identity_card_image: json['identity_card_image'] ?? '',
+      profile_image_url: json['profile_image_url'] ?? "https://placeholder.com/user.png",
+      identity_card_image_url: json['identity_card_image_url'] ?? '',
       phone_verified_at: json['phone_verified_at'] ?? '',
       created_at: json['created_at'] ?? '',
       updated_at: json['updated_at'] ?? '',
@@ -71,8 +71,8 @@ class UserModel extends UserEntity{
       'phone': phone,
       'role': role,
       'date_of_birth': date_of_birth,
-      'profile_image': profile_image,
-      'identity_card_image': identity_card_image,
+      'profile_image_url': profile_image_url,
+      'identity_card_image_url': identity_card_image_url,
       'phone_verified_at': phone_verified_at,
       'created_at': created_at,
       'updated_at': updated_at,

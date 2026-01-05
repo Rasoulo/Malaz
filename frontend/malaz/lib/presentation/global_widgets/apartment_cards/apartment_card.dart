@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/l10n/app_localizations.dart';
+import 'package:malaz/presentation/global_widgets/buttons/animated_heart_button.dart';
 import '../../../domain/entities/apartment.dart';
+import '../../cubits/favorites/favorites_cubit.dart';
 
 /// ============================================================================
 /// [ApartmentCard]
@@ -112,10 +115,10 @@ class _BuildCardImageAreaState extends State<_BuildCardImageArea> {
           child: _BuildRatingBadge(rating: widget.apartment.rating),
         ),
 
-        const Positioned(
+        Positioned(
           top: 16,
           right: 16,
-          child: _BuildFavoriteIcon(),
+          child: _BuildFavoriteIcon(apartment: widget.apartment),
         ),
 
         Positioned(
@@ -277,24 +280,16 @@ class _BuildRatingBadge extends StatelessWidget {
 /// [_BuildFavoriteIcon]
 /// A dedicated widget for the favorite button on the card.
 class _BuildFavoriteIcon extends StatelessWidget {
-  const _BuildFavoriteIcon();
+  final Apartment apartment;
+
+  const _BuildFavoriteIcon({required this.apartment});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: const Icon(Icons.favorite_border, size: 20, color: Colors.grey),
-    );
+    bool isFav = context.read<FavoritesCubit>().isFavorite(apartment.id);
+    return AnimatedHeartButton(isFavorite: isFav,apartment: apartment, onTap: () {
+      context.read<FavoritesCubit>().toggleFavorite(apartment);
+    });
   }
 }
 

@@ -1,8 +1,21 @@
-
 import 'package:flutter/material.dart';
-import '../../../domain/entities/apartment.dart';
-import '../../global_widgets/custom_button.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malaz/presentation/global_widgets/buttons/custom_button.dart';
+import 'package:go_router/go_router.dart';
+import 'package:malaz/domain/entities/user_entity.dart';
+import 'package:malaz/presentation/global_widgets/user_profile_image/user_profile_image.dart';
+import '../../../../domain/entities/apartment.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../cubits/favorites/favorites_cubit.dart';
+import '../../cubits/chat/chat_cubit.dart';
+import '../book_now/book_now_screen.dart';
 
+/// ============================================================================
+/// [DetailsScreen]
+/// The full details page for a specific apartment.
+/// Uses [CustomScrollView] with [SliverAppBar] for a premium scrolling experience.
+/// ============================================================================
 class DetailsScreen extends StatelessWidget {
   final Apartment apartment;
 
@@ -10,120 +23,29 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      bottomNavigationBar: _BuildBottomBookingBar(apartment: apartment),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            expandedHeight: 300,
-            pinned: true,
-            backgroundColor: colorScheme.primary,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Hero(
-                tag: apartment.id,
-                child: Image.network(apartment.mainImageUrl, fit: BoxFit.cover),
-              ),
-            ),
-            leading: IconButton(
-              icon: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: colorScheme.surface, shape: BoxShape.circle),
-                child: Icon(Icons.arrow_back, color: colorScheme.onSurface, size: 20),
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
+          _BuildSliverAppBar(apartment: apartment),
+
           SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: colorScheme.background,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-              ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title & Price
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          apartment.title,
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colorScheme.onBackground),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            '\$${apartment.price.toInt()}',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                          ),
-                          Text('/month', style: TextStyle(color: colorScheme.onBackground.withOpacity(0.6))),
-                        ],
-                      )
-                    ],
-                  ),
+                  _BuildTitleAndRating(apartment: apartment),
                   const SizedBox(height: 24),
-
-                  // Stats Grid
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _StatBadge(
-                        icon: Icons.bed,
-                        label: '${apartment.bedrooms} Beds',
-                        color: Colors.green,
-                      ),
-                      _StatBadge(
-                        icon: Icons.bathtub,
-                        label: '${apartment.bathrooms} Baths',
-                        color: Colors.blue,
-                      ),
-                      _StatBadge(
-                        icon: Icons.square_foot,
-                        label: '${apartment.area} sqft',
-                        color: Colors.purple,
-                      ),
-                    ],
-                  ),
+                  _BuildOwnerCard(owner: apartment.owner,),
                   const SizedBox(height: 24),
-
-                  Text('Description', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorScheme.onBackground)),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Beautiful modern apartment in the heart of downtown. This stunning unit features high ceilings, hardwood floors, and floor-to-ceiling windows.',
-                    style: TextStyle(color: colorScheme.onBackground.withOpacity(0.6), height: 1.5),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Actions
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: colorScheme.primary),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Icon(Icons.favorite_border, color: colorScheme.primary),
-                      ),
-                      const SizedBox(width: 16),
-                      const Expanded(
-                        child: CustomButton(
-                          text: 'Book Now',
-                          onPressed: null, // Deactivated for now
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
+                  _BuildAmenitiesSection(apartment: apartment),
+                  const SizedBox(height: 24),
+                  _BuildDescription(description: apartment.description),
+                  const SizedBox(height: 24),
+                  const _BuildReviewSection(),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
@@ -134,28 +56,553 @@ class DetailsScreen extends StatelessWidget {
   }
 }
 
-class _StatBadge extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
+/// ============================================================================
+/// [UI_BUILDING_WIDGETS]
+/// ============================================================================
 
-  const _StatBadge({required this.icon, required this.label, required this.color});
+/// [_BuildSliverAppBar]
+/// Handles the collapsible header with the Hero image and action buttons.
+class _BuildSliverAppBar extends StatelessWidget {
+  final Apartment apartment;
+
+  const _BuildSliverAppBar({required this.apartment});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final List<String> galleryImages = [
+      apartment.mainImageUrl,
+      apartment.mainImageUrl,
+      apartment.mainImageUrl,
+    ];
+
+    return SliverAppBar(
+      expandedHeight: 600,
+      pinned: true,
+      backgroundColor: theme.colorScheme.background,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _AppBarActionButton(
+          icon: Icons.arrow_back_ios_rounded,
+          onTap: () => Navigator.pop(context),
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: _AppBarActionButton(
+            icon: Icons.share,
+            onTap: () {
+              // TODO: Implement Share Logic
+            },
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: BlocBuilder<FavoritesCubit, FavoritesState>(
+            builder: (context, state) {
+              final isFav = context.read<FavoritesCubit>().isFavorite(apartment.id);
+
+              return _AppBarActionButton(
+                icon: isFav ? Icons.favorite : Icons.favorite_border,
+                iconColor: isFav ? Colors.red : null,
+                onTap: () {
+                  context.read<FavoritesCubit>().toggleFavorite(apartment);
+                },
+              );
+            },
+          ),
+        ),
+      ],
+
+      flexibleSpace: FlexibleSpaceBar(
+        background: Hero(
+          tag: 'apartment_image_${apartment.id}',
+          child: PageView.builder(
+            itemCount: galleryImages.length,
+            itemBuilder: (context, index) {
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.network(
+                    galleryImages[index],
+                    fit: BoxFit.cover,
+                  ),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.center,
+                        colors: [
+                          Colors.black26,
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ============================================================================
+/// [HELPER_WIDGET] - _AppBarActionButton
+/// ============================================================================
+class _AppBarActionButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color? iconColor;
+
+  const _AppBarActionButton({
+    required this.icon,
+    required this.onTap,
+    this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(50),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.2),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.white.withOpacity(0.3),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Icon(
+          icon,
+          color: iconColor ?? Colors.white,
+          size: 20,
+        ),
+      ),
+    );
+  }
+}
+
+/// [_BuildTitleAndRating]
+/// Displays the main title, location, and rating summary.
+class _BuildTitleAndRating extends StatelessWidget {
+  final Apartment apartment;
+
+  const _BuildTitleAndRating({required this.apartment});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _BuildTypeBadge(type: apartment.type),
+
+        const SizedBox(height: 12),
+
+        Text(
+          apartment.title,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            height: 1.2,
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        Row(
+          children: [
+            Icon(Icons.location_on, size: 16, color: theme.colorScheme.secondary),
+            const SizedBox(width: 4),
+            Text(
+              '${apartment.city}, ${apartment.address}',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 12),
+
+        Row(
+          children: [
+            const Icon(Icons.star, color: Colors.amber, size: 20),
+            const SizedBox(width: 4),
+            RichText(
+              text: TextSpan(
+                style: theme.textTheme.bodyLarge,
+                children: [
+                  TextSpan(
+                    text: '${apartment.rating}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: ' ${l10n.reviews_count(apartment.numberOfReviews)}',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _BuildTypeBadge extends StatelessWidget {
+  final String type;
+
+  const _BuildTypeBadge({required this.type});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    
+    String localizedType = type;
+    if (type.toLowerCase() == 'apartment') localizedType = l10n.apartment;
+    else if (type.toLowerCase() == 'villa') localizedType = l10n.villa;
+    else if (type.toLowerCase() == 'house') localizedType = l10n.house;
+    else if (type.toLowerCase() == 'farm') localizedType = l10n.farm;
+    else if (type.toLowerCase() == 'country house') localizedType = l10n.country_house;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: theme.colorScheme.tertiary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: theme.colorScheme.tertiary.withOpacity(0.2),
+        ),
+      ),
+      child: Text(
+        localizedType.toUpperCase(),
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: theme.colorScheme.tertiary,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.0,
+        ),
+      ),
+    );
+  }
+}
+
+/// [_BuildOwnerCard]
+/// A mock card to display host information.
+class _BuildOwnerCard extends StatelessWidget {
+  final UserEntity owner;
+  const _BuildOwnerCard({required this.owner});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: UserProfileImage(userId: owner.id, firstName: owner.first_name, lastName: owner.last_name,),
+            //Icon(Icons.person, color: theme.colorScheme.primary),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${owner.first_name} ${owner.last_name}',
+                  //'${l10n.owner} #${DateTime.now().millisecond}',
+                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  l10n.verified_host,
+                  style: theme.textTheme.bodySmall?.copyWith(color: Colors.green),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              final chatCubit = context.read<ChatCubit>();
+              chatCubit.clearMessages();
+              final newId = await chatCubit.saveNewConversation(owner.id);
+
+              if (newId != null) {
+                context.pushNamed('one_chat', extra: {
+                  'id': newId,
+                  'firstName': owner.first_name,
+                  'lastName': owner.last_name,
+                  'otherUserId': owner.id,
+                });
+              }
+            },
+            icon: Icon(Icons.chat_outlined, color: theme.colorScheme.primary),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/// [_BuildAmenitiesSection]
+/// Displays the numbers (Rooms, Baths, Area) in stylish boxes.
+class _BuildAmenitiesSection extends StatelessWidget {
+  final Apartment apartment;
+
+  const _BuildAmenitiesSection({required this.apartment});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _BuildAmenityBox(
+          icon: Icons.bed_outlined,
+          label: l10n.rooms,
+          value: '${apartment.rooms}',
+        ),
+        _BuildAmenityBox(
+          icon: Icons.bathtub_outlined,
+          label: l10n.baths,
+          value: '${apartment.bathrooms}',
+        ),
+        _BuildAmenityBox(
+          icon: Icons.square_foot,
+          label: l10n.area.replaceAll(':', ''),
+          value: '${apartment.area} m²',
+        ),
+      ],
+    );
+  }
+}
+
+class _BuildAmenityBox extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _BuildAmenityBox({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: 100,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
       ),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 28),
+          Icon(icon, color: theme.colorScheme.tertiary, size: 28),
           const SizedBox(height: 8),
           Text(
+            value,
+            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          Text(
             label,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onBackground),
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// [_BuildDescription]
+/// Displays the description text.
+class _BuildDescription extends StatelessWidget {
+  final String description;
+
+  const _BuildDescription({required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.description,
+          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          description.isEmpty ? l10n.no_description : description,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface.withOpacity(0.8),
+            height: 1.5,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// [_BuildReviewSection]
+/// Shows a mock review to fulfill the requirement.
+class _BuildReviewSection extends StatelessWidget {
+  const _BuildReviewSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              l10n.reviews,
+              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            TextButton(onPressed: () {}, child: Text(l10n.view_all)),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(radius: 16, child: Icon(Icons.person, size: 16),),
+                  const SizedBox(width: 8),
+                  Text('Happy Guest', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  const Spacer(),
+                  const Icon(Icons.star, color: Colors.amber, size: 14),
+                  const Text('5.0'),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const Text('Great apartment! Loved the view and the host was very nice.'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// [_BuildBottomBookingBar]
+/// The fixed bottom bar containing Price and Book Button.
+class _BuildBottomBookingBar extends StatelessWidget {
+  final Apartment apartment;
+
+  const _BuildBottomBookingBar({required this.apartment});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.1))),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '\$${apartment.price}',
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+                Text(
+                  l10n.per_month,
+                  style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: CustomButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => BookingBottomSheet(
+                    apartment: apartment,
+                  ),
+                );
+              },
+              text: l10n.book_now,
+            ),
           ),
         ],
       ),

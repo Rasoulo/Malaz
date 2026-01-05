@@ -185,7 +185,7 @@ class _BuildHomeBody extends StatelessWidget {
 
         if (state is HomeLoaded) {
           if (state.apartments.isEmpty) {
-            return const _BuildErrorView(message: 'No apartments found!');
+            return _BuildErrorView(message: AppLocalizations.of(context).unexpected_error_message);
           }
           return _BuildApartmentList(
             apartments: state.apartments,

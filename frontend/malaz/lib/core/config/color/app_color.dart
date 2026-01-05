@@ -34,33 +34,4 @@ class AppColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  static const LinearGradient realGoldGradient = LinearGradient(
-    colors: [
-      Color(0xFFFFF8D0), // bright highlight
-      Color(0xFFFFE680),
-      Color(0xFFFFD240),
-      Color(0xFFFFC000),
-      Color(0xFFB8860B),//
-      // Color(0xFFFFB300), // deep gold shadow
-      Color(0xFFFFC000),
-      Color(0xFFFFD240),
-      Color(0xFFFFE680),
-      Color(0xFFFFF8D0), // bright reflective
-    ],
-    stops: [
-      0.0, 0.10, 0.22, 0.35, 0.50, 0.65, 0.78, 0.90, 1.0,
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-  static LinearGradient goldGradientbut = LinearGradient(// Nice
-    colors: [
-      Color(0xFFFFD700), // Vivid Gold
-      Color(0xFFFFC700), // Warm Gold
-      Color(0xFFFFB300), // Rich Gold
-      Color(0xFFFFD700), // Highlight again for metallic shine
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
 }

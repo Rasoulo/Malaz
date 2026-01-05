@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Conversation;
-use App\Http\Requests\UpdateConversationRequest;
 use App\Models\User;
+use App\Models\Message;
+use App\Models\Conversation;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateConversationRequest;
+
 class ConversationController extends Controller
 {
     /**
@@ -26,7 +28,12 @@ class ConversationController extends Controller
                         ->where('sender_id', '!=', $user->id);
                 }
             ])
-            ->latest()
+            ->orderByDesc(
+                Message::select('created_at')
+                    ->whereColumn('conversation_id', 'conversations.id')
+                    ->latest()
+                    ->take(1)
+            )
             ->cursorPaginate($perPage);
 
         return response()->json([

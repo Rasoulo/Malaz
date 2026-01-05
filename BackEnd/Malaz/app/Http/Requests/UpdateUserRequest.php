@@ -17,7 +17,7 @@ class UpdateUserRequest extends BaseFormRequest
         return [
             'first_name' => 'string',
             'last_name' => 'string',
-            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'date_of_birth' => [
                 'date',
                 'before:' . Carbon::now()->subYears(6)->toDateString(),

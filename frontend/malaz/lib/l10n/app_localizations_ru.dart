@@ -219,6 +219,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get rooms => 'Комнаты';
 
   @override
+  String get title => 'Заголовок';
+
+  @override
   String get reviews => 'Отзывы';
 
   @override
@@ -254,4 +257,243 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get warring => 'Предупреждение';
+
+  @override
+  String get edit_profile => 'Редактировать профиль';
+
+  @override
+  String get identity_verification => 'проверка личности';
+
+  @override
+  String get identity_verification_input =>
+      'Пожалуйста, введите свой пароль для подтверждения личности';
+
+  @override
+  String get current_password => 'Текущий пароль';
+
+  @override
+  String get cancel => 'Oтмена';
+
+  @override
+  String get incorrect_password => 'Неверный пароль';
+
+  @override
+  String get verify => 'проверка';
+
+  @override
+  String get profile_updated_success => 'Профиль успешно обновлен и кэширован';
+
+  @override
+  String get change_password => 'Сменить пароль';
+
+  @override
+  String get otp_sent_success => 'Код подтверждения отправлен на ваш телефон';
+
+  @override
+  String get enter_otp_hint => 'Введите 6-значный код, отправленный вам';
+
+  @override
+  String get new_password => 'Новый пароль';
+
+  @override
+  String get confirm_new_password => 'Подтвердите новый пароль';
+
+  @override
+  String get password_mismatch => 'Пароли не совпадают';
+
+  @override
+  String get password_changed_success => 'Пароль успешно изменен';
+
+  @override
+  String get resend_code => 'Отправить код повторно';
+
+  @override
+  String get done => 'сделанный';
+
+  @override
+  String get please_enter_password => 'Пожалуйста, введите пароль';
+
+  @override
+  String get passwords_do_not_match => 'Пароли не совпадают';
+
+  @override
+  String get wronge_otp =>
+      'Введенный код неверный, пожалуйста, попробуйте еще раз';
+
+  @override
+  String get otp_verified_success => 'OTP-код успешно подтвержден';
+
+  @override
+  String get booking_request_sent =>
+      'Запрос на бронирование отправлен владельцу';
+
+  @override
+  String get nights => 'ночи';
+
+  @override
+  String get confirm_booking => 'Подтвердить бронирование';
+
+  @override
+  String reviews_count(int count) {
+    return '($count отзывов)';
+  }
+
+  @override
+  String get no_description => 'Описание не предоставлено.';
+
+  @override
+  String get baths => 'Ванны';
+
+  @override
+  String get click_to_view => 'Нажмите, чтобы прочитать';
+
+  @override
+  String get active_partners => 'Активные партнеры';
+
+  @override
+  String get recent_messages => 'Последние сообщения';
+
+  @override
+  String get malaz_chat => 'Малаз Чат';
+
+  @override
+  String get no_conversations => 'Пока нет чатов';
+
+  @override
+  String get active => 'Активен';
+
+  @override
+  String get delete_chat_title => 'Удалить чат?';
+
+  @override
+  String get delete_chat_confirm =>
+      'Это приведет к безвозвратному удалению беседы.';
+
+  @override
+  String get delete => 'Удалить';
+
+  @override
+  String get online_now => 'В сети';
+
+  @override
+  String get editing_message_hint => 'Редактирование...';
+
+  @override
+  String get type_message_hint => 'Напишите сообщение...';
+
+  @override
+  String get edit_message => 'Изменить сообщение';
+
+  @override
+  String get copy_text => 'Копировать текст';
+
+  @override
+  String get text_copied => 'Текст скопирован';
+
+  @override
+  String get delete_message => 'Удалить сообщение';
+
+  @override
+  String get edited => 'Изменено';
+
+  @override
+  String get no_favorites_yet => 'Избранного пока нет';
+
+  @override
+  String get explore_and_save =>
+      'Начните поиск и сохраняйте понравившиеся квартиры здесь.';
+
+  @override
+  String get damascus_countryside => 'Дамаск (сельская местность)';
+
+  @override
+  String get jaramana => 'Джарамана';
+
+  @override
+  String get aleppo => 'Алеппо';
+
+  @override
+  String get homs => 'Хомс';
+
+  @override
+  String get hama => 'Хама';
+
+  @override
+  String get latakia => 'Латакия';
+
+  @override
+  String get tartous => 'Тартус';
+
+  @override
+  String get idlib => 'Идлиб';
+
+  @override
+  String get deir_alZor => 'Дейр-эз-Зор';
+
+  @override
+  String get raqa => 'Ракка';
+
+  @override
+  String get al_hasakah => 'AL_Hasaka';
+
+  @override
+  String get daraa => 'Деръа';
+
+  @override
+  String get sweida => 'Эс-Сувейда';
+
+  @override
+  String get quneitra => 'Эль-Кунейтра';
+
+  @override
+  String get property_manager => 'Управляющий недвижимостью';
+
+  @override
+  String get add_new => 'Добавить';
+
+  @override
+  String get my_properties => 'Моя недвижимость';
+
+  @override
+  String get properties => 'Объекты';
+
+  @override
+  String get inbound => 'Входящие';
+
+  @override
+  String get history => 'История';
+
+  @override
+  String get no_properties_found => 'Объекты не найдены.';
+
+  @override
+  String get guests => 'Гости';
+
+  @override
+  String get saved => 'сохранено';
+
+  @override
+  String get title_hint => 'Апартаменты Жасмин';
+
+  @override
+  String get booking_in_progress => 'Подтверждение бронирования...';
+
+  @override
+  String get booking_success_title => 'Бронирование успешно!';
+
+  @override
+  String get booking_success_message =>
+      'Мы свяжемся с вами в ближайшее время для подтверждения деталей.';
+
+  @override
+  String get action_okay => 'Хорошо';
+
+  @override
+  String get location => 'Местоположение';
+
+  @override
+  String get verified_account => 'ПОДТВЕРЖДЕННЫЙ АККАУНТ';
+
+  @override
+  String get unknown_location => 'Неизвестное место';
 }

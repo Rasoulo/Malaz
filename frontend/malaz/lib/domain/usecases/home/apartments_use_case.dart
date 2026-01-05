@@ -1,6 +1,6 @@
 
 import 'package:malaz/domain/entities/apartment.dart';
-import 'package:malaz/domain/repositories/apartment_repository.dart';
+import 'package:malaz/domain/repositories/apartment/apartment_repository.dart';
 
 import '../../entities/apartments_list.dart';
 
