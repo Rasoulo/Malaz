@@ -4147,6 +4147,60 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/bookings/update/1?check_in&check_out&status&total_price",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"update",
+								"1"
+							],
+							"query": [
+								{
+									"key": "check_in",
+									"value": null
+								},
+								{
+									"key": "check_out",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": null
+								},
+								{
+									"key": "total_price",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
