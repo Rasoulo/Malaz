@@ -26,6 +26,8 @@ class PropertyController extends Controller
             ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int) $request->input('price_max')))
             ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int) $request->input('rooms_min')))
             ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int) $request->input('rooms_max')))
+            ->when($request->filled('bedrooms_min'), fn($q) => $q->where('number_of_bedrooms', '>=', (int) $request->input('bedrooms_min')))
+            ->when($request->filled('bedrooms_max'), fn($q) => $q->where('number_of_bedrooms', '<=', (int) $request->input('bedrooms_max')))
             ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int) $request->input('baths_min')))
             ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int) $request->input('baths_max')))
             ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int) $request->input('area_min')))
@@ -86,6 +88,8 @@ class PropertyController extends Controller
             ->when($request->filled('price_max'), fn($q) => $q->where('price', '<=', (int) $request->input('price_max')))
             ->when($request->filled('rooms_min'), fn($q) => $q->where('number_of_rooms', '>=', (int) $request->input('rooms_min')))
             ->when($request->filled('rooms_max'), fn($q) => $q->where('number_of_rooms', '<=', (int) $request->input('rooms_max')))
+            ->when($request->filled('bedrooms_min'), fn($q) => $q->where('number_of_bedrooms', '>=', (int) $request->input('bedrooms_min')))
+            ->when($request->filled('bedrooms_max'), fn($q) => $q->where('number_of_bedrooms', '<=', (int) $request->input('bedrooms_max')))
             ->when($request->filled('baths_min'), fn($q) => $q->where('number_of_baths', '>=', (int) $request->input('baths_min')))
             ->when($request->filled('baths_max'), fn($q) => $q->where('number_of_baths', '<=', (int) $request->input('baths_max')))
             ->when($request->filled('area_min'), fn($q) => $q->where('area', '>=', (int) $request->input('area_min')))
@@ -189,9 +193,7 @@ class PropertyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
