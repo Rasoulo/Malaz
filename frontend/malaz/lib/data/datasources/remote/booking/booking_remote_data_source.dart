@@ -14,12 +14,12 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
 
   @override
   Future<void> makeBooking(Booking booking) async {
-    await networkService.post(
+    final response = await networkService.post(
       '/bookings/store',
       queryParameters: {
         'property_id': booking.propertyId,
-        'check_in': booking.checkIn,
-        'check_out': booking.checkOut,
+        'check_in': booking.checkIn.toString().split(' ')[0],
+        'check_out': booking.checkOut.toString().split(' ')[0],
         'total_price': booking.price
       },
     );
