@@ -73,7 +73,6 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             _BuildHomeHeader(scaffoldKey: _scaffoldKey),
-            const _BuildFilterList(),
             const SizedBox(height: 10),
             Expanded(
               child: RefreshIndicator(
@@ -139,27 +138,6 @@ class _BuildHomeHeader extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BuildFilterList extends StatelessWidget {
-  const _BuildFilterList();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 36,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        children: const [
-          _BuildFilterChip(label: 'All', isSelected: true),
-          _BuildFilterChip(label: 'Near Me'),
-          _BuildFilterChip(label: 'High Rated'),
-          _BuildFilterChip(label: 'Newest'),
         ],
       ),
     );
@@ -388,35 +366,6 @@ class _BuildIconButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.grey.withOpacity(0.2))),
         child: Icon(icon, color: iconColor ?? colorScheme.onSurface.withOpacity(0.7)),
-      ),
-    );
-  }
-}
-
-class _BuildFilterChip extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-
-  const _BuildFilterChip({required this.label, this.isSelected = false});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      decoration: BoxDecoration(
-        color: isSelected ? colorScheme.secondary : colorScheme.surface,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: isSelected ? colorScheme.secondary : Colors.grey.withOpacity(0.3),
-        ),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-            color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface.withOpacity(0.7),
-            fontWeight: FontWeight.bold),
       ),
     );
   }
