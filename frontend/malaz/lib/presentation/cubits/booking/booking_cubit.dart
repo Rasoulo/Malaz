@@ -47,10 +47,10 @@ class BookingCubit extends Cubit<BookingState> {
     emit(BookingLoading());
     final response = await getBookedDatesUseCase.call(propertyId: propertyId);
     response.fold(
-      (failure) => emit(BookingError(failure.message!)),
-      (bookedRanges) {
+          (failure) => emit(BookingError(failure.message!)),
+          (bookedRanges) {
         List<DateTime> dates = bookedRanges
-            .expand((range) => _breakToDates(range.checkIn, range.checkOut))
+            .expand((range) => _breakToDates(range.checkIn!, range.checkOut!))
             .toList();
         emit(BookingLoaded(dates));
       },
@@ -63,7 +63,7 @@ class BookingCubit extends Cubit<BookingState> {
 
     response.fold(
             (failure) => emit(SendingBookingError(failure.message!)),
-        (_) => emit(SentBooking()));
+            (_) => emit(SentBooking()));
   }
 
   List<DateTime> _breakToDates(DateTime checkIn, DateTime checkOut) {

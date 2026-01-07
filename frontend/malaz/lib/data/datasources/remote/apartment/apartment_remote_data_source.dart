@@ -78,7 +78,7 @@ class ApartmentRemoteDataSourceImpl implements ApartmentRemoteDataSource {
     final response = await networkService.get(
       '/properties/all/my',
       queryParameters: {
-        'per_page': 2, // ! do not make per_page = 1
+        'per_page': 2,
         'cursor': cursor,
       },
     );

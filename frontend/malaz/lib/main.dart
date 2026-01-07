@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
 import 'package:malaz/presentation/cubits/booking/booking_cubit.dart';
+import 'package:malaz/presentation/cubits/booking/manage_booking.dart';
 import 'package:malaz/presentation/cubits/favorites/favorites_cubit.dart';
 import 'package:malaz/presentation/cubits/chat/chat_cubit.dart';
 
@@ -90,6 +91,8 @@ class RentalApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<MyApartmentsCubit>()),
         BlocProvider(create: (context) => sl<BookingCubit>()),
         BlocProvider(create: (context) => sl<LocationCubit>()..loadSavedLocation(),),
+        BlocProvider(create: (context) => sl<ManageBookingCubit>())
+        //BlocProvider(create: (context) => sl<AuthCubit>()),// ..checkAuth()
       ],
       child: const RentalAppView(),
     );

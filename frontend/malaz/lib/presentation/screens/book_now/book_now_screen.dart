@@ -67,13 +67,14 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
 
   void _onConfirmBooking(Apartment apartment) {
     if (_rangeStart == null || _rangeEnd == null) return;
-
+    int nights = _rangeEnd!.difference(_rangeStart!).inDays;
+    int finalTotalPrice = nights * apartment.price;
     context.read<BookingCubit>().makeBook(
       Booking(
         propertyId: apartment.id,
         checkIn: _rangeStart!,
         checkOut: _rangeEnd!,
-        price: apartment.price
+        totalPrice: finalTotalPrice.toString()
       )
     );
   }

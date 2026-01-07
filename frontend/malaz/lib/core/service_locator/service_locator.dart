@@ -14,6 +14,7 @@ import 'package:malaz/domain/usecases/auth/login_usecase.dart';
 import 'package:malaz/domain/usecases/auth/logout_usecase.dart';
 import 'package:malaz/domain/usecases/booking/Get_Booked_Dates_Use_Case.dart';
 import 'package:malaz/domain/usecases/booking/make_book_use_case.dart';
+import 'package:malaz/domain/usecases/booking/update_status_use_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
@@ -35,6 +36,7 @@ import '../../domain/usecases/apartment/my_apartment_use_case.dart';
 import '../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../domain/usecases/auth/verify_otp_usecase.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
+import '../../domain/usecases/booking/all_booking_use_case.dart';
 import '../../domain/usecases/favorites/add_favorites_use_case.dart';
 import '../../domain/usecases/favorites/delete_favorites_use_case.dart';
 import '../../domain/usecases/favorites/get_favorites_use_case.dart';
@@ -44,6 +46,7 @@ import '../../domain/usecases/location/load_saved_location_usecase.dart';
 import '../../domain/usecases/location/update_manual_location_usecase.dart';
 import '../../presentation/cubits/auth/auth_cubit.dart';
 import '../../presentation/cubits/booking/booking_cubit.dart';
+import '../../presentation/cubits/booking/manage_booking.dart';
 import '../../presentation/cubits/chat/chat_cubit.dart';
 import '../../presentation/cubits/favorites/favorites_cubit.dart';
 import '../../presentation/cubits/home/home_cubit.dart';
@@ -106,7 +109,12 @@ Future<void> setUpServices() async {
 
   sl.registerFactory(() => LanguageCubit(sl()));
 
-  sl.registerFactory(() => BookingCubit(sl(), sl()));
+  sl.registerFactory(() => BookingCubit(sl<GetBookedDatesUseCase>(), sl<MakeBookUseCase>(),));
+
+  sl.registerFactory(() => ManageBookingCubit(
+    sl<GetUserBooking>(),
+    sl<UpdateStatus>(),
+  ));
 
   sl.registerFactory(() => HomeCubit(getApartmentsUseCase: sl()));
   sl.registerLazySingleton(() => FavoritesCubit(getFavoritesUseCase: sl(),addFavoriteUseCase: sl(), deleteFavoriteUseCase: sl()));
@@ -150,7 +158,8 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => DeleteFavoriteUseCase(sl()));
   sl.registerLazySingleton(() => GetBookedDatesUseCase(sl()));
   sl.registerLazySingleton(() => MakeBookUseCase(sl()));
-
+  sl.registerLazySingleton(() => GetUserBooking(sl()));
+  sl.registerLazySingleton(() => UpdateStatus(sl()));
   sl.registerLazySingleton(() => AuthInterceptor(localDatasource: sl()));
 
   sl.registerLazySingleton<AuthCubit>(() => AuthCubit(

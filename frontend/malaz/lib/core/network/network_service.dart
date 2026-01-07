@@ -18,12 +18,14 @@ import 'package:dio/dio.dart';
 
 import '../constants/app_constants.dart';
 import '../errors/error_handler.dart';
+import '../errors/exceptions.dart';
 import 'auth_interceptor.dart';
 abstract class NetworkService {
   Future<Response> get(String endpoint, {Map<String, dynamic>? queryParameters});
   Future<Response> post(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters});
   Future<Response> put(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters});
   Future<Response> delete(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters});
+  Future<Response> patch(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters});
 }
 //const baseurl = 'http://192.168.1.102:8000/api/users/'; // ! this baseurl works only for hamwi
 class NetworkServiceImpl implements NetworkService {
@@ -84,6 +86,26 @@ class NetworkServiceImpl implements NetworkService {
       return response;
     } on DioException catch (e) {
       throw ErrorHandler.handle(e);
+    }
+  }
+  @override
+  Future<Response> patch(String endpoint, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+    try {
+      final response = await _dio.patch(endpoint, data: data, queryParameters: queryParameters);
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          type: DioExceptionType.badResponse,
+        );
+      }
+
+      return response;
+    } on DioException catch (e) {
+      throw ErrorHandler.handle(e);
+    } catch (e) {
+      throw UnexpectedException();
     }
   }
 }
