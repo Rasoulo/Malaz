@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:malaz/presentation/global_widgets/brand/build_branding.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/config/color/app_color.dart';
@@ -211,14 +212,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   Widget _buildHeader(AppLocalizations tr, ColorScheme colorScheme) {
     return Column(
       children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ShaderMask(
-            shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
-            child: Text(tr.malaz, style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold)),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(height: 60, width: 50, child: Image.asset("assets/icons/key_logo.png", color: colorScheme.primary)),
-        ]),
+        BuildBranding(),
         Text(tr.share_your_property, style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 14)),
       ],
     );
