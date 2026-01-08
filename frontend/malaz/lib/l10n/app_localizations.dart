@@ -1177,6 +1177,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Studio'**
   String get type_studio;
+
+  /// No description provided for @phone_number_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'(963) 999 999 999'**
+  String get phone_number_hint;
+
+  /// No description provided for @enter_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get enter_hint;
 }
 
 class _AppLocalizationsDelegate

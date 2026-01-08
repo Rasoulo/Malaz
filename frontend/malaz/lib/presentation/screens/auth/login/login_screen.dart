@@ -99,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               tr.welcome_back,
                               style: TextStyle(
-                                fontFamily: 'PlayfairDisplay',
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
                                 color: colorScheme.primary,
@@ -124,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Mobile number Text field
                         BuildTextfield(
                           label: tr.mobile_number,
+                          hintText: tr.phone_number_hint,
                           icon: Icons.phone,
                           obscure: false,
                           haveSuffixEyeIcon: false,
@@ -135,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Password Text field
                         BuildTextfield(
                           label: tr.password,
+                          hintText: "${tr.enter_hint} ${tr.password}",
                           icon: Icons.password,
                           obscure: true,
                           haveSuffixEyeIcon: true,

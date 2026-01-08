@@ -113,7 +113,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       pinned: true,
       stretch: true,
       elevation: 0,
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(40),
+        ),
+      ),
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(8),
@@ -142,24 +147,48 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           StretchMode.zoomBackground,
           StretchMode.blurBackground,
         ],
-        background: Stack(
-          fit: StackFit.expand,
-          children: [
-            Container(decoration: const BoxDecoration(gradient: AppColors.premiumGoldGradient2)),
-            _buildAnimatedBubble(top: -20, left: -30, size: 150, opacity: 0.1),
-            _buildAnimatedBubble(bottom: 40, right: -50, size: 200, opacity: 0.08),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(25, 100, 25, 40),
-              child: Row(
-                children: [
-                  _buildAvatarWrapper(user?.id),
-                  const SizedBox(width: 20),
-                  Expanded(child: _buildProfileHeaderInfo(tr, colorScheme)),
-                ],
+        background: ClipRRect(
+          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(40)),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                    gradient: AppColors.premiumGoldGradient2
+                ),
               ),
-            ),
-          ],
-        ),
+
+              PositionedDirectional(
+                top: -20,
+                start: -40,
+                child: _buildGlowingKey(180, 0.15, -0.2),
+              ),
+
+              PositionedDirectional(
+                bottom: 40,
+                end: -10,
+                child: _buildGlowingKey(140, 0.12, 0.5),
+              ),
+
+              PositionedDirectional(
+                top: 40,
+                end: 80,
+                child: _buildGlowingKey(70, 0.12, 2.5),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.fromLTRB(25, 100, 25, 40),
+                child: Row(
+                  children: [
+                    _buildAvatarWrapper(user?.id, colorScheme),
+                    const SizedBox(width: 20),
+                    Expanded(child: _buildProfileHeaderInfo(tr, colorScheme)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
       ),
     );
   }
@@ -218,32 +247,61 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     );
   }
 
-  Widget _buildAvatarWrapper(int? userId) {
+  Widget _buildAvatarWrapper(int? userId, ColorScheme colorScheme) {
     return Stack(
       alignment: Alignment.center,
+      clipBehavior: Clip.none,
       children: [
-        Container(width: 94, height: 94, decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, shape: BoxShape.circle)),
-        Container(
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, shape: BoxShape.circle),
-          child: CircleAvatar(
-            radius: 45,
-            backgroundColor: Colors.grey.shade100,
-            child: _tempLocalImagePath != null
-                ? ClipOval(child: Image.file(File(_tempLocalImagePath!), width: 90, height: 90, fit: BoxFit.cover))
-                : UserProfileImage(userId: userId ?? 0, radius: 45, firstName: _firstNameController.text, lastName: _lastNameController.text),
+        _tempLocalImagePath != null
+            ? Container(
+          width: 96,
+          height: 96,
+          decoration: BoxDecoration(
+            gradient: AppColors.premiumGoldGradient,
+            borderRadius: BorderRadius.circular(30),
           ),
+          padding: const EdgeInsets.all(3),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(27),
+            child: Image.file(
+              File(_tempLocalImagePath!),
+              fit: BoxFit.cover,
+            ),
+          ),
+        )
+            : UserProfileImage(
+          userId: userId ?? 0,
+          radius: 46,
+          isPremiumStyle: true,
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
         ),
+
         if (_isEditable)
           Positioned(
-            bottom: 0,
-            right: 0,
+            bottom: -5,
+            right: -5,
             child: GestureDetector(
               onTap: _pickImage,
               child: Container(
                 padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
-                child: const Icon(Icons.camera_alt, size: 16, color: AppColors.primaryLight),
+                decoration: BoxDecoration(
+                  color: colorScheme.surface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.primaryLight, width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    )
+                  ],
+                ),
+                child: const Icon(
+                  Icons.camera_alt_rounded,
+                  size: 18,
+                  color: AppColors.primaryDark,
+                ),
               ),
             ),
           ),
@@ -252,21 +310,33 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _buildProfileActionsBar(ColorScheme colorScheme, AppLocalizations tr) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 20, offset: const Offset(0, 10))],
+        border: Border.all(
+          color: isDark ? Colors.white10 : Colors.black.withOpacity(0.05),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
+            blurRadius: 30,
+            offset: const Offset(0, 10),
+          )
+        ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _actionItem(Icons.favorite_border, tr.favorites, () => context.push('/favorites'), colorScheme),
+          _actionItem(Icons.bookmark_border_rounded, tr.favorites, () => context.push('/favorites'), colorScheme),
           _vDivider(),
-          _actionItem(Icons.location_on_outlined, tr.location, _handleLocationUpdate, colorScheme),
+          _actionItem(Icons.map_outlined, tr.location, _handleLocationUpdate, colorScheme),
           _vDivider(),
-          _actionItem(Icons.edit_outlined, tr.edit_profile, () => _requestEditProfile(context), colorScheme, isPrimary: true),
+          _actionItem(Icons.verified_user_outlined, tr.edit_profile, () => _requestEditProfile(context), colorScheme, isPrimary: true),
         ],
       ),
     );
@@ -285,77 +355,163 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _buildInfoField(IconData icon, String label, TextEditingController controller, ColorScheme colorScheme) {
-    return Container(
-      padding: const EdgeInsets.all(16),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 20, offset: const Offset(0, 10))],
-
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          )
+        ],
         border: Border.all(
           color: _isEditable
-              ? AppColors.primaryLight.withOpacity(0.4)
-              : Colors.transparent,
-          width: 1.5,
+              ? colorScheme.primary.withOpacity(0.5)
+              : (isDark ? Colors.white10 : Colors.black.withOpacity(0.05)),
+          width: 1.2,
         ),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primaryLight.withOpacity(0.1),
-              shape: BoxShape.circle,
+              color: colorScheme.primary.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(icon, color: AppColors.primaryLight, size: 20),
+            child: Icon(
+                icon,
+                color: colorScheme.primary,
+                size: 22
+            ),
           ),
-          const SizedBox(width: 15),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  label,
+                  label.toUpperCase(),
                   style: TextStyle(
-                    color: Colors.grey.shade500,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
+                    color: colorScheme.primary.withOpacity(0.8),
+                    fontSize: 9,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.2,
                   ),
                 ),
+                const SizedBox(height: 2),
                 TextField(
                   controller: controller,
                   enabled: _isEditable,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  decoration: const InputDecoration(
+                  cursorColor: colorScheme.primary,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: colorScheme.onSurface,
+                  ),
+                  decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
-                    contentPadding: EdgeInsets.only(top: 4),
+                    contentPadding: EdgeInsets.zero,
+                    hintText: _isEditable ? "Enter $label..." : null,
+                    hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.grey.withOpacity(0.5)),
                   ),
                 ),
               ],
             ),
           ),
+          if (_isEditable)
+            Icon(Icons.edit_rounded, size: 14, color: colorScheme.primary.withOpacity(0.5)),
         ],
       ),
     );
   }
 
   Widget _buildPasswordField(AppLocalizations tr, ColorScheme colorScheme, AuthState state) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return InkWell(
-      onTap: () => state is AuthAuthenticated ? context.push('/reset-password', extra: state.user.phone) : null,
+      onTap: () => state is AuthAuthenticated
+          ? context.push('/reset-password', extra: state.user.phone)
+          : null,
+      borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: colorScheme.surface, borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isDark ? Colors.white10 : Colors.black.withOpacity(0.05),
+            width: 1.2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            )
+          ],
+        ),
         child: Row(
           children: [
-            const Icon(Icons.lock_outline, color: AppColors.primaryLight),
-            const SizedBox(width: 15),
-            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(tr.password, style: TextStyle(color: Colors.grey.shade400, fontSize: 10)),
-              const Text("••••••••", style: TextStyle(fontWeight: FontWeight.bold)),
-            ])),
-            const Icon(Icons.chevron_right, color: Colors.grey),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(
+                  Icons.lock_outline_rounded,
+                  color: colorScheme.primary,
+                  size: 22
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    tr.password.toUpperCase(),
+                    style: TextStyle(
+                      color: colorScheme.primary.withOpacity(0.8),
+                      fontSize: 9,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    "••••••••",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      letterSpacing: 3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withOpacity(0.05),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.chevron_right_rounded,
+                color: colorScheme.primary.withOpacity(0.5),
+                size: 20,
+              ),
+            ),
           ],
         ),
       ),
@@ -375,20 +531,72 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _actionItem(IconData icon, String label, VoidCallback onTap, ColorScheme colorScheme, {bool isPrimary = false}) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
-      child: Column(children: [
-        Icon(icon, color: isPrimary ? AppColors.primaryLight : colorScheme.primary, size: 22),
-        const SizedBox(height: 4),
-        Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: isPrimary ? AppColors.primaryLight : null)),
-      ]),
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: isPrimary
+                    ? colorScheme.primary.withOpacity(0.15)
+                    : colorScheme.primary.withOpacity(0.06),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                  icon,
+                  color: colorScheme.primary,
+                  size: 24
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label.toUpperCase(),
+              style: TextStyle(
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.8,
+                color: isPrimary ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _vDivider() => Container(width: 1, height: 30, color: Colors.grey.withOpacity(0.2));
 
-  Widget _buildAnimatedBubble({double? top, double? left, double? right, double? bottom, required double size, required double opacity}) {
-    return Positioned(top: top, left: left, right: right, bottom: bottom, child: Container(width: size, height: size, decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(opacity))));
+  Widget _buildGlowingKey(double size, double opacity, double rotation) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.rotate(
+        angle: rotation,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryLight.withOpacity(0.4),
+                blurRadius: 40,
+                spreadRadius: 10,
+              ),
+            ],
+          ),
+          child: Image.asset(
+            'assets/icons/key_logo.png',
+            width: size,
+            height: size,
+            color: Colors.white,
+            colorBlendMode: BlendMode.srcIn,
+          ),
+        ),
+      ),
+    );
   }
 
   void _showModernPasswordDialog(BuildContext context) {

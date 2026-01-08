@@ -184,5 +184,7 @@
   "type_villa": "Villa",
   "type_farm": "Ferme",
   "type_country_house": "Maison de campagne",
-  "type_studio": "Studio"
+  "type_studio": "Studio",
+  "phone_number_hint": "(963) 999 999 999",
+  "enter_hint": "Entrez"
 }

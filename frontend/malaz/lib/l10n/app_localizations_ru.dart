@@ -556,4 +556,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get type_studio => 'Студия';
+
+  @override
+  String get phone_number_hint => '(963) 999 999 999';
+
+  @override
+  String get enter_hint => 'Введите';
 }

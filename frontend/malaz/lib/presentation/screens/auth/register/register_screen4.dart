@@ -88,7 +88,6 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                   Text(
                     tr.create_account,
                     style: TextStyle(
-                      fontFamily: 'PlayfairDisplay',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: colorScheme.primary,
@@ -151,7 +150,7 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                   ),
 
                   // Branding
-                  BuildBranding()
+                  BuildBranding.metaStyle()
                 ],
               ),
             ),
