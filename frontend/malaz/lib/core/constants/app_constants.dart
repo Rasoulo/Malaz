@@ -1,5 +1,5 @@
 class AppConstants {
-  static const baseurl = 'http://10.78.179.242:8000/api';
+  static const baseurl = 'http://192.168.1.102:8000/api';
   /// [SharedPreferences] Keys
   static const String themeKey = 'theme_mode';
   static const String languageKey = 'language_code';
