@@ -3,8 +3,8 @@
 		"_postman_id": "f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2",
 		"name": "Malaz",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "50107412",
-		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107412"
+		"_exporter_id": "50107547",
+		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107547"
 	},
 	"item": [
 		{
@@ -1944,7 +1944,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/users/login?phone=+1111111117&password=12345678",
+							"raw": "{{localhost}}/api/users/login?phone=+1111111118&password=12345678",
 							"host": [
 								"{{localhost}}"
 							],
@@ -1956,7 +1956,7 @@
 							"query": [
 								{
 									"key": "phone",
-									"value": "+1111111117"
+									"value": "+1111111118"
 								},
 								{
 									"key": "password",
@@ -4147,6 +4147,60 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/bookings/update/1?check_in&check_out&status&total_price",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"update",
+								"1"
+							],
+							"query": [
+								{
+									"key": "check_in",
+									"value": null
+								},
+								{
+									"key": "check_out",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": null
+								},
+								{
+									"key": "total_price",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -4977,6 +5031,83 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": [],\n    \"message\": \"Here are all properties\",\n    \"status\": 200\n}"
+						},
+						{
+							"name": "bedrooms filter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/properties/all?per_page=2&cursor=null&bedrooms_min=1&bedrooms_max=4",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"properties",
+										"all"
+									],
+									"query": [
+										{
+											"key": "per_page",
+											"value": "2"
+										},
+										{
+											"key": "cursor",
+											"value": "null"
+										},
+										{
+											"key": "bedrooms_min",
+											"value": "1"
+										},
+										{
+											"key": "bedrooms_max",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Jan 2026 17:02:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 25,\n            \"owner_id\": 4,\n            \"status\": \"approved\",\n            \"title\": \"Коттедж в Сувейде\",\n            \"price\": 210000,\n            \"city\": \"As-Suwayda\",\n            \"governorate\": \"As-Suwayda Governorate\",\n            \"address\": \"Countryside of As-Suwayda\",\n            \"description\": \"Уютный коттедж с садом и видом на горы.\",\n            \"latitude\": \"32.7086\",\n            \"longitude\": \"36.5667\",\n            \"type\": \"Country House\",\n            \"number_of_rooms\": 4,\n            \"number_of_baths\": 2,\n            \"number_of_bedrooms\": 3,\n            \"area\": 180,\n            \"rating\": 4,\n            \"number_of_reviews\": 12,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n            \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/25\",\n            \"isFav\": false,\n            \"images\": [\n                {\n                    \"id\": 73,\n                    \"property_id\": 25,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/73\"\n                },\n                {\n                    \"id\": 74,\n                    \"property_id\": 25,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/74\"\n                },\n                {\n                    \"id\": 75,\n                    \"property_id\": 25,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/75\"\n                }\n            ],\n            \"user\": {\n                \"id\": 4,\n                \"first_name\": \"Priya\",\n                \"last_name\": \"Sharna\",\n                \"phone\": \"203310439\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1999-10-10T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2026-01-05T17:00:06.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2026-01-05T17:00:07.000000Z\",\n                \"updated_at\": \"2026-01-05T17:00:07.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/4/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/4/identity_card_image\"\n            }\n        },\n        {\n            \"id\": 24,\n            \"owner_id\": 4,\n            \"status\": \"approved\",\n            \"title\": \"Deniz manzaralı villa - Latakia\",\n            \"price\": 520000,\n            \"city\": \"Latakia\",\n            \"governorate\": \"Latakia Governorate\",\n            \"address\": \"Latakia seaside, near Corniche\",\n            \"description\": \"Deniz manzaralı geniş villa, tatil için ideal.\",\n            \"latitude\": \"35.5167\",\n            \"longitude\": \"35.7833\",\n            \"type\": \"Villa\",\n            \"number_of_rooms\": 7,\n            \"number_of_baths\": 3,\n            \"number_of_bedrooms\": 4,\n            \"area\": 360,\n            \"rating\": 5,\n            \"number_of_reviews\": 26,\n            \"mime_type\": \"image/png\",\n            \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n            \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n            \"main_image_url\": \"http://127.0.0.1:8000/api/main_pic/24\",\n            \"isFav\": false,\n            \"images\": [\n                {\n                    \"id\": 70,\n                    \"property_id\": 24,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/70\"\n                },\n                {\n                    \"id\": 71,\n                    \"property_id\": 24,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/71\"\n                },\n                {\n                    \"id\": 72,\n                    \"property_id\": 24,\n                    \"mime_type\": \"image/png\",\n                    \"created_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"updated_at\": \"2026-01-05T17:00:11.000000Z\",\n                    \"image_url\": \"http://127.0.0.1:8000/api/images/72\"\n                }\n            ],\n            \"user\": {\n                \"id\": 4,\n                \"first_name\": \"Priya\",\n                \"last_name\": \"Sharna\",\n                \"phone\": \"203310439\",\n                \"email\": null,\n                \"email_verified_at\": null,\n                \"role\": \"USER\",\n                \"date_of_birth\": \"1999-10-10T00:00:00.000000Z\",\n                \"profile_image_mime\": \"image/png\",\n                \"identity_card_mime\": \"image/png\",\n                \"phone_verified_at\": \"2026-01-05T17:00:06.000000Z\",\n                \"language\": \"en\",\n                \"created_at\": \"2026-01-05T17:00:07.000000Z\",\n                \"updated_at\": \"2026-01-05T17:00:07.000000Z\",\n                \"profile_image_url\": \"http://127.0.0.1:8000/api/users/4/profile_image\",\n                \"identity_card_image_url\": \"http://127.0.0.1:8000/api/users/4/identity_card_image\"\n            }\n        }\n    ],\n    \"message\": \"Here are all properties\",\n    \"meta\": {\n        \"next_cursor\": \"eyJpZCI6MjQsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0\",\n        \"prev_cursor\": null,\n        \"per_page\": 2\n    },\n    \"status\": 200\n}"
 						}
 					]
 				},

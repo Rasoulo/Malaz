@@ -14,13 +14,15 @@ import '../../global_widgets/user_profile_image/user_profile_image.dart';
 
 class ChatWithAPerson extends StatefulWidget {
   final int conversationId;
-  final String userName;
+  final String firstName;
+  final String lastName;
   final int otherUserId;
 
   const ChatWithAPerson({
     super.key,
     required this.conversationId,
-    required this.userName,
+    required this.firstName,
+    required this.lastName,
     required this.otherUserId,
   });
 
@@ -212,13 +214,13 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
             onPressed: () => context.pop(),
             icon: Icon(Icons.arrow_back_ios_new_rounded, color: primaryGold, size: 20),
           ),
-          UserProfileImage(userId: widget.otherUserId, radius: 22),
+          UserProfileImage(userId: widget.otherUserId, firstName: widget.firstName, lastName: widget.lastName, radius: 22),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.userName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: isDark ? Colors.white : Colors.black87)),
+                Text('${widget.firstName} ${widget.lastName}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: isDark ? Colors.white : Colors.black87)),
                 Row(
                   children: [
                     Container(width: 8, height: 8, decoration: const BoxDecoration(color: Colors.green, shape: BoxShape.circle)),

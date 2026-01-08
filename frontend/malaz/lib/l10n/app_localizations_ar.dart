@@ -468,4 +468,86 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get title_hint => 'شقة الياسمين';
+
+  @override
+  String get booking_in_progress => 'جاري تأكيد حجزك...';
+
+  @override
+  String get booking_success_title => 'تم الحجز بنجاح!';
+
+  @override
+  String get booking_success_message =>
+      'سيتم التواصل معك قريباً لتأكيد التفاصيل.';
+
+  @override
+  String get action_okay => 'حسناً';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get verified_account => 'حساب موثق';
+
+  @override
+  String get unknown_location => 'موقع غير معروف';
+
+  @override
+  String get back_to_top => 'العودة للأعلى';
+
+  @override
+  String get filter_title => 'تصفية النتائج';
+
+  @override
+  String get filter_reset => 'إعادة تعيين';
+
+  @override
+  String get filter_location_section => 'الموقع الجغرافي';
+
+  @override
+  String get filter_current_location => 'موقعي الحالي';
+
+  @override
+  String get filter_map_location => 'على الخريطة';
+
+  @override
+  String get filter_price_section => 'نطاق السعر (دولار \$)';
+
+  @override
+  String get filter_type_section => 'نوع العقار';
+
+  @override
+  String get filter_area_section => 'المساحة (متر مربع)';
+
+  @override
+  String get filter_details_section => 'تفاصيل العقار';
+
+  @override
+  String get filter_total_rooms => 'عدد الغرف (الكلي)';
+
+  @override
+  String get filter_bedrooms => 'غرف النوم';
+
+  @override
+  String get filter_bathrooms => 'عدد الحمامات';
+
+  @override
+  String get filter_any => 'الكل';
+
+  @override
+  String get filter_apply_button => 'عرض النتائج المطابقة';
+
+  @override
+  String get type_apartment => 'شقة';
+
+  @override
+  String get type_villa => 'فيلا';
+
+  @override
+  String get type_farm => 'مزرعة';
+
+  @override
+  String get type_country_house => 'منزل ريفي';
+
+  @override
+  String get type_studio => 'استديو';
 }

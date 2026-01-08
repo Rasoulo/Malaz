@@ -26,41 +26,44 @@ class ErrorHandler {
   }
 
   static Exception _handleBadResponse(Response? response) {
-    if (response == null) return ServerException(message: 'Unknown server error');
+    if (response == null)
+      return ServerException(message: 'Unknown server error');
 
     final statusCode = response.statusCode;
     final data = response.data;
     String message = 'Something went wrong';
 
-    if (data is Map && data.containsKey('message')) {
-      message = data['message'];
+    if (data is Map) {
+      if (data.containsKey('message') && data['message'] != null) {
+        message = data['message'].toString();
+      } else if (data.containsKey('error') && data['error'] != null) {
+        message = data['error'].toString();
+      }
     }
 
     if (statusCode == 401) {
       return UnauthenticatedException(message);
     }
 
-    if(statusCode == 403) {
+    if (statusCode == 403) {
       if (message.toLowerCase().contains('does not exist')) {
         return PhoneNotFoundException(message);
       }
     }
-
     if (statusCode == 422 && data is Map) {
       if (data.containsKey('errors')) {
         final errors = data['errors'];
         if (errors is Map && errors.isNotEmpty) {
-          final firstKey = errors.keys.first;
-          final firstErrorList = errors[firstKey];
+          final firstErrorList = errors.values.first;
           if (firstErrorList is List && firstErrorList.isNotEmpty) {
             return ServerException(
-              message: firstErrorList.first.toString(),
-              statusCode: 422,
-            );
+                message: firstErrorList.first.toString(), statusCode: 422);
           }
         }
       }
+      return ServerException(message: message, statusCode: 422);
     }
+
 
     if (statusCode != null && statusCode >= 500) {
       return ServerException(message: 'Server internal error', statusCode: 500);

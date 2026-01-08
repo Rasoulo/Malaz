@@ -474,4 +474,86 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get title_hint => 'Апартаменты Жасмин';
+
+  @override
+  String get booking_in_progress => 'Подтверждение бронирования...';
+
+  @override
+  String get booking_success_title => 'Бронирование успешно!';
+
+  @override
+  String get booking_success_message =>
+      'Мы свяжемся с вами в ближайшее время для подтверждения деталей.';
+
+  @override
+  String get action_okay => 'Хорошо';
+
+  @override
+  String get location => 'Местоположение';
+
+  @override
+  String get verified_account => 'ПОДТВЕРЖДЕННЫЙ АККАУНТ';
+
+  @override
+  String get unknown_location => 'Неизвестное место';
+
+  @override
+  String get back_to_top => 'Наверх';
+
+  @override
+  String get filter_title => 'Фильтры';
+
+  @override
+  String get filter_reset => 'Сброс';
+
+  @override
+  String get filter_location_section => 'Местоположение';
+
+  @override
+  String get filter_current_location => 'Текущее местоположение';
+
+  @override
+  String get filter_map_location => 'На карте';
+
+  @override
+  String get filter_price_section => 'Диапазон цен (Доллар \$)';
+
+  @override
+  String get filter_type_section => 'Тип недвижимости';
+
+  @override
+  String get filter_area_section => 'Площадь (кв. м)';
+
+  @override
+  String get filter_details_section => 'Детали';
+
+  @override
+  String get filter_total_rooms => 'Всего комнат';
+
+  @override
+  String get filter_bedrooms => 'Спальни';
+
+  @override
+  String get filter_bathrooms => 'Ванные';
+
+  @override
+  String get filter_any => 'Все';
+
+  @override
+  String get filter_apply_button => 'Показать результаты';
+
+  @override
+  String get type_apartment => 'Квартира';
+
+  @override
+  String get type_villa => 'Вилла';
+
+  @override
+  String get type_farm => 'Ферма';
+
+  @override
+  String get type_country_house => 'Загородный дом';
+
+  @override
+  String get type_studio => 'Студия';
 }

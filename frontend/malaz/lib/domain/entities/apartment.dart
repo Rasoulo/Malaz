@@ -44,6 +44,5 @@ class Apartment {
   });
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id,ownerId,status,title,price,city,governorate,address,description,type,rooms,bathrooms,bedrooms,area,rating,numberOfReviews,mainImageUrl,isFav];
 }

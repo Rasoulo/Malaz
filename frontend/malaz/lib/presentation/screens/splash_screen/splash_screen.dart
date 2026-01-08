@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/config/color/app_color.dart';
 import '../../cubits/auth/auth_cubit.dart';
-import '../../global_widgets/build_branding.dart';
+import '../../global_widgets/brand/build_branding.dart';
 
 /// [SplashScreen]
 ///
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 5),
     );
 
     _fadeAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen>
             fadeAnimation: _fadeAnimation,
             scaleAnimation: _scaleAnimation,
           ),
-          BuildBranding(),
+          BuildBranding.metaStyle(),
         ],
       ),
     );

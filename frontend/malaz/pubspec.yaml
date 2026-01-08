@@ -38,6 +38,9 @@ dependencies:
   #cached_network_image: ^3.4.1
   table_calendar: ^3.0.9
   google_nav_bar: any
+  lottie: ^3.1.0
+  location: ^6.0.2
+  geocoding: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -49,3 +52,13 @@ flutter:
   generate: true
   assets:
     - assets/icons/key_logo.png
+    - assets/lottie/sending_booking.json
+    - assets/lottie/filter_lottie.json
+    - assets/lottie/filter_lottie_v1.json
+    - assets/lottie/gold_verified_lock.json
+    - assets/lottie/key_lock_person_widgets.json
+    - assets/lottie/key_lock_setting_person_mobile.json
+    - assets/lottie/shake_hands.json
+    - assets/lottie/house_paper.json
+    - assets/lottie/shake_share_laptop.json
+    - assets/lottie/search_on_tablet.json

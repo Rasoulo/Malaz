@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:malaz/domain/entities/apartment.dart';
 import 'package:malaz/l10n/app_localizations.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../data/utils/dialog.dart';
+import '../../../domain/entities/booking.dart';
+import '../../cubits/booking/booking_cubit.dart';
 import '../../global_widgets/buttons/custom_button.dart';
 
 /// ============================================================================
 /// [BookingBottomSheet]
 /// Main Widget that manages the State (Logic & Data) only.
 /// It delegates the UI rendering to specialized [_Build...] widgets.
-/// TODO: there's a bug when selected a booked day in a range
-/// TODO: it's not linked with the backend yet
+/// TODO: there's an optimization on ensuring selected a valid range
 /// ============================================================================
 class BookingBottomSheet extends StatefulWidget {
-  final double pricePerNight;
+  final Apartment apartment;
 
-  const BookingBottomSheet({super.key, required this.pricePerNight});
+  const BookingBottomSheet({super.key, required this.apartment});
 
   @override
   State<BookingBottomSheet> createState() => _BookingBottomSheetState();
@@ -29,18 +35,11 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
-  final List<DateTime> _bookedDays = [
-    DateTime.now().add(const Duration(days: 3)),
-    DateTime.now().add(const Duration(days: 4)),
-    DateTime.now().add(const Duration(days: 10)),
-    DateTime.now().add(const Duration(days: 11)),
-    DateTime.now().add(const Duration(days: 12)),
-  ];
-
   @override
   void initState() {
     super.initState();
     _lastDay = DateTime.now().add(const Duration(days: 730));
+    context.read<BookingCubit>().loadBookedDates(widget.apartment.id);
   }
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
@@ -66,10 +65,17 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
     _focusedDay = focusedDay;
   }
 
-  void _onConfirmBooking() {
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context).booking_request_sent)),
+  void _onConfirmBooking(Apartment apartment) {
+    if (_rangeStart == null || _rangeEnd == null) return;
+    int nights = _rangeEnd!.difference(_rangeStart!).inDays;
+    int finalTotalPrice = nights * apartment.price;
+    context.read<BookingCubit>().makeBook(
+      Booking(
+        propertyId: apartment.id,
+        checkIn: _rangeStart!,
+        checkOut: _rangeEnd!,
+        totalPrice: finalTotalPrice.toString()
+      )
     );
   }
 
@@ -77,42 +83,82 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.85,
-      decoration: BoxDecoration(
-        color: theme.scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-      ),
-      child: Column(
-        children: [
-          const _BuildDragHandle(),
+    return BlocListener<BookingCubit, BookingState>(
+      listener: (context, state) {
+        if (state is SendingBooking) {
+          showLoadingDialog(context);
+        } else if (state is SentBooking) {
+          context.pop();
 
-          const _BuildHeader(),
+          showSuccessDialog(context, () {
+            context.pop();
+          });
+        } else if (state is SendingBookingError) {
+          context.pop();
 
-          Expanded(
-            child: SingleChildScrollView(
-              child: _BuildCalendar(
-                firstDay: _firstDay,
-                lastDay: _lastDay,
-                focusedDay: _focusedDay,
-                rangeStart: _rangeStart,
-                rangeEnd: _rangeEnd,
-                calendarFormat: _calendarFormat,
-                bookedDays: _bookedDays,
-                onDaySelected: _onDaySelected,
-                onRangeSelected: _onRangeSelected,
-                onPageChanged: _onPageChanged,
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+
+          context.read<BookingCubit>().loadBookedDates(widget.apartment.id);
+        }
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.85,
+        decoration: BoxDecoration(
+          color: theme.scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        child: Column(
+          children: [
+            const _BuildDragHandle(),
+            const _BuildHeader(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: BlocBuilder<BookingCubit, BookingState>(
+                  buildWhen: (previous, current) {
+                    return current is! SendingBooking &&
+                        current is! SentBooking &&
+                        current is! SendingBookingError;
+                  },
+                  builder: (context, state) {
+                    if (state is BookingLoading) {
+                      return const Center(child: _BuildShimmerCalendar());
+                    }
+                    if (state is BookingLoaded) {
+                      return _BuildCalendar(
+                        firstDay: _firstDay,
+                        lastDay: _lastDay,
+                        focusedDay: _focusedDay,
+                        rangeStart: _rangeStart,
+                        rangeEnd: _rangeEnd,
+                        calendarFormat: _calendarFormat,
+                        bookedDays: state.bookedDays,
+                        onDaySelected: _onDaySelected,
+                        onRangeSelected: _onRangeSelected,
+                        onPageChanged: _onPageChanged,
+                      );
+                    }
+                    if (state is BookingError) {
+                      return const _BuildCalendarErrorView();
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
               ),
             ),
-          ),
-
-          _BuildBottomSummary(
-            pricePerNight: widget.pricePerNight,
-            rangeStart: _rangeStart,
-            rangeEnd: _rangeEnd,
-            onConfirm: _onConfirmBooking,
-          ),
-        ],
+            _BuildBottomSummary(
+              apartment: widget.apartment,
+              rangeStart: _rangeStart,
+              rangeEnd: _rangeEnd,
+              onConfirm: _onConfirmBooking,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -156,8 +202,7 @@ class _BuildHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-        ],
+        children: [],
       ),
     );
   }
@@ -214,7 +259,6 @@ class _BuildCalendar extends StatelessWidget {
         rangeEndDay: rangeEnd,
         rangeSelectionMode: RangeSelectionMode.toggledOn,
         startingDayOfWeek: StartingDayOfWeek.saturday,
-
         headerStyle: HeaderStyle(
           titleCentered: true,
           formatButtonVisible: false,
@@ -223,10 +267,11 @@ class _BuildCalendar extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: theme.colorScheme.primary,
           ),
-          leftChevronIcon: Icon(Icons.chevron_left, color: theme.colorScheme.tertiary),
-          rightChevronIcon: Icon(Icons.chevron_right, color: theme.colorScheme.tertiary),
+          leftChevronIcon:
+              Icon(Icons.chevron_left, color: theme.colorScheme.tertiary),
+          rightChevronIcon:
+              Icon(Icons.chevron_right, color: theme.colorScheme.tertiary),
         ),
-
         calendarStyle: CalendarStyle(
           rangeHighlightColor: theme.colorScheme.tertiary.withOpacity(0.2),
           todayDecoration: BoxDecoration(
@@ -238,17 +283,38 @@ class _BuildCalendar extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-
         selectedDayPredicate: (day) => isSameDay(rangeStart, day),
         onDaySelected: onDaySelected,
         onRangeSelected: onRangeSelected,
         onPageChanged: onPageChanged,
 
+        /// TODO: we can optimize this, due to time pressure lets lay on it :(
         enabledDayPredicate: (day) {
-          if (day.isBefore(DateTime.now().subtract(const Duration(days: 1)))) return false;
-          return !_isDayBooked(day);
+          if (day.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+            return false;
+          }
+          if (_isDayBooked(day)) return false;
+          if (rangeStart == null) {
+            return true;
+          }
+          if (rangeStart != null && rangeEnd != null) {
+            return true;
+          }
+          if (rangeStart != null) {
+            for (var booked in bookedDays) {
+              if (booked.isBefore(rangeStart!)) {
+                if (day.isBefore(rangeStart!) && day.isBefore(booked)) {
+                  return false;
+                }
+              } else {
+                if (day.isAfter(rangeStart!) && day.isAfter(booked)) {
+                  return false;
+                }
+              }
+            }
+          }
+          return true;
         },
-
         calendarBuilders: CalendarBuilders(
           disabledBuilder: (context, day, focusedDay) {
             return Container(
@@ -277,7 +343,8 @@ class _BuildCalendar extends StatelessWidget {
               ),
               child: Text(
                 '${day.day}',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
               ),
             );
           },
@@ -291,7 +358,8 @@ class _BuildCalendar extends StatelessWidget {
               ),
               child: Text(
                 '${day.day}',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
               ),
             );
           },
@@ -301,16 +369,147 @@ class _BuildCalendar extends StatelessWidget {
   }
 }
 
+/// [_BuildShimmerCalendar]
+/// A skeleton loading effect mimicking the actual calendar layout.
+class _BuildShimmerCalendar extends StatelessWidget {
+  const _BuildShimmerCalendar();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final baseColor = theme.brightness == Brightness.dark
+        ? Colors.grey[800]!
+        : Colors.grey[300]!;
+    final highlightColor = theme.brightness == Brightness.dark
+        ? Colors.grey[700]!
+        : Colors.grey[100]!;
+
+    return Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const CircleAvatar(radius: 15),
+                  Container(
+                    width: 120,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  const CircleAvatar(radius: 15),
+
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(7, (index) =>
+                  Container(
+                    width: 30,
+                    height: 15,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  )
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            Column(
+              children: List.generate(5, (rowIndex) =>
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(7, (colIndex) =>
+                      const CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                      )
+                      ),
+                    ),
+                  )
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// [_BuildCalendarErrorView]
+/// Displays a user-friendly error message with a retry button.
+class _BuildCalendarErrorView extends StatelessWidget {
+
+  const _BuildCalendarErrorView();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.calendar_today_outlined,
+
+              size: 64,
+              color: theme.colorScheme.error.withOpacity(0.5),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n.unexpected_error_message,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.unexpected_error_message,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.grey,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// [_BuildBottomSummary]
 /// The footer section showing price calculation and the confirm button.
 class _BuildBottomSummary extends StatelessWidget {
-  final double pricePerNight;
+  final Apartment apartment;
   final DateTime? rangeStart;
   final DateTime? rangeEnd;
-  final VoidCallback onConfirm;
+  final Function(Apartment) onConfirm;
 
   const _BuildBottomSummary({
-    required this.pricePerNight,
+    required this.apartment,
     required this.rangeStart,
     required this.rangeEnd,
     required this.onConfirm,
@@ -324,7 +523,7 @@ class _BuildBottomSummary extends StatelessWidget {
     if (rangeStart != null && rangeEnd != null) {
       nights = rangeEnd!.difference(rangeStart!).inDays;
     }
-    double totalPrice = nights * pricePerNight;
+    int totalPrice = nights * apartment.price;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -349,8 +548,11 @@ class _BuildBottomSummary extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      nights > 0 ? '$nights ${AppLocalizations.of(context).nights}' : 'Select dates',
-                      style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                      nights > 0
+                          ? '$nights ${AppLocalizations.of(context).nights}'
+                          : AppLocalizations.of(context).book_now,
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: Colors.grey),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -366,7 +568,7 @@ class _BuildBottomSummary extends StatelessWidget {
                   width: 150,
                   child: CustomButton(
                     text: AppLocalizations.of(context).confirm_booking,
-                    onPressed: (nights > 0) ? onConfirm : null,
+                    onPressed: (nights > 0) ? () => onConfirm(apartment) : null,
                   ),
                 ),
               ],

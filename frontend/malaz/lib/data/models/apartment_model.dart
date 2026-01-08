@@ -30,8 +30,9 @@ class ApartmentModel extends Apartment {
     return ApartmentModel(
       id: json['id'] as int,
       ownerId: json['owner_id'] as int? ?? 0,
-      owner: UserModel.fromJson(json['user']) as UserEntity,
-      status: json['status'] ?? '',
+      owner: json['user'] != null
+          ? UserModel.fromJson(json['user'])
+          : UserEntity(id: 0, first_name: '', last_name: '', phone: '', role: '', date_of_birth: '', profile_image_url: '', identity_card_image_url: '', phone_verified_at: '', created_at: '', updated_at: ''),      status: json['status'] ?? '',
       title: json['title'] ?? '',
       price: (json['price'] as num?)?.toInt() ?? 0,
       city: json['city'] ?? '',
@@ -56,7 +57,7 @@ class ApartmentModel extends Apartment {
   Map<String, dynamic> toJson(){
     return {
       'id': id,
-      'ownerId': ownerId,
+      'owner_id': ownerId,
       'status': status,
       'title': title,
       'price': price,
@@ -65,14 +66,14 @@ class ApartmentModel extends Apartment {
       'address': address,
       'description': description,
       'type': type,
-      'rooms': rooms,
-      'bathrooms': bathrooms,
-      'bedrooms': bedrooms,
+      'number_of_rooms': rooms,
+      'number_of_baths': bathrooms,
+      'number_of_bedrooms': bedrooms,
       'area': area,
       'rating': rating,
-      'numberOfReviews': numberOfReviews,
-      'mainImageUrl': mainImageUrl,
-      'isFav': isFav
+      'number_of_reviews': numberOfReviews,
+      'main_image_url': mainImageUrl,
+      'is_favorite': isFav
     };
   }
 }

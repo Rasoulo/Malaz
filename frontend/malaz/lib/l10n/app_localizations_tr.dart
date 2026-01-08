@@ -474,4 +474,86 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get title_hint => 'Yasemin Apartmanı';
+
+  @override
+  String get booking_in_progress => 'Rezervasyonunuz onaylanıyor...';
+
+  @override
+  String get booking_success_title => 'Rezervasyon Başarılı!';
+
+  @override
+  String get booking_success_message =>
+      'Detayları onaylamak için yakında sizinle iletişime geçeceğiz.';
+
+  @override
+  String get action_okay => 'Tamam';
+
+  @override
+  String get location => 'Konum';
+
+  @override
+  String get verified_account => 'DOĞRULANMIŞ HESAP';
+
+  @override
+  String get unknown_location => 'Bilinmeyen Konum';
+
+  @override
+  String get back_to_top => 'Başa dön';
+
+  @override
+  String get filter_title => 'Sonuçları Filtrele';
+
+  @override
+  String get filter_reset => 'Sıfırla';
+
+  @override
+  String get filter_location_section => 'Konum';
+
+  @override
+  String get filter_current_location => 'Mevcut Konum';
+
+  @override
+  String get filter_map_location => 'Haritada';
+
+  @override
+  String get filter_price_section => 'Fiyat Aralığı (Dolar \$)';
+
+  @override
+  String get filter_type_section => 'Emlak Tipi';
+
+  @override
+  String get filter_area_section => 'Alan (m²)';
+
+  @override
+  String get filter_details_section => 'Özellikler';
+
+  @override
+  String get filter_total_rooms => 'Toplam Oda';
+
+  @override
+  String get filter_bedrooms => 'Yatak Odası';
+
+  @override
+  String get filter_bathrooms => 'Banyo';
+
+  @override
+  String get filter_any => 'Tümü';
+
+  @override
+  String get filter_apply_button => 'Sonuçları Göster';
+
+  @override
+  String get type_apartment => 'Daire';
+
+  @override
+  String get type_villa => 'Villa';
+
+  @override
+  String get type_farm => 'Çiftlik';
+
+  @override
+  String get type_country_house => 'Kır Evi';
+
+  @override
+  String get type_studio => 'Stüdyo';
 }

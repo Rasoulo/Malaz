@@ -176,7 +176,7 @@ class _BuildActivitiesSection extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: ChatsColors.caramel, width: 2)),
-                  child: UserProfileImage(userId: otherUser!.id, radius: 28),
+                  child: UserProfileImage(userId: otherUser!.id,firstName: otherUser.first_name,lastName: otherUser.last_name, radius: 28),
                 ),
                 const SizedBox(height: 8),
                 Text(otherUser!.first_name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isDark ? Colors.white70 : ChatsColors.darkCoffee)),
@@ -230,7 +230,8 @@ class _BuildMessagesList extends StatelessWidget {
                 onTap: () async {
                   await context.push('/one_chat', extra: {
                     'id': conv.id,
-                    'name': '${otherUser!.first_name} ${otherUser!.last_name}',
+                    'firstName': otherUser.first_name,
+                    'lastName': otherUser.last_name,
                     'otherUserId': otherUser.id,
                   });
                   if (context.mounted) {
@@ -247,7 +248,7 @@ class _BuildMessagesList extends StatelessWidget {
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    leading: UserProfileImage(userId: otherUser!.id, radius: 28),
+                    leading: UserProfileImage(userId: otherUser!.id, firstName: otherUser.first_name, lastName: otherUser.last_name, radius: 28),
                     title: Text('${otherUser!.first_name} ${otherUser!.last_name}',
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: textColor)),
                     subtitle: Text(tr.click_to_view, style: TextStyle(fontSize: 13, color: Colors.grey)),

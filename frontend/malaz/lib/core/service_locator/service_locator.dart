@@ -1,44 +1,63 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:malaz/data/datasources/local/auth_local_datasource.dart';
+import 'package:location/location.dart';
+import 'package:malaz/data/datasources/local/auth_local_data_source.dart';
+import 'package:malaz/data/datasources/remote/booking/booking_remote_data_source.dart';
 import 'package:malaz/data/datasources/remote/favorites/favorites_remote_datasource.dart';
 import 'package:malaz/data/repositories/auth/auth_repository_impl.dart';
+import 'package:malaz/data/repositories/booking/booking_repository_impl.dart';
 import 'package:malaz/domain/repositories/auth/auth_repository.dart';
+import 'package:malaz/domain/repositories/booking/booking_repository.dart';
 import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
 import 'package:malaz/domain/usecases/auth/get_current_user_usecase.dart';
 import 'package:malaz/domain/usecases/auth/login_usecase.dart';
 import 'package:malaz/domain/usecases/auth/logout_usecase.dart';
+import 'package:malaz/domain/usecases/booking/Get_Booked_Dates_Use_Case.dart';
+import 'package:malaz/domain/usecases/booking/make_book_use_case.dart';
+import 'package:malaz/domain/usecases/booking/update_status_use_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
+import '../../data/datasources/local/location_local_data_source.dart';
 import '../../data/datasources/remote/apartment/apartment_remote_data_source.dart';
 import '../../data/datasources/remote/auth/auth_remote_datasource.dart';
 import '../../data/datasources/remote/chat/chat_remote_datasource.dart';
+import '../../data/datasources/remote/location/location_remote_data_source.dart';
 import '../../data/repositories/apartment/apartment_repository_impl.dart';
 import '../../data/repositories/chat/chat_repository_impl.dart';
 import '../../data/repositories/favorites/favorites_repository_impl.dart';
+import '../../data/repositories/location/location_repository_impl.dart';
 import '../../domain/repositories/apartment/apartment_repository.dart';
 import '../../domain/repositories/chat/chat_repository.dart';
 import '../../domain/repositories/favorites/favorites_repository.dart';
+import '../../domain/repositories/location/location_repository.dart';
 import '../../domain/usecases/apartment/add_apartment_use_case.dart';
 import '../../domain/usecases/apartment/my_apartment_use_case.dart';
 import '../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../domain/usecases/auth/verify_otp_usecase.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
+import '../../domain/usecases/booking/all_booking_use_case.dart';
 import '../../domain/usecases/favorites/add_favorites_use_case.dart';
 import '../../domain/usecases/favorites/delete_favorites_use_case.dart';
 import '../../domain/usecases/favorites/get_favorites_use_case.dart';
 import '../../domain/usecases/home/apartments_use_case.dart';
+import '../../domain/usecases/location/get_current_location_usecase.dart';
+import '../../domain/usecases/location/load_saved_location_usecase.dart';
+import '../../domain/usecases/location/update_manual_location_usecase.dart';
 import '../../presentation/cubits/auth/auth_cubit.dart';
+import '../../presentation/cubits/booking/booking_cubit.dart';
+import '../../presentation/cubits/booking/manage_booking.dart';
 import '../../presentation/cubits/chat/chat_cubit.dart';
 import '../../presentation/cubits/favorites/favorites_cubit.dart';
 import '../../presentation/cubits/home/home_cubit.dart';
 import '../../presentation/cubits/language/language_cubit.dart';
+import '../../presentation/cubits/location/location_cubit.dart';
 import '../../presentation/cubits/property/property_cubit.dart';
 import '../../presentation/cubits/theme/theme_cubit.dart';
 import '../network/auth_interceptor.dart';
 import '../network/network_info.dart';
 import '../network/network_service.dart';
+import 'package:http/http.dart' as http;
 
 /// [GetIt] / [service_locator]
 ///
@@ -75,6 +94,8 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   sl.registerLazySingleton<Dio>(() => Dio());
+  sl.registerLazySingleton<http.Client>(() => http.Client());
+  sl.registerLazySingleton<Location>(() => Location());
 
   sl.registerLazySingleton<NetworkService>(() => NetworkServiceImpl(sl()));
 
@@ -88,6 +109,13 @@ Future<void> setUpServices() async {
 
   sl.registerFactory(() => LanguageCubit(sl()));
 
+  sl.registerFactory(() => BookingCubit(sl<GetBookedDatesUseCase>(), sl<MakeBookUseCase>(),));
+
+  sl.registerFactory(() => ManageBookingCubit(
+    sl<GetUserBooking>(),
+    sl<UpdateStatus>(),
+  ));
+
   sl.registerFactory(() => HomeCubit(getApartmentsUseCase: sl()));
   sl.registerLazySingleton(() => FavoritesCubit(getFavoritesUseCase: sl(),addFavoriteUseCase: sl(), deleteFavoriteUseCase: sl()));
 
@@ -99,6 +127,7 @@ Future<void> setUpServices() async {
 
   sl.registerLazySingleton<ApartmentRepository>(() => ApartmentRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<FavoritesRepository>(() => FavoritesRepositoryImpl(sl()));
+  sl.registerLazySingleton<BookingRepository>(() => BookingRepositoryImpl(sl()));
 
   sl.registerFactory(() => AddApartmentCubit(addApartmentUseCase: sl()));
 
@@ -115,6 +144,7 @@ Future<void> setUpServices() async {
   ));
 
   sl.registerLazySingleton<FavoritesRemoteDataSource>(() => FavoritesRemoteDataSourceImpl(sl()));
+  sl.registerLazySingleton<BookingRemoteDataSource>(() => BookingRemoteDataSourceImpl(networkService: sl()));
 
   sl.registerLazySingleton(() => RegisterUsecase(repository: sl()));
   sl.registerLazySingleton(() => LoginUsecase(repository: sl()));
@@ -126,7 +156,10 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
   sl.registerLazySingleton(() => AddFavoriteUseCase(sl()));
   sl.registerLazySingleton(() => DeleteFavoriteUseCase(sl()));
-
+  sl.registerLazySingleton(() => GetBookedDatesUseCase(sl()));
+  sl.registerLazySingleton(() => MakeBookUseCase(sl()));
+  sl.registerLazySingleton(() => GetUserBooking(sl()));
+  sl.registerLazySingleton(() => UpdateStatus(sl()));
   sl.registerLazySingleton(() => AuthInterceptor(localDatasource: sl()));
 
   sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
@@ -145,5 +178,24 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(remoteDataSource: sl()),);
   sl.registerFactory(() => ChatCubit(repository: sl()));
 
+  sl.registerLazySingleton<LocationLocalDataSource>(() => LocationLocalDataSourceImpl(sharedPreferences: sl()));
+  sl.registerLazySingleton<LocationRemoteDataSource>(
+        () => LocationRemoteDataSourceImpl(
+      location: sl<Location>(),
+      client: sl<http.Client>(),
+    ),
+  );
+  sl.registerLazySingleton<LocationRepository>(() => LocationRepositoryImpl(
+    remoteDataSource: sl(),
+    localDataSource: sl(),
+  ));
 
+  sl.registerLazySingleton(() => GetCurrentLocationUseCase(sl()));
+  sl.registerLazySingleton(() => LoadSavedLocationUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateManualLocationUseCase(sl()));
+  sl.registerFactory(() => LocationCubit(
+    getCurrentLocationUseCase: sl(),
+    loadSavedLocationUseCase: sl(),
+    updateManualLocationUseCase: sl(),
+  ));
 }

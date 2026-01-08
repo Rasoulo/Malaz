@@ -74,6 +74,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
         return Right(conversationModel);
       }
+      /// TODO : translate it
       return Left(ServerFailure("بيانات المحادثة غير موجودة في رد السيرفر"));
     } catch (e) {
       print("Mapping Error: $e");

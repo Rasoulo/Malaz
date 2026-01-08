@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
+import 'package:malaz/presentation/cubits/booking/booking_cubit.dart';
+import 'package:malaz/presentation/cubits/booking/manage_booking.dart';
 import 'package:malaz/presentation/cubits/favorites/favorites_cubit.dart';
 import 'package:malaz/presentation/cubits/chat/chat_cubit.dart';
 
 import 'package:malaz/presentation/cubits/home/home_cubit.dart';
 import 'package:malaz/presentation/cubits/language/language_cubit.dart';
+import 'package:malaz/presentation/cubits/location/location_cubit.dart';
 import 'package:malaz/presentation/cubits/property/property_cubit.dart';
 import 'package:malaz/presentation/cubits/theme/theme_cubit.dart';
 
@@ -15,6 +18,7 @@ import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/config/routes/app_routes.dart';
 import 'core/config/theme/app_theme.dart';
@@ -85,6 +89,9 @@ class RentalApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<ChatCubit>()),
         BlocProvider(create: (context) => sl<AddApartmentCubit>()),
         BlocProvider(create: (context) => sl<MyApartmentsCubit>()),
+        BlocProvider(create: (context) => sl<BookingCubit>()),
+        BlocProvider(create: (context) => sl<LocationCubit>()..loadSavedLocation(),),
+        BlocProvider(create: (context) => sl<ManageBookingCubit>())
         //BlocProvider(create: (context) => sl<AuthCubit>()),// ..checkAuth()
       ],
       child: const RentalAppView(),
@@ -99,7 +106,6 @@ class RentalAppView extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeState = context.watch<ThemeCubit>().state;
     final languageState = context.watch<LanguageCubit>().state;
-    final authCubit = context.read<AuthCubit>();
 
     final router = buildAppRouter();
 

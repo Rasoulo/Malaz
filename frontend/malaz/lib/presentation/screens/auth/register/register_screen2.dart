@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class RegisterScreen2 extends StatefulWidget {

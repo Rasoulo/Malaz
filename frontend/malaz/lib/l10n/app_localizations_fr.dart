@@ -481,4 +481,86 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get title_hint => 'Appartement Jasmin';
+
+  @override
+  String get booking_in_progress => 'Confirmation de votre réservation...';
+
+  @override
+  String get booking_success_title => 'Réservation réussie !';
+
+  @override
+  String get booking_success_message =>
+      'Nous vous contacterons bientôt pour confirmer les détails.';
+
+  @override
+  String get action_okay => 'D\'accord';
+
+  @override
+  String get location => 'Emplacement';
+
+  @override
+  String get verified_account => 'COMPTE VÉRIFIÉ';
+
+  @override
+  String get unknown_location => 'Emplacement inconnu';
+
+  @override
+  String get back_to_top => 'Retour en haut';
+
+  @override
+  String get filter_title => 'Filtrer les résultats';
+
+  @override
+  String get filter_reset => 'Réinitialiser';
+
+  @override
+  String get filter_location_section => 'Emplacement géographique';
+
+  @override
+  String get filter_current_location => 'Ma position actuelle';
+
+  @override
+  String get filter_map_location => 'Sur la carte';
+
+  @override
+  String get filter_price_section => 'Fourchette de prix (Dollar \$)';
+
+  @override
+  String get filter_type_section => 'Type de bien';
+
+  @override
+  String get filter_area_section => 'Surface (m²)';
+
+  @override
+  String get filter_details_section => 'Détails du bien';
+
+  @override
+  String get filter_total_rooms => 'Nombre de pièces';
+
+  @override
+  String get filter_bedrooms => 'Chambres';
+
+  @override
+  String get filter_bathrooms => 'Salles de bain';
+
+  @override
+  String get filter_any => 'Tout';
+
+  @override
+  String get filter_apply_button => 'Afficher les résultats';
+
+  @override
+  String get type_apartment => 'Appartement';
+
+  @override
+  String get type_villa => 'Villa';
+
+  @override
+  String get type_farm => 'Ferme';
+
+  @override
+  String get type_country_house => 'Maison de campagne';
+
+  @override
+  String get type_studio => 'Studio';
 }

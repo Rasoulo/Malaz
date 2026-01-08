@@ -25,7 +25,7 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      bottomNavigationBar: _BuildBottomBookingBar(price: apartment.price),
+      bottomNavigationBar: _BuildBottomBookingBar(apartment: apartment),
       body: CustomScrollView(
         slivers: [
           _BuildSliverAppBar(apartment: apartment),
@@ -344,7 +344,7 @@ class _BuildOwnerCard extends StatelessWidget {
               color: theme.colorScheme.primary.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: UserProfileImage(userId: owner.id),
+            child: UserProfileImage(userId: owner.id, firstName: owner.first_name, lastName: owner.last_name,),
             //Icon(Icons.person, color: theme.colorScheme.primary),
           ),
           const SizedBox(width: 16),
@@ -373,7 +373,8 @@ class _BuildOwnerCard extends StatelessWidget {
               if (newId != null) {
                 context.pushNamed('one_chat', extra: {
                   'id': newId,
-                  'name': '${owner.first_name} ${owner.last_name}',
+                  'firstName': owner.first_name,
+                  'lastName': owner.last_name,
                   'otherUserId': owner.id,
                 });
               }
@@ -545,9 +546,9 @@ class _BuildReviewSection extends StatelessWidget {
 /// [_BuildBottomBookingBar]
 /// The fixed bottom bar containing Price and Book Button.
 class _BuildBottomBookingBar extends StatelessWidget {
-  final int price;
+  final Apartment apartment;
 
-  const _BuildBottomBookingBar({required this.price});
+  const _BuildBottomBookingBar({required this.apartment});
 
   @override
   Widget build(BuildContext context) {
@@ -574,7 +575,7 @@ class _BuildBottomBookingBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '\$$price',
+                  '\$${apartment.price}',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.primary,
@@ -596,7 +597,7 @@ class _BuildBottomBookingBar extends StatelessWidget {
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
                   builder: (context) => BookingBottomSheet(
-                    pricePerNight: price.toDouble(),
+                    apartment: apartment,
                   ),
                 );
               },
