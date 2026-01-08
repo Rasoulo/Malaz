@@ -519,7 +519,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get filter_area_section => 'المساحة (متر مربع)';
 
   @override
-  String get filter_details_section => 'تفاصيل العقار (الحد الأدنى)';
+  String get filter_details_section => 'تفاصيل العقار';
 
   @override
   String get filter_total_rooms => 'عدد الغرف (الكلي)';

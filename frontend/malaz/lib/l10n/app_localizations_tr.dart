@@ -525,7 +525,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get filter_area_section => 'Alan (m²)';
 
   @override
-  String get filter_details_section => 'Özellikler (Min)';
+  String get filter_details_section => 'Özellikler';
 
   @override
   String get filter_total_rooms => 'Toplam Oda';

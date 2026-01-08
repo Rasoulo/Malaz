@@ -1115,7 +1115,7 @@ abstract class AppLocalizations {
   /// No description provided for @filter_details_section.
   ///
   /// In en, this message translates to:
-  /// **'Property Details (Min)'**
+  /// **'Property Details'**
   String get filter_details_section;
 
   /// No description provided for @filter_total_rooms.

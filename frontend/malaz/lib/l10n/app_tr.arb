@@ -169,7 +169,7 @@
   "filter_price_section": "Fiyat Aralığı (Dolar $)",
   "filter_type_section": "Emlak Tipi",
   "filter_area_section": "Alan (m²)",
-  "filter_details_section": "Özellikler (Min)",
+  "filter_details_section": "Özellikler",
   "filter_total_rooms": "Toplam Oda",
   "filter_bedrooms": "Yatak Odası",
   "filter_bathrooms": "Banyo",

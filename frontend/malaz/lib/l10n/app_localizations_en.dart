@@ -522,7 +522,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get filter_area_section => 'Area (sqm)';
 
   @override
-  String get filter_details_section => 'Property Details (Min)';
+  String get filter_details_section => 'Property Details';
 
   @override
   String get filter_total_rooms => 'Total Rooms';

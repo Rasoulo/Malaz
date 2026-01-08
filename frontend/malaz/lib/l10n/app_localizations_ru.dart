@@ -525,7 +525,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get filter_area_section => 'Площадь (кв. м)';
 
   @override
-  String get filter_details_section => 'Детали (Мин.)';
+  String get filter_details_section => 'Детали';
 
   @override
   String get filter_total_rooms => 'Всего комнат';

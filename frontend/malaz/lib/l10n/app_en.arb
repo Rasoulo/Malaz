@@ -174,7 +174,7 @@
   "filter_price_section": "Price Range (Dollar $)",
   "filter_type_section": "Property Type",
   "filter_area_section": "Area (sqm)",
-  "filter_details_section": "Property Details (Min)",
+  "filter_details_section": "Property Details",
   "filter_total_rooms": "Total Rooms",
   "filter_bedrooms": "Bedrooms",
   "filter_bathrooms": "Bathrooms",

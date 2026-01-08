@@ -175,7 +175,7 @@
   "filter_price_section": "Диапазон цен (Доллар $)",
   "filter_type_section": "Тип недвижимости",
   "filter_area_section": "Площадь (кв. м)",
-  "filter_details_section": "Детали (Мин.)",
+  "filter_details_section": "Детали",
   "filter_total_rooms": "Всего комнат",
   "filter_bedrooms": "Спальни",
   "filter_bathrooms": "Ванные",

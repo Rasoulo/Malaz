@@ -174,7 +174,7 @@
   "filter_price_section": "نطاق السعر (دولار $)",
   "filter_type_section": "نوع العقار",
   "filter_area_section": "المساحة (متر مربع)",
-  "filter_details_section": "تفاصيل العقار (الحد الأدنى)",
+  "filter_details_section": "تفاصيل العقار",
   "filter_total_rooms": "عدد الغرف (الكلي)",
   "filter_bedrooms": "غرف النوم",
   "filter_bathrooms": "عدد الحمامات",

@@ -174,7 +174,7 @@
   "filter_price_section": "Fourchette de prix (Dollar $)",
   "filter_type_section": "Type de bien",
   "filter_area_section": "Surface (m²)",
-  "filter_details_section": "Détails du bien (Min)",
+  "filter_details_section": "Détails du bien",
   "filter_total_rooms": "Nombre de pièces",
   "filter_bedrooms": "Chambres",
   "filter_bathrooms": "Salles de bain",
