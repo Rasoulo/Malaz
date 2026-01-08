@@ -71,40 +71,89 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
     final tr = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       floatingActionButton: _currentPage == 0
-          ? FloatingActionButton.extended(
-        heroTag: 'manage_property_fab',
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const AddPropertyScreen())),
-        backgroundColor: colorScheme.primary,
-        icon: Icon(Icons.add_home_work_rounded, color: colorScheme.onPrimary),
-        label: Text(tr.add_new,
-            style: const TextStyle(fontWeight: FontWeight.bold)),
+          ? GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AddPropertyScreen()),
+        ),
+        child: Container(
+          height: 56,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          decoration: BoxDecoration(
+            gradient: AppColors.premiumGoldGradient2,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryLight.withOpacity(0.4),
+                blurRadius: 15,
+                spreadRadius: 2,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.add_home_work_rounded,
+                color: Colors.white,
+                size: 22,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                tr.add_new,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 15,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
+          ),
+        ),
       )
           : null,
       body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                pinned: true,
-                expandedHeight: 340.0,
-                backgroundColor: colorScheme.primary,
-                centerTitle: true,
-                title: Text(tr.property_manager,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800, color: colorScheme.surface)),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    color: colorScheme.primary,
-                    child: Container(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              pinned: true,
+              expandedHeight: 340.0,
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              elevation: 0,
+              title: Text(tr.property_manager,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800, color: Theme.of(context).scaffoldBackgroundColor)),
+              flexibleSpace: FlexibleSpaceBar(
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        gradient: AppColors.premiumGoldGradient2,
+                      ),
+                    ),
+
+                    PositionedDirectional(
+                      top: 40,
+                      end: -30,
+                      child: _buildGlowingKey(140, 0.15, 0.5),
+                    ),
+                    PositionedDirectional(
+                      top: 10,
+                      start: 10,
+                      child: _buildGlowingKey(80, 0.15, -0.3),
+                    ),
+
+                    Container(
                       margin: const EdgeInsets.only(top: kToolbarHeight + 40),
                       decoration: BoxDecoration(
-                        color: colorScheme.surface,
-                        borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(35)),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(35)),
                       ),
                       child: Column(
                         children: [
@@ -113,36 +162,36 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                         ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(80),
-                  child: Container(
-                    color: colorScheme.surface,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 12),
-                        _buildGradientIndicator(),
-                        const SizedBox(height: 12),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              _buildTabItem(tr.properties, 0),
-                              _buildTabItem(tr.inbound, 1),
-                              _buildTabItem(tr.history, 2),
-                            ],
-                          ),
+              ),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(80),
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      _buildGradientIndicator(),
+                      const SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            _buildTabItem(tr.properties, 0),
+                            _buildTabItem(tr.inbound, 1),
+                            _buildTabItem(tr.history, 2),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ];
-          },
+            ),
+          ];
+        },
 
           body: PageView(
             controller: _pageController,
@@ -154,6 +203,34 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
           ),
         ),
       );
+  }
+
+  Widget _buildGlowingKey(double size, double opacity, double rotation) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.rotate(
+        angle: rotation,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryLight.withOpacity(0.4),
+                blurRadius: 40,
+                spreadRadius: 10,
+              ),
+            ],
+          ),
+          child: Image.asset(
+            'assets/icons/key_logo.png',
+            width: size,
+            height: size,
+            color: Colors.white,
+            colorBlendMode: BlendMode.srcIn,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildBookingsTab({required String targetStatus}) {
@@ -269,20 +346,14 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
         }
         return Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.primaryLight, width: 2),
-              ),
-              child: CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.grey[100],
-                child: id == null
-                    ? const Icon(Icons.person, size: 40)
-                    : ClipOval(child: UserProfileImage(userId: id, radius: 60)),
-              ),
+            UserProfileImage(
+              userId: id ?? 0,
+              radius: 60,
+              firstName: name.split(' ')[0],
+              lastName: name.split(' ')[1],
+              isPremiumStyle: true,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
           ],
         );

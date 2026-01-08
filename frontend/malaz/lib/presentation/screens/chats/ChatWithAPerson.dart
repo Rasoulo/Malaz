@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../core/service_locator/service_locator.dart';
+import '../../../core/config/color/app_color.dart';
 import '../../../data/models/chat_message_model.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/chat/chat_cubit.dart';
@@ -195,43 +195,120 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
 
   PreferredSizeWidget _buildAppBar(BuildContext context, bool isDark) {
     final tr = AppLocalizations.of(context)!;
-    final primaryGold = const Color(0xFFAF895F);
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AppBar(
       elevation: 0,
-      toolbarHeight: 85,
+      toolbarHeight: 120,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
       flexibleSpace: Container(
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1A1B21).withOpacity(0.9) : Colors.white.withOpacity(0.9),
-          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))],
+        decoration: const BoxDecoration(
+          gradient: AppColors.premiumGoldGradient2,
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 15,
+              offset: Offset(0, 5),
+            )
+          ],
         ),
-      ),
-      title: Row(
-        children: [
-          IconButton(
-            onPressed: () => context.pop(),
-            icon: Icon(Icons.arrow_back_ios_new_rounded, color: primaryGold, size: 20),
-          ),
-          UserProfileImage(userId: widget.otherUserId, firstName: widget.firstName, lastName: widget.lastName, radius: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('${widget.firstName} ${widget.lastName}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: isDark ? Colors.white : Colors.black87)),
-                Row(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            PositionedDirectional(
+              top: -10,
+              start: -20,
+              child: _buildGlowingKey(100, 0.12, -0.2),
+            ),
+            PositionedDirectional(
+              bottom: -10,
+              end: 20,
+              child: _buildGlowingKey(80, 0.1, 0.5),
+            ),
+
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 12),
+                child: Row(
                   children: [
-                    Container(width: 8, height: 8, decoration: const BoxDecoration(color: Colors.green, shape: BoxShape.circle)),
-                    const SizedBox(width: 5),
-                    Text(tr.online_now, style: TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w500)),
+                    IconButton(
+                      onPressed: () => context.pop(),
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
+                    ),
+                    UserProfileImage(
+                      userId: widget.otherUserId,
+                      firstName: widget.firstName,
+                      lastName: widget.lastName,
+                      radius: 22,
+                      isPremiumStyle: true,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${widget.firstName} ${widget.lastName}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Row(
+                            children: [
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration: const BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [BoxShadow(color: Colors.greenAccent, blurRadius: 4)],
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                tr.online_now,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
+                      onPressed: () {},
+                    ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGlowingKey(double size, double opacity, double rotation) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.rotate(
+        angle: rotation,
+        child: Image.asset(
+          'assets/icons/key_logo.png',
+          width: size,
+          height: size,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -240,7 +317,7 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 25),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF16171B) : Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
       ),
       child: Column(
@@ -318,8 +395,22 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
                 },
                 child: Container(
                   padding: const EdgeInsets.all(12),
-                  decoration: const BoxDecoration(color: Color(0xFFAF895F), shape: BoxShape.circle),
-                  child: Icon(_editingMessage != null ? Icons.check : Icons.send_rounded, color: Colors.white, size: 22),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.premiumGoldGradient2,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFAF895F).withOpacity(0.4),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    _editingMessage != null ? Icons.check_rounded : Icons.send_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
               ),
             ],
@@ -372,7 +463,7 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
       child: ListView.builder(
         reverse: true,
         padding: const EdgeInsets.all(20),
-        itemCount: 5,
+        itemCount: 8,
         itemBuilder: (_, i) => Align(
           alignment: i % 2 == 0 ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(margin: const EdgeInsets.only(bottom: 20), height: 50, width: 220, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15))),
@@ -394,7 +485,6 @@ class ChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final primaryGold = const Color(0xFFAF895F);
 
     return GestureDetector(
       onLongPress: onLongPress,
@@ -405,21 +495,22 @@ class ChatBubble extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.78),
           decoration: BoxDecoration(
-            color: isMe ? primaryGold : (isDark ? const Color(0xFF1E1F23) : Colors.white),
+            gradient: isMe ? AppColors.premiumGoldGradient2 : null,
+            color: isMe ? null : Colors.white,
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(20),
               topRight: const Radius.circular(20),
-              bottomLeft: Radius.circular(isMe ? 20 : (isSameUser ? 20 : 5)),
-              bottomRight: Radius.circular(isMe ? (isSameUser ? 20 : 5) : 20),
+              bottomLeft: Radius.circular(isMe ? 22 : (isSameUser ? 22 : 6)),
+              bottomRight: Radius.circular(isMe ? (isSameUser ? 22 : 6) : 22),
             ),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 3))],
+            boxShadow: [BoxShadow(color: Colors.black.withOpacity(isDark ? 0.15 : 0.05), blurRadius: 8, offset: const Offset(0, 3))],
           ),
           child: Column(
             crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
               Text(
                 message.body,
-                style: TextStyle(color: isMe ? Colors.white : (isDark ? Colors.white : Colors.black87), fontSize: 15, height: 1.3),
+                style: TextStyle(color: isMe ? (isDark ? Colors.black : Colors.white) : Colors.black87, fontSize: 15, height: 1.3),
               ),
               const SizedBox(height: 6),
               Row(
@@ -428,11 +519,11 @@ class ChatBubble extends StatelessWidget {
                   if (message.isEdited)
                     Padding(
                       padding: EdgeInsets.only(left: 5),
-                      child: Text(' '+tr.edited+'   ', style: TextStyle(fontSize: 9, fontStyle: FontStyle.italic, color: Colors.white70)),
+                      child: Text(' ${tr.edited}   ', style: TextStyle(fontSize: 9, fontStyle: FontStyle.italic, color: Colors.white70)),
                     ),
                   Text(
                     DateFormat('hh:mm a').format(message.createdAt),
-                    style: TextStyle(fontSize: 10, color: isMe ? Colors.white70 : Colors.grey),
+                    style: TextStyle(fontSize: 10, color: isMe ? Colors.white : Colors.grey),
                   ),
                   if (isMe) ...[
                     const SizedBox(width: 4),
