@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:malaz/presentation/global_widgets/brand/build_branding.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import '../../../global_widgets/buttons/custom_button.dart';
 import '../shared_widgets/shared_widgets.dart';
 
@@ -167,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
 
                         // Branding
-                        BuildBranding()
+                        BuildBranding.metaStyle()
                       ],
                     ),
                   ),

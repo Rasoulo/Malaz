@@ -5,7 +5,7 @@ import 'package:malaz/core/config/color/app_color.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
 import 'home_register_screen.dart';
 
@@ -168,7 +168,7 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                         const SizedBox(height: 40),
                         const BuildLoginRow(),
                         const SizedBox(height: 90),
-                        BuildBranding(),
+                        BuildBranding.metaStyle()
                       ],
                     ),
                   ),

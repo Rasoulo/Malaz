@@ -8,7 +8,7 @@ import 'package:malaz/core/config/color/app_color.dart';
 import 'package:malaz/presentation/global_widgets/buttons/custom_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import 'home_register_screen.dart';
 
 class RegisterScreen5 extends StatefulWidget {
