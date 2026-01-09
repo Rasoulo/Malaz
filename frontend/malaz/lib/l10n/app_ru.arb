@@ -185,5 +185,7 @@
   "type_villa": "Вилла",
   "type_farm": "Ферма",
   "type_country_house": "Загородный дом",
-  "type_studio": "Студия"
+  "type_studio": "Студия",
+  "phone_number_hint": "(963) 999 999 999",
+  "enter_hint": "Введите"
 }

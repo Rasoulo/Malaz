@@ -184,5 +184,7 @@
   "type_villa": "فيلا",
   "type_farm": "مزرعة",
   "type_country_house": "منزل ريفي",
-  "type_studio": "استديو"
+  "type_studio": "استديو",
+  "phone_number_hint": "(٩٦٣) ٩٩٩ ٩٩٩ ٩٩٩",
+  "enter_hint": "أدخل"
 }

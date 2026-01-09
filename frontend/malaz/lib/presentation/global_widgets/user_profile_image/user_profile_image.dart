@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart'; // تأكد من إضافة shimmer في pubspec.yaml
+import 'package:shimmer/shimmer.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/service_locator/service_locator.dart';
 import '../../../data/datasources/local/auth_local_data_source.dart';
@@ -10,6 +10,7 @@ class UserProfileImage extends StatelessWidget {
   final double radius;
   final String? firstName;
   final String? lastName;
+  final bool isPremiumStyle;
 
   const UserProfileImage({
     super.key,
@@ -17,6 +18,7 @@ class UserProfileImage extends StatelessWidget {
     this.firstName,
     this.lastName,
     this.radius = 35,
+    this.isPremiumStyle = true,
   });
 
   Future<Map<String, String>> _getHeaders() async {
@@ -39,9 +41,9 @@ class UserProfileImage extends StatelessWidget {
     return Container(
       width: radius * 2,
       height: radius * 2,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: AppColors.premiumGoldGradient2,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius * 0.6), // Squircle
+        gradient: AppColors.premiumGoldGradient,
       ),
       alignment: Alignment.center,
       child: initials.isEmpty
@@ -50,23 +52,23 @@ class UserProfileImage extends StatelessWidget {
         initials,
         style: TextStyle(
           color: Colors.white,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w900,
           fontSize: radius * 0.7,
         ),
       ),
     );
   }
 
-  Widget _buildShimmerLoading() {
+  Widget _buildShimmerLoading(bool isDark) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+      highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
       child: Container(
         width: radius * 2,
         height: radius * 2,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(radius * 0.6),
         ),
       ),
     );
@@ -75,27 +77,43 @@ class UserProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String url = AppConstants.userProfileImage(userId);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return FutureBuilder<Map<String, String>>(
-      future: _getHeaders(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return _buildShimmerLoading();
+    return Container(
+      padding: isPremiumStyle ? const EdgeInsets.all(2) : EdgeInsets.zero,
+      decoration: BoxDecoration(
+        gradient: isPremiumStyle ? AppColors.premiumGoldGradient : null,
+        borderRadius: BorderRadius.circular(radius * 0.7),
+      ),
+      child: Container(
+        padding: isPremiumStyle ? const EdgeInsets.all(2) : EdgeInsets.zero,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(radius * 0.65),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(radius * 0.6),
+          child: FutureBuilder<Map<String, String>>(
+            future: _getHeaders(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return _buildShimmerLoading(isDark);
 
-        return ClipOval(
-          child: Image.network(
-            url,
-            headers: snapshot.data,
-            width: radius * 2,
-            height: radius * 2,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return _buildShimmerLoading();
+              return Image.network(
+                url,
+                headers: snapshot.data,
+                width: radius * 2,
+                height: radius * 2,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return _buildShimmerLoading(isDark);
+                },
+                errorBuilder: (context, error, stackTrace) => _buildInitialsPlaceholder(),
+              );
             },
-            errorBuilder: (context, error, stackTrace) => _buildInitialsPlaceholder(),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

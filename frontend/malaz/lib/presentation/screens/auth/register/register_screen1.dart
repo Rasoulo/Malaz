@@ -129,7 +129,12 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                         const SizedBox(height: 24),
                         Text(
                           tr.create_account,
-                          style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 30, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.primary,
+                            letterSpacing: -1,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -139,6 +144,7 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                         const SizedBox(height: 100),
                         BuildTextfield(
                           label: tr.mobile_number,
+                          hintText: tr.phone_number_hint,
                           icon: Icons.phone,
                           obscure: false,
                           keyboardType: TextInputType.phone,
@@ -163,8 +169,8 @@ class _RegisterScreen1State extends State<RegisterScreen1> {
                         if (_pinError != null)
                         Padding(
                             padding: const EdgeInsets.only(top: 8),
-                            child: Text(_pinError!, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                          ),
+                            child: Text(_pinError!, style: TextStyle(color: colorScheme.error, fontWeight: FontWeight.bold)),
+                        ),
                         const SizedBox(height: 40),
                         const BuildLoginRow(),
                         const SizedBox(height: 90),

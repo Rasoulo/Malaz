@@ -550,4 +550,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get type_studio => 'استديو';
+
+  @override
+  String get phone_number_hint => '(٩٦٣) ٩٩٩ ٩٩٩ ٩٩٩';
+
+  @override
+  String get enter_hint => 'أدخل';
 }
