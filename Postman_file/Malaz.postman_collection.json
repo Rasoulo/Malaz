@@ -2845,6 +2845,53 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get reviews from property",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/reviews/properties/2/reviews?per_page=2&cursor=null",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"properties",
+								"2",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "2"
+								},
+								{
+									"key": "cursor",
+									"value": "null"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -6723,7 +6770,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"channel_name\": \"private-conversations.19\",\r\n  \"socket_id\": \"73957.443533\"\r\n}",
+					"raw": "{\r\n  \"channel_name\": \"private-conversations.20\",\r\n  \"socket_id\": \"73957.443533\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
