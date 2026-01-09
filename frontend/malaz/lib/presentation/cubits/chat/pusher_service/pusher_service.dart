@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:malaz/core/constants/app_constants.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,14 +17,14 @@ class PusherService {
 
     try {
       await pusher.init(
-        apiKey: "c85e12264ff96015fc05",
-        cluster: "ap2",
+        apiKey: AppConstants.apiKeyForPusher,
+        cluster: AppConstants.clusterForPusher,
         onAuthorizer: (channelName, socketId, options) async {
           log(">>>> [Pusher] Manual Authorizing for: $channelName");
 
           try {
             final response = await http.post(
-              Uri.parse("http://192.168.1.101:8000/broadcasting/auth"),
+              Uri.parse(AppConstants.baseurlForPusher),
               headers: {
                 "Authorization": "Bearer $token",
                 "Accept": "application/json",

@@ -104,16 +104,16 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
     if (_currentSubscribedChannel == channelName) return;
 
     if (_currentSubscribedChannel != null) {
-      log("🗑️ Unsubscribing from old channel: $_currentSubscribedChannel");
+      log(">>>> Unsubscribing from old channel: $_currentSubscribedChannel");
       await PusherService().unsubscribe(_currentSubscribedChannel!);
     }
 
-    log("📡 Attempting to subscribe to: $channelName");
+    log(">>>> Attempting to subscribe to: $channelName");
 
     await PusherService().subscribe(
       channelName: channelName,
       onEvent: (event) {
-        log("📡 Event Received in UI: ${event.eventName}");
+        log(">>>> Event Received in UI: ${event.eventName}");
 
         if (event.eventName == "pusher:subscription_succeeded") return;
 
@@ -123,7 +123,7 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
             context.read<ChatCubit>().handlePusherEvent(event.eventName, data);
           }
         } catch (e) {
-          log("❌ UI Parsing Error: $e");
+          log(">>>> UI Parsing Error: $e");
         }
       },
     );
@@ -202,7 +202,7 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
 
                             final channelName = "private-conversations.${state.conversationId}";
                             if (_currentSubscribedChannel != channelName) {
-                              log("🔄 New Conversation detected (${state.conversationId}), re-subscribing...");
+                              log(">>>> New Conversation detected (${state.conversationId}), re-subscribing...");
                               _subscribeToCurrentConversation(state.conversationId);
                             }
 
