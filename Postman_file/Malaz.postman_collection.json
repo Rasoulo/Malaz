@@ -3,8 +3,8 @@
 		"_postman_id": "f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2",
 		"name": "Malaz",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "50107547",
-		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107547"
+		"_exporter_id": "50107412",
+		"_collection_link": "https://maheralnouri244-8606895.postman.co/workspace/Malaz~58f497b4-5b42-4c8a-81c5-815fbd846f66/collection/50107412-f6e67ffd-93b8-4ed3-ba19-bf352fed2ad2?action=share&source=collection_link&creator=50107412"
 	},
 	"item": [
 		{
@@ -2845,6 +2845,53 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get reviews from property",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{usertoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/reviews/properties/2/reviews?per_page=2&cursor=null",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"properties",
+								"2",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "2"
+								},
+								{
+									"key": "cursor",
+									"value": "null"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3351,14 +3398,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/conversations/3/messages/?body=Welcome back",
+							"raw": "{{localhost}}/api/conversations/16/messages/?body=Welcome back",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
 								"conversations",
-								"3",
+								"16",
 								"messages",
 								""
 							],
@@ -6700,6 +6747,44 @@
 						"api",
 						"images",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test pusher",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admintoken}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"channel_name\": \"private-conversations.20\",\r\n  \"socket_id\": \"73957.443533\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/broadcasting/auth",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"broadcasting",
+						"auth"
 					]
 				}
 			},

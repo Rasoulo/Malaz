@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:malaz/presentation/global_widgets/brand/build_branding.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
@@ -85,11 +86,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   void _submitProperty() {
     if (_images.isEmpty) setState(() => _showImageError = true);
     if (_selectedLat == null || _selectedLng == null) {
-      _showSnackBar(context, "يرجى تحديد الموقع من الخريطة أولاً", Colors.orange);
+      _showSnackBar(context, "piease select locationً", Colors.orange);
       return;
     }
 
-    // 3. التأكد من أن حقول المدينة والعنوان ليست فارغة (نعطيها قيمة افتراضية إذا كانت الخريطة لم ترجع نصاً)
     if (_cityController.text.isEmpty) _cityController.text = "City Selected";
     if (_addressController.text.isEmpty) _addressController.text = "Address Selected";
 
@@ -154,7 +154,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           color: Colors.white,
           dismissible: false,
           child: Scaffold(
-            backgroundColor: colorScheme.surface,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: const _PropertyAppBar(),
             body: SingleChildScrollView(
               child: SafeArea(
@@ -213,14 +213,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   Widget _buildHeader(AppLocalizations tr, ColorScheme colorScheme) {
     return Column(
       children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ShaderMask(
-            shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
-            child: Text(tr.malaz, style: const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold)),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(height: 60, width: 50, child: Image.asset("assets/icons/key_logo.png", color: colorScheme.primary)),
-        ]),
+        BuildBranding(),
         Text(tr.share_your_property, style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 14)),
       ],
     );
@@ -421,10 +414,68 @@ class _PropertyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
-    return AppBar(title: Text(tr.add_property, style: const TextStyle(fontWeight: FontWeight.bold)), centerTitle: false);
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return AppBar(flexibleSpace: FlexibleSpaceBar(
+        stretchModes: const [
+          StretchMode.zoomBackground,
+          StretchMode.blurBackground,
+        ],
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            Container(decoration: const BoxDecoration(gradient: AppColors.premiumGoldGradient2)),
+
+            PositionedDirectional(
+              top: -20,
+              start: -40,
+              child: _buildGlowingKey(180, 0.15, -0.2),
+            ),
+
+            PositionedDirectional(
+              bottom: 40,
+              end: -10,
+              child: _buildGlowingKey(140, 0.12, 0.5),
+            ),
+
+            PositionedDirectional(
+              top: 40,
+              end: 80,
+              child: _buildGlowingKey(70, 0.12, 2.5),
+            ),
+          ],
+        )
+    ), title: Text(tr.add_property, style: TextStyle(fontWeight: FontWeight.bold,color:colorScheme.surface)),);
   }
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Widget _buildGlowingKey(double size, double opacity, double rotation) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.rotate(
+        angle: rotation,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryLight.withOpacity(0.4),
+                blurRadius: 40,
+                spreadRadius: 10,
+              ),
+            ],
+          ),
+          child: Image.asset(
+            'assets/icons/key_logo.png',
+            width: size,
+            height: size,
+            color: Colors.white,
+            colorBlendMode: BlendMode.srcIn,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _PrimaryGradientButton extends StatelessWidget {
@@ -442,7 +493,7 @@ class _PrimaryGradientButton extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Positioned.fill(child: ShaderMask(shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds), child: Container(decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12))))),
+            Positioned.fill(child: ShaderMask(shaderCallback: (bounds) => AppColors.premiumGoldGradient2.createShader(bounds), child: Container(decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12))))),
             Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
           ],
         ),
@@ -602,7 +653,7 @@ class _TypeSelectorButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        decoration: BoxDecoration(color: isSelected ? colorScheme.primary : colorScheme.surface, borderRadius: BorderRadius.circular(10), border: Border.all(color: colorScheme.primary.withOpacity(0.3))),
+        decoration: BoxDecoration(gradient: isSelected ? AppColors.premiumGoldGradient2: null,color: !isSelected ? colorScheme.surface : null, borderRadius: BorderRadius.circular(10), border: Border.all(color: colorScheme.primary.withOpacity(0.3))),
         child: Text(text, style: TextStyle(color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface, fontWeight: FontWeight.bold)),
       ),
     );
@@ -676,6 +727,6 @@ class _GradientFab extends StatelessWidget {
   const _GradientFab({required this.onPressed});
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: onPressed, child: Container(width: 40, height: 40, decoration: BoxDecoration(shape: BoxShape.circle, gradient: AppColors.premiumGoldGradient), child: Icon(Icons.add_a_photo, color: Colors.white, size: 20)));
+    return GestureDetector(onTap: onPressed, child: Container(width: 40, height: 40, decoration: BoxDecoration(shape: BoxShape.circle, gradient: AppColors.premiumGoldGradient2), child: Icon(Icons.add_a_photo, color: Colors.white, size: 20)));
   }
 }

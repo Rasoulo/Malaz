@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:malaz/domain/entities/apartment.dart';
+import 'package:malaz/domain/entities/filters.dart';
 import 'package:path/path.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/errors/exceptions.dart';
@@ -10,7 +10,7 @@ import '../../../../domain/entities/apartments_list.dart';
 import '../../../models/apartment_model.dart';
 
 abstract class ApartmentRemoteDataSource {
-  Future<ApartmentsList> getApartments({String? cursor});
+  Future<ApartmentsList> getApartments({String? cursor, Filter? filter});
   Future<Unit> addApartment({
     required String title,
     required int price,
@@ -35,15 +35,21 @@ class ApartmentRemoteDataSourceImpl implements ApartmentRemoteDataSource {
   ApartmentRemoteDataSourceImpl({required this.networkService});
 
   @override
-  Future<ApartmentsList> getApartments({String? cursor}) async {
-    print('cursor sent $cursor');
+  Future<ApartmentsList> getApartments({String? cursor, Filter? filter}) async {
+    Map<String, dynamic> queryParams = {
+      'per_page': AppConstants.numberOfApartmentsEachRequest,
+      'cursor': cursor,
+    };
+
+    if (filter != null) {
+      queryParams.addAll(filter.toMap());
+    }
+
     final response = await networkService.get(
       '/properties/all',
-      queryParameters: {
-        'per_page': AppConstants.numberOfApartmentsEachRequest,
-        'cursor': cursor,
-      },
+      queryParameters: queryParams,
     );
+
     List<ApartmentModel> apartments = [];
     if (response.data['data'] != null) {
       print('data : ${response.data['data']}');
@@ -80,7 +86,7 @@ class ApartmentRemoteDataSourceImpl implements ApartmentRemoteDataSource {
     final response = await networkService.get(
       '/properties/all/my',
       queryParameters: {
-        'per_page': 2,
+        'per_page': AppConstants.numberOfApartmentsEachRequest,
         'cursor': cursor,
       },
     );

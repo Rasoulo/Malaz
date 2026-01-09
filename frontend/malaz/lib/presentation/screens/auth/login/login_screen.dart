@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:malaz/presentation/global_widgets/brand/build_branding.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import '../../../global_widgets/buttons/custom_button.dart';
 import '../shared_widgets/shared_widgets.dart';
 
@@ -98,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               tr.welcome_back,
                               style: TextStyle(
-                                fontFamily: 'PlayfairDisplay',
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
                                 color: colorScheme.primary,
@@ -123,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Mobile number Text field
                         BuildTextfield(
                           label: tr.mobile_number,
+                          hintText: tr.phone_number_hint,
                           icon: Icons.phone,
                           obscure: false,
                           haveSuffixEyeIcon: false,
@@ -134,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Password Text field
                         BuildTextfield(
                           label: tr.password,
+                          hintText: "${tr.enter_hint} ${tr.password}",
                           icon: Icons.password,
                           obscure: true,
                           haveSuffixEyeIcon: true,
@@ -167,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
 
                         // Branding
-                        BuildBranding()
+                        BuildBranding.metaStyle()
                       ],
                     ),
                   ),

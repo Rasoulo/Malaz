@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
+import 'package:malaz/core/config/color/app_color.dart';
 import 'package:malaz/core/constants/app_constants.dart';
+import 'package:malaz/presentation/global_widgets/brand/build_branding.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../../domain/entities/apartment.dart';
 import '../../../core/config/routes/route_info.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/home/home_cubit.dart';
 import '../../global_widgets/apartment_cards/apartment_card.dart';
 import '../side_drawer/app_drawer.dart';
 import '../../global_widgets/apartment_cards/apartment_shimmer.dart';
+import 'filter_bottom_sheet.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,6 +34,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _scrollController = ScrollController();
+
+  bool _showStickyHeader = false;
 
   @override
   void initState() {
@@ -52,6 +58,15 @@ class _HomeViewState extends State<HomeView> {
     if (_isBottom) {
       context.read<HomeCubit>().loadApartments(loadNext: true);
     }
+
+    if (_scrollController.hasClients) {
+      final show = _scrollController.offset > 200;
+      if (show != _showStickyHeader) {
+        setState(() {
+          _showStickyHeader = show;
+        });
+      }
+    }
   }
 
   bool get _isBottom {
@@ -61,26 +76,32 @@ class _HomeViewState extends State<HomeView> {
     return currentScroll >= (maxScroll * 0.9);
   }
 
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutQuint,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: colorScheme.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       drawer: const AppDrawer(),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            _BuildHomeHeader(scaffoldKey: _scaffoldKey),
-            const SizedBox(height: 10),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  await context.read<HomeCubit>().loadApartments(isRefresh: true);
-                },
-                child: _BuildHomeBody(scrollController: _scrollController),
-              ),
+            _BuildScrollableBody(
+              scrollController: _scrollController,
+              scaffoldKey: _scaffoldKey,
+            ),
+            _BuildStickyHeader(
+              isVisible: _showStickyHeader,
+              onTapBack: _scrollToTop,
             ),
           ],
         ),
@@ -91,52 +112,80 @@ class _HomeViewState extends State<HomeView> {
 
 /// ============================================================================
 /// [UI_BUILDING_WIDGETS]
+/// ============================================================================
 
-/// *[contains]
-/// - [_BuildHomeHeader]
-/// - [_BuildFilterList]
-/// - [_BuildHomeBody]
-/// - [_BuildApartmentList]
-/// - [_BuildBottomLoader]
-/// - [_BuildErrorView]
-/// - [_BuildAddPropertyFab]
-///
-class _BuildHomeHeader extends StatelessWidget {
+/// [_BuildScrollableBody]
+class _BuildScrollableBody extends StatelessWidget {
+  final ScrollController scrollController;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const _BuildHomeHeader({required this.scaffoldKey});
+  const _BuildScrollableBody({
+    required this.scrollController,
+    required this.scaffoldKey,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          _BuildIconButton(
-            icon: Icons.menu,
-            onTap: () => scaffoldKey.currentState?.openDrawer(),
+    return RefreshIndicator(
+      onRefresh: () async {
+        await context.read<HomeCubit>().loadApartments(isRefresh: true);
+      },
+      child: CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          SliverToBoxAdapter(
+            child: _BuildMainBrandingHeader(scaffoldKey: scaffoldKey),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: colorScheme.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.withOpacity(0.2)),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: colorScheme.onSurface.withOpacity(0.5)),
-                  const SizedBox(width: 8),
-                  Text( /// TODO: this's must be a text field
-                    'Search apartments...',
-                    style: TextStyle(color: colorScheme.onSurface.withOpacity(0.5)),
+          const SliverToBoxAdapter(child: SizedBox(height: 10)),
+          BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              if (state is HomeLoading) {
+                return const SliverToBoxAdapter(child: _BuildShimmerLoading());
+              }
+
+              if (state is HomeError) {
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _BuildErrorView(message: state.message),
+                );
+              }
+
+              if (state is HomeLoaded) {
+                if (state.apartments.isEmpty) {
+                  return SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: _BuildErrorView(
+                        message: AppLocalizations.of(context)
+                            .unexpected_error_message),
+                  );
+                }
+
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      if (index >= state.apartments.length) {
+                        return state.hasReachedMax
+                            ? const SizedBox.shrink()
+                            : const _BuildBottomLoader();
+                      }
+                      final apartment = state.apartments[index];
+                      return ApartmentCard(
+                        apartment: apartment,
+                        onTap: () {
+                          context.pushNamed(RouteNames.details,
+                              extra: apartment);
+                        },
+                      );
+                    },
+                    childCount: state.hasReachedMax
+                        ? state.apartments.length
+                        : state.apartments.length + 1,
                   ),
-                ],
-              ),
-            ),
+                );
+              }
+
+              return const SliverToBoxAdapter(child: SizedBox.shrink());
+            },
           ),
         ],
       ),
@@ -144,70 +193,144 @@ class _BuildHomeHeader extends StatelessWidget {
   }
 }
 
-class _BuildHomeBody extends StatelessWidget {
-  final ScrollController scrollController;
+/// [_BuildMainBrandingHeader]
+class _BuildMainBrandingHeader extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const _BuildHomeBody({required this.scrollController});
+  const _BuildMainBrandingHeader({required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) {
-        if (state is HomeLoading) {
-          return const Center(child: _BuildShimmerLoading());
-        }
-
-        if (state is HomeError) {
-          return _BuildErrorView(message: state.message);
-        }
-
-        if (state is HomeLoaded) {
-          if (state.apartments.isEmpty) {
-            return _BuildErrorView(message: AppLocalizations.of(context).unexpected_error_message);
-          }
-          return _BuildApartmentList(
-            apartments: state.apartments,
-            hasReachedMax: state.hasReachedMax,
-            scrollController: scrollController,
-          );
-        }
-
-        return const SizedBox.shrink();
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _BuildIconButton(
+            icon: Icons.menu_rounded,
+            onTap: () => scaffoldKey.currentState?.openDrawer(),
+          ),
+          BuildBranding.nameLottie(
+              lottie: Lottie.asset('assets/lottie/shake_share_laptop.json'),
+              width: 80,
+              height: 80),
+          _BuildIconButton(
+            icon: Icons.tune_rounded,
+            color: AppColors.primaryDark.withOpacity(0.1),
+            iconColor: AppColors.primaryDark,
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) => const FilterBottomSheet(),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
 
-class _BuildApartmentList extends StatelessWidget {
-  final List<Apartment> apartments;
-  final bool hasReachedMax;
-  final ScrollController scrollController;
+/// [_BuildStickyHeader]
+class _BuildStickyHeader extends StatelessWidget {
+  final bool isVisible;
+  final VoidCallback onTapBack;
 
-  const _BuildApartmentList({
-    required this.apartments,
-    required this.hasReachedMax,
-    required this.scrollController,
+  const _BuildStickyHeader({
+    required this.isVisible,
+    required this.onTapBack,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      itemCount: hasReachedMax ? apartments.length : apartments.length + 1,
-      itemBuilder: (context, index) {
-        if (index >= apartments.length) {
-          return const _BuildBottomLoader();
-        }
+    final theme = Theme.of(context);
 
-        final apartment = apartments[index];
-        return ApartmentCard(
-          apartment: apartment,
-          onTap: () {
-            context.pushNamed(RouteNames.details, extra: apartment);
-          },
-        );
-      },
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOutBack,
+      top: isVisible ? 10 : -80,
+      left: 0,
+      right: 0,
+      child: Center(
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTapBack,
+            borderRadius: BorderRadius.circular(30),
+            child: Container(
+              width: 100,
+              height: 25,
+              decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  shape: BoxShape.rectangle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.primary.withOpacity(0.25),
+                      blurRadius: 15,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 1,
+                    ),
+                  ],
+                  border: Border.all(
+                    color: theme.colorScheme.primary.withOpacity(0.3),
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(32)),
+              child: Icon(
+                Icons.keyboard_arrow_up_rounded,
+                color: theme.colorScheme.primary,
+                size: 16,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ============================================================================
+/// [HELPER_WIDGETS]
+/// ============================================================================
+class _BuildIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color? color;
+  final Color? iconColor;
+
+  const _BuildIconButton({
+    required this.icon,
+    required this.onTap,
+    this.color,
+    this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: color ?? (isDark ? Colors.grey[800] : Colors.white),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.primary.withOpacity(0.25),
+                blurRadius: 15,
+                offset: const Offset(0, 4),
+              )
+            ],
+            border: Border.all(color: Colors.grey.withOpacity(0.1))),
+        child: Icon(icon,
+            color: iconColor ?? theme.colorScheme.onSurface.withOpacity(0.8),
+            size: 24),
+      ),
     );
   }
 }
@@ -218,15 +341,37 @@ class _BuildBottomLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Center(child: CircularProgressIndicator()),
+      padding: EdgeInsets.all(24.0),
+      child: Center(
+          child: SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2))),
     );
   }
 }
 
+class _BuildShimmerLoading extends StatelessWidget {
+  const _BuildShimmerLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Column(
+      children: List.generate(
+        3,
+        (index) => Shimmer.fromColors(
+          baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+          highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+          child: const BuildShimmerCard(),
+        ),
+      ),
+    );
+  }
+}
 
 /// [_BuildErrorView]
-/// A modern error state widget with an illustration, clear translated message, and retry button.
 class _BuildErrorView extends StatelessWidget {
   final String message;
 
@@ -240,8 +385,9 @@ class _BuildErrorView extends StatelessWidget {
 
     if (message == AppConstants.networkFailureKey) {
       displayMessage = AppLocalizations.of(context).network_error_message;
-    } else if(message == AppConstants.cancelledFailureKey) {
-      displayMessage = AppLocalizations.of(context).request_cancelled_error_message;
+    } else if (message == AppConstants.cancelledFailureKey) {
+      displayMessage =
+          AppLocalizations.of(context).request_cancelled_error_message;
     } else {
       displayMessage = AppLocalizations.of(context).unexpected_error_message;
     }
@@ -264,9 +410,7 @@ class _BuildErrorView extends StatelessWidget {
                 color: theme.colorScheme.error,
               ),
             ),
-
             const SizedBox(height: 24),
-
             Text(
               AppLocalizations.of(context).warring,
               style: theme.textTheme.headlineMedium?.copyWith(
@@ -274,9 +418,7 @@ class _BuildErrorView extends StatelessWidget {
                 color: theme.colorScheme.onSurface,
               ),
             ),
-
             const SizedBox(height: 12),
-
             Text(
               displayMessage,
               textAlign: TextAlign.center,
@@ -285,9 +427,7 @@ class _BuildErrorView extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-
             const SizedBox(height: 32),
-
             SizedBox(
               width: 200,
               height: 54,
@@ -314,80 +454,6 @@ class _BuildErrorView extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-// !important note : do not uncomment this block it's cause a failure in
-// !bottom bar navigation
-
-/*class _BuildAddPropertyFab extends StatelessWidget {
-  const _BuildAddPropertyFab();
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return FloatingActionButton(
-      heroTag: 'add_property_fab',
-      onPressed: () {
-        context.pushNamed(RouteNames.addProperty);
-      },
-      backgroundColor: colorScheme.primary,
-      shape: const CircleBorder(),
-      child: Icon(Icons.add, color: colorScheme.onPrimary, size: 30),
-    );
-  }
-}*/
-
-
-/// [UI_BUILDING_SUB_WIDGET]
-/// *[contains]
-///
-/// - [_BuildIconButton]
-/// - [_BuildFilterChip]
-
-class _BuildIconButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-  final Color? color;
-  final Color? iconColor;
-
-  const _BuildIconButton({required this.icon, required this.onTap, this.color, this.iconColor});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-            color: color ?? colorScheme.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.withOpacity(0.2))),
-        child: Icon(icon, color: iconColor ?? colorScheme.onSurface.withOpacity(0.7)),
-      ),
-    );
-  }
-}
-
-class _BuildShimmerLoading extends StatelessWidget {
-  const _BuildShimmerLoading();
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      itemCount: AppConstants.numberOfApartmentsEachRequest,
-      itemBuilder: (context, index) {
-        return Shimmer.fromColors(
-          baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
-          highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
-          child:  BuildShimmerCard(),
-        );
-      },
     );
   }
 }

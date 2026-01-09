@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:malaz/domain/entities/user_entity.dart';
 import 'package:malaz/presentation/global_widgets/user_profile_image/user_profile_image.dart';
 import '../../../../domain/entities/apartment.dart';
+import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/favorites/favorites_cubit.dart';
 import '../../cubits/chat/chat_cubit.dart';
@@ -224,6 +225,7 @@ class _BuildTitleAndRating extends StatelessWidget {
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             height: 1.2,
+
           ),
         ),
 
@@ -233,12 +235,15 @@ class _BuildTitleAndRating extends StatelessWidget {
           children: [
             Icon(Icons.location_on, size: 16, color: theme.colorScheme.secondary),
             const SizedBox(width: 4),
+            Expanded(child:
             Text(
+              maxLines: 2,
               '${apartment.city}, ${apartment.address}',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(0.7),
               ),
-            ),
+              softWrap: true,
+            ),)
           ],
         ),
 
@@ -338,14 +343,27 @@ class _BuildOwnerCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: 50,
-            width: 50,
+            height: 54,
+            width: 54,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withOpacity(0.1),
-              shape: BoxShape.circle,
+              gradient: AppColors.premiumGoldGradient,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFAF895F).withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                )
+              ],
             ),
-            child: UserProfileImage(userId: owner.id, firstName: owner.first_name, lastName: owner.last_name,),
-            //Icon(Icons.person, color: theme.colorScheme.primary),
+            padding: const EdgeInsets.all(1.5),
+            child: UserProfileImage(
+              userId: owner.id,
+              firstName: owner.first_name,
+              lastName: owner.last_name,
+              isPremiumStyle: true,
+              radius: 25,
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -354,32 +372,46 @@ class _BuildOwnerCard extends StatelessWidget {
               children: [
                 Text(
                   '${owner.first_name} ${owner.last_name}',
-                  //'${l10n.owner} #${DateTime.now().millisecond}',
                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  l10n.verified_host,
-                  style: theme.textTheme.bodySmall?.copyWith(color: Colors.green),
+                Row(
+                  children: [
+                    const Icon(Icons.verified_user_rounded, size: 14, color: Colors.green),
+                    const SizedBox(width: 4),
+                    Text(
+                      l10n.verified_host,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.green,
+                          fontWeight: FontWeight.w600
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          IconButton(
-            onPressed: () async {
-              final chatCubit = context.read<ChatCubit>();
-              chatCubit.clearMessages();
-              final newId = await chatCubit.saveNewConversation(owner.id);
+          Container(
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              onPressed: () async {
+                final chatCubit = context.read<ChatCubit>();
+                chatCubit.clearMessages();
+                final newId = await chatCubit.saveNewConversation(owner.id);
 
-              if (newId != null) {
-                context.pushNamed('one_chat', extra: {
-                  'id': newId,
-                  'firstName': owner.first_name,
-                  'lastName': owner.last_name,
-                  'otherUserId': owner.id,
-                });
-              }
-            },
-            icon: Icon(Icons.chat_outlined, color: theme.colorScheme.primary),
+                if (newId != null) {
+                  context.pushNamed('one_chat', extra: {
+                    'id': newId,
+                    'firstName': owner.first_name,
+                    'lastName': owner.last_name,
+                    'otherUserId': owner.id,
+                  });
+                }
+              },
+              icon: Icon(Icons.chat_outlined, color: theme.colorScheme.primary),
+            ),
           )
         ],
       ),

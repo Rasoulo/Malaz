@@ -181,13 +181,9 @@ class BuildRegisterRow extends StatelessWidget {
           onTap: () {
             context.go('/home_register');
           },
-          child: ShaderMask(
-            shaderCallback: (bounds) =>
-                AppColors.premiumGoldGradient.createShader(bounds),
-            child: Text(
-              '   ' + tr.register,
-              style: TextStyle(color: colorScheme.primary),
-            ),
+          child: Text(
+            '   ' + tr.register,
+            style: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -215,7 +211,7 @@ class BuildLoginRow extends StatelessWidget {
             context.go('/login');
           },
           child: Text(
-            tr.login,
+            '  '+tr.login,
             style: TextStyle(
                 color: colorScheme.primary, fontWeight: FontWeight.bold
             ),
@@ -247,6 +243,7 @@ class BuildRibbon extends StatelessWidget {
 
 class BuildTextfield extends StatefulWidget {
   final String label;
+  final String hintText;
   final IconData icon;
   final bool obscure;
   final TextInputType keyboardType;
@@ -259,6 +256,7 @@ class BuildTextfield extends StatefulWidget {
   const BuildTextfield({
     super.key,
     required this.label,
+    required this.hintText,
     required this.icon,
     this.obscure = false,
     this.haveSuffixEyeIcon = false,
@@ -307,7 +305,7 @@ class _BuildTextfieldState extends State<BuildTextfield> {
             widget.label,
             style: TextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.bold,
               color: colorScheme.primary.withOpacity(0.8),
               letterSpacing: 0.5,
             ),
@@ -345,7 +343,7 @@ class _BuildTextfieldState extends State<BuildTextfield> {
             },
             onTap: widget.onPressedForDate ? _handleDatePicker : null,
             decoration: InputDecoration(
-              hintText: "Enter " + widget.label,
+              hintText: widget.hintText,
               hintStyle: TextStyle(
                   color: colorScheme.secondary,
                   fontSize: 14,
@@ -442,20 +440,11 @@ class BuildVerficationCodeButton extends StatelessWidget {
     final tr = AppLocalizations.of(context)!;
 
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: AlignmentDirectional.centerStart,
       child: TextButton.icon(
         onPressed: onPressed,
-        icon: ShaderMask(
-          shaderCallback: (bounds) =>
-              AppColors.premiumGoldGradient.createShader(bounds),
-          child: Icon(Icons.send, color: colorScheme.primary),
-        ),
-        label: ShaderMask(
-          shaderCallback: (bounds) =>
-              AppColors.premiumGoldGradient.createShader(bounds),
-          child:
-              Text(tr.send_code, style: TextStyle(color: colorScheme.primary)),
-        ),
+        icon: Icon(Icons.send, color: colorScheme.primary),
+        label: Text(tr.send_code, style: TextStyle(color: colorScheme.primary)),
       ),
     );
   }

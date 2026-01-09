@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/config/color/app_color.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class RegisterScreen4 extends StatefulWidget {
@@ -88,7 +88,6 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                   Text(
                     tr.create_account,
                     style: TextStyle(
-                      fontFamily: 'PlayfairDisplay',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: colorScheme.primary,
@@ -151,7 +150,7 @@ class RegisterScreen4State extends State<RegisterScreen4> {
                   ),
 
                   // Branding
-                  BuildBranding()
+                  BuildBranding.metaStyle()
                 ],
               ),
             ),

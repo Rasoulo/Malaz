@@ -493,4 +493,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknown_location => 'Unknown Location';
+
+  @override
+  String get back_to_top => 'back to up';
+
+  @override
+  String get filter_title => 'Filter Results';
+
+  @override
+  String get filter_reset => 'Reset';
+
+  @override
+  String get filter_location_section => 'Location';
+
+  @override
+  String get filter_current_location => 'Current Location';
+
+  @override
+  String get filter_map_location => 'On Map';
+
+  @override
+  String get filter_price_section => 'Price Range (Dollar \$)';
+
+  @override
+  String get filter_type_section => 'Property Type';
+
+  @override
+  String get filter_area_section => 'Area (sqm)';
+
+  @override
+  String get filter_details_section => 'Property Details';
+
+  @override
+  String get filter_total_rooms => 'Total Rooms';
+
+  @override
+  String get filter_bedrooms => 'Bedrooms';
+
+  @override
+  String get filter_bathrooms => 'Bathrooms';
+
+  @override
+  String get filter_any => 'Any';
+
+  @override
+  String get filter_apply_button => 'Show Matching Results';
+
+  @override
+  String get type_apartment => 'Apartment';
+
+  @override
+  String get type_villa => 'Villa';
+
+  @override
+  String get type_farm => 'Farm';
+
+  @override
+  String get type_country_house => 'Country House';
+
+  @override
+  String get type_studio => 'Studio';
+
+  @override
+  String get phone_number_hint => '(963) 999 999 999';
+
+  @override
+  String get enter_hint => 'Enter';
 }

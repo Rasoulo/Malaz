@@ -112,8 +112,23 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           child: Stack(
             children: [
-              _buildHeaderBubble(top: -20, left: -20, size: 120, opacity: 0.1),
-              _buildHeaderBubble(bottom: 20, right: -10, size: 80, opacity: 0.05),
+              PositionedDirectional(
+                end: -40,
+                top: 0,
+                child: _buildGlowingKey(180, 0.15, -0.3),
+              ),
+
+              PositionedDirectional(
+                top: -30,
+                start: -20,
+                child: _buildGlowingKey(110, 0.12, 0.5),
+              ),
+
+              PositionedDirectional(
+                bottom: 0,
+                end: 50,
+                child: _buildGlowingKey(90, 0.1, 0.8),
+              ),
 
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 70, 24, 40),
@@ -145,15 +160,29 @@ class _AppDrawerState extends State<AppDrawer> {
     );
   }
 
-  Widget _buildHeaderBubble({double? top, double? left, double? right, double? bottom, required double size, required double opacity}) {
-    return Positioned(
-      top: top, left: left, right: right, bottom: bottom,
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white.withOpacity(opacity),
+  Widget _buildGlowingKey(double size, double opacity, double rotation) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.rotate(
+        angle: rotation,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryLight.withOpacity(0.4),
+                blurRadius: 40,
+                spreadRadius: 10,
+              ),
+            ],
+          ),
+          child: Image.asset(
+            'assets/icons/key_logo.png',
+            width: size,
+            height: size,
+            color: Colors.white,
+            colorBlendMode: BlendMode.srcIn,
+          ),
         ),
       ),
     );
@@ -219,25 +248,11 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   Widget _buildModernAvatar(int? userId, ColorScheme colorScheme, bool isDark, String firstName, String lastName) {
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.5),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 2),
-        ),
-        child: CircleAvatar(
-          radius: 42,
-          backgroundColor: isDark ? Colors.white10 : Colors.white24,
-          child: ClipOval(child: UserProfileImage(userId: userId!,firstName: firstName, lastName: lastName, radius: 45,)
-          ),
-        ),
-      ),
+    return UserProfileImage(
+              userId: userId ?? 0,
+              firstName: firstName,
+              lastName: lastName,
+              radius: 42,
     );
   }
 
@@ -324,7 +339,7 @@ class _AppDrawerState extends State<AppDrawer> {
       builder: (ctx) => Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(ctx).scaffoldBackgroundColor,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         ),
         child: Column(

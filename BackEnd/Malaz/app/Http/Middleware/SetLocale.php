@@ -12,6 +12,9 @@ class SetLocale
     {
         $locale = $request->header('Accept-Language', $request->query('lang'));
 
+        if ($locale && in_array($locale, ['en', 'ar', 'fr', 'ru', 'tr']) && Auth::check())
+            Auth::user()->update(['language' => $locale]);
+
         if ((!$locale || !in_array($locale, ['en', 'ar', 'fr', 'ru', 'tr'])) && Auth::check()) {
             $locale = Auth::user()->language;
         }
@@ -19,6 +22,7 @@ class SetLocale
         if (!in_array($locale, ['en', 'ar', 'fr', 'ru', 'tr'])) {
             $locale = config('app.locale');
         }
+
 
         App::setLocale($locale);
 

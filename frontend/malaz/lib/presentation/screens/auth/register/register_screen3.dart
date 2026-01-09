@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
 import 'home_register_screen.dart';
 
@@ -61,7 +61,6 @@ class RegisterScreen3 extends StatelessWidget {
                   Text(
                     tr.create_account,
                     style: TextStyle(
-                      fontFamily: 'PlayfairDisplay',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: colorScheme.primary,
@@ -84,6 +83,7 @@ class RegisterScreen3 extends StatelessWidget {
                   // Password Field
                   BuildTextfield(
                     label: tr.password,
+                    hintText: "${tr.enter_hint} ${tr.password}",
                     icon: Icons.password,
                     haveSuffixEyeIcon: true,
                     obscure: true,
@@ -94,6 +94,7 @@ class RegisterScreen3 extends StatelessWidget {
                   //  Confirm Password Field
                   BuildTextfield(
                     label: tr.confirm_password,
+                    hintText: "${tr.enter_hint} ${tr.confirm_password}",
                     icon: Icons.password,
                     haveSuffixEyeIcon: true,
                     obscure: true,
@@ -103,7 +104,7 @@ class RegisterScreen3 extends StatelessWidget {
                   const SizedBox(height: 40),
                   const BuildLoginRow(),
                   const SizedBox(height: 80),
-                  BuildBranding(),
+                  BuildBranding.metaStyle()
                 ],
               ),
             ),

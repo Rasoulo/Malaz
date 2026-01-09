@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/config/color/app_color.dart';
 import '../../cubits/auth/auth_cubit.dart';
-import '../../global_widgets/build_branding.dart';
+import '../../global_widgets/brand/build_branding.dart';
 
 /// [SplashScreen]
 ///
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 5),
     );
 
     _fadeAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
@@ -54,22 +54,15 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.forward();
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed && !_authStarted) {
-        // if (mounted) {
-        //   //context.read<AuthBloc>().add(AuthCheckedRequested);
-        //   context.go('/login');
-        // }
         _authStarted = true;
         _startAuthCheckAndNavigate();
       }
     });
-    // الانتظار حتى انتهاء animation + التأكد من auth state
-    //_navigateAfterAnimation();
 
   }
   Future<void> _startAuthCheckAndNavigate() async {
     final authCubit = context.read<AuthCubit>();
 
-    // نفذ checkAuth() الآن — سيغيّر حالة الـ cubit
     await authCubit.checkAuth();
 
     if (!mounted) return;
@@ -94,12 +87,50 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
+          _buildBackgroundDecorations(),
           _BuildAnimatedLogoAndLoader(
             fadeAnimation: _fadeAnimation,
             scaleAnimation: _scaleAnimation,
           ),
-          BuildBranding(),
+          BuildBranding.metaStyle(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildBackgroundDecorations() {
+    return Stack(
+      children: [
+        PositionedDirectional(
+          top: -30,
+          end: -40,
+          child: _buildTransparentKey(220, 0.16, 0.4),
+        ),
+        PositionedDirectional(
+          bottom: 100,
+          start: -50,
+          child: _buildTransparentKey(180, 0.14, -0.2),
+        ),
+        PositionedDirectional(
+          top: MediaQuery.of(context).size.height * 0.4,
+          end: -20,
+          child: _buildTransparentKey(100, 0.13, 0.8),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTransparentKey(double size, double opacity, double rotation) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.rotate(
+        angle: rotation,
+        child: Image.asset(
+          'assets/icons/key_logo.png',
+          width: size,
+          height: size,
+          color: AppColors.primaryDark,
+        ),
       ),
     );
   }
@@ -148,7 +179,7 @@ class _BuildAnimatedLogoAndLoader extends StatelessWidget {
             child: SizedBox(
               width: 120,
               child: ShaderMask(
-                shaderCallback: (bounds) => AppColors.premiumGoldGradient.createShader(bounds),
+                shaderCallback: (bounds) => AppColors.premiumGoldGradient2.createShader(bounds),
                 child: LinearProgressIndicator(
                   backgroundColor: Theme.of(
                     context,

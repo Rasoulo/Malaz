@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../global_widgets/build_branding.dart';
+import '../../../global_widgets/brand/build_branding.dart';
 import '../shared_widgets/shared_widgets.dart';
 
 class RegisterScreen2 extends StatefulWidget {
@@ -67,7 +67,6 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   Text(
                       tr.create_account,
                       style: TextStyle(
-                        fontFamily: 'PlayfairDisplay',
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: colorScheme.primary,
@@ -81,7 +80,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   // Join To Find - Header Text 2
                   Text(
                     tr.join_to_find,
-                    style: TextStyle(color: colorScheme.onSurface.withOpacity(0.6), fontSize: 12),
+                    style: TextStyle(color: colorScheme.onSecondary, fontSize: 12),
                   ),
                   const SizedBox(
                     height: 50,
@@ -90,6 +89,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   // First Name Field
                   BuildTextfield(
                     label: tr.first_name,
+                    hintText: "${tr.enter_hint} ${tr.first_name}",
                     icon: Icons.person,
                     obscure: false,
                     keyboardType: TextInputType.name,
@@ -101,6 +101,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   // Last Name Field
                   BuildTextfield(
                     label: tr.last_name,
+                    hintText: "${tr.enter_hint} ${tr.last_name}",
                     icon: Icons.person,
                     obscure: false,
                     keyboardType: TextInputType.name,
@@ -112,6 +113,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   // Date Of Birth Field
                   BuildTextfield(
                     label: tr.date_of_birth,
+                    hintText: "${tr.enter_hint} ${tr.date_of_birth}",
                     icon: Icons.calendar_today_outlined,
                     onPressedForDate: true,
                     formKey: widget.formKey,
@@ -121,7 +123,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   const SizedBox(height: 40),
                   const BuildLoginRow(),
                   const SizedBox(height: 80),
-                  BuildBranding(),
+                  BuildBranding.metaStyle()
                 ],
               ),
             ),

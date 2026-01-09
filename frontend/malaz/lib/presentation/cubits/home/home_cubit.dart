@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/core/constants/app_constants.dart';
+import 'package:malaz/domain/entities/filters.dart';
 import '../../../../domain/entities/apartment.dart';
 import '../../../core/errors/failures.dart';
 import '../../../data/utils/failure_mapper.dart';
@@ -62,6 +63,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   String? _nextCursor;
   String? _prevCursor;
+  Filter? _currentFilter;
 
   bool _isFetching = false;
 
@@ -70,12 +72,17 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadApartments({
     bool isRefresh = false,
     bool loadNext = false,
-    bool loadPrev = false,
+    Filter? newFilter
   }) async {
     if (_isFetching) return;
     _isFetching = true;
 
     try {
+      if(newFilter != null) {
+        /// TODO: optimizing exists when currentFilter == newFilter
+        _currentFilter = newFilter;
+        isRefresh = true;
+      }
       String? cursorToSend;
       if (isRefresh) {
         cursorToSend = null;
@@ -86,17 +93,11 @@ class HomeCubit extends Cubit<HomeState> {
           _isFetching = false;
           return;
         }
-      } else if (loadPrev) {
-        cursorToSend = _prevCursor;
-        if (cursorToSend == null) {
-          _isFetching = false;
-          return;
-        }
       } else {
         if (state is! HomeLoaded) emit(HomeLoading());
         cursorToSend = null;
       }
-      final result = await getApartmentsUseCase.call(cursor: cursorToSend);
+      final result = await getApartmentsUseCase.call(cursor: cursorToSend, filter: _currentFilter);
 
       _nextCursor = result.nextCursor;
       _prevCursor = result.prevCursor;
@@ -133,5 +134,10 @@ class HomeCubit extends Cubit<HomeState> {
     } finally {
       _isFetching = false;
     }
+  }
+
+  void clearFilter() {
+    _currentFilter = null;
+    loadApartments(isRefresh: true);
   }
 }

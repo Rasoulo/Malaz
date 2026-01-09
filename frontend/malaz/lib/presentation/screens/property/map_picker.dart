@@ -143,7 +143,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   border: InputBorder.none,
                   suffixIcon: IconButton(
-                    icon:  Icon(Icons.search,),
+                    icon:  Icon(Icons.search, color: Theme.of(context).primaryColor),
                     onPressed: () => _searchLocation(_searchController.text),
                   ),
                 ),

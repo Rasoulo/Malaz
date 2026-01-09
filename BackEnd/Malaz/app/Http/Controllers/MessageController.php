@@ -72,7 +72,7 @@ class MessageController extends Controller
 
         return response()->json([
             'message' => __('validation.message.created'),
-            'data' => $message->load('sender'),
+            'data' => $message,
             'status' => 201,
         ]);
     }

@@ -108,7 +108,7 @@ class _BuildModernNavBar extends StatelessWidget {
                 text: tr.home,
               ),
               GButton(
-                icon: Icons.chat_bubble,
+                icon: Icons.chat_outlined,
                 text: tr.chats,
               ),
               // GButton(

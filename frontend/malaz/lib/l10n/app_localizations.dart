@@ -1057,6 +1057,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown Location'**
   String get unknown_location;
+
+  /// No description provided for @back_to_top.
+  ///
+  /// In en, this message translates to:
+  /// **'back to up'**
+  String get back_to_top;
+
+  /// No description provided for @filter_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Results'**
+  String get filter_title;
+
+  /// No description provided for @filter_reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get filter_reset;
+
+  /// No description provided for @filter_location_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get filter_location_section;
+
+  /// No description provided for @filter_current_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Location'**
+  String get filter_current_location;
+
+  /// No description provided for @filter_map_location.
+  ///
+  /// In en, this message translates to:
+  /// **'On Map'**
+  String get filter_map_location;
+
+  /// No description provided for @filter_price_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range (Dollar \$)'**
+  String get filter_price_section;
+
+  /// No description provided for @filter_type_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Type'**
+  String get filter_type_section;
+
+  /// No description provided for @filter_area_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Area (sqm)'**
+  String get filter_area_section;
+
+  /// No description provided for @filter_details_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Details'**
+  String get filter_details_section;
+
+  /// No description provided for @filter_total_rooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Rooms'**
+  String get filter_total_rooms;
+
+  /// No description provided for @filter_bedrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedrooms'**
+  String get filter_bedrooms;
+
+  /// No description provided for @filter_bathrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Bathrooms'**
+  String get filter_bathrooms;
+
+  /// No description provided for @filter_any.
+  ///
+  /// In en, this message translates to:
+  /// **'Any'**
+  String get filter_any;
+
+  /// No description provided for @filter_apply_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Matching Results'**
+  String get filter_apply_button;
+
+  /// No description provided for @type_apartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment'**
+  String get type_apartment;
+
+  /// No description provided for @type_villa.
+  ///
+  /// In en, this message translates to:
+  /// **'Villa'**
+  String get type_villa;
+
+  /// No description provided for @type_farm.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm'**
+  String get type_farm;
+
+  /// No description provided for @type_country_house.
+  ///
+  /// In en, this message translates to:
+  /// **'Country House'**
+  String get type_country_house;
+
+  /// No description provided for @type_studio.
+  ///
+  /// In en, this message translates to:
+  /// **'Studio'**
+  String get type_studio;
+
+  /// No description provided for @phone_number_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'(963) 999 999 999'**
+  String get phone_number_hint;
+
+  /// No description provided for @enter_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get enter_hint;
 }
 
 class _AppLocalizationsDelegate
