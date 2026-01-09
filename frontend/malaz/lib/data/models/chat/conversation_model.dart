@@ -1,4 +1,4 @@
-import 'package:malaz/data/models/user_model.dart';
+import 'package:malaz/data/models/user/user_model.dart';
 
 class ConversationModel {
   final int id;

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:malaz/domain/entities/user_entity.dart';
-import 'apartment.dart';
+import 'package:malaz/domain/entities/user/user_entity.dart';
+import '../apartment/apartment.dart';
 
 class Booking extends Equatable {
   final int? id;

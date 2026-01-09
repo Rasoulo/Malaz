@@ -2,10 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/failures.dart';
-import 'package:malaz/domain/entities/user_entity.dart';
+import 'package:malaz/domain/entities/user/user_entity.dart';
 
-import '../../../data/models/auth_result.dart';
-import '../../entities/auth_state.dart';
+import '../../entities/auth/auth_state.dart';
 
 abstract class AuthRepository {
 

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failures.dart';
-import '../../../domain/entities/apartment.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 import '../../../domain/repositories/favorites/favorites_repository.dart';
 import '../../datasources/remote/favorites/favorites_remote_datasource.dart';
 import '../../utils/failure_mapper.dart';

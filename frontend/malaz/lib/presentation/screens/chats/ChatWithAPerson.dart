@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/config/color/app_color.dart';
-import '../../../data/models/chat_message_model.dart';
+import '../../../data/models/chat/chat_message_model.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/chat/chat_cubit.dart';
 import '../../cubits/auth/auth_cubit.dart';

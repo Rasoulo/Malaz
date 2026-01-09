@@ -1,8 +1,8 @@
-import '../../../domain/entities/location_entity.dart';
+import '../../../domain/entities/location/location_entity.dart';
 import '../../../domain/repositories/location/location_repository.dart';
-import '../../datasources/local/location_local_data_source.dart';
+import '../../datasources/local/location/location_local_data_source.dart';
 import '../../datasources/remote/location/location_remote_data_source.dart';
-import '../../models/location_model.dart';
+import '../../models/location/location_model.dart';
 
 class LocationRepositoryImpl implements LocationRepository {
   final LocationRemoteDataSource remoteDataSource;

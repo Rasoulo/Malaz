@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/errors/failures.dart';
 import '../../../data/utils/failure_mapper.dart';
-import '../../../domain/entities/apartment.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 import '../../../domain/usecases/apartment/add_apartment_use_case.dart';
 import '../../../domain/usecases/apartment/my_apartment_use_case.dart';
 import '../../../l10n/app_localizations.dart';

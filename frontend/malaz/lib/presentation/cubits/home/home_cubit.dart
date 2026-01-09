@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/core/constants/app_constants.dart';
-import 'package:malaz/domain/entities/filters.dart';
-import '../../../../domain/entities/apartment.dart';
+import 'package:malaz/domain/entities/filters/filters.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 import '../../../core/errors/failures.dart';
 import '../../../data/utils/failure_mapper.dart';
 import '../../../domain/usecases/home/apartments_use_case.dart';

@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import '../../../domain/repositories/chat/chat_repository.dart';
 import '../../../core/errors/failures.dart';
 import '../../datasources/remote/chat/chat_remote_datasource.dart';
-import '../../models/conversation_model.dart';
-import '../../models/chat_message_model.dart';
+import '../../models/chat/conversation_model.dart';
+import '../../models/chat/chat_message_model.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource remoteDataSource;

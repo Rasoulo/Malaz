@@ -1,4 +1,4 @@
-import '../../entities/location_entity.dart';
+import '../../entities/location/location_entity.dart';
 import '../../repositories/location/location_repository.dart';
 
 class GetCurrentLocationUseCase {

@@ -3,8 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/failures.dart';
 
 import '../../../core/errors/exceptions.dart';
-import '../../../domain/entities/apartments_list.dart';
-import '../../../domain/entities/filters.dart';
+import '../../../domain/entities/apartment/apartments_list.dart';
+import '../../../domain/entities/filters/filters.dart';
 import '../../../domain/repositories/apartment/apartment_repository.dart';
 import '../../datasources/remote/apartment/apartment_remote_data_source.dart';
 

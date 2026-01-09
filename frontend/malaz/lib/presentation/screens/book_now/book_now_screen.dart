@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:malaz/domain/entities/apartment.dart';
+import 'package:malaz/domain/entities/apartment/apartment.dart';
 import 'package:malaz/l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../data/utils/dialog.dart';
-import '../../../domain/entities/booking.dart';
+import '../../../domain/entities/booking/booking.dart';
 import '../../cubits/booking/booking_cubit.dart';
 import '../../global_widgets/buttons/custom_button.dart';
 

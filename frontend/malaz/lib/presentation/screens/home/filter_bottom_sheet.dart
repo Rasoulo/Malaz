@@ -6,7 +6,7 @@ import 'package:malaz/presentation/cubits/home/home_cubit.dart';
 import 'package:malaz/presentation/cubits/location/location_cubit.dart';
 import 'package:malaz/l10n/app_localizations.dart';
 
-import '../../../domain/entities/filters.dart';
+import '../../../domain/entities/filters/filters.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});

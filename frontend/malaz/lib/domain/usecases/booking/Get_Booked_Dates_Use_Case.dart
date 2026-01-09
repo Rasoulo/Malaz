@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:malaz/domain/repositories/booking/booking_repository.dart';
 
 import '../../../core/errors/failures.dart';
-import '../../../data/models/booking_model.dart';
+import '../../../data/models/booking/booking_model.dart';
 
 class GetBookedDatesUseCase {
   BookingRepository repository;

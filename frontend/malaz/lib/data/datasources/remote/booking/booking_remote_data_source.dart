@@ -1,7 +1,7 @@
 import '../../../../core/network/network_service.dart';
-import '../../../../domain/entities/booking.dart';
-import '../../../../domain/entities/booking_list.dart';
-import '../../../models/booking_model.dart';
+import '../../../../domain/entities/booking/booking.dart';
+import '../../../../domain/entities/booking/booking_list.dart';
+import '../../../models/booking/booking_model.dart';
 
 abstract class BookingRemoteDataSource {
   Future<void> makeBooking(Booking booking);

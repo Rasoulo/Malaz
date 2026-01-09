@@ -3,7 +3,7 @@ import 'package:malaz/core/errors/failures.dart';
 import 'package:malaz/core/usecases/usecase.dart';
 import 'package:malaz/domain/repositories/auth/auth_repository.dart';
 
-import '../../entities/user_entity.dart';
+import '../../entities/user/user_entity.dart';
 
 class LoginUsecase implements UseCase<UserEntity,LoginParams>{
   final AuthRepository repository;

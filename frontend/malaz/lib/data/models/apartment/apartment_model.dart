@@ -1,7 +1,7 @@
-import 'package:malaz/data/models/user_model.dart';
-import 'package:malaz/domain/entities/user_entity.dart';
+import 'package:malaz/data/models/user/user_model.dart';
+import 'package:malaz/domain/entities/user/user_entity.dart';
 
-import '../../domain/entities/apartment.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 
 class ApartmentModel extends Apartment {
   ApartmentModel({

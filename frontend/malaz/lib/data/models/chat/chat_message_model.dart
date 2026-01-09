@@ -1,5 +1,5 @@
 import 'package:malaz/core/constants/app_constants.dart';
-import 'package:malaz/data/models/user_model.dart';
+import 'package:malaz/data/models/user/user_model.dart';
 
 class ChatMessageModel {
   final int id;

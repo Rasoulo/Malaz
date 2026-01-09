@@ -16,7 +16,7 @@ import 'package:malaz/presentation/screens/main_wrapper/main_wrapper.dart'; // Ø
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:path/path.dart';
 
-import '../../../domain/entities/apartment.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 import '../../../presentation/screens/auth/reset_password_screen/ResetPasswordScreen.dart';
 import '../../../presentation/screens/auth/under_review/under_review.dart';
 import '../../service_locator/service_locator.dart';

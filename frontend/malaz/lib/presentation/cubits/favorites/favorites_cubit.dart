@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:malaz/domain/usecases/favorites/delete_favorites_use_case.dart';
 
-import '../../../domain/entities/apartment.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 import '../../../domain/usecases/favorites/add_favorites_use_case.dart';
 import '../../../domain/usecases/favorites/get_favorites_use_case.dart';
 

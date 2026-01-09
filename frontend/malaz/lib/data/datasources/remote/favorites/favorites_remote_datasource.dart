@@ -1,6 +1,6 @@
 import 'package:malaz/core/network/network_service.dart';
 
-import '../../../models/apartment_model.dart';
+import '../../../models/apartment/apartment_model.dart';
 
 abstract class FavoritesRemoteDataSource {
   Future<List<ApartmentModel>> getFavorites();

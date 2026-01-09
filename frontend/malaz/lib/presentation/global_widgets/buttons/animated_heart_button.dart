@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:malaz/domain/entities/apartment.dart';
+import 'package:malaz/domain/entities/apartment/apartment.dart';
 import 'package:path/path.dart';
 import '../../cubits/favorites/favorites_cubit.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../domain/entities/booking.dart';
+import '../../../domain/entities/booking/booking.dart';
 import '../../cubits/booking/manage_booking.dart';
 import '../../cubits/chat/chat_cubit.dart';
 import '../../global_widgets/user_profile_image/user_profile_image.dart';

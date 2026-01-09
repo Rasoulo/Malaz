@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart';
-import 'package:malaz/data/datasources/local/auth_local_data_source.dart';
+import 'package:malaz/data/datasources/local/auth/auth_local_data_source.dart';
 import 'package:malaz/data/datasources/remote/booking/booking_remote_data_source.dart';
 import 'package:malaz/data/datasources/remote/favorites/favorites_remote_datasource.dart';
 import 'package:malaz/data/repositories/auth/auth_repository_impl.dart';
@@ -18,7 +18,7 @@ import 'package:malaz/domain/usecases/booking/update_status_use_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
-import '../../data/datasources/local/location_local_data_source.dart';
+import '../../data/datasources/local/location/location_local_data_source.dart';
 import '../../data/datasources/remote/apartment/apartment_remote_data_source.dart';
 import '../../data/datasources/remote/auth/auth_remote_datasource.dart';
 import '../../data/datasources/remote/chat/chat_remote_datasource.dart';

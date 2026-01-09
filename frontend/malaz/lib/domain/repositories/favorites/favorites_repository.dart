@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failures.dart';
-import '../../entities/apartment.dart';
+import '../../entities/apartment/apartment.dart';
 
 abstract class FavoritesRepository {
   Future<Either<Failure, List<Apartment>>> getFavorites();

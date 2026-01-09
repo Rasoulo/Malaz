@@ -1,4 +1,4 @@
-import 'package:malaz/domain/entities/user_entity.dart';
+import 'package:malaz/domain/entities/user/user_entity.dart';
 
 class Apartment {
   final int id;

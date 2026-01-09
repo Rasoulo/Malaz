@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:malaz/core/errors/failures.dart';
 import 'package:malaz/data/datasources/remote/booking/booking_remote_data_source.dart';
-import 'package:malaz/data/models/booking_model.dart';
-import 'package:malaz/domain/entities/booking.dart';
-import 'package:malaz/domain/entities/booking_list.dart';
+import 'package:malaz/data/models/booking/booking_model.dart';
+import 'package:malaz/domain/entities/booking/booking.dart';
+import 'package:malaz/domain/entities/booking/booking_list.dart';
 import '../../../domain/repositories/booking/booking_repository.dart';
 import '../../utils/failure_mapper.dart';
 

@@ -1,4 +1,4 @@
-import '../../entities/apartments_list.dart';
+import '../../entities/apartment/apartments_list.dart';
 import '../../repositories/apartment/apartment_repository.dart';
 
 class GetMyApartmentsUseCase {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/l10n/app_localizations.dart';
 import 'package:malaz/presentation/global_widgets/buttons/animated_heart_button.dart';
-import '../../../domain/entities/apartment.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 import '../../cubits/favorites/favorites_cubit.dart';
 
 /// ============================================================================

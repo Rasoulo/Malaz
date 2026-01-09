@@ -1,4 +1,4 @@
-import 'user_entity.dart';
+import '../user/user_entity.dart';
 
 class AuthStatus {
   final bool isAuthenticated;

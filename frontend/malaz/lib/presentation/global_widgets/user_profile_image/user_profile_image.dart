@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/service_locator/service_locator.dart';
-import '../../../data/datasources/local/auth_local_data_source.dart';
+import '../../../data/datasources/local/auth/auth_local_data_source.dart';
 import '../../../core/config/color/app_color.dart';
 
 class UserProfileImage extends StatelessWidget {

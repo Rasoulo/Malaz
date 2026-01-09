@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/chat_message_model.dart';
-import '../../../data/models/conversation_model.dart';
+import '../../../data/models/chat/chat_message_model.dart';
+import '../../../data/models/chat/conversation_model.dart';
 import '../../../domain/repositories/chat/chat_repository.dart';
 
 /////////////////////////  Chat States ///////////////////////////

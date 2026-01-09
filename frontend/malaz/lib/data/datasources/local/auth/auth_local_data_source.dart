@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:malaz/core/constants/app_constants.dart';
-import 'package:malaz/data/models/user_model.dart';
+import 'package:malaz/data/models/user/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../domain/entities/user_entity.dart';
+
+import '../../../../domain/entities/user/user_entity.dart';
 
 abstract class AuthLocalDatasource {
   Future<void> cacheToken(String token);

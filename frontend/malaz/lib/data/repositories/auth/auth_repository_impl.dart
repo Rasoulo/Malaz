@@ -3,13 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:malaz/core/errors/exceptions.dart';
 import 'package:malaz/core/errors/failures.dart';
-import 'package:malaz/data/datasources/local/auth_local_data_source.dart';
+import 'package:malaz/data/datasources/local/auth/auth_local_data_source.dart';
 import 'package:malaz/data/datasources/remote/auth/auth_remote_datasource.dart';
-import 'package:malaz/domain/entities/user_entity.dart';
+import 'package:malaz/domain/entities/user/user_entity.dart';
 import 'package:malaz/domain/repositories/auth/auth_repository.dart';
 
-import '../../../domain/entities/auth_state.dart';
-import '../../models/user_model.dart';
+import '../../../domain/entities/auth/auth_state.dart';
+import '../../models/user/user_model.dart';
 import '../../utils/response_parser.dart';
 
 class AuthRepositoryImpl extends AuthRepository {

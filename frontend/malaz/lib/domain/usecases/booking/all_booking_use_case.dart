@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:malaz/domain/entities/booking_list.dart';
+import 'package:malaz/domain/entities/booking/booking_list.dart';
 import 'package:malaz/domain/repositories/booking/booking_repository.dart';
 import '../../../core/errors/failures.dart';
 

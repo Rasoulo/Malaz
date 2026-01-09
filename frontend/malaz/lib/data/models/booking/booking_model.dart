@@ -1,6 +1,6 @@
-import 'package:malaz/data/models/apartment_model.dart';
-import 'package:malaz/data/models/user_model.dart';
-import 'package:malaz/domain/entities/booking.dart';
+import 'package:malaz/data/models/apartment/apartment_model.dart';
+import 'package:malaz/data/models/user/user_model.dart';
+import 'package:malaz/domain/entities/booking/booking.dart';
 
 class BookingModel extends Booking {
   BookingModel({

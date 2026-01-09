@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/constants/app_constants.dart';
-import '../../../domain/entities/location_entity.dart';
-import '../../models/location_model.dart';
+import '../../../../../core/constants/app_constants.dart';
+import '../../../../domain/entities/location/location_entity.dart';
+import '../../../models/location/location_model.dart';
 
 abstract class LocationLocalDataSource {
   Future<void> cacheLocation(LocationModel location);

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:malaz/domain/entities/booking.dart';
+import 'package:malaz/domain/entities/booking/booking.dart';
 import 'package:malaz/domain/usecases/booking/Get_Booked_Dates_Use_Case.dart';
 import 'package:malaz/domain/usecases/booking/make_book_use_case.dart';
 
