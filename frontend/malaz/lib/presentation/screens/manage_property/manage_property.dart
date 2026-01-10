@@ -10,6 +10,7 @@ import '../../cubits/booking/manage_booking.dart';
 import '../../cubits/property/property_cubit.dart';
 import '../../global_widgets/apartment_cards/apartment_card.dart';
 import '../../global_widgets/apartment_cards/apartment_shimmer.dart';
+import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../../global_widgets/user_profile_image/user_profile_image.dart';
 import '../details/details_screen.dart';
 import '../property/add_property.dart';
@@ -141,12 +142,12 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                     PositionedDirectional(
                       top: 40,
                       end: -30,
-                      child: _buildGlowingKey(140, 0.15, 0.5),
+                      child: const BuildGlowingKey(size: 140,opacity:  0.15,rotation:  0.5),
                     ),
                     PositionedDirectional(
                       top: 10,
                       start: 10,
-                      child: _buildGlowingKey(80, 0.15, -0.3),
+                      child: const BuildGlowingKey(size: 80,opacity:  0.15,rotation: -0.3),
                     ),
 
                     Container(
@@ -204,34 +205,6 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
           ),
         ),
       );
-  }
-
-  Widget _buildGlowingKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryLight.withOpacity(0.4),
-                blurRadius: 40,
-                spreadRadius: 10,
-              ),
-            ],
-          ),
-          child: Image.asset(
-            'assets/icons/key_logo.png',
-            width: size,
-            height: size,
-            color: Colors.white,
-            colorBlendMode: BlendMode.srcIn,
-          ),
-        ),
-      ),
-    );
   }
 
   Widget _buildBookingsTab({required String targetStatus}) {

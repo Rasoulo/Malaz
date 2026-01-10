@@ -1,6 +1,6 @@
 class AppConstants {
-  static const baseurl = 'http://192.168.1.101:8000/api';
-  static const baseurlForPusher = 'http://192.168.1.101:8000/broadcasting/auth';
+  static const baseurl = 'http://192.168.1.102:8000/api';
+  static const baseurlForPusher = 'http://192.168.1.102:8000/broadcasting/auth';
 
   /// [SharedPreferences] Keys
   static const String themeKey = 'theme_mode';
@@ -25,8 +25,11 @@ class AppConstants {
   static const numberOfBookingEachRequest = 5;
 
   /// [Pusher] keys
-  static const apiKeyForPusher = "c85e12264ff96015fc05";
-  static const clusterForPusher = "ap2";
+  static const String apiKeyForPusher = 'c85e12264ff96015fc05';
+  static const String clusterForPusher = 'ap2';
+
+  /// [Logo] key
+  static const String LogoPath = 'assets/icons/key_logo.png';
 
   static String userProfileImage(int userId) => "$baseurl/users/$userId/profile_image";
 }

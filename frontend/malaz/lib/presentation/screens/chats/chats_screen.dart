@@ -15,6 +15,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../cubits/chat/chat_cubit.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/chat/pusher_service/pusher_service.dart';
+import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../../global_widgets/user_profile_image/user_profile_image.dart';
 
 class ChatsScreen extends StatefulWidget {
@@ -128,13 +129,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
               PositionedDirectional(
                 top: -20,
                 start: -40,
-                child: _buildGlowingKey(180, 0.15, -0.2),
+                child: const BuildGlowingKey(size: 180,opacity:  0.15, rotation: -0.2),
               ),
 
               PositionedDirectional(
                 bottom: 40,
                 end: -10,
-                child: _buildGlowingKey(140, 0.12, 0.5),
+                child: const BuildGlowingKey(size: 140,opacity:  0.12,rotation:  0.5),
               ),
               Positioned(
                 bottom: 16,
@@ -157,34 +158,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
         _buildActionIcon(Icons.search_rounded),
         const SizedBox(width: 16),
       ],
-    );
-  }
-
-  Widget _buildGlowingKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryLight.withOpacity(0.4),
-                blurRadius: 40,
-                spreadRadius: 10,
-              ),
-            ],
-          ),
-          child: Image.asset(
-            'assets/icons/key_logo.png',
-            width: size,
-            height: size,
-            color: Colors.white,
-            colorBlendMode: BlendMode.srcIn,
-          ),
-        ),
-      ),
     );
   }
 

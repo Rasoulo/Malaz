@@ -9,6 +9,7 @@ import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/language/language_cubit.dart';
 import '../../cubits/location/location_cubit.dart';
 import '../../cubits/theme/theme_cubit.dart';
+import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../../global_widgets/user_profile_image/user_profile_image.dart';
 
 enum ThemeOption { light, dark, system }
@@ -115,19 +116,19 @@ class _AppDrawerState extends State<AppDrawer> {
               PositionedDirectional(
                 end: -40,
                 top: 0,
-                child: _buildGlowingKey(180, 0.15, -0.3),
+                child: BuildGlowingKey(size: 180,opacity:  0.15,rotation: -0.3),
               ),
 
               PositionedDirectional(
                 top: -30,
                 start: -20,
-                child: _buildGlowingKey(110, 0.12, 0.5),
+                child: BuildGlowingKey(size: 110,opacity:  0.12,rotation:  0.5),
               ),
 
               PositionedDirectional(
                 bottom: 0,
                 end: 50,
-                child: _buildGlowingKey(90, 0.1, 0.8),
+                child: BuildGlowingKey(size: 90,opacity:  0.1,rotation:  0.8),
               ),
 
               Padding(
@@ -157,34 +158,6 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildGlowingKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryLight.withOpacity(0.4),
-                blurRadius: 40,
-                spreadRadius: 10,
-              ),
-            ],
-          ),
-          child: Image.asset(
-            'assets/icons/key_logo.png',
-            width: size,
-            height: size,
-            color: Colors.white,
-            colorBlendMode: BlendMode.srcIn,
-          ),
-        ),
-      ),
     );
   }
 

@@ -15,6 +15,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../cubits/chat/chat_cubit.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/chat/pusher_service/pusher_service.dart';
+import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../../global_widgets/user_profile_image/user_profile_image.dart';
 
 class ChatWithAPerson extends StatefulWidget {
@@ -293,12 +294,12 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
             PositionedDirectional(
               top: -10,
               start: -20,
-              child: _buildGlowingKey(100, 0.12, -0.2),
+              child: const BuildGlowingKey(size: 100,opacity:  0.12,rotation: -0.2),
             ),
             PositionedDirectional(
               bottom: -10,
               end: 20,
-              child: _buildGlowingKey(80, 0.1, 0.5),
+              child: const BuildGlowingKey(size: 80,opacity:  0.1,rotation:  0.5),
             ),
 
             SafeArea(
@@ -366,21 +367,6 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGlowingKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Image.asset(
-          'assets/icons/key_logo.png',
-          width: size,
-          height: size,
-          color: Colors.white,
         ),
       ),
     );

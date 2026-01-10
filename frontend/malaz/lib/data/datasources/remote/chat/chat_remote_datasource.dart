@@ -39,7 +39,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         data: {'body': body},
       );
 
-      log("🔥 Server Raw Response: ${response.data}");
+      log(">>>> Server Raw Response: ${response.data}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.data is Map<String, dynamic>) {
@@ -52,7 +52,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         throw Exception("Failed to send message: ${response.statusCode}");
       }
     } catch (e) {
-      log("❌ Error in RemoteDataSource: $e");
+      log(">>>> Error in RemoteDataSource: $e");
       rethrow;
     }
   }
