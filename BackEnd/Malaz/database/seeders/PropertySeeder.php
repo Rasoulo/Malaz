@@ -14,16 +14,24 @@ class PropertySeeder extends Seeder
      */
     public function run(): void
     {
+        $cnt = 0;
+        $use = 0;
         $base64Images = [];
+        $secImagespath = [];
         for ($i = 1; $i <= 25; $i++) {
+            $ind = $i;
             $path = database_path("seeders/images/properties/main{$i}.png");
             if (file_exists($path)) {
                 $base64Images[$i - 1] = base64_encode(file_get_contents($path));
+                $use = 1 + $use;
             } else {
-                $ind = rand(1, 11);
+                $ind = rand(1, $use);
                 $path = database_path("seeders/images/properties/main{$ind}.png");
                 $base64Images[$i - 1] = base64_encode(file_get_contents($path));
             }
+            $ind = ($ind - 1) * 3;
+            $secImagespath[] = [$ind + 1, $ind + 2, $ind + 3];
+            $cnt = 1 + $cnt;
         }
 
         $properties = [
@@ -554,20 +562,31 @@ class PropertySeeder extends Seeder
             ],
         ];
 
+        $factor = Property::factory()->count(50)->raw();
+
+        foreach ($factor as &$f) {
+            $ind = rand(1, $use);
+            $path = database_path("seeders/images/properties/main{$ind}.png");
+            $f['main_image'] = base64_encode(file_get_contents($path));
+            $f['mime_type'] = 'image/png';
+            $ind = ($ind - 1) * 3;
+            $secImagespath[] = [$ind + 1, $ind + 2, $ind + 3];
+            $cnt = 1 + $cnt;
+
+        }
+
+        unset($f);
+
+        $properties = array_merge($properties, $factor);
+
+        $properties = array_reverse($properties);
+
         foreach ($properties as $propertyData) {
+            $cnt = $cnt - 1;
             $property = Property::create($propertyData);
-            for ($i = 1; $i <= 3; $i++) {
-                $ind = (($property->id - 1) * 3) + $i;
+            foreach ($secImagespath[$cnt] as $ind) {
                 $path = database_path("seeders/images/properties/sec{$ind}.png");
                 if (file_exists($path)) {
-                    $imageData = base64_encode(file_get_contents($path));
-                    $property->images()->create([
-                        'image' => $imageData,
-                        'mime_type' => 'image/png',
-                    ]);
-                } else {
-                    $ind = rand(1, 33);
-                    $path = database_path("seeders/images/properties/sec{$ind}.png");
                     $imageData = base64_encode(file_get_contents($path));
                     $property->images()->create([
                         'image' => $imageData,
