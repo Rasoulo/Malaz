@@ -6,7 +6,7 @@ import '../../../data/models/chat/chat_message_model.dart';
 abstract class ChatRepository {
   Future<Either<Failure, List<ConversationModel>>> getConversations();
   Future<Either<Failure, List<ChatMessageModel>>> getMessages(int conversationId);
-  Future<Either<Failure, void>> sendMessage(int conversationId, String body);
+  Future<Either<Failure, ChatMessageModel>> sendMessage(int conversationId, String body);
   Future<Either<Failure, Unit>> deleteMessage(int messageId);
   Future<Either<Failure, Unit>> editMessage(int messageId, String newBody);
   Future<Either<Failure, ConversationModel>> saveNewConversation(int partnerId);

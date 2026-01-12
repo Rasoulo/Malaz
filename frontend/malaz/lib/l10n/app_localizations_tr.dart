@@ -562,4 +562,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get enter_hint => 'Size gönderilen';
+
+  @override
+  String get new_messages => 'Yeni mesajlar';
 }

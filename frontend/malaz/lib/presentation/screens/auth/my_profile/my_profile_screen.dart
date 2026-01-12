@@ -9,6 +9,7 @@ import '../../../../core/config/color/app_color.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
 import '../../../cubits/location/location_cubit.dart';
+import '../../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../../../global_widgets/user_profile_image/user_profile_image.dart';
 
 class MyProfileScreen extends StatefulWidget {
@@ -161,19 +162,19 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               PositionedDirectional(
                 top: -20,
                 start: -40,
-                child: _buildGlowingKey(180, 0.15, -0.2),
+                child: const BuildGlowingKey(size: 180,opacity:  0.15,rotation: -0.2),
               ),
 
               PositionedDirectional(
                 bottom: 40,
                 end: -10,
-                child: _buildGlowingKey(140, 0.12, 0.5),
+                child: const BuildGlowingKey(size: 140,opacity: 0.12,rotation: 0.5),
               ),
 
               PositionedDirectional(
                 top: 40,
                 end: 80,
-                child: _buildGlowingKey(70, 0.12, 2.5),
+                child: const BuildGlowingKey(size: 70,opacity:  0.12,rotation: 2.5),
               ),
 
               Padding(
@@ -570,34 +571,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   Widget _vDivider() => Container(width: 1, height: 30, color: Colors.grey.withOpacity(0.2));
-
-  Widget _buildGlowingKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryLight.withOpacity(0.4),
-                blurRadius: 40,
-                spreadRadius: 10,
-              ),
-            ],
-          ),
-          child: Image.asset(
-            'assets/icons/key_logo.png',
-            width: size,
-            height: size,
-            color: Colors.white,
-            colorBlendMode: BlendMode.srcIn,
-          ),
-        ),
-      ),
-    );
-  }
 
   void _showModernPasswordDialog(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

@@ -186,5 +186,6 @@
   "type_country_house": "Country House",
   "type_studio": "Studio",
   "phone_number_hint": "(963) 999 999 999",
-  "enter_hint": "Enter"
+  "enter_hint": "Enter",
+  "new_messages": "New Messages"
 }

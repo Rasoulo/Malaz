@@ -556,4 +556,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enter_hint => 'أدخل';
+
+  @override
+  String get new_messages => 'رسائل جديدة';
 }

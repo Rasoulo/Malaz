@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import '../../../../../core/network/network_service.dart';
 
 abstract class ChatRemoteDataSource {
@@ -30,11 +33,28 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
 
   @override
   Future<Map<String, dynamic>> sendMessage(int conversationId, String body) async {
-    final response = await networkService.post(
-      '/conversations/$conversationId/messages',
-      data: {'body': body},
-    );
-    return response.data;
+    try {
+      final response = await networkService.post(
+        '/conversations/$conversationId/messages',
+        data: {'body': body},
+      );
+
+      log(">>>> Server Raw Response: ${response.data}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.data is Map<String, dynamic>) {
+          return response.data;
+        } else if (response.data is String) {
+          return jsonDecode(response.data);
+        }
+        return response.data;
+      } else {
+        throw Exception("Failed to send message: ${response.statusCode}");
+      }
+    } catch (e) {
+      log(">>>> Error in RemoteDataSource: $e");
+      rethrow;
+    }
   }
 
   @override

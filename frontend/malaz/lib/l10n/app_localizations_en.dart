@@ -559,4 +559,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enter_hint => 'Enter';
+
+  @override
+  String get new_messages => 'New Messages';
 }

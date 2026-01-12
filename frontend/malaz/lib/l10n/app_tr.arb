@@ -181,5 +181,6 @@
   "type_country_house": "Kır Evi",
   "type_studio": "Stüdyo",
   "phone_number_hint": "(963) 999 999 999",
-  "enter_hint": "Size gönderilen"
+  "enter_hint": "Size gönderilen",
+  "new_messages": "Yeni mesajlar"
 }

@@ -1189,6 +1189,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter'**
   String get enter_hint;
+
+  /// No description provided for @new_messages.
+  ///
+  /// In en, this message translates to:
+  /// **'New Messages'**
+  String get new_messages;
 }
 
 class _AppLocalizationsDelegate

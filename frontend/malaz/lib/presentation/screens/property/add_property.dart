@@ -10,6 +10,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/property/property_cubit.dart';
+import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import 'map_picker.dart';
 
 class AddPropertyScreen extends StatefulWidget {
@@ -429,19 +430,19 @@ class _PropertyAppBar extends StatelessWidget implements PreferredSizeWidget {
             PositionedDirectional(
               top: -20,
               start: -40,
-              child: _buildGlowingKey(180, 0.15, -0.2),
+              child: const BuildGlowingKey(size: 180,opacity: 0.15,rotation: -0.2),
             ),
 
             PositionedDirectional(
               bottom: 40,
               end: -10,
-              child: _buildGlowingKey(140, 0.12, 0.5),
+              child: const BuildGlowingKey(size: 140,opacity: 0.12,rotation: 0.5),
             ),
 
             PositionedDirectional(
               top: 40,
               end: 80,
-              child: _buildGlowingKey(70, 0.12, 2.5),
+              child: const BuildGlowingKey(size: 70,opacity: 0.12,rotation: 2.5),
             ),
           ],
         )
@@ -449,33 +450,6 @@ class _PropertyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-  Widget _buildGlowingKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryLight.withOpacity(0.4),
-                blurRadius: 40,
-                spreadRadius: 10,
-              ),
-            ],
-          ),
-          child: Image.asset(
-            'assets/icons/key_logo.png',
-            width: size,
-            height: size,
-            color: Colors.white,
-            colorBlendMode: BlendMode.srcIn,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _PrimaryGradientButton extends StatelessWidget {

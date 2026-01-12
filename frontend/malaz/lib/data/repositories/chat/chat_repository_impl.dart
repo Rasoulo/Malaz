@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import '../../../domain/repositories/chat/chat_repository.dart';
 import '../../../core/errors/failures.dart';
@@ -33,12 +35,21 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendMessage(int conversationId, String body) async {
+  Future<Either<Failure, ChatMessageModel>> sendMessage(int conversationId, String body) async {
     try {
-      await remoteDataSource.sendMessage(conversationId, body);
-      return const Right(null);
+      final result = await remoteDataSource.sendMessage(conversationId, body);
+
+      if (result != null && result['data'] != null) {
+        final Map<String, dynamic> msgData = Map<String, dynamic>.from(result['data']);
+
+        final chatMessage = ChatMessageModel.fromJson(msgData);
+        return Right(chatMessage);
+      }
+
+      return Left(ServerFailure("بيانات الرسالة غير موجودة في رد السيرفر"));
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      log("Mapping Error in Repo: $e");
+      return Left(ServerFailure("حدث خطأ أثناء معالجة الرسالة: $e"));
     }
   }
 

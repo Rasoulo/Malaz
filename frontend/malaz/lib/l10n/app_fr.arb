@@ -186,5 +186,6 @@
   "type_country_house": "Maison de campagne",
   "type_studio": "Studio",
   "phone_number_hint": "(963) 999 999 999",
-  "enter_hint": "Entrez"
+  "enter_hint": "Entrez",
+  "new_messages": "Nouveaux messages"
 }

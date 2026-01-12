@@ -562,4 +562,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get enter_hint => 'Введите';
+
+  @override
+  String get new_messages => 'Новые сообщения';
 }

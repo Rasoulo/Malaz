@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../global_widgets/brand/build_branding.dart';
+import '../../global_widgets/glowing_key/build_glowing_key.dart';
 
 /// [SplashScreen]
 ///
@@ -104,34 +105,19 @@ class _SplashScreenState extends State<SplashScreen>
         PositionedDirectional(
           top: -30,
           end: -40,
-          child: _buildTransparentKey(220, 0.16, 0.4),
+          child: const BuildGlowingKey(size: 220,opacity: 0.16,rotation:  0.4, color: AppColors.primaryLight),
         ),
         PositionedDirectional(
           bottom: 100,
           start: -50,
-          child: _buildTransparentKey(180, 0.14, -0.2),
+          child: const BuildGlowingKey(size: 180,opacity: 0.14,rotation: -0.2, color: AppColors.primaryLight),
         ),
         PositionedDirectional(
           top: MediaQuery.of(context).size.height * 0.4,
           end: -20,
-          child: _buildTransparentKey(100, 0.13, 0.8),
+          child: const BuildGlowingKey(size: 100,opacity: 0.13,rotation: 0.8, color: AppColors.primaryLight),
         ),
       ],
-    );
-  }
-
-  Widget _buildTransparentKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Image.asset(
-          'assets/icons/key_logo.png',
-          width: size,
-          height: size,
-          color: AppColors.primaryDark,
-        ),
-      ),
     );
   }
 }

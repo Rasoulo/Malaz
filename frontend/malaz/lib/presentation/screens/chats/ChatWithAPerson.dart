@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,10 +8,14 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/config/color/app_color.dart';
+import '../../../data/datasources/local/auth/auth_local_data_source.dart';
 import '../../../data/models/chat/chat_message_model.dart';
+import '../../../core/service_locator/service_locator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/chat/chat_cubit.dart';
 import '../../cubits/auth/auth_cubit.dart';
+import '../../cubits/chat/pusher_service/pusher_service.dart';
+import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../../global_widgets/user_profile_image/user_profile_image.dart';
 
 class ChatWithAPerson extends StatefulWidget {
@@ -34,6 +40,8 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   ChatMessageModel? _editingMessage;
+  int? myId;
+  String? _currentSubscribedChannel;
 
   int? _getMyId(BuildContext context) {
     final state = context.read<AuthCubit>().state;
@@ -71,11 +79,67 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      if (mounted && widget.conversationId > 0) {
-        context.read<ChatCubit>().getMessages(widget.conversationId);
-      }
-    });
+    final authState = context.read<AuthCubit>().state;
+    if (authState is AuthAuthenticated) myId = authState.user.id;
+
+    context.read<ChatCubit>().getMessages(widget.conversationId);
+    _connectToPusher();
+  }
+
+  void _connectToPusher() async {
+    String? token = await sl<AuthLocalDatasource>().getCachedToken();
+    if (token == null) return;
+
+    await PusherService().init(token: token);
+
+    _subscribeToCurrentConversation();
+  }
+
+  void _subscribeToCurrentConversation([int? overrideId]) async {
+    final int idToSubscribe = overrideId ?? widget.conversationId;
+
+    if (idToSubscribe == -1) return;
+
+    final channelName = "private-conversations.$idToSubscribe";
+
+    if (_currentSubscribedChannel == channelName) return;
+
+    if (_currentSubscribedChannel != null) {
+      log(">>>> Unsubscribing from old channel: $_currentSubscribedChannel");
+      await PusherService().unsubscribe(_currentSubscribedChannel!);
+    }
+
+    log(">>>> Attempting to subscribe to: $channelName");
+
+    await PusherService().subscribe(
+      channelName: channelName,
+      onEvent: (event) {
+        log(">>>> Event Received in UI: ${event.eventName}");
+
+        if (event.eventName == "pusher:subscription_succeeded") return;
+
+        try {
+          final Map<String, dynamic> data = jsonDecode(event.data);
+          if (mounted) {
+            context.read<ChatCubit>().handlePusherEvent(event.eventName, data);
+          }
+        } catch (e) {
+          log(">>>> UI Parsing Error: $e");
+        }
+      },
+    );
+
+    _currentSubscribedChannel = channelName;
+  }
+
+  @override
+  void dispose() {
+    if (_currentSubscribedChannel != null) {
+      PusherService().unsubscribe(_currentSubscribedChannel!);
+    }
+    _messageController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -134,20 +198,30 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
                   _buildAppBar(childContext, isDark),
                   Expanded(
                     child: BlocConsumer<ChatCubit, ChatState>(
-                      listener: (context, state) {
-                        if (state is ChatMessagesLoaded && state.messages.isNotEmpty) {
-                          final myId = _getMyId(context);
+                        listener: (context, state) {
+                          if (state is ChatMessagesLoaded) {
 
-                          final unreadMessages = state.messages.where((msg) =>
-                          msg.senderId != myId && msg.readAt == null).toList();
+                            final channelName = "private-conversations.${state.conversationId}";
+                            if (_currentSubscribedChannel != channelName) {
+                              log(">>>> New Conversation detected (${state.conversationId}), re-subscribing...");
+                              _subscribeToCurrentConversation(state.conversationId);
+                            }
 
-                          if (unreadMessages.isNotEmpty) {
-                            for (var msg in unreadMessages) {
-                              context.read<ChatCubit>().markMessageAsRead(msg.id);
+                            if (state.messages.isNotEmpty) {
+                              if (myId == null) return;
+
+                              final unreadMessages = state.messages.where((msg) =>
+                              msg.senderId != myId && msg.readAt == null).toList();
+
+                              if (unreadMessages.isNotEmpty) {
+                                if (!mounted) return;
+                                for (var msg in unreadMessages) {
+                                  context.read<ChatCubit>().markMessageAsRead(msg.id);
+                                }
+                              }
                             }
                           }
-                        }
-                      },
+                        },
                         builder: (context, state) {
                           List<ChatMessageModel> messages = [];
 
@@ -220,12 +294,12 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
             PositionedDirectional(
               top: -10,
               start: -20,
-              child: _buildGlowingKey(100, 0.12, -0.2),
+              child: const BuildGlowingKey(size: 100,opacity:  0.12,rotation: -0.2),
             ),
             PositionedDirectional(
               bottom: -10,
               end: 20,
-              child: _buildGlowingKey(80, 0.1, 0.5),
+              child: const BuildGlowingKey(size: 80,opacity:  0.1,rotation:  0.5),
             ),
 
             SafeArea(
@@ -293,21 +367,6 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGlowingKey(double size, double opacity, double rotation) {
-    return Opacity(
-      opacity: opacity,
-      child: Transform.rotate(
-        angle: rotation,
-        child: Image.asset(
-          'assets/icons/key_logo.png',
-          width: size,
-          height: size,
-          color: Colors.white,
         ),
       ),
     );

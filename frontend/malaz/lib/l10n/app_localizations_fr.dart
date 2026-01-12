@@ -569,4 +569,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get enter_hint => 'Entrez';
+
+  @override
+  String get new_messages => 'Nouveaux messages';
 }
