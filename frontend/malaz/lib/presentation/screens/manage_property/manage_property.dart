@@ -120,74 +120,80 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              pinned: true,
-              expandedHeight: 340.0,
-              backgroundColor: Theme.of(context).primaryColor,
-              centerTitle: true,
-              elevation: 0,
-              title: Text(tr.property_manager,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w800, color: Theme.of(context).scaffoldBackgroundColor)),
-              flexibleSpace: FlexibleSpaceBar(
-                background: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        gradient: AppColors.premiumGoldGradient2,
-                      ),
-                    ),
-
-                    PositionedDirectional(
-                      top: 40,
-                      end: -30,
-                      child: const BuildGlowingKey(size: 140,opacity:  0.15,rotation:  0.5),
-                    ),
-                    PositionedDirectional(
-                      top: 10,
-                      start: 10,
-                      child: const BuildGlowingKey(size: 80,opacity:  0.15,rotation: -0.3),
-                    ),
-
-                    Container(
-                      margin: const EdgeInsets.only(top: kToolbarHeight + 40),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(35)),
-
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 20),
-                          _buildProfileHeader(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(80),
-                child: Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: Column(
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: SliverAppBar(
+                pinned: true,
+                expandedHeight: 340.0,
+                backgroundColor: Theme.of(context).primaryColor,
+                centerTitle: true,
+                elevation: 0,
+                title: Text(tr.property_manager,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800, color: Theme.of(context).scaffoldBackgroundColor)),
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
+                  background: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      const SizedBox(height: 12),
-                      _buildGradientIndicator(),
-                      const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildTabItem(tr.properties, 0),
-                            _buildTabItem(tr.inbound, 1),
-                            _buildTabItem(tr.history, 2),
-                          ],
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: AppColors.premiumGoldGradient2,
+                        ),
+                      ),
+
+                      PositionedDirectional(
+                        top: 40,
+                        end: -30,
+                        child: const BuildGlowingKey(size: 140,opacity:  0.15,rotation:  0.5),
+                      ),
+                      PositionedDirectional(
+                        top: 10,
+                        start: 10,
+                        child: const BuildGlowingKey(size: 80,opacity:  0.15,rotation: -0.3),
+                      ),
+
+                      Positioned(
+                        top: kToolbarHeight +30,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(35)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: _buildProfileHeader(),
+                          ),
                         ),
                       ),
                     ],
+                  ),
+                ),
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(85),
+                  child: Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildGradientIndicator(),
+                        const SizedBox(height: 12),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _buildTabItem(tr.properties, 0),
+                              _buildTabItem(tr.inbound, 1),
+                              _buildTabItem(tr.history, 2),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -198,13 +204,30 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
           body: PageView(
             controller: _pageController,
             children: [
-              _buildPropertiesList(),
-              _buildBookingsTab(targetStatus: 'pending'),
-              _buildBookingsTab(targetStatus: 'history'),
+              _buildNestedScrollPage(_buildPropertiesList()),
+              _buildNestedScrollPage(_buildBookingsTab(targetStatus: 'pending')),
+              _buildNestedScrollPage(_buildBookingsTab(targetStatus: 'history')),
             ],
           ),
         ),
       );
+  }
+  Widget _buildNestedScrollPage(Widget child) {
+    return Builder(
+      builder: (context) {
+        return CustomScrollView(
+          key: PageStorageKey<String>(child.hashCode.toString()),
+          slivers: [
+            SliverOverlapInjector(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverToBoxAdapter(
+              child: child,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildBookingsTab({required String targetStatus}) {
@@ -238,6 +261,8 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                     .read<ManageBookingCubit>()
                     .fetchAllBookings(authState.user.id),
                 child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   itemCount: bookings.length,
                   itemBuilder: (context, index) {
@@ -282,6 +307,8 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                 .read<MyApartmentsCubit>()
                 .fetchMyApartments(isRefresh: true),
             child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               controller: _myApartmentsScrollController,
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 100),
               itemCount: state.myApartments.length + (state.hasReachedMax ? 0 : 1),
@@ -314,17 +341,21 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
       builder: (context, state) {
         String name = "User";
         int? id;
+        String firstName= '', lastName= '';
         if (state is AuthAuthenticated) {
           name = "${state.user.first_name} ${state.user.last_name}";
           id = state.user.id;
+          List<String> nameParts = name.trim().split(' ');
+          firstName = nameParts.isNotEmpty ? nameParts[0] : "User";
+          lastName = nameParts.length > 1 ? nameParts[1] : "";
         }
         return Column(
           children: [
             UserProfileImage(
               userId: id ?? 0,
               radius: 60,
-              firstName: name.split(' ')[0],
-              lastName: name.split(' ')[1],
+              firstName: firstName,
+              lastName: lastName,
               isPremiumStyle: true,
             ),
             const SizedBox(height: 8),
