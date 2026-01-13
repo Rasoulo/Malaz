@@ -559,4 +559,69 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get new_messages => 'رسائل جديدة';
+
+  @override
+  String get modify_reservation => 'تعديل الحجز';
+
+  @override
+  String changing_dates_for(Object propertyTitle) {
+    return 'تغيير المواعيد لـ $propertyTitle';
+  }
+
+  @override
+  String get confirm_new_dates => 'تأكيد المواعيد الجديدة';
+
+  @override
+  String get cancel_booking_title => 'إلغاء الحجز؟';
+
+  @override
+  String cancel_booking_msg(Object propertyTitle) {
+    return 'هل أنت متأكد من رغبتك في إلغاء إقامتك في $propertyTitle؟ لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String get keep_stay => 'البقاء على الحجز';
+
+  @override
+  String get yes_cancel => 'نعم، إلغاء';
+
+  @override
+  String get view_receipt => 'عرض الإيصال';
+
+  @override
+  String get check_in => 'تسجيل الوصول';
+
+  @override
+  String get check_out => 'تسجيل المغادرة';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get status_pending => 'قيد الانتظار';
+
+  @override
+  String get status_confirmed => 'مؤكد';
+
+  @override
+  String get status_completed => 'مكتمل';
+
+  @override
+  String get status_canceled => 'ملغي';
+
+  @override
+  String get status_conflicted => 'تعارض';
+
+  @override
+  String get rate_the_apartment => 'تقييم الشقة';
+
+  @override
+  String get view_details => 'عرض التفاصيل';
+
+  @override
+  String get password_length_message =>
+      'يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل';
+
+  @override
+  String get not_chat_yourself => '! لا يمكنك التحدث مع نفسك';
 }

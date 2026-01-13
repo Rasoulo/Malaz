@@ -272,7 +272,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get current_password => 'Mevcut Şifre';
 
   @override
-  String get cancel => 'Iptal';
+  String get cancel => 'İptal';
 
   @override
   String get incorrect_password => 'Yanlış Şifre';
@@ -565,4 +565,68 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get new_messages => 'Yeni mesajlar';
+
+  @override
+  String get modify_reservation => 'Rezervasyonu Düzenle';
+
+  @override
+  String changing_dates_for(Object propertyTitle) {
+    return '$propertyTitle için tarihleri değiştirme';
+  }
+
+  @override
+  String get confirm_new_dates => 'Yeni Tarihleri Onayla';
+
+  @override
+  String get cancel_booking_title => 'Rezervasyonu İptal Et?';
+
+  @override
+  String cancel_booking_msg(Object propertyTitle) {
+    return '$propertyTitle tesisindeki konaklamanızı iptal etmek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+  }
+
+  @override
+  String get keep_stay => 'Rezervasyonu Koru';
+
+  @override
+  String get yes_cancel => 'Evet, İptal Et';
+
+  @override
+  String get view_receipt => 'Fişi Görüntüle';
+
+  @override
+  String get check_in => 'GİRİŞ';
+
+  @override
+  String get check_out => 'ÇIKIŞ';
+
+  @override
+  String get edit => 'Düzenle';
+
+  @override
+  String get status_pending => 'BEKLEMEDE';
+
+  @override
+  String get status_confirmed => 'ONAYLANDI';
+
+  @override
+  String get status_completed => 'TAMAMLANDI';
+
+  @override
+  String get status_canceled => 'İPTAL EDİLDİ';
+
+  @override
+  String get status_conflicted => 'ÇAKIŞMA';
+
+  @override
+  String get rate_the_apartment => 'Daire Değerlendirmesi';
+
+  @override
+  String get view_details => 'ayrıntıları görüntüle';
+
+  @override
+  String get password_length_message => 'Parola en az 6 karakter içermelidir.';
+
+  @override
+  String get not_chat_yourself => 'Kendi kendine sohbet edemezsin.';
 }

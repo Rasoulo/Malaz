@@ -562,4 +562,69 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get new_messages => 'New Messages';
+
+  @override
+  String get modify_reservation => 'Modify Reservation';
+
+  @override
+  String changing_dates_for(Object propertyTitle) {
+    return 'Changing dates for $propertyTitle';
+  }
+
+  @override
+  String get confirm_new_dates => 'Confirm New Dates';
+
+  @override
+  String get cancel_booking_title => 'Cancel Booking?';
+
+  @override
+  String cancel_booking_msg(Object propertyTitle) {
+    return 'Are you sure you want to cancel your stay at $propertyTitle? This action cannot be reversed.';
+  }
+
+  @override
+  String get keep_stay => 'Keep Stay';
+
+  @override
+  String get yes_cancel => 'Yes, Cancel';
+
+  @override
+  String get view_receipt => 'View Receipt';
+
+  @override
+  String get check_in => 'CHECK-IN';
+
+  @override
+  String get check_out => 'CHECK-OUT';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get status_pending => 'PENDING';
+
+  @override
+  String get status_confirmed => 'CONFIRMED';
+
+  @override
+  String get status_completed => 'COMPLETED';
+
+  @override
+  String get status_canceled => 'CANCELED';
+
+  @override
+  String get status_conflicted => 'CONFLICT';
+
+  @override
+  String get rate_the_apartment => 'Rate the Apartment';
+
+  @override
+  String get view_details => 'View Details';
+
+  @override
+  String get password_length_message =>
+      'The Password must contain at least 6 characters';
+
+  @override
+  String get not_chat_yourself => 'You can\'t chat with yourself';
 }

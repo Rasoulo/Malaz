@@ -100,7 +100,7 @@ class AuthRepositoryImpl extends AuthRepository {
         return Right(pendingUser);
       }
 
-      final user = UserModel.fromJson(result['user']);
+      final user = UserModel.fromJson(result['data']);
       final token = result['access_token'];
 
       await authLocalDatasource.cacheUser(user);
@@ -165,7 +165,8 @@ class AuthRepositoryImpl extends AuthRepository {
         profileImage: profileImage,
         identityImage: identityImage,
       );
-      final userMap = result['data'] as Map<String, dynamic>?;
+      print('SERVER RESPONSE: $result');
+      final userMap = result['data'];
 
       if (userMap == null) {
         return Left(ServerFailure('No user data returned from server'));

@@ -272,7 +272,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get current_password => 'Текущий пароль';
 
   @override
-  String get cancel => 'Oтмена';
+  String get cancel => 'Отмена';
 
   @override
   String get incorrect_password => 'Неверный пароль';
@@ -565,4 +565,69 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get new_messages => 'Новые сообщения';
+
+  @override
+  String get modify_reservation => 'Изменить бронирование';
+
+  @override
+  String changing_dates_for(Object propertyTitle) {
+    return 'Изменение дат для $propertyTitle';
+  }
+
+  @override
+  String get confirm_new_dates => 'Подтвердить новые даты';
+
+  @override
+  String get cancel_booking_title => 'Отменить бронирование?';
+
+  @override
+  String cancel_booking_msg(Object propertyTitle) {
+    return 'Вы уверены, что хотите отменить проживание в $propertyTitle? Это действие невозможно отменить.';
+  }
+
+  @override
+  String get keep_stay => 'Оставить бронь';
+
+  @override
+  String get yes_cancel => 'Да, отменить';
+
+  @override
+  String get view_receipt => 'Посмотреть чек';
+
+  @override
+  String get check_in => 'ЗАЕЗД';
+
+  @override
+  String get check_out => 'ВЫЕЗД';
+
+  @override
+  String get edit => 'Изменить';
+
+  @override
+  String get status_pending => 'В ОЖИДАНИИ';
+
+  @override
+  String get status_confirmed => 'ПОДТВЕРЖДЕНО';
+
+  @override
+  String get status_completed => 'ЗАВЕРШЕНО';
+
+  @override
+  String get status_canceled => 'ОТМЕНЕНО';
+
+  @override
+  String get status_conflicted => 'КОНФЛИКТ';
+
+  @override
+  String get rate_the_apartment => 'Рейтинг квартиры';
+
+  @override
+  String get view_details => 'посмотреть подробности';
+
+  @override
+  String get password_length_message =>
+      'Пароль должен содержать не менее 6 символов.';
+
+  @override
+  String get not_chat_yourself => 'С самим собой разговаривать нельзя.';
 }

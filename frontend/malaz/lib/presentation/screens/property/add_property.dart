@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -239,7 +240,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       latitide: _selectedLat ?? 0.0,
       longitude: _selectedLng ?? 0.0,
     );
-  }  void _showSnackBar(BuildContext context, String message) {
+  }
+  void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -267,56 +269,56 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     final tr = AppLocalizations.of(context)!;
 
     return BlocConsumer<AddApartmentCubit, ApartmentState>(
-        listener: (context, state) {
-          if (state is AddApartmentSuccess ||
-              (state is AddApartmentError && state.message.contains("successfully"))) {
+      listener: (context, state) {
+        if (state is AddApartmentSuccess ||
+            (state is AddApartmentError && state.message.contains("successfully"))) {
 
-            _showSuccessDialog(context);
-          }
+          _showSuccessDialog(context);
+        }
         else if (state is AddApartmentError) {
           _showSnackBar(context, state.message);
         }
       },      builder: (context, state) {
-        final isLoading = state is AddApartmentLoading;
+      final isLoading = state is AddApartmentLoading;
 
-        return ModalProgressHUD(
-          inAsyncCall: isLoading,
-          color: Colors.white,
-          dismissible: false,
-          child: Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar: const _PropertyAppBar(),
-            body: SingleChildScrollView(
-              child: SafeArea(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 40),
-                      _buildHeader(tr, colorScheme),
-                      const SizedBox(height: 30),
-                      _buildImageSection(tr, colorScheme),
-                      const SizedBox(height: 20),
-                      _buildEssentialDetailsSection(tr, colorScheme),
-                      const SizedBox(height: 30),
-                      _buildPriceSection(tr, colorScheme),
-                      const SizedBox(height: 30),
-                      _buildPropertyTypeSection(tr, colorScheme),
-                      const SizedBox(height: 20),
-                      _buildLocationDetailsSection(tr, colorScheme),
-                      const SizedBox(height: 20),
-                      _buildDescriptionSection(tr, colorScheme),
-                      _buildSaveButton(tr, _submitProperty),
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+      return ModalProgressHUD(
+        inAsyncCall: isLoading,
+        color: Colors.white,
+        dismissible: false,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: const _PropertyAppBar(),
+          body: SingleChildScrollView(
+            child: SafeArea(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 40),
+                    _buildHeader(tr, colorScheme),
+                    const SizedBox(height: 30),
+                    _buildImageSection(tr, colorScheme),
+                    const SizedBox(height: 20),
+                    _buildEssentialDetailsSection(tr, colorScheme),
+                    const SizedBox(height: 30),
+                    _buildPriceSection(tr, colorScheme),
+                    const SizedBox(height: 30),
+                    _buildPropertyTypeSection(tr, colorScheme),
+                    const SizedBox(height: 20),
+                    _buildLocationDetailsSection(tr, colorScheme),
+                    const SizedBox(height: 20),
+                    _buildDescriptionSection(tr, colorScheme),
+                    _buildSaveButton(tr, _submitProperty),
+                    const SizedBox(height: 40),
+                  ],
                 ),
               ),
             ),
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
   Future<void> _openMapPicker() async {
@@ -332,9 +334,12 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
         var details = result['details'];
         if (details != null) {
-          _cityController.text = details['city'] ?? '';
-          _addressController.text = details['address'] ?? '';
-          _selectedGovernorate = details['governorate']??'';
+          _cityController.text = details['city'] ?? 'Al-Mazza Municipality';
+          _addressController.text = details['address'] ?? 'Rabwa Neighborhood';
+          _selectedGovernorate = details['governorate']??'Damascus Governorate';
+          print(">>>> ${details['city']}");
+          print(">>>> ${details['address']}");
+          print(">>>> ${details['governorate']}");
         }
       });
     }
@@ -684,7 +689,7 @@ class _PropertyFormInputField extends StatelessWidget {
               ),
             ),
           )
-              : null,
+               : null,
           hintText: hint,
           hintStyle: TextStyle(
             color: colorScheme.onSurface.withOpacity(0.4),

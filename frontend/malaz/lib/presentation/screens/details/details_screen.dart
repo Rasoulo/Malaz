@@ -5,10 +5,13 @@ import 'package:malaz/presentation/global_widgets/buttons/custom_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:malaz/domain/entities/user/user_entity.dart';
 import 'package:malaz/presentation/global_widgets/user_profile_image/user_profile_image.dart';
+import '../../../core/service_locator/service_locator.dart';
+import '../../../data/datasources/local/auth/auth_local_data_source.dart';
 import '../../../data/models/chat/conversation_model.dart';
 import '../../../domain/entities/apartment/apartment.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/favorites/favorites_cubit.dart';
 import '../../cubits/chat/chat_cubit.dart';
 import '../book_now/book_now_screen.dart';
@@ -409,41 +412,66 @@ class _BuildOwnerCard extends StatelessWidget {
             ),
             child: IconButton(
               onPressed: () async {
-                final chatCubit = context.read<ChatCubit>();
-                final router = GoRouter.of(context);
-
-                await chatCubit.getConversations();
-
-                int existingId = 0;
-                final state = chatCubit.state;
-
-                if (state is ChatConversationsLoaded) {
-                  final foundConversations = state.conversations.where(
-                          (c) => c.userOneId == owner.id || c.userTwoId == owner.id
-                  ).toList();
-
-                  if (foundConversations.isNotEmpty) {
-                    existingId = foundConversations.first.id;
-                  }
-                }
-
-                if (existingId > 0) {
-                  chatCubit.getMessages(existingId);
+                int? myId = _getMyId(context);
+                if (owner.id == myId) {
+                  _showSnackBar(context, l10n.not_chat_yourself, theme.primaryColor);
                 } else {
-                  chatCubit.clearMessages();
-                }
+                  final chatCubit = context.read<ChatCubit>();
+                  final router = GoRouter.of(context);
 
-                router.push('/one_chat', extra: {
-                  'id': existingId,
-                  'firstName': owner.first_name,
-                  'lastName': owner.last_name,
-                  'otherUserId': owner.id,
-                });
+                  await chatCubit.getConversations();
+
+                  int existingId = 0;
+                  final state = chatCubit.state;
+
+                  if (state is ChatConversationsLoaded) {
+                    final foundConversations = state.conversations.where(
+                            (c) => c.userOneId == owner.id || c.userTwoId == owner.id
+                    ).toList();
+
+                    if (foundConversations.isNotEmpty) {
+                      existingId = foundConversations.first.id;
+                    }
+                  }
+
+                  if (existingId > 0) {
+                    chatCubit.getMessages(existingId);
+                  } else {
+                    chatCubit.clearMessages();
+                  }
+
+                  router.push('/one_chat', extra: {
+                    'id': existingId,
+                    'firstName': owner.first_name,
+                    'lastName': owner.last_name,
+                    'otherUserId': owner.id,
+                  });
+                }
               },
               icon: Icon(Icons.chat_outlined, color: theme.colorScheme.primary),
             )
           )
         ],
+      ),
+    );
+  }
+  int? _getMyId(BuildContext context) {
+    final state = context.read<AuthCubit>().state;
+    if (state is AuthAuthenticated) return state.user.id;
+    if (state is AuthPending) return state.user.id;
+    return null;
+  }
+
+  void _showSnackBar(BuildContext context, String message, Color color) {
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

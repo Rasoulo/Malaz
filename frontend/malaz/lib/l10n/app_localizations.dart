@@ -1195,6 +1195,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Messages'**
   String get new_messages;
+
+  /// No description provided for @modify_reservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify Reservation'**
+  String get modify_reservation;
+
+  /// No description provided for @changing_dates_for.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing dates for {propertyTitle}'**
+  String changing_dates_for(Object propertyTitle);
+
+  /// No description provided for @confirm_new_dates.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Dates'**
+  String get confirm_new_dates;
+
+  /// No description provided for @cancel_booking_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Booking?'**
+  String get cancel_booking_title;
+
+  /// No description provided for @cancel_booking_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel your stay at {propertyTitle}? This action cannot be reversed.'**
+  String cancel_booking_msg(Object propertyTitle);
+
+  /// No description provided for @keep_stay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Stay'**
+  String get keep_stay;
+
+  /// No description provided for @yes_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Cancel'**
+  String get yes_cancel;
+
+  /// No description provided for @view_receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'View Receipt'**
+  String get view_receipt;
+
+  /// No description provided for @check_in.
+  ///
+  /// In en, this message translates to:
+  /// **'CHECK-IN'**
+  String get check_in;
+
+  /// No description provided for @check_out.
+  ///
+  /// In en, this message translates to:
+  /// **'CHECK-OUT'**
+  String get check_out;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @status_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING'**
+  String get status_pending;
+
+  /// No description provided for @status_confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'CONFIRMED'**
+  String get status_confirmed;
+
+  /// No description provided for @status_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'COMPLETED'**
+  String get status_completed;
+
+  /// No description provided for @status_canceled.
+  ///
+  /// In en, this message translates to:
+  /// **'CANCELED'**
+  String get status_canceled;
+
+  /// No description provided for @status_conflicted.
+  ///
+  /// In en, this message translates to:
+  /// **'CONFLICT'**
+  String get status_conflicted;
+
+  /// No description provided for @rate_the_apartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate the Apartment'**
+  String get rate_the_apartment;
+
+  /// No description provided for @view_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get view_details;
+
+  /// No description provided for @password_length_message.
+  ///
+  /// In en, this message translates to:
+  /// **'The Password must contain at least 6 characters'**
+  String get password_length_message;
+
+  /// No description provided for @not_chat_yourself.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t chat with yourself'**
+  String get not_chat_yourself;
 }
 
 class _AppLocalizationsDelegate

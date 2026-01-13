@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:malaz/core/constants/app_constants.dart';
 import 'package:malaz/domain/entities/user/user_entity.dart';
 import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
 import 'package:malaz/domain/usecases/auth/get_current_user_usecase.dart';
@@ -151,8 +153,8 @@ class AuthCubit extends Cubit<AuthState> {
         },
         (user) async {
           final storage = FlutterSecureStorage();
-          await storage.write(key: '_USER_PASSWORD', value: password);
-          await storage.write(key: '_USER_PHONE', value: phone);
+          await storage.write(key: AppConstants.passwordUserKey, value: password);
+          await storage.write(key: AppConstants.phoneUserKey, value: phone);
 
           final role = user.role.toLowerCase();
           if (role == 'pending') {
@@ -194,8 +196,8 @@ class AuthCubit extends Cubit<AuthState> {
           (user) async {
         if (user.role.toUpperCase() == 'PENDING') {
           final storage = FlutterSecureStorage();
-          await storage.write(key: '_USER_PASSWORD', value: password);
-          await storage.write(key: '_USER_PHONE', value: phone);
+          await storage.write(key: AppConstants.passwordUserKey, value: password);
+          await storage.write(key: AppConstants.phoneUserKey, value: phone);
           emit(AuthPending(user));
         } else {
           emit(AuthAuthenticated(user));
@@ -275,9 +277,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> silentRoleCheck() async {
     final storage = FlutterSecureStorage();
-    final password = await storage.read(key: '_USER_PASSWORD');
-    final phone = await storage.read(key: '_USER_PHONE');
+    final password = await storage.read(key: AppConstants.passwordUserKey);
+    final phone = await storage.read(key: AppConstants.phoneUserKey);
 
+    log(password ?? 'null');
+    log(phone ?? 'null');
     final res = await loginUsecase(
       LoginParams(phoneNumber: phone.toString(), password: password.toString()),
     );

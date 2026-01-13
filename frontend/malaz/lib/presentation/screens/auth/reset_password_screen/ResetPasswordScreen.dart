@@ -35,6 +35,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final subTextColor = isDark ? Colors.white70 : const Color(0xFF5D4037);
 
     return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
         if (state is OtpSentSuccess) {
           setState(() => _currentStep = 2);
@@ -197,6 +198,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               onPressed: () {
                 if (_newPasswordController.text.isEmpty || _confirmPasswordController.text.isEmpty) {
                   _showSnackBar(context, tr.please_enter_password, Colors.orange);
+                  return;
+                }
+
+                if (_newPasswordController.text.length < 6) {
+                  _showSnackBar(context, tr.password_length_message, Colors.red);
                   return;
                 }
 
