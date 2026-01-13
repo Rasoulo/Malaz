@@ -623,4 +623,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get view_details => 'ayrıntıları görüntüle';
+
+  @override
+  String get password_length_message => 'Parola en az 6 karakter içermelidir.';
+
+  @override
+  String get not_chat_yourself => 'Kendi kendine sohbet edemezsin.';
 }

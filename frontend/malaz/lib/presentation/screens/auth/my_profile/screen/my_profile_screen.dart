@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../core/config/color/app_color.dart';
-import '../../../../l10n/app_localizations.dart';
-import '../../../cubits/auth/auth_cubit.dart';
-import '../../../cubits/location/location_cubit.dart';
-import '../../../global_widgets/glowing_key/build_glowing_key.dart';
-import '../../../global_widgets/user_profile_image/user_profile_image.dart';
+import '../../../../../core/config/color/app_color.dart';
+import '../../../../../l10n/app_localizations.dart';
+import '../../../../cubits/auth/auth_cubit.dart';
+import '../../../../cubits/location/location_cubit.dart';
+import '../../../../global_widgets/glowing_key/build_glowing_key.dart';
+import '../../../../global_widgets/user_profile_image/user_profile_image.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});

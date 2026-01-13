@@ -630,4 +630,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get view_details => 'voir les détails';
+
+  @override
+  String get password_length_message =>
+      'Le mot de passe doit contenir au moins 6 caractères.';
+
+  @override
+  String get not_chat_yourself => 'On ne peut pas discuter avec soi-même';
 }

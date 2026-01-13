@@ -201,5 +201,7 @@
   "status_canceled": "İPTAL EDİLDİ",
   "status_conflicted": "ÇAKIŞMA",
   "rate_the_apartment": "Daire Değerlendirmesi",
-  "view_details": "ayrıntıları görüntüle"
+  "view_details": "ayrıntıları görüntüle",
+  "password_length_message": "Parola en az 6 karakter içermelidir.",
+  "not_chat_yourself": "Kendi kendine sohbet edemezsin."
 }

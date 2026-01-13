@@ -207,5 +207,7 @@
   "status_canceled": "ОТМЕНЕНО",
   "status_conflicted": "КОНФЛИКТ",
   "rate_the_apartment": "Рейтинг квартиры",
-  "view_details": "посмотреть подробности"
+  "view_details": "посмотреть подробности",
+  "password_length_message": "Пароль должен содержать не менее 6 символов.",
+  "not_chat_yourself": "С самим собой разговаривать нельзя."
 }

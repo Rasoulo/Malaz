@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
-import 'package:malaz/presentation/screens/auth/my_profile/my_profile_screen.dart';
+import 'package:malaz/presentation/screens/auth/my_profile/screen/my_profile_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:malaz/presentation/screens/chats/ChatWithAPerson.dart';
 import 'package:malaz/presentation/screens/details/details_screen.dart';

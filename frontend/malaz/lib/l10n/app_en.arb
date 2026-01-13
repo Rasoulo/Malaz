@@ -206,5 +206,7 @@
   "status_canceled": "CANCELED",
   "status_conflicted": "CONFLICT",
   "rate_the_apartment": "Rate the Apartment",
-  "view_details": "View Details"
+  "view_details": "View Details",
+  "password_length_message": "The Password must contain at least 6 characters",
+  "not_chat_yourself": "You can't chat with yourself"
 }

@@ -206,5 +206,7 @@
   "status_canceled": "ANNULÉ",
   "status_conflicted": "CONFLIT",
   "rate_the_apartment": "Évaluation de l'appartement",
-  "view_details": "voir les détails"
+  "view_details": "voir les détails",
+  "password_length_message": "Le mot de passe doit contenir au moins 6 caractères.",
+  "not_chat_yourself": "On ne peut pas discuter avec soi-même"
 }

@@ -206,5 +206,7 @@
   "status_canceled": "ملغي",
   "status_conflicted": "تعارض",
   "rate_the_apartment": "تقييم الشقة",
-  "view_details": "عرض التفاصيل"
+  "view_details": "عرض التفاصيل",
+  "password_length_message": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل",
+  "not_chat_yourself": "! لا يمكنك التحدث مع نفسك"
 }

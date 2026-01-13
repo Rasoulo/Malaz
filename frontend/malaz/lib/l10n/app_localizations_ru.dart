@@ -623,4 +623,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get view_details => 'посмотреть подробности';
+
+  @override
+  String get password_length_message =>
+      'Пароль должен содержать не менее 6 символов.';
+
+  @override
+  String get not_chat_yourself => 'С самим собой разговаривать нельзя.';
 }

@@ -1019,7 +1019,7 @@ abstract class AppLocalizations {
   /// No description provided for @booking_in_progress.
   ///
   /// In en, this message translates to:
-  /// **'Confirming your manage_my_bookings...'**
+  /// **'Confirming your booking...'**
   String get booking_in_progress;
 
   /// No description provided for @booking_success_title.
@@ -1303,6 +1303,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View Details'**
   String get view_details;
+
+  /// No description provided for @password_length_message.
+  ///
+  /// In en, this message translates to:
+  /// **'The Password must contain at least 6 characters'**
+  String get password_length_message;
+
+  /// No description provided for @not_chat_yourself.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t chat with yourself'**
+  String get not_chat_yourself;
 }
 
 class _AppLocalizationsDelegate

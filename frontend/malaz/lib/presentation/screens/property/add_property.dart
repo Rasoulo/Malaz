@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,44 +85,180 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     });
   }
 
+  void _showConfirmDialog(BuildContext context, VoidCallback onConfirm) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(color: AppColors.primaryLight.withOpacity(0.2)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Image.asset('assets/icons/key_logo.png', width: 40, height: 40, color: AppColors.primaryLight),
+              ),
+              const SizedBox(height: 20),
+              const Text("تأكيد نشر العقار",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 0.5)),
+              const SizedBox(height: 12),
+              const Text("سيتم إرسال بيانات العقار للمراجعة، هل أنت متأكد من صحة المعلومات؟",
+                  textAlign: TextAlign.center, style: TextStyle(color: Colors.grey, fontSize: 14)),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("تعديل", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: onConfirm,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        decoration: BoxDecoration(
+                          gradient: AppColors.premiumGoldGradient2,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Center(
+                          child: Text("نعم، أنشر",
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 80, height: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green.withOpacity(0.1),
+                    ),
+                  ),
+                  const Icon(Icons.check_circle_rounded, color: Colors.green, size: 60),
+                ],
+              ),
+              const SizedBox(height: 24),
+              const Text("تمت الإضافة بنجاح",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+              const SizedBox(height: 10),
+              const Text("عقارك الآن تحت المعالجة وسيظهر للجميع فور الموافقة عليه.",
+                  textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.premiumGoldGradient2,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: const Center(
+                    child: Text("حسناً",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _submitProperty() {
-    if (_images.isEmpty) setState(() => _showImageError = true);
-    if (_selectedLat == null || _selectedLng == null) {
-      _showSnackBar(context, "piease select locationً", Colors.orange);
+    bool isFormValid = _formKey.currentState!.validate();
+    bool isImagesEmpty = _images.isEmpty;
+    bool isLocationEmpty = (_selectedLat == null || _selectedLng == null);
+    bool isTypeEmpty = _selectedPropertyType.isEmpty;
+
+    if (!isFormValid || isImagesEmpty || isTypeEmpty || isLocationEmpty) {
+      if (isImagesEmpty) setState(() => _showImageError = true);
+      _showSnackBar(context, "يرجى إكمال جميع البيانات المطلوبة");
       return;
     }
 
-    if (_cityController.text.isEmpty) _cityController.text = "City Selected";
-    if (_addressController.text.isEmpty) _addressController.text = "Address Selected";
-
-    if (_formKey.currentState!.validate() && _images.isNotEmpty) {
-      final tr = AppLocalizations.of(context)!;
-      context.read<AddApartmentCubit>().submitApartment(
-          title: _titleController.text,
-          price: int.parse(_priceController.text),
-          rooms: int.parse(_roomsController.text),
-          bathrooms: int.parse(_bathroomsController.text),
-          bedrooms: int.parse(_bedroomsController.text),
-          area: int.parse(_areaController.text),
-          city: _cityController.text,
-          governorate:_selectedGovernorate!,
-          address: _addressController.text,
-          description: _descriptionController.text,
-          type: _mapTypeToEnglish(_selectedPropertyType, tr),
-          images: _images,
-          main_pic: _images.first,
-        latitide: _selectedLat ?? 0.0,
-        longitude: _selectedLng ?? 0.0,
-
-      );
-    }
+    _showConfirmDialog(context, () {
+      Navigator.pop(context);
+      _executeSubmit();
+    });
   }
-  void _showSnackBar(BuildContext context, String message, Color color) {
+
+  void _executeSubmit() {
+    final tr = AppLocalizations.of(context)!;
+    context.read<AddApartmentCubit>().submitApartment(
+      title: _titleController.text,
+      price: int.parse(_priceController.text),
+      rooms: int.parse(_roomsController.text),
+      bathrooms: int.parse(_bathroomsController.text),
+      bedrooms: int.parse(_bedroomsController.text),
+      area: int.parse(_areaController.text),
+      city: _cityController.text,
+      governorate: _selectedGovernorate!,
+      address: _addressController.text,
+      description: _descriptionController.text,
+      type: _mapTypeToEnglish(_selectedPropertyType, tr),
+      images: _images,
+      main_pic: _images.first,
+      latitide: _selectedLat ?? 0.0,
+      longitude: _selectedLng ?? 0.0,
+    );
+  }
+  void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
-        backgroundColor: color,
-        duration: const Duration(seconds: 2),
+        content: Row(
+          children: [
+            Icon(Icons.info_outline, color: AppColors.primaryLight), // أيقونة ذهبية
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: const Color(0xFF2D2C2C),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -133,61 +270,55 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
     return BlocConsumer<AddApartmentCubit, ApartmentState>(
       listener: (context, state) {
-        final bool isActuallySuccess = state is AddApartmentSuccess ||
-            (state is AddApartmentError && (state.message.contains("successfully") || state.message.contains("بنجاح")));
+        if (state is AddApartmentSuccess ||
+            (state is AddApartmentError && state.message.contains("successfully"))) {
 
-        if (isActuallySuccess) {
-          ScaffoldMessenger.of(context).clearSnackBars();
-          final message = (state is AddApartmentSuccess) ? state.message : (state as AddApartmentError).message;
-          _showSnackBar(context, message, Colors.green);
-            Navigator.of(context).pop();
-
+          _showSuccessDialog(context);
         }
         else if (state is AddApartmentError) {
-          _showSnackBar(context, state.message, Colors.red);
+          _showSnackBar(context, state.message);
         }
-      },
-      builder: (context, state) {
-        final isLoading = state is AddApartmentLoading;
+      },      builder: (context, state) {
+      final isLoading = state is AddApartmentLoading;
 
-        return ModalProgressHUD(
-          inAsyncCall: isLoading,
-          color: Colors.white,
-          dismissible: false,
-          child: Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar: const _PropertyAppBar(),
-            body: SingleChildScrollView(
-              child: SafeArea(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 40),
-                      _buildHeader(tr, colorScheme),
-                      const SizedBox(height: 30),
-                      _buildImageSection(tr, colorScheme),
-                      const SizedBox(height: 20),
-                      _buildEssentialDetailsSection(tr, colorScheme),
-                      const SizedBox(height: 30),
-                      _buildPriceSection(tr, colorScheme),
-                      const SizedBox(height: 30),
-                      _buildPropertyTypeSection(tr, colorScheme),
-                      const SizedBox(height: 20),
-                      _buildLocationDetailsSection(tr, colorScheme),
-                      const SizedBox(height: 20),
-                      _buildDescriptionSection(tr, colorScheme),
-                      _buildSaveButton(tr, _submitProperty),
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+      return ModalProgressHUD(
+        inAsyncCall: isLoading,
+        color: Colors.white,
+        dismissible: false,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: const _PropertyAppBar(),
+          body: SingleChildScrollView(
+            child: SafeArea(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 40),
+                    _buildHeader(tr, colorScheme),
+                    const SizedBox(height: 30),
+                    _buildImageSection(tr, colorScheme),
+                    const SizedBox(height: 20),
+                    _buildEssentialDetailsSection(tr, colorScheme),
+                    const SizedBox(height: 30),
+                    _buildPriceSection(tr, colorScheme),
+                    const SizedBox(height: 30),
+                    _buildPropertyTypeSection(tr, colorScheme),
+                    const SizedBox(height: 20),
+                    _buildLocationDetailsSection(tr, colorScheme),
+                    const SizedBox(height: 20),
+                    _buildDescriptionSection(tr, colorScheme),
+                    _buildSaveButton(tr, _submitProperty),
+                    const SizedBox(height: 40),
+                  ],
                 ),
               ),
             ),
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
   Future<void> _openMapPicker() async {
@@ -203,9 +334,12 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
         var details = result['details'];
         if (details != null) {
-          _cityController.text = details['city'] ?? '';
-          _addressController.text = details['address'] ?? '';
-          _selectedGovernorate = details['governorate']??'';
+          _cityController.text = details['city'] ?? 'Al-Mazza Municipality';
+          _addressController.text = details['address'] ?? 'Rabwa Neighborhood';
+          _selectedGovernorate = details['governorate']??'Damascus Governorate';
+          print(">>>> ${details['city']}");
+          print(">>>> ${details['address']}");
+          print(">>>> ${details['governorate']}");
         }
       });
     }
@@ -555,7 +689,7 @@ class _PropertyFormInputField extends StatelessWidget {
               ),
             ),
           )
-              : null,
+               : null,
           hintText: hint,
           hintStyle: TextStyle(
             color: colorScheme.onSurface.withOpacity(0.4),

@@ -473,7 +473,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get title_hint => 'Jasmine Apartment';
 
   @override
-  String get booking_in_progress => 'Confirming your manage_my_bookings...';
+  String get booking_in_progress => 'Confirming your booking...';
 
   @override
   String get booking_success_title => 'Booking Successful!';
@@ -620,4 +620,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get view_details => 'View Details';
+
+  @override
+  String get password_length_message =>
+      'The Password must contain at least 6 characters';
+
+  @override
+  String get not_chat_yourself => 'You can\'t chat with yourself';
 }
