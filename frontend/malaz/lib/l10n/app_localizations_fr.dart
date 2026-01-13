@@ -630,4 +630,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get view_details => 'voir les détails';
+
+  @override
+  String get reviews_title => 'Avis et Évaluations';
+
+  @override
+  String get reviews_empty_title => 'Aucun avis pour le moment';
+
+  @override
+  String get reviews_empty_subtitle => 'Soyez le premier à donner votre avis !';
+
+  @override
+  String get error_generic_title => 'Oups, une erreur s\'est produite';
+
+  @override
+  String get action_retry => 'Réessayer';
 }

@@ -473,7 +473,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get title_hint => 'Jasmine Apartment';
 
   @override
-  String get booking_in_progress => 'Confirming your manage_my_bookings...';
+  String get booking_in_progress => 'Confirming your booking...';
 
   @override
   String get booking_success_title => 'Booking Successful!';
@@ -620,4 +620,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get view_details => 'View Details';
+
+  @override
+  String get reviews_title => 'Ratings & Reviews';
+
+  @override
+  String get reviews_empty_title => 'No reviews yet';
+
+  @override
+  String get reviews_empty_subtitle => 'Be the first to review this property!';
+
+  @override
+  String get error_generic_title => 'Oops, something went wrong';
+
+  @override
+  String get action_retry => 'Retry';
 }

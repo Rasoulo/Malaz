@@ -206,5 +206,10 @@
   "status_canceled": "ملغي",
   "status_conflicted": "تعارض",
   "rate_the_apartment": "تقييم الشقة",
-  "view_details": "عرض التفاصيل"
+  "view_details": "عرض التفاصيل",
+  "reviews_title": "التقييمات والآراء",
+  "reviews_empty_title": "لا توجد تقييمات بعد",
+  "reviews_empty_subtitle": "كن أول من يقيم هذا العقار!",
+  "error_generic_title": "عذراً، حدث خطأ ما",
+  "action_retry": "إعادة المحاولة"
 }

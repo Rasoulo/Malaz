@@ -617,4 +617,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get view_details => 'عرض التفاصيل';
+
+  @override
+  String get reviews_title => 'التقييمات والآراء';
+
+  @override
+  String get reviews_empty_title => 'لا توجد تقييمات بعد';
+
+  @override
+  String get reviews_empty_subtitle => 'كن أول من يقيم هذا العقار!';
+
+  @override
+  String get error_generic_title => 'عذراً، حدث خطأ ما';
+
+  @override
+  String get action_retry => 'إعادة المحاولة';
 }

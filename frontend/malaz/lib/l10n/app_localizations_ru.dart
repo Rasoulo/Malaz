@@ -623,4 +623,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get view_details => 'посмотреть подробности';
+
+  @override
+  String get reviews_title => 'Отзывы и Оценки';
+
+  @override
+  String get reviews_empty_title => 'Отзывов пока нет';
+
+  @override
+  String get reviews_empty_subtitle => 'Будьте первым, кто оценит это жилье!';
+
+  @override
+  String get error_generic_title => 'Ой, что-то пошло не так';
+
+  @override
+  String get action_retry => 'Повторить';
 }

@@ -24,6 +24,7 @@ android {
         applicationId = "com.example.malaz"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
+//        minSdk = flutter.minSdkVersion
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -41,4 +42,15 @@ android {
 
 flutter {
     source = "../.."
+}
+
+configurations.all {
+    resolutionStrategy {
+        eachDependency {
+            if (requested.group == "androidx.activity") {
+                // نجبر النظام على استخدام نسخة مستقرة وتعمل مع AGP 8.2
+                useVersion("1.9.0")
+            }
+        }
+    }
 }

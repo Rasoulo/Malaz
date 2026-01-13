@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
@@ -9,11 +8,10 @@ import 'package:malaz/presentation/global_widgets/brand/build_branding.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/config/routes/route_info.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../cubits/chat/chat_cubit.dart';
 import '../../cubits/home/home_cubit.dart';
-import '../../global_widgets/apartment_cards/apartment_card.dart';
+import '../../global_widgets/cards/apartment/apartment_card.dart';
+import '../../global_widgets/cards/apartment/apartment_shimmer_card.dart';
 import '../side_drawer/app_drawer.dart';
-import '../../global_widgets/apartment_cards/apartment_shimmer.dart';
 import 'filter_bottom_sheet.dart';
 
 class HomeScreen extends StatelessWidget {

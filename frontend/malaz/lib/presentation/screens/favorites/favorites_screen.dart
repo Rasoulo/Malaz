@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../presentation/global_widgets/apartment_cards/apartment_card.dart';
-import '../../../../presentation/global_widgets/buttons/animated_heart_button.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/favorites/favorites_cubit.dart';
+import '../../global_widgets/cards/apartment/apartment_card.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});

@@ -206,5 +206,10 @@
   "status_canceled": "CANCELED",
   "status_conflicted": "CONFLICT",
   "rate_the_apartment": "Rate the Apartment",
-  "view_details": "View Details"
+  "view_details": "View Details",
+  "reviews_title": "Ratings & Reviews",
+  "reviews_empty_title": "No reviews yet",
+  "reviews_empty_subtitle": "Be the first to review this property!",
+  "error_generic_title": "Oops, something went wrong",
+  "action_retry": "Retry"
 }

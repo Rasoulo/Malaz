@@ -206,5 +206,10 @@
   "status_canceled": "ANNULÉ",
   "status_conflicted": "CONFLIT",
   "rate_the_apartment": "Évaluation de l'appartement",
-  "view_details": "voir les détails"
+  "view_details": "voir les détails",
+  "reviews_title": "Avis et Évaluations",
+  "reviews_empty_title": "Aucun avis pour le moment",
+  "reviews_empty_subtitle": "Soyez le premier à donner votre avis !",
+  "error_generic_title": "Oups, une erreur s'est produite",
+  "action_retry": "Réessayer"
 }
