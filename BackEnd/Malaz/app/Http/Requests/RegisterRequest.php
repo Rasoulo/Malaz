@@ -17,9 +17,9 @@ class RegisterRequest extends BaseFormRequest
         return [
             'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
             //'role' => 'required|string|in:RENTER,OWNER,ADMIN',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
+            'first_name' => 'required|string|max:31',
+            'last_name' => 'required|string|max:31',
+            'password' => 'required|string|min:6|confirmed|max:40',
             'identity_card_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'profile_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'date_of_birth' => [
@@ -31,42 +31,46 @@ class RegisterRequest extends BaseFormRequest
     }
 
     public function messages()
-{
-    return [
-        'phone.required' => __('validation.phone.required'),
-        'phone.regex'    => __('validation.phone.regex'),
-        'phone.unique'   => __('validation.phone.unique'),
+    {
+        return [
+            'phone.required' => __('validation.phone.required'),
+            'phone.regex' => __('validation.phone.regex'),
+            'phone.unique' => __('validation.phone.unique'),
 
-        // 'role.required' => 'Role is required.',
-        // 'role.string' => 'Role must be a valid string.',
-        // 'role.in' => 'The selected role is invalid. Allowed values are: RENTER, OWNER, ADMIN.',
+            // 'role.required' => 'Role is required.',
+            // 'role.string' => 'Role must be a valid string.',
+            // 'role.in' => 'The selected role is invalid. Allowed values are: RENTER, OWNER, ADMIN.',
 
-        'first_name.required' => __('validation.first_name.required'),
-        'first_name.string'   => __('validation.first_name.string'),
+            'first_name.required' => __('validation.first_name.required'),
+            'first_name.string' => __('validation.first_name.string'),
 
-        'last_name.required' => __('validation.last_name.required'),
-        'last_name.string'   => __('validation.last_name.string'),
+            'first_name.max' => __('validation.first_name.max'),
+            'last_name.max' => __('validation.last_name.max'),
+            'password.max' => __('validation.password.max'),
 
-        'password.required'  => __('validation.password.required'),
-        'password.string'    => __('validation.password.string'),
-        'password.min'       => __('validation.password.min'),
-        'password.confirmed' => __('validation.password.confirmed'),
+            'last_name.required' => __('validation.last_name.required'),
+            'last_name.string' => __('validation.last_name.string'),
 
-        'identity_card_image.required' => __('validation.identity_card_image.required'),
-        'identity_card_image.file'     => __('validation.identity_card_image.file'),
-        'identity_card_image.image'    => __('validation.identity_card_image.image'),
-        'identity_card_image.mimes'    => __('validation.identity_card_image.mimes'),
-        'identity_card_image.max'      => __('validation.identity_card_image.max'),
+            'password.required' => __('validation.password.required'),
+            'password.string' => __('validation.password.string'),
+            'password.min' => __('validation.password.min'),
+            'password.confirmed' => __('validation.password.confirmed'),
 
-        'profile_image.required' => __('validation.profile_image.required'),
-        'profile_image.file'     => __('validation.profile_image.file'),
-        'profile_image.image'    => __('validation.profile_image.image'),
-        'profile_image.mimes'    => __('validation.profile_image.mimes'),
-        'profile_image.max'      => __('validation.profile_image.max'),
+            'identity_card_image.required' => __('validation.identity_card_image.required'),
+            'identity_card_image.file' => __('validation.identity_card_image.file'),
+            'identity_card_image.image' => __('validation.identity_card_image.image'),
+            'identity_card_image.mimes' => __('validation.identity_card_image.mimes'),
+            'identity_card_image.max' => __('validation.identity_card_image.max'),
 
-        'date_of_birth.required' => __('validation.date_of_birth.required'),
-        'date_of_birth.date'     => __('validation.date_of_birth.date'),
-        'date_of_birth.before'   => __('validation.date_of_birth.before'),
-    ];
-}
+            'profile_image.required' => __('validation.profile_image.required'),
+            'profile_image.file' => __('validation.profile_image.file'),
+            'profile_image.image' => __('validation.profile_image.image'),
+            'profile_image.mimes' => __('validation.profile_image.mimes'),
+            'profile_image.max' => __('validation.profile_image.max'),
+
+            'date_of_birth.required' => __('validation.date_of_birth.required'),
+            'date_of_birth.date' => __('validation.date_of_birth.date'),
+            'date_of_birth.before' => __('validation.date_of_birth.before'),
+        ];
+    }
 }

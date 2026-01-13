@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('owner_id')->constrained('users')->references('id');
+            $table->foreignId('owner_id')->constrained('users')->references('id')->cascadeOnDelete();
             $table->string('status')->default('pending');
             $table->string('title');
             $table->integer('price')->default(0);

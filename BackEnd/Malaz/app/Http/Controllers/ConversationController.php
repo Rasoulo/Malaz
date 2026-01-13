@@ -44,7 +44,7 @@ class ConversationController extends Controller
                 'per_page' => $conversations->perPage(),
             ],
             'status' => 200,
-        ]);
+        ], 200);
     }
     /**
      * Show the form for creating a new resource.
@@ -61,9 +61,12 @@ class ConversationController extends Controller
     {
         $owner = User::findOrFail($userId);
         $user = auth()->user();
-        if ($owner->id === $user->id) {
-            return response()->json(['error' => __('messages.conversation.self_start')], 400);
-        }
+
+        $this->authorize('self', $owner->id);
+
+        // if ($owner->id === $user->id) {
+        //     return response()->json(['error' => __('messages.conversation.self_start')], 400);
+        // }
 
         $ids = [$user->id, $owner->id];
         sort($ids);
@@ -75,11 +78,11 @@ class ConversationController extends Controller
 
         return response()->json([
             'message' => $conversation->wasRecentlyCreated
-                ? __('messages.conversation.created')
-                : __('messages.conversation.exists'),
+                ? __('validation.conversation.created')
+                : __('validation.conversation.exists'),
             'conversation' => $conversation,
             'status' => $conversation->wasRecentlyCreated ? 201 : 200,
-        ]);
+        ], $conversation->wasRecentlyCreated ? 201 : 200);
 
 
     }
@@ -89,24 +92,19 @@ class ConversationController extends Controller
      */
     public function show(Conversation $conversation)
     {
-        if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => __('messages.conversation.unauthorized')], 403);
-        }
-
+        $this->authorize('view', $conversation);
 
         return response()->json([
-            'message' => __('messages.conversation.show'),
+            'message' => __('validation.conversation.show'),
             'conversation' => $conversation,
             'status' => 200,
-        ]);
+        ], 200);
 
     }
 
     public function showmessage(Request $request, Conversation $conversation)
     {
-        if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => __('messages.conversation.unauthorized')], 403);
-        }
+        $this->authorize('showMessage', $conversation);
 
         $conversation->messages()
             ->whereNull('read_at')
@@ -117,7 +115,7 @@ class ConversationController extends Controller
         $messages = $conversation->messages()->with('sender')->latest()->cursorPaginate($perPage);
 
         return response()->json([
-            'message' => __('messages.conversation.show'),
+            'message' => __('validation.conversation.show'),
             'last_messages' => $messages,
             'meta' => [
                 'next_cursor' => $messages->nextCursor()?->encode(),
@@ -125,7 +123,7 @@ class ConversationController extends Controller
                 'per_page' => $messages->perPage(),
             ],
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
@@ -149,16 +147,17 @@ class ConversationController extends Controller
      */
     public function destroy(Conversation $conversation)
     {
-        if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-            return response()->json(['error' => __('validation.conversation.unauthorized')], 403);
-        }
+        $this->authorize('delete', $conversation);
 
+        // if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
+        //     return response()->json(['error' => __('validation.conversation.unauthorized')], 403);
+        // }
 
         $conversation->delete();
         return response()->json([
             'message' => __('validation.conversation.deleted'),
             'status' => 200,
-        ]);
+        ], 200);
 
     }
 }

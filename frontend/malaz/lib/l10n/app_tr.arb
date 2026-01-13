@@ -202,6 +202,11 @@
   "status_conflicted": "ÇAKIŞMA",
   "rate_the_apartment": "Daire Değerlendirmesi",
   "view_details": "ayrıntıları görüntüle",
+  "reviews_title": "Değerlendirmeler ve Yorumlar",
+  "reviews_empty_title": "Henüz değerlendirme yok",
+  "reviews_empty_subtitle": "Bu mülkü ilk değerlendiren siz olun!",
+  "error_generic_title": "Ups, bir şeyler ters gitti",
+  "action_retry": "Tekrar Dene",
   "password_length_message": "Parola en az 6 karakter içermelidir.",
   "not_chat_yourself": "Kendi kendine sohbet edemezsin."
 }

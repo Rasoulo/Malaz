@@ -22,7 +22,7 @@ class StorePropertyRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'price' => 'required|integer|min:0',
+            'price' => 'required|integer|min:0|max:100000000',
             'title' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -34,10 +34,10 @@ class StorePropertyRequest extends BaseFormRequest
             'main_pic' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'images.*' => 'file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'type' => 'required|string|in:Apartment,Farm,Villa,House,Country House',
-            'number_of_rooms' => 'required|integer|min:0',
-            'number_of_baths' => 'required|integer|min:0',
-            'number_of_bedrooms' => 'required|integer|min:0',
-            'area' => 'required|numeric|min:0',
+            'number_of_rooms' => 'required|integer|min:0|max:100',
+            'number_of_baths' => 'required|integer|min:0|max:100',
+            'number_of_bedrooms' => 'required|integer|min:0|max:100',
+            'area' => 'required|numeric|min:0|max:100000',
             'status' => 'prohibited',
             'rating' => 'prohibited',
             'number_of_reviews' => 'prohibited',
@@ -45,59 +45,78 @@ class StorePropertyRequest extends BaseFormRequest
     }
 
     public function messages()
-{
-    return [
-        'price.required' => __('validation.price.required'),
-        'price.integer'  => __('validation.price.integer'),
-        'price.min'      => __('validation.price.min'),
+    {
+        return [
 
-        'city.required' => __('validation.city.required'),
-        'city.string'   => __('validation.city.string'),
-        'city.max'      => __('validation.city.max'),
+            'number_of_rooms.max' => __('validation.number_of_rooms.max'),
+            'number_of_baths.max' => __('validation.number_of_baths.max'),
+            'number_of_bedrooms.max' => __('validation.number_of_bedrooms.max'),
+            'area.max' => __('validation.area.max'),
+            'price.max' => __('validation.price.max'),
 
-        'address.required' => __('validation.address.required'),
-        'address.string'   => __('validation.address.string'),
-        'address.max'      => __('validation.address.max'),
 
-        'governorate.required' => __('validation.governorate.required'),
-        'governorate.string'   => __('validation.governorate.string'),
-        'governorate.max'      => __('validation.governorate.max'),
+            'price.required' => __('validation.price.required'),
+            'price.integer' => __('validation.price.integer'),
+            'price.min' => __('validation.price.min'),
 
-        'latitude.numeric'  => __('validation.latitude.numeric'),
-        'longitude.numeric' => __('validation.longitude.numeric'),
+            'city.required' => __('validation.city.required'),
+            'city.string' => __('validation.city.string'),
+            'city.max' => __('validation.city.max'),
 
-        'description.string' => __('validation.description.string'),
-        'description.max'    => __('validation.description.max'),
+            'address.required' => __('validation.address.required'),
+            'address.string' => __('validation.address.string'),
+            'address.max' => __('validation.address.max'),
 
-        'images.array'     => __('validation.images.array'),
-        'images.*.file'    => __('validation.images.file'),
-        'images.*.image'   => __('validation.images.image'),
-        'images.*.mimes'   => __('validation.images.mimes'),
-        'images.*.max'     => __('validation.images.max'),
+            'governorate.required' => __('validation.governorate.required'),
+            'governorate.string' => __('validation.governorate.string'),
+            'governorate.max' => __('validation.governorate.max'),
 
-        'type.required' => __('validation.type.required'),
-        'type.string'   => __('validation.type.string'),
-        'type.in'       => __('validation.type.in'),
+            'latitude.numeric' => __('validation.latitude.numeric'),
+            'longitude.numeric' => __('validation.longitude.numeric'),
 
-        'number_of_rooms.required' => __('validation.number_of_rooms.required'),
-        'number_of_rooms.integer'  => __('validation.number_of_rooms.integer'),
-        'number_of_rooms.min'      => __('validation.number_of_rooms.min'),
+            'description.string' => __('validation.description.string'),
+            'description.max' => __('validation.description.max'),
 
-        'number_of_baths.required' => __('validation.number_of_baths.required'),
-        'number_of_baths.integer'  => __('validation.number_of_baths.integer'),
-        'number_of_baths.min'      => __('validation.number_of_baths.min'),
+            'images.array' => __('validation.images.array'),
+            'images.*.file' => __('validation.images.file'),
+            'images.*.image' => __('validation.images.image'),
+            'images.*.mimes' => __('validation.images.mimes'),
+            'images.*.max' => __('validation.images.max'),
 
-        'number_of_bedrooms.required' => __('validation.number_of_bedrooms.required'),
-        'number_of_bedrooms.integer'  => __('validation.number_of_bedrooms.integer'),
-        'number_of_bedrooms.min'      => __('validation.number_of_bedrooms.min'),
+            'type.required' => __('validation.type.required'),
+            'type.string' => __('validation.type.string'),
+            'type.in' => __('validation.type.in'),
 
-        'area.required' => __('validation.area.required'),
-        'area.numeric'  => __('validation.area.numeric'),
-        'area.min'      => __('validation.area.min'),
+            'number_of_rooms.required' => __('validation.number_of_rooms.required'),
+            'number_of_rooms.integer' => __('validation.number_of_rooms.integer'),
+            'number_of_rooms.min' => __('validation.number_of_rooms.min'),
 
-        'title.required' => __('validation.title.required'),
-        'title.string'   => __('validation.title.string'),
-        'title.max'      => __('validation.title.max'),
-    ];
-}
+            'number_of_baths.required' => __('validation.number_of_baths.required'),
+            'number_of_baths.integer' => __('validation.number_of_baths.integer'),
+            'number_of_baths.min' => __('validation.number_of_baths.min'),
+
+            'number_of_bedrooms.required' => __('validation.number_of_bedrooms.required'),
+            'number_of_bedrooms.integer' => __('validation.number_of_bedrooms.integer'),
+            'number_of_bedrooms.min' => __('validation.number_of_bedrooms.min'),
+
+            'area.required' => __('validation.area.required'),
+            'area.numeric' => __('validation.area.numeric'),
+            'area.min' => __('validation.area.min'),
+
+            'title.required' => __('validation.title.required'),
+            'title.string' => __('validation.title.string'),
+            'title.max' => __('validation.title.max'),
+        ];
+        /*
+        int n;
+        cin >> n;
+        
+        vector<int> a(n);
+        for(auto & val : a) cin >> val;
+
+        if(a.size() < n) {
+            cout << "maher is nigger" << endl;
+        }
+        */
+    }
 }

@@ -20,7 +20,7 @@ class PropertyFactory extends Factory
     {
         return [
             'owner_id' => User::factory(),
-            'price' => $this->faker->numberBetween(1, 5000) * 100,
+            'price' => $this->faker->numberBetween(1, 100) * 100,
             'status' => $this->faker->randomElement(['pending', 'approved', 'rejected']),
             'title' => $this->faker->sentence(3),
             'governorate' => $this->faker->randomElement(['Damascus Governorate', 'Aleppo Governorate', 'rejected Governorate', 'Hama Governorate', 'Tartus Governorate', 'Homs Governorate']),
@@ -34,8 +34,8 @@ class PropertyFactory extends Factory
             'number_of_baths' => $this->faker->numberBetween(1, 5),
             'number_of_bedrooms' => $this->faker->numberBetween(1, 5),
             'area' => $this->faker->numberBetween(50, 500),
-            'rating' => $this->faker->numberBetween(50, 300),
-            'number_of_reviews' => $this->faker->numberBetween(0, 100),
+            'rating' => $this->faker->numberBetween(1, 5),
+            'number_of_reviews' => $this->faker->numberBetween(3, 500),
         ];
     }
 }

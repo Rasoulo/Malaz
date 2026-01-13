@@ -43,10 +43,13 @@ class ConversationPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Conversation $conversation): bool
-    {
-        return false;
-    }
+    public function delete(User $user, Conversation $conversation)
+{
+    return ($conversation->user_one_id === $user->id || $conversation->user_two_id === $user->id)
+        ? Response::allow()
+        : Response::deny(__('validation.conversation.unauthorized'));
+}
+
 
     /**
      * Determine whether the user can restore the model.

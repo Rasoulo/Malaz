@@ -91,7 +91,7 @@ return [
     'type.required' => 'Tür gereklidir.',
     'type.string' => 'Tür geçerli bir metin olmalıdır.',
     'type.in' => 'Tür şunlardan biri olmalıdır: Daire, Çiftlik, Villa, Ev, Kır evi.',
-    
+
     // Odalar
     'number_of_rooms.required' => 'Oda sayısı gereklidir.',
     'number_of_rooms.integer' => 'Oda sayısı bir tam sayı olmalıdır.',
@@ -206,4 +206,24 @@ return [
         'returned' => 'Onaylanmış rezervasyonlar başarıyla getirildi.',
     ],
 
+    'password.max' => 'Şifre 40 karakteri geçmemelidir.',
+
+    'first_name.max' => 'Ad 31 karakteri geçmemelidir.',
+    'last_name.max' => 'Soyad 31 karakteri geçmemelidir.',
+    'number_of_rooms' => [
+        'max' => 'Oda sayısı 100\'ü geçmemelidir.',
+    ],
+    'number_of_baths' => [
+        'max' => 'Banyo sayısı 100\'ü geçmemelidir.',
+    ],
+    'number_of_bedrooms' => [
+        'max' => 'Yatak odası sayısı 100\'ü geçmemelidir.',
+    ],
+    'area' => [
+        'max' => 'Alan 100000\'i geçmemelidir.',
+    ],
+
+    'price' => [
+        'max' => 'Fiyat 100000000\'i geçmemelidir.',
+    ],
 ];

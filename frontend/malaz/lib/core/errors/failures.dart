@@ -57,7 +57,7 @@ class PendingApprovalFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure([super.message]);
+  const NetworkFailure();
 }
 
 class UnauthenticatedFailure extends Failure {

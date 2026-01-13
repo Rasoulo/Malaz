@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_one_id')->constrained('users')->references('id');
-            $table->foreignId('user_two_id')->constrained('users')->references('id');
+            $table->foreignId('user_one_id')->constrained('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_two_id')->constrained('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

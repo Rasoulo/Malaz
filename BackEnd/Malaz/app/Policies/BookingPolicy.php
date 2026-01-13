@@ -40,6 +40,6 @@ class BookingPolicy
     public function delete(User $user, Booking $booking)
     {
         // Only the booking owner can delete/cancel their booking (admins are view-only)
-        return $user->id === $booking->user_id;
+        return $user->id === $booking->user_id || $user->role === 'ADMIN';
     }
 }

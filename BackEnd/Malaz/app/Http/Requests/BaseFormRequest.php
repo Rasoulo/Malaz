@@ -44,12 +44,11 @@ class BaseFormRequest extends FormRequest
 
         $index = array_search($field, $this->fields);
         $status = $index !== false ? $index + 1 : 9999 - 2000;
-        $status += 2000;
+        $status = 400;
 
         throw new HttpResponseException(
             response()->json([
                 'message' => $message,
-                'status' => $status,
             ], 400)
         );
     }

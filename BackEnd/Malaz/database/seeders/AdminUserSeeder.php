@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
             'first_name' => 'Admin',
             'last_name' => 'User',
             'email' => 'admin@example.com',
-            'phone' => '+1234567890', // Use a unique phone
+            'phone' => '+1234567890',
             'password' => bcrypt('admin123'),
             'role' => 'ADMIN',
             'date_of_birth' => '1990-01-01',

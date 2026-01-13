@@ -272,7 +272,7 @@ class UserController extends Controller
     {
         $request->validate([
             // 'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed'
+            'new_password' => 'required|string|min:6|confirmed'
         ]);
 
         $user = auth()->user();

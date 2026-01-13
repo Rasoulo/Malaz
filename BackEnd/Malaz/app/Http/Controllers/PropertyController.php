@@ -65,7 +65,8 @@ class PropertyController extends Controller
                     'per_page' => $properties->perPage(),
                 ],
                 'status' => 200,
-            ]
+            ],
+            200
         );
     }
 
@@ -135,7 +136,7 @@ class PropertyController extends Controller
                 ],
                 'message' => __('validation.property.all_list'),
                 'status' => 200,
-            ]);
+            ], 200);
         }
 
 
@@ -171,6 +172,8 @@ class PropertyController extends Controller
                 ],
                 'status' => 200,
             ]
+            ,
+            200
         );
     }
 
@@ -187,13 +190,15 @@ class PropertyController extends Controller
             ],
             'message' => __('validation.bookings.returned'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -243,7 +248,7 @@ class PropertyController extends Controller
         return response()->json([
             'message' => 'done',
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     public function showmainpic(Property $property)
@@ -264,7 +269,7 @@ class PropertyController extends Controller
             return response()->json([
                 'message' => __('validation.property.not_approved'),
                 'status' => 403,
-            ]);
+            ], 403);
         }
 
         $rate = $property->number_of_reviews > 0
@@ -297,7 +302,7 @@ class PropertyController extends Controller
             return response()->json([
                 'message' => __('validation.property.not_found'),
                 'status' => 404,
-            ]);
+            ], 404);
         }
 
         $users = $property->favoritedBy()->cursorPaginate($perPage);
@@ -311,7 +316,7 @@ class PropertyController extends Controller
             ],
             'message' => __('validation.property.favorited_by'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
@@ -361,7 +366,7 @@ class PropertyController extends Controller
             'property' => $property,
             'message' => __('validation.property.updated'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
@@ -374,6 +379,6 @@ class PropertyController extends Controller
         return response()->json([
             'message' => __('validation.property.deleted'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 }

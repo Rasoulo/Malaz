@@ -6,15 +6,15 @@ import 'package:go_router/go_router.dart';
 import 'package:malaz/domain/entities/user/user_entity.dart';
 import 'package:malaz/presentation/global_widgets/user_profile_image/user_profile_image.dart';
 import '../../../core/service_locator/service_locator.dart';
-import '../../../data/datasources/local/auth/auth_local_data_source.dart';
-import '../../../data/models/chat/conversation_model.dart';
 import '../../../domain/entities/apartment/apartment.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/favorites/favorites_cubit.dart';
 import '../../cubits/chat/chat_cubit.dart';
+import '../../cubits/review/review_cubit.dart';
 import '../book_now/book_now_screen.dart';
+import '../reviews_bottom_sheet/reviews_bottom_sheet.dart';
 
 /// ============================================================================
 /// [DetailsScreen]
@@ -45,7 +45,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
       body: CustomScrollView(
         slivers: [
           _BuildSliverAppBar(apartment: widget.apartment),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -54,13 +53,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 children: [
                   _BuildTitleAndRating(apartment: widget.apartment),
                   const SizedBox(height: 24),
-                  _BuildOwnerCard(owner: widget.apartment.owner,),
+                  _BuildOwnerCard(
+                    owner: widget.apartment.owner,
+                  ),
                   const SizedBox(height: 24),
                   _BuildAmenitiesSection(apartment: widget.apartment),
                   const SizedBox(height: 24),
                   _BuildDescription(description: widget.apartment.description),
                   const SizedBox(height: 24),
-                  const _BuildReviewSection(),
+                  _BuildReviewSection(
+                    id: widget.apartment.id,
+                    rating: widget.apartment.rating,
+                  ),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -99,7 +103,6 @@ class _BuildSliverAppBar extends StatelessWidget {
       backgroundColor: theme.colorScheme.background,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle.light,
-
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: _AppBarActionButton(
@@ -117,12 +120,12 @@ class _BuildSliverAppBar extends StatelessWidget {
             },
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
           child: BlocBuilder<FavoritesCubit, FavoritesState>(
             builder: (context, state) {
-              final isFav = context.read<FavoritesCubit>().isFavorite(apartment.id);
+              final isFav =
+                  context.read<FavoritesCubit>().isFavorite(apartment.id);
 
               return _AppBarActionButton(
                 icon: isFav ? Icons.favorite : Icons.favorite_border,
@@ -135,7 +138,6 @@ class _BuildSliverAppBar extends StatelessWidget {
           ),
         ),
       ],
-
       flexibleSpace: FlexibleSpaceBar(
         background: Hero(
           tag: 'apartment_image_${apartment.id}',
@@ -232,38 +234,33 @@ class _BuildTitleAndRating extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _BuildTypeBadge(type: apartment.type),
-
         const SizedBox(height: 12),
-
         Text(
           apartment.title,
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             height: 1.2,
-
           ),
         ),
-
         const SizedBox(height: 8),
-
         Row(
           children: [
-            Icon(Icons.location_on, size: 16, color: theme.colorScheme.secondary),
+            Icon(Icons.location_on,
+                size: 16, color: theme.colorScheme.secondary),
             const SizedBox(width: 4),
-            Expanded(child:
-            Text(
-              maxLines: 2,
-              '${apartment.city}, ${apartment.address}',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+            Expanded(
+              child: Text(
+                maxLines: 2,
+                '${apartment.city}, ${apartment.address}',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                ),
+                softWrap: true,
               ),
-              softWrap: true,
-            ),)
+            )
           ],
         ),
-
         const SizedBox(height: 12),
-
         Row(
           children: [
             const Icon(Icons.star, color: Colors.amber, size: 20),
@@ -302,13 +299,18 @@ class _BuildTypeBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
-    
+
     String localizedType = type;
-    if (type.toLowerCase() == 'apartment') localizedType = l10n.apartment;
-    else if (type.toLowerCase() == 'villa') localizedType = l10n.villa;
-    else if (type.toLowerCase() == 'house') localizedType = l10n.house;
-    else if (type.toLowerCase() == 'farm') localizedType = l10n.farm;
-    else if (type.toLowerCase() == 'country house') localizedType = l10n.country_house;
+    if (type.toLowerCase() == 'apartment')
+      localizedType = l10n.apartment;
+    else if (type.toLowerCase() == 'villa')
+      localizedType = l10n.villa;
+    else if (type.toLowerCase() == 'house')
+      localizedType = l10n.house;
+    else if (type.toLowerCase() == 'farm')
+      localizedType = l10n.farm;
+    else if (type.toLowerCase() == 'country house')
+      localizedType = l10n.country_house;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -387,18 +389,18 @@ class _BuildOwnerCard extends StatelessWidget {
               children: [
                 Text(
                   '${owner.first_name} ${owner.last_name}',
-                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.verified_user_rounded, size: 14, color: Colors.green),
+                    const Icon(Icons.verified_user_rounded,
+                        size: 14, color: Colors.green),
                     const SizedBox(width: 4),
                     Text(
                       l10n.verified_host,
                       style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.green,
-                          fontWeight: FontWeight.w600
-                      ),
+                          color: Colors.green, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -406,55 +408,59 @@ class _BuildOwnerCard extends StatelessWidget {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: IconButton(
-              onPressed: () async {
-                int? myId = _getMyId(context);
-                if (owner.id == myId) {
-                  _showSnackBar(context, l10n.not_chat_yourself, theme.primaryColor);
-                } else {
-                  final chatCubit = context.read<ChatCubit>();
-                  final router = GoRouter.of(context);
-
-                  await chatCubit.getConversations();
-
-                  int existingId = 0;
-                  final state = chatCubit.state;
-
-                  if (state is ChatConversationsLoaded) {
-                    final foundConversations = state.conversations.where(
-                            (c) => c.userOneId == owner.id || c.userTwoId == owner.id
-                    ).toList();
-
-                    if (foundConversations.isNotEmpty) {
-                      existingId = foundConversations.first.id;
-                    }
-                  }
-
-                  if (existingId > 0) {
-                    chatCubit.getMessages(existingId);
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                onPressed: () async {
+                  int? myId = _getMyId(context);
+                  if (owner.id == myId) {
+                    _showSnackBar(
+                        context, l10n.not_chat_yourself, theme.primaryColor);
                   } else {
-                    chatCubit.clearMessages();
-                  }
+                    final chatCubit = context.read<ChatCubit>();
+                    final router = GoRouter.of(context);
 
-                  router.push('/one_chat', extra: {
-                    'id': existingId,
-                    'firstName': owner.first_name,
-                    'lastName': owner.last_name,
-                    'otherUserId': owner.id,
-                  });
-                }
-              },
-              icon: Icon(Icons.chat_outlined, color: theme.colorScheme.primary),
-            )
-          )
+                    await chatCubit.getConversations();
+
+                    int existingId = 0;
+                    final state = chatCubit.state;
+
+                    if (state is ChatConversationsLoaded) {
+                      final foundConversations = state.conversations
+                          .where((c) =>
+                              c.userOneId == owner.id ||
+                              c.userTwoId == owner.id)
+                          .toList();
+
+                      if (foundConversations.isNotEmpty) {
+                        existingId = foundConversations.first.id;
+                      }
+                    }
+
+                    if (existingId > 0) {
+                      chatCubit.getMessages(existingId);
+                    } else {
+                      chatCubit.clearMessages();
+                    }
+
+                    router.push('/one_chat', extra: {
+                      'id': existingId,
+                      'firstName': owner.first_name,
+                      'lastName': owner.last_name,
+                      'otherUserId': owner.id,
+                    });
+                  }
+                },
+                icon:
+                    Icon(Icons.chat_outlined, color: theme.colorScheme.primary),
+              ))
         ],
       ),
     );
   }
+
   int? _getMyId(BuildContext context) {
     final state = context.read<AuthCubit>().state;
     if (state is AuthAuthenticated) return state.user.id;
@@ -538,7 +544,8 @@ class _BuildAmenityBox extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             value,
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style: theme.textTheme.titleMedium
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
           Text(
             label,
@@ -566,7 +573,8 @@ class _BuildDescription extends StatelessWidget {
       children: [
         Text(
           l10n.description,
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style:
+              theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         Text(
@@ -584,7 +592,9 @@ class _BuildDescription extends StatelessWidget {
 /// [_BuildReviewSection]
 /// Shows a mock review to fulfill the requirement.
 class _BuildReviewSection extends StatelessWidget {
-  const _BuildReviewSection();
+  final int id;
+  final num rating;
+  const _BuildReviewSection({required this.id, required this.rating});
 
   @override
   Widget build(BuildContext context) {
@@ -598,9 +608,23 @@ class _BuildReviewSection extends StatelessWidget {
           children: [
             Text(
               l10n.reviews,
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
-            TextButton(onPressed: () {}, child: Text(l10n.view_all)),
+            TextButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true, // مهم جداً ليأخذ الارتفاع المحدد
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => BlocProvider(
+                      // تأكد من حقن الـ Cubit هنا أو في مكان أعلى
+                      create: (context) => sl<ReviewsCubit>(),
+                      child: ReviewsBottomSheet(propertyId: id, rating: rating),
+                    ),
+                  );
+                },
+                child: Text(l10n.view_all)),
           ],
         ),
         const SizedBox(height: 12),
@@ -615,16 +639,22 @@ class _BuildReviewSection extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleAvatar(radius: 16, child: Icon(Icons.person, size: 16),),
+                  CircleAvatar(
+                    radius: 16,
+                    child: Icon(Icons.person, size: 16),
+                  ),
                   const SizedBox(width: 8),
-                  Text('Happy Guest', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Happy Guest',
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(fontWeight: FontWeight.bold)),
                   const Spacer(),
                   const Icon(Icons.star, color: Colors.amber, size: 14),
                   const Text('5.0'),
                 ],
               ),
               const SizedBox(height: 8),
-              const Text('Great apartment! Loved the view and the host was very nice.'),
+              const Text(
+                  'Great apartment! Loved the view and the host was very nice.'),
             ],
           ),
         ),
@@ -673,7 +703,8 @@ class _BuildBottomBookingBar extends StatelessWidget {
                 ),
                 Text(
                   l10n.per_month,
-                  style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
+                  style:
+                      theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
                 ),
               ],
             ),

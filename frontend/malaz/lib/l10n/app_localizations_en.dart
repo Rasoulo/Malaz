@@ -627,4 +627,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get not_chat_yourself => 'You can\'t chat with yourself';
+
+  @override
+  String get reviews_title => 'Ratings & Reviews';
+
+  @override
+  String get reviews_empty_title => 'No reviews yet';
+
+  @override
+  String get reviews_empty_subtitle => 'Be the first to review this property!';
+
+  @override
+  String get error_generic_title => 'Oops, something went wrong';
+
+  @override
+  String get action_retry => 'Retry';
 }

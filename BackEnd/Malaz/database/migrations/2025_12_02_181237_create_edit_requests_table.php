@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('edit_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer('reviewed_by')->nullable();//->constrained('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('reviewed_by')->nullable();
             $table->json('old_data');
             $table->json('new_data');
             $table->string('status')->default('PENDING');

@@ -18,7 +18,7 @@ class LoginRequest extends BaseFormRequest
     {
         return [
             'phone' => 'required|regex:/^\+?\d{9,15}$/|exists:users,phone',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|max:40',
         ];
     }
 
@@ -32,6 +32,7 @@ class LoginRequest extends BaseFormRequest
             'password.required' => __('validation.password.required'),
             'password.string' => __('validation.password.string'),
             'password.min' => __('validation.password.min'),
+            'password.max' => __('validation.password.max'),
         ];
     }
 }

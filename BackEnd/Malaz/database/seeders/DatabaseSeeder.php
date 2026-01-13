@@ -19,10 +19,12 @@ class DatabaseSeeder extends Seeder
         //User::factory()->count(10)->create();
         // User::factory(10)->create();
         $this->call([
+            AdminUserSeeder::class,
             UserSeeder::class,
             PropertySeeder::class,
+            ReviewSeeder::class,
             ConversationSeeder::class,
-            AdminUserSeeder::class
+            BookingSeeder::class,
         ]);
         // User::factory()->create([
         //     'name' => 'Test User',

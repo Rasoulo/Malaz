@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class UserController extends Controller
 {
@@ -29,7 +30,7 @@ class UserController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.users.registration-requests', compact('pendingUsers', 'search'));
+        return view('admin.users.index', compact('pendingUsers', 'search'));
     }
 
     /**
@@ -48,7 +49,7 @@ class UserController extends Controller
         $user->phone_verified_at = date('Y-m-d H:i:s');
 
         if ($user->save()) {
-            return redirect()->route('admin.users.registration-requests')
+            return redirect()->route('admin.dashboard')
                 ->with('success', 'User approved successfully.');
         }
 
@@ -74,7 +75,7 @@ class UserController extends Controller
         // For now, we'll just delete the user
         $user->delete();
 
-        return redirect()->route('admin.users.registration-requests')
+        return redirect()->route('admin.dashboard')
             ->with('success', 'Registration request rejected and user removed.');
     }
 
@@ -83,26 +84,18 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $role = $request->input('role');
-
-        // Get approved users (not pending)
+        // THE FIX: Use withCount('properties') for an incredibly efficient query.
+        // This gets the number of properties for each user without a separate query for each one.
         $users = User::where('role', '!=', 'PENDING')
-            ->when($search, function ($query, $search) {
-                return $query->where(function ($q) use ($search) {
-                    $q->where('first_name', 'like', '%' . $search . '%')
-                        ->orWhere('last_name', 'like', '%' . $search . '%')
-                        ->orWhere('phone', 'like', '%' . $search . '%');
-                });
+            ->withCount('property') // This adds a `properties_count` attribute to each user
+            ->when($request->search, function ($query, $search) {
+                $query->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             })
-            ->when($role, function ($query, $role) {
-                return $query->where('role', $role);
-            })
-            ->latest()
-            ->paginate(15)
-            ->withQueryString();
+            ->paginate(10);
 
-        return view('admin.users.index', compact('users', 'search'));
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -110,7 +103,14 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.users.show', compact('user'));
+        $user->makeVisible([
+            'profile_image',
+            'identity_card_image',
+            'profile_image_mime',
+            'identity_card_mime'
+        ]);
+
+        return $user;
     }
 
     /**
@@ -165,19 +165,9 @@ class UserController extends Controller
             ->with('success', 'User updated successfully.');
     }
 
-    /**
-     * Remove the specified user from storage.
-     */
     public function destroy(User $user)
     {
-        // Prevent deleting yourself
-        if ($user->id === auth()->id()) {
-            return redirect()->back()
-                ->with('error', 'You cannot delete your own account.');
-        }
-
         $user->delete();
-
         return redirect()->route('admin.users.index')
             ->with('success', 'User deleted successfully.');
     }

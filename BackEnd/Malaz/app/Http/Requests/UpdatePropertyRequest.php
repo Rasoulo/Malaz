@@ -30,7 +30,6 @@ class UpdatePropertyRequest extends BaseFormRequest
             'erase' => 'nullable|array',
             'erase.*' => 'integer',
             'type' => 'string|in:Apartment,Farm,Villa,House,Country House',
-            'number_of_rooms' => 'integer|min:0',
             'status' => 'prohibited',
             'rating' => 'prohibited',
             'number_of_reviews' => 'prohibited',
@@ -39,9 +38,10 @@ class UpdatePropertyRequest extends BaseFormRequest
             'governorate' => 'string|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            'number_of_baths' => 'integer|min:0',
-            'number_of_bedrooms' => 'integer|min:0',
-            'area' => 'numeric|min:0',
+            'number_of_rooms' => 'integer|min:0|max:100',
+            'number_of_baths' => 'integer|min:0|max:100',
+            'number_of_bedrooms' => 'integer|min:0|max:100',
+            'area' => 'numeric|min:0|max:100000',
             'main_pic' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
         ];
     }
@@ -102,6 +102,12 @@ class UpdatePropertyRequest extends BaseFormRequest
             'main_pic.image' => __('validation.main_pic.image'),
             'main_pic.mimes' => __('validation.main_pic.mimes'),
             'main_pic.max' => __('validation.main_pic.max'),
+
+            'number_of_rooms.max' => __('validation.number_of_rooms.max'),
+            'number_of_baths.max' => __('validation.number_of_baths.max'),
+            'number_of_bedrooms.max' => __('validation.number_of_bedrooms.max'),
+            'area.max' => __('validation.area.max'),
+
         ];
     }
 }

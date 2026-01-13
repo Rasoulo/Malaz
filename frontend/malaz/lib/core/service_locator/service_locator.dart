@@ -4,10 +4,13 @@ import 'package:location/location.dart';
 import 'package:malaz/data/datasources/local/auth/auth_local_data_source.dart';
 import 'package:malaz/data/datasources/remote/booking/booking_remote_data_source.dart';
 import 'package:malaz/data/datasources/remote/favorites/favorites_remote_datasource.dart';
+import 'package:malaz/data/datasources/remote/review/review_remote_data_source.dart';
 import 'package:malaz/data/repositories/auth/auth_repository_impl.dart';
 import 'package:malaz/data/repositories/booking/booking_repository_impl.dart';
+import 'package:malaz/data/repositories/review/review_repository_impl.dart';
 import 'package:malaz/domain/repositories/auth/auth_repository.dart';
 import 'package:malaz/domain/repositories/booking/booking_repository.dart';
+import 'package:malaz/domain/repositories/review/review_repository.dart';
 import 'package:malaz/domain/usecases/auth/check_auth_usecase.dart';
 import 'package:malaz/domain/usecases/auth/get_current_user_usecase.dart';
 import 'package:malaz/domain/usecases/auth/login_usecase.dart';
@@ -15,6 +18,7 @@ import 'package:malaz/domain/usecases/auth/logout_usecase.dart';
 import 'package:malaz/domain/usecases/booking/Get_Booked_Dates_Use_Case.dart';
 import 'package:malaz/domain/usecases/booking/make_book_use_case.dart';
 import 'package:malaz/domain/usecases/booking/update_status_use_case.dart';
+import 'package:malaz/domain/usecases/review/get_review_use_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
@@ -56,6 +60,7 @@ import '../../presentation/cubits/home/home_cubit.dart';
 import '../../presentation/cubits/language/language_cubit.dart';
 import '../../presentation/cubits/location/location_cubit.dart';
 import '../../presentation/cubits/property/property_cubit.dart';
+import '../../presentation/cubits/review/review_cubit.dart';
 import '../../presentation/cubits/theme/theme_cubit.dart';
 import '../network/auth_interceptor.dart';
 import '../network/network_info.dart';
@@ -113,6 +118,7 @@ Future<void> setUpServices() async {
   sl.registerFactory(() => LanguageCubit(sl()));
 
   sl.registerFactory(() => BookingCubit(sl<GetBookedDatesUseCase>(), sl<MakeBookUseCase>(),));
+  sl.registerFactory(() => ReviewsCubit(sl()));
 
   sl.registerFactory(() => ManageBookingCubit(
     sl<GetUserBooking>(),
@@ -131,6 +137,12 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => UpdateBookingUseCase(sl()));
 
   sl.registerLazySingleton(() => GetMyBooking(sl()));
+
+  sl.registerLazySingleton<GetReviewsUseCase>(() => GetReviewsUseCase(sl()));
+
+  sl.registerLazySingleton<ReviewsRepository>(() => ReviewsRepositoryImpl(networkInfo: sl(), remoteDataSource:  sl()));
+
+  sl.registerLazySingleton<ReviewsRemoteDataSource>(() => ReviewsRemoteDataSourceImpl(networkService: sl()));
 
   sl.registerLazySingleton<ApartmentRepository>(() => ApartmentRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<FavoritesRepository>(() => FavoritesRepositoryImpl(sl()));

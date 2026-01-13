@@ -45,13 +45,13 @@ class ReviewController extends Controller
             return response()->json([
                 'message' => __('validation.review.require_rating_or_body'),
                 'status' => 400,
-            ]);
+            ], 400);
         }
         $user = auth()->user();
         $exists = $user
             ->bookings()
             ->where('property_id', $propertyId)
-            ->whereIn('status', ['completed', 'confirmed'])
+            ->whereIn('status', ['completed', 'confirmed', 'ongoing'])
             ->where('check_out', '>', today()->toDate())
             ->exists();
 
@@ -68,7 +68,7 @@ class ReviewController extends Controller
             return response()->json([
                 'message' => __('validation.review.already_reviewed'),
                 'status' => 400,
-            ]);
+            ], 400);
         }
 
         if ($exists) {
@@ -89,13 +89,13 @@ class ReviewController extends Controller
                 'review' => $review,
                 'message' => __('validation.review.published'),
                 'status' => 201,
-            ]);
+            ], 201);
         }
 
         return response()->json([
             'message' => __('validation.review.must_reserve_before'),
             'status' => 400,
-        ]);
+        ], 400);
     }
 
     /*
@@ -119,7 +119,7 @@ if ($alreadyReviewed) {
         return response()->json([
             'review' => $review->load('property', 'user'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     public function propertyReviews(Request $request, $propertyId)
@@ -142,7 +142,7 @@ if ($alreadyReviewed) {
                 'per_page' => $reviews->perPage(),
             ],
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
@@ -181,7 +181,7 @@ if ($alreadyReviewed) {
             'review' => $review,
             'message' => __('validation.review.updated'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
@@ -202,6 +202,6 @@ if ($alreadyReviewed) {
         return response()->json([
             'message' => __('validation.review.deleted'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 }

@@ -205,4 +205,25 @@ return [
     'bookings' => [
         'returned' => 'Les réservations confirmées ont été renvoyées avec succès.',
     ],
+
+    'password.max' => 'Le mot de passe ne doit pas dépasser 40 caractères.',
+
+    'first_name.max' => 'Le prénom ne doit pas dépasser 31 caractères.',
+    'last_name.max' => 'Le nom de famille ne doit pas dépasser 31 caractères.',
+    'number_of_rooms' => [
+        'max' => 'Le nombre de pièces ne doit pas dépasser 100.',
+    ],
+    'number_of_baths' => [
+        'max' => 'Le nombre de salles de bain ne doit pas dépasser 100.',
+    ],
+    'number_of_bedrooms' => [
+        'max' => 'Le nombre de chambres ne doit pas dépasser 100.',
+    ],
+    'area' => [
+        'max' => 'La superficie ne doit pas dépasser 100000.',
+    ],
+
+    'price' => [
+        'max' => 'Le prix ne doit pas dépasser 100000000.',
+    ],
 ];

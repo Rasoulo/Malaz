@@ -630,4 +630,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get not_chat_yourself => 'С самим собой разговаривать нельзя.';
+
+  @override
+  String get reviews_title => 'Отзывы и Оценки';
+
+  @override
+  String get reviews_empty_title => 'Отзывов пока нет';
+
+  @override
+  String get reviews_empty_subtitle => 'Будьте первым, кто оценит это жилье!';
+
+  @override
+  String get error_generic_title => 'Ой, что-то пошло не так';
+
+  @override
+  String get action_retry => 'Повторить';
 }

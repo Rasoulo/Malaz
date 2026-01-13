@@ -74,7 +74,7 @@ return [
     'type.required' => 'Type is required.',
     'type.string' => 'Type must be a valid string.',
     'type.in' => 'Type must be one of: Apartment, Farm, Villa, House, Country House.',
-    
+
     'number_of_rooms.required' => 'Number of rooms is required.',
     'number_of_rooms.integer' => 'Number of rooms must be an integer.',
     'number_of_rooms.min' => 'Number of rooms must be at least 0.',
@@ -178,8 +178,29 @@ return [
         'logged_out' => 'Logged out successfully',
     ],
 
-     'bookings' => [
+    'bookings' => [
         'returned' => 'Confirmed bookings have been returned successfully.',
+    ],
+
+    'password.max' => 'The password must not exceed 40 characters.',
+
+    'first_name.max' => 'The first name must not exceed 31 characters.',
+    'last_name.max' => 'The last name must not exceed 31 characters.',
+    'number_of_rooms' => [
+        'max' => 'The number of rooms must not exceed 100.',
+    ],
+    'number_of_baths' => [
+        'max' => 'The number of baths must not exceed 100.',
+    ],
+    'number_of_bedrooms' => [
+        'max' => 'The number of bedrooms must not exceed 100.',
+    ],
+    'area' => [
+        'max' => 'The area must not exceed 100000.',
+    ],
+
+    'price' => [
+        'max' => 'The price must not exceed 100000000.',
     ],
 
 ];

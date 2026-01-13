@@ -74,7 +74,7 @@ class MessageController extends Controller
             'message' => __('validation.message.created'),
             'data' => $message,
             'status' => 201,
-        ]);
+        ], 201);
     }
 
     /**
@@ -92,7 +92,7 @@ class MessageController extends Controller
             'message_data' => $message->load(['sender', 'conversation']),
             'info' => __('validation.message.retrieved'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
@@ -122,13 +122,13 @@ class MessageController extends Controller
             return response()->json([
                 'message' => __('validation.message.updated'),
                 'status' => 200,
-            ]);
+            ], 200);
         }
 
         return response()->json([
             'message' => __('validation.message.not_sender'),
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     public function readnow(Message $message)
@@ -153,7 +153,7 @@ class MessageController extends Controller
             'message' => __('validation.message.marked_read'),
             'data' => $message,
             'status' => 200,
-        ]);
+        ], 200);
     }
 
     /**
@@ -167,7 +167,7 @@ class MessageController extends Controller
             return response()->json([
                 'error' => __('validation.message.unauthorized'),
                 'status' => 403,
-            ]);
+            ], 403);
         }
 
         try {
@@ -183,7 +183,7 @@ class MessageController extends Controller
             return response()->json([
                 'error' => __('validation.message.delete_failed'),
                 'status' => 500,
-            ]);
+            ], 500);
         }
     }
 }
