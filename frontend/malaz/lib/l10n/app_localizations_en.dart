@@ -622,6 +622,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_details => 'View Details';
 
   @override
+  String get password_length_message =>
+      'The Password must contain at least 6 characters';
+
+  @override
+  String get not_chat_yourself => 'You can\'t chat with yourself';
+
+  @override
   String get reviews_title => 'Ratings & Reviews';
 
   @override

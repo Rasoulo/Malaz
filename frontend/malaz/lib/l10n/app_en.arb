@@ -208,7 +208,7 @@
   "rate_the_apartment": "Rate the Apartment",
   "view_details": "View Details",
   "password_length_message": "The Password must contain at least 6 characters",
-  "not_chat_yourself": "You can't chat with yourself"
+  "not_chat_yourself": "You can't chat with yourself",
   "reviews_title": "Ratings & Reviews",
   "reviews_empty_title": "No reviews yet",
   "reviews_empty_subtitle": "Be the first to review this property!",

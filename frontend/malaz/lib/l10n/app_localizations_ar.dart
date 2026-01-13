@@ -619,6 +619,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get view_details => 'عرض التفاصيل';
 
   @override
+  String get password_length_message =>
+      'يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل';
+
+  @override
+  String get not_chat_yourself => '! لا يمكنك التحدث مع نفسك';
+
+  @override
   String get reviews_title => 'التقييمات والآراء';
 
   @override

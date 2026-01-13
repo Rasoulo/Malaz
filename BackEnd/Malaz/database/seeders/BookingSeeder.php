@@ -20,7 +20,7 @@ class BookingSeeder extends Seeder
 
             Booking::create([
                 'user_id' => 2,
-                'property_id' => 70,
+                'property_id' => 1,
                 'check_in' => $checkIn,
                 'check_out' => $checkOut,
                 'status' => 'completed',
@@ -34,7 +34,7 @@ class BookingSeeder extends Seeder
 
             Booking::create([
                 'user_id' => 2,
-                'property_id' => 70,
+                'property_id' => 1,
                 'check_in' => $checkIn,
                 'check_out' => $checkOut,
                 'status' => 'confirmed',
