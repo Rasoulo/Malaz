@@ -12,13 +12,13 @@ return new class extends Migration
             $table->id();
 
             // Foreign keys
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('property_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('property_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             // Booking details
             $table->date('check_in');
             $table->date('check_out');
-            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'rejected', 'completed', 'conflicted', 'ongoing'])->default('pending');
 
             // Payment details
             $table->decimal('total_price', 10, 2);

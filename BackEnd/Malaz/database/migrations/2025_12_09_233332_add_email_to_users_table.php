@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('email')->unique()->nullable()->after('phone');
-            $table->timestamp('email_verified_at')->nullable()->after('email'); // Fixed: after 'email', not 'email_verified_at'
+            $table->timestamp('email_verified_at')->nullable()->after('email');
         });
     }
 
