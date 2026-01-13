@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             UserSeeder::class,
             PropertySeeder::class,
-            ReviewSeeder::class,
             ConversationSeeder::class,
+            ReviewSeeder::class,
             BookingSeeder::class,
         ]);
         // User::factory()->create([

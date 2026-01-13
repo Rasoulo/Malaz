@@ -19,7 +19,7 @@ class PropertyFactory extends Factory
     public function definition(): array
     {
         return [
-            'owner_id' => User::factory(),
+            'owner_id' => $this->faker->numberBetween(2, 5),
             'price' => $this->faker->numberBetween(1, 100) * 100,
             'status' => $this->faker->randomElement(['pending', 'approved', 'rejected']),
             'title' => $this->faker->sentence(3),

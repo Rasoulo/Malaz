@@ -5,41 +5,91 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class BookingController extends Controller
 {
     /**
-     * Display a list of bookings.
+     * Helper method to update booking status based on dates
+     */
+    private function updateBookingStatus(Booking $booking)
+    {
+        $today = Carbon::today();
+        $checkIn = Carbon::parse($booking->check_in);
+        $checkOut = Carbon::parse($booking->check_out);
+
+        // Check if status needs to be updated
+        if ($booking->status === 'confirmed' && $today->between($checkIn, $checkOut)) {
+            $booking->status = 'ongoing';
+            $booking->save();
+        } elseif ($booking->status === 'ongoing' && $today->greaterThan($checkOut)) {
+            $booking->status = 'completed';
+            $booking->save();
+        } else if ($booking->status === 'confirmed' && $today->greaterThan($checkOut)) {
+            $booking->status = 'completed';
+            $booking->save();
+        } else if ($booking->status === 'pending' && $today->greaterThan($checkIn)) {
+            $booking->status = 'rejected';
+            $booking->save();
+        } else if ($booking->status === 'conflicted' && $today->greaterThan($checkIn)) {
+            $booking->status = 'rejected';
+            $booking->save();
+        }
+
+        return $booking;
+    }
+
+    /**
+     * Display a list of bookings with auto-updated statuses
      */
     public function index(Request $request)
     {
-        // If filtering by user_id, allow only the user themselves or admins (view-only)
+        $query = Booking::query();
+
+        // If filtering by user_id
         if ($request->has('user_id')) {
             $userId = $request->query('user_id');
             if (auth()->id() != $userId && auth()->user()->role !== 'ADMIN') {
                 return response()->json(['error' => 'Forbidden'], 403);
             }
-
-            return Booking::where('user_id', $userId)->with('property')->get();
+            $query->where('user_id', $userId);
         }
-
-        // If filtering by property_id, allow property owner or admin (view-only)
-        if ($request->has('property_id')) {
+        // If filtering by property_id
+        elseif ($request->has('property_id')) {
             $propertyId = $request->query('property_id');
             $property = Property::findOrFail($propertyId);
             if (auth()->id() != $property->owner_id && auth()->user()->role !== 'ADMIN') {
                 return response()->json(['error' => 'Forbidden'], 403);
             }
-
-            return Booking::where('property_id', $propertyId)->with('property')->get();
+            $query->where('property_id', $propertyId);
+        }
+        // Default: show all bookings for the authenticated user
+        else {
+            $query->where('user_id', auth()->id());
         }
 
+        // Get bookings
+        $bookings = $query->with('property')->get();
 
+        // Update statuses for each booking
+        $updatedBookings = $bookings->map(function ($booking) {
+            return $this->updateBookingStatus($booking);
+        });
 
+        return $updatedBookings->sortByDesc('id');
+    }
 
+    /**
+     * Show a single booking with auto-updated status
+     */
+    public function show(Booking $booking)
+    {
+        $this->authorize('view', $booking);
 
-        // Default: show all bookings for the authenticated user
-        return Booking::where('user_id', auth()->id())->with('property')->get();
+        // Update status before returning
+        $updatedBooking = $this->updateBookingStatus($booking);
+
+        return $updatedBooking->load('property');
     }
 
     /**
@@ -83,8 +133,6 @@ class BookingController extends Controller
             'check_out' => $checkOut,
             'status' => 'pending',
             'total_price' => $request->total_price,
-            'currency' => $request->currency ?? 'USD',
-            'payment_status' => 'unpaid',
         ]);
 
         return response()->json($booking, 201);
@@ -99,7 +147,14 @@ class BookingController extends Controller
             return response()->json(['error' => 'Forbidden'], 403);
         }
 
-        return Booking::where('user_id', $userId)->with('property')->get();
+        $bookings = Booking::where('user_id', $userId)
+            ->with('property')
+            ->get()
+            ->map(function ($booking) {
+                return $this->updateBookingStatus($booking);
+            });
+
+        return $bookings->sortByDesc('id');
     }
 
     /**
@@ -112,7 +167,14 @@ class BookingController extends Controller
             return response()->json(['error' => 'Forbidden'], 403);
         }
 
-        return Booking::where('property_id', $propertyId)->with('property')->get();
+        $bookings = Booking::where('property_id', $propertyId)
+            ->with('property')
+            ->get()
+            ->map(function ($booking) {
+                return $this->updateBookingStatus($booking);
+            });
+
+        return $bookings->sortByDesc('id');
     }
 
     /**
@@ -128,18 +190,12 @@ class BookingController extends Controller
 
         $bookings = Booking::whereIn('property_id', $propertyIds)
             ->with(['property', 'user:id,first_name,last_name'])
-            ->get();
+            ->get()
+            ->map(function ($booking) {
+                return $this->updateBookingStatus($booking);
+            });
 
-        return response()->json(['bookings' => $bookings]);
-    }
-
-    /**
-     * Show a single booking.
-     */
-    public function show(Booking $booking)
-    {
-        $this->authorize('view', $booking); // optional policy
-        return $booking->load('property');
+        return response()->json(['bookings' => $bookings])->sortedByDesc('id');
     }
 
     /**
@@ -152,7 +208,7 @@ class BookingController extends Controller
             'property_id' => 'sometimes|exists:properties,id',
             'check_in' => 'sometimes|date|after_or_equal:today',
             'check_out' => 'sometimes|date|after:check_in',
-            'status' => 'sometimes|in:pending,confirmed,cancelled,completed',
+            'status' => 'sometimes|in:pending,confirmed,cancelled,rejected,completed,conflicted,ongoing',
             'total_price' => 'sometimes|numeric|min:0'
         ]);
 
@@ -177,7 +233,54 @@ class BookingController extends Controller
             return response()->json(['error' => 'Property already booked for these dates'], 422);
         }
 
+        // Enforce status-change permissions
+        if ($request->filled('status')) {
+            $newStatus = $request->input('status');
+            $user = auth()->user();
+
+            // Booking owner may only set status to 'cancelled'
+            if ($user->id === $booking->user_id && $newStatus !== 'cancelled') {
+                return response()->json(['error' => 'You may only cancel your own booking'], 403);
+            }
+
+            // Property owner may set to 'confirmed' or 'rejected'
+            if ($user->id === $booking->property->owner_id) {
+                if (!in_array($newStatus, ['confirmed', 'rejected'])) {
+                    return response()->json(['error' => 'Property owners may only confirm or reject bookings'], 403);
+                }
+            }
+
+            // Other users (including admins per your current policy) are not allowed to change status here
+            if ($user->id !== $booking->user_id && $user->id !== $booking->property->owner_id) {
+                return response()->json(['error' => 'Forbidden to change booking status'], 403);
+            }
+        }
+
         $booking->update($request->only('property_id', 'check_in', 'check_out', 'status', 'total_price'));
+
+        // If this booking was just confirmed, mark overlapping PENDING bookings as conflicted
+        if ($request->filled('status') && $request->input('status') === 'confirmed') {
+            $propId = $booking->property_id;
+            $cIn = $booking->check_in;
+            $cOut = $booking->check_out;
+
+            Booking::where('property_id', $propId)
+                ->where('status', 'pending')
+                ->where(function ($q) use ($cIn, $cOut) {
+                    $q->whereBetween('check_in', [$cIn, $cOut])
+                        ->orWhereBetween('check_out', [$cIn, $cOut])
+                        ->orWhere(function ($qq) use ($cIn, $cOut) {
+                            $qq->where('check_in', '<', $cIn)
+                                ->where('check_out', '>', $cOut);
+                        });
+                })
+                ->update(['status' => 'conflicted']);
+
+            $booking->refresh();
+        }
+
+        // Check and update status based on dates after the update
+        $this->updateBookingStatus($booking);
 
         return response()->json($booking->fresh()->load('property'));
     }
