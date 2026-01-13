@@ -25,6 +25,15 @@ class BookingController extends Controller
         } elseif ($booking->status === 'ongoing' && $today->greaterThan($checkOut)) {
             $booking->status = 'completed';
             $booking->save();
+        } else if ($booking->status === 'confirmed' && $today->greaterThan($checkOut)) {
+            $booking->status = 'completed';
+            $booking->save();
+        } else if ($booking->status === 'pending' && $today->greaterThan($checkIn)) {
+            $booking->status = 'rejected';
+            $booking->save();
+        } else if ($booking->status === 'conflicted' && $today->greaterThan($checkIn)) {
+            $booking->status = 'rejected';
+            $booking->save();
         }
 
         return $booking;
