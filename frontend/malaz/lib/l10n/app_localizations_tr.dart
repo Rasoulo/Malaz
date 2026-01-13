@@ -629,4 +629,19 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get not_chat_yourself => 'Kendi kendine sohbet edemezsin.';
+
+  @override
+  String get reviews_title => 'Değerlendirmeler ve Yorumlar';
+
+  @override
+  String get reviews_empty_title => 'Henüz değerlendirme yok';
+
+  @override
+  String get reviews_empty_subtitle => 'Bu mülkü ilk değerlendiren siz olun!';
+
+  @override
+  String get error_generic_title => 'Ups, bir şeyler ters gitti';
+
+  @override
+  String get action_retry => 'Tekrar Dene';
 }

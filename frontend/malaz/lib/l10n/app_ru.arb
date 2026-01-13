@@ -208,6 +208,11 @@
   "status_conflicted": "КОНФЛИКТ",
   "rate_the_apartment": "Рейтинг квартиры",
   "view_details": "посмотреть подробности",
+  "reviews_title": "Отзывы и Оценки",
+  "reviews_empty_title": "Отзывов пока нет",
+  "reviews_empty_subtitle": "Будьте первым, кто оценит это жилье!",
+  "error_generic_title": "Ой, что-то пошло не так",
+  "action_retry": "Повторить",
   "password_length_message": "Пароль должен содержать не менее 6 символов.",
   "not_chat_yourself": "С самим собой разговаривать нельзя."
 }

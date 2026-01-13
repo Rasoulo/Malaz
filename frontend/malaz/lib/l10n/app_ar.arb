@@ -208,5 +208,10 @@
   "rate_the_apartment": "تقييم الشقة",
   "view_details": "عرض التفاصيل",
   "password_length_message": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل",
-  "not_chat_yourself": "! لا يمكنك التحدث مع نفسك"
+  "not_chat_yourself": "! لا يمكنك التحدث مع نفسك",
+  "reviews_title": "التقييمات والآراء",
+  "reviews_empty_title": "لا توجد تقييمات بعد",
+  "reviews_empty_subtitle": "كن أول من يقيم هذا العقار!",
+  "error_generic_title": "عذراً، حدث خطأ ما",
+  "action_retry": "إعادة المحاولة"
 }

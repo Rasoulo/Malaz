@@ -36,7 +36,7 @@ class BookingController extends Controller
 
 
 
-        
+
 
         // Default: show all bookings for the authenticated user
         return Booking::where('user_id', auth()->id())->with('property')->get();

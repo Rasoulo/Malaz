@@ -224,36 +224,36 @@
                 <!-- Right Column: Owner & Pricing -->
                 <div class="space-y-6 lg:sticky lg:top-24">
                     <!-- Owner Information -->
-                    @if ($property->owner)
+                    @if ($property->user)
                         <div class="bg-gray-50 rounded-lg p-4">
                             <h4 class="text-sm font-semibold text-gray-900 mb-4">Property Owner</h4>
                             <div class="flex items-center mb-4">
                                 <div class="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center">
                                     <span class="text-white font-semibold">
-                                        {{ substr($property->owner->first_name ?? '', 0, 1) }}{{ substr($property->owner->last_name ?? '', 0, 1) }}
+                                        {{ substr($property->user->first_name ?? '', 0, 1) }}{{ substr($property->user->last_name ?? '', 0, 1) }}
                                     </span>
                                 </div>
                                 <div class="ml-3">
                                     <p class="text-sm font-medium text-gray-900">
-                                        {{ ($property->owner->first_name ?? '') . ' ' . ($property->owner->last_name ?? '') }}
+                                        {{ ($property->user->first_name ?? '') . ' ' . ($property->user->last_name ?? '') }}
                                     </p>
-                                    <p class="text-xs text-gray-500">{{ $property->owner->email ?? 'No email' }}</p>
-                                    <p class="text-xs text-gray-500">{{ $property->owner->phone ?? 'No phone' }}</p>
+                                    <p class="text-xs text-gray-500">{{ $property->user->email ?? 'No email' }}</p>
+                                    <p class="text-xs text-gray-500">{{ $property->user->phone ?? 'No phone' }}</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-600">Member since:</span>
                                     <span
-                                        class="font-medium">{{ optional($property->owner->created_at)->format('M Y') ?? 'N/A' }}</span>
+                                        class="font-medium">{{ optional($property->user->created_at)->format('M Y') ?? 'N/A' }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-600">Properties listed:</span>
-                                    <span class="font-medium">{{ $property->owner->properties->count() ?? 0 }}</span>
+                                    <span class="font-medium">{{ $property->user->properties->count() ?? 0 }}</span>
                                 </div>
                             </div>
                             <div class="mt-4">
-                                <a href="{{ route('admin.users.show', $property->owner) }}"
+                                <a href="{{ route('admin.users.show', $property->user) }}"
                                     class="text-sm text-primary hover:text-primary-dark">
                                     View Owner Profile →
                                 </a>
@@ -361,7 +361,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Booking ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tenant</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Guest</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dates</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
@@ -373,13 +373,12 @@
                                     <td class="px-6 py-4 text-sm text-gray-900">
                                         #{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}</td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-900">{{ $booking->tenant->first_name }}
-                                            {{ $booking->tenant->last_name }}</div>
-                                        <div class="text-xs text-gray-500">{{ $booking->tenant->email }}</div>
+                                        <div class="text-sm text-gray-900">{{ $booking->user->first_name ?? '' }} {{ $booking->user->last_name ?? '' }}</div>
+                                        <div class="text-xs text-gray-500">{{ $booking->user->email ?? '' }}</div>
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-900">
-                                        {{ $booking->start_date->format('M d, Y') }} -
-                                        {{ $booking->end_date->format('M d, Y') }}
+                                        {{ \Carbon\Carbon::parse($booking->check_in)->format('M d, Y') }} -
+                                        {{ \Carbon\Carbon::parse($booking->check_out)->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4">
                                         @php
@@ -388,6 +387,7 @@
                                                 'confirmed' => 'bg-green-100 text-green-800',
                                                 'cancelled' => 'bg-red-100 text-red-800',
                                                 'completed' => 'bg-blue-100 text-blue-800',
+                                                'ongoing' => 'bg-blue-100 text-blue-800',
                                             ];
                                         @endphp
                                         <span
@@ -396,7 +396,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                        ${{ number_format($booking->total_amount) }}</td>
+                                        ${{ number_format($booking->total_amount, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

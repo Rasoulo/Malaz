@@ -1315,6 +1315,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can\'t chat with yourself'**
   String get not_chat_yourself;
+
+  /// No description provided for @reviews_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ratings & Reviews'**
+  String get reviews_title;
+
+  /// No description provided for @reviews_empty_title.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get reviews_empty_title;
+
+  /// No description provided for @reviews_empty_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to review this property!'**
+  String get reviews_empty_subtitle;
+
+  /// No description provided for @error_generic_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops, something went wrong'**
+  String get error_generic_title;
+
+  /// No description provided for @action_retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get action_retry;
 }
 
 class _AppLocalizationsDelegate

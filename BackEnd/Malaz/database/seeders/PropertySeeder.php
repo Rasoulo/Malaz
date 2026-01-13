@@ -264,7 +264,7 @@ class PropertySeeder extends Seeder
                 'main_image' => $base64Images[10],
                 'mime_type' => 'image/png',
                 'owner_id' => rand(2, 5),
-                'status' => 'approved',
+                'status' => 'pending',
             ],
             [
                 'title' => 'Seaside Apartment in Jableh',
