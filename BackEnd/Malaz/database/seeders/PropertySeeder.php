@@ -37,7 +37,7 @@ class PropertySeeder extends Seeder
         $properties = [
             [
                 'title' => 'شقة حديثة في أبو رمانة',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Damascus',
                 'governorate' => 'Damascus Governorate',
                 'address' => 'Abu Rummaneh, near Al-Shaalan',
@@ -58,7 +58,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Luxury Villa in Al-Hamra',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Aleppo',
                 'governorate' => 'Aleppo Governorate',
                 'address' => 'Al-Hamra district, western Aleppo',
@@ -79,7 +79,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'بيت ريفي في بلودان',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Bloudan',
                 'governorate' => 'Rif Dimashq Governorate',
                 'address' => 'Bloudan hills, near the pine forest',
@@ -100,7 +100,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Farm in Al-Ghab Plain',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Al-Ghab',
                 'governorate' => 'Hama Governorate',
                 'address' => 'Al-Ghab plain, near Al-Suqaylabiyah',
@@ -121,7 +121,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'منزل على الكورنيش في طرطوس',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Tartus',
                 'governorate' => 'Tartus Governorate',
                 'address' => 'Corniche, Tartus seaside',
@@ -142,7 +142,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'شقة للإيجار في المزة',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Damascus',
                 'governorate' => 'Damascus Governorate',
                 'address' => 'Mazzeh, near Damascus University',
@@ -163,7 +163,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Modern House in Latakia',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Latakia',
                 'governorate' => 'Latakia Governorate',
                 'address' => 'Al-Corniche Al-Janoubi, Latakia',
@@ -184,7 +184,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'فيلا فاخرة في يعفور',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Yaafour',
                 'governorate' => 'Rif Dimashq Governorate',
                 'address' => 'Yaafour luxury villas area',
@@ -205,7 +205,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Country House in Kassab',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Kassab',
                 'governorate' => 'Latakia Governorate',
                 'address' => 'Kassab mountains, near pine forest',
@@ -226,7 +226,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'مزرعة صغيرة في ريف حمص',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Homs',
                 'governorate' => 'Homs Governorate',
                 'address' => 'Countryside of Homs, near Al-Rastan',
@@ -247,7 +247,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'شقة صغيرة في باب توما',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Damascus',
                 'governorate' => 'Damascus Governorate',
                 'address' => 'Bab Touma, Old Damascus',
@@ -268,7 +268,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Seaside Apartment in Jableh',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Jableh',
                 'governorate' => 'Latakia Governorate',
                 'address' => 'Jableh Corniche, near the port',
@@ -289,7 +289,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'منزل عائلي في حلب الجديدة',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Aleppo',
                 'governorate' => 'Aleppo Governorate',
                 'address' => 'New Aleppo district',
@@ -310,7 +310,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Villa in Safita Hills',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Safita',
                 'governorate' => 'Tartus Governorate',
                 'address' => 'Safita hillside, overlooking the valley',
@@ -331,7 +331,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'بيت ريفي في سلمية',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Salamiyah',
                 'governorate' => 'Hama Governorate',
                 'address' => 'Countryside of Salamiyah',
@@ -352,7 +352,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Квартира в центре Дамаска',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Damascus',
                 'governorate' => 'Damascus Governorate',
                 'address' => 'Central Damascus, near Al-Hamidiya',
@@ -373,7 +373,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Modern House in Aleppo',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Aleppo',
                 'governorate' => 'Aleppo Governorate',
                 'address' => 'New Aleppo district',
@@ -394,7 +394,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Вилла у моря в Латакии',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Latakia',
                 'governorate' => 'Latakia Governorate',
                 'address' => 'Latakia seaside, near Corniche',
@@ -415,7 +415,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Maison de campagne à Bloudan',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Bloudan',
                 'governorate' => 'Rif Dimashq Governorate',
                 'address' => 'Bloudan hills, near pine forest',
@@ -436,7 +436,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Deniz kenarında daire - Tartus',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Tartus',
                 'governorate' => 'Tartus Governorate',
                 'address' => 'Tartus Corniche',
@@ -457,7 +457,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Апартаменты в Хомсе',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Homs',
                 'governorate' => 'Homs Governorate',
                 'address' => 'Downtown Homs, near Clock Tower',
@@ -478,7 +478,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Maison moderne à Tartus',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Tartus',
                 'governorate' => 'Tartus Governorate',
                 'address' => 'Tartus Corniche, near Marina',
@@ -499,7 +499,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Villa à Safita',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Safita',
                 'governorate' => 'Tartus Governorate',
                 'address' => 'Safita hillside, overlooking valley',
@@ -520,7 +520,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Deniz manzaralı villa - Latakia',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'Latakia',
                 'governorate' => 'Latakia Governorate',
                 'address' => 'Latakia seaside, near Corniche',
@@ -541,7 +541,7 @@ class PropertySeeder extends Seeder
             ],
             [
                 'title' => 'Коттедж в Сувейде',
-                'price' => rand(1, 100) * 100,
+                'price' => rand(1, 100) * 10,
                 'city' => 'As-Suwayda',
                 'governorate' => 'As-Suwayda Governorate',
                 'address' => 'Countryside of As-Suwayda',
