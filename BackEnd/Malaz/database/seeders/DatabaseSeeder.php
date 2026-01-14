@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             UserSeeder::class,
             PropertySeeder::class,
-            ConversationSeeder::class,
-            ReviewSeeder::class,
+            //ConversationSeeder::class,
             BookingSeeder::class,
+            ReviewSeeder::class,
         ]);
         // User::factory()->create([
         //     'name' => 'Test User',
