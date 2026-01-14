@@ -115,19 +115,7 @@ class PropertyController extends Controller
             $results = $mapQuery->cursorPaginate($perPage);
             return response()->json([
                 'data' => $results->map(function ($p) {
-                    return [
-                        'id' => $p->id,
-                        'title' => $p->title,
-                        'price' => $p->price,
-                        'type' => $p->type,
-                        'latitude' => $p->latitude,
-                        'longitude' => $p->longitude,
-                        'number_of_rooms' => $p->number_of_rooms,
-                        'number_of_baths' => $p->number_of_baths,
-                        'area' => $p->area,
-                        'main_image_url' => $p->main_image_url,
-                        'distance' => $p->distance ?? null,
-                    ];
+                    return $p;
                 }),
                 'meta' => [
                     'next_cursor' => $results->nextCursor()?->encode(),
@@ -171,8 +159,7 @@ class PropertyController extends Controller
                     'per_page' => $properties->perPage(),
                 ],
                 'status' => 200,
-            ]
-            ,
+            ],
             200
         );
     }
@@ -196,9 +183,7 @@ class PropertyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
