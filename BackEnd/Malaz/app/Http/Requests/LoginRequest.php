@@ -17,7 +17,7 @@ class LoginRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|regex:/^\+?\d{9,15}$/|exists:users,phone',
+            'phone' => 'required|regex:/^\+?\d{8,15}$/|exists:users,phone',
             'password' => 'required|string|min:6|max:40',
         ];
     }

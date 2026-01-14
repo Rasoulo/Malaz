@@ -33,9 +33,9 @@ class ConversationPolicy
             : Response::deny(__('validation.conversation.unauthorized'));
     }
 
-    public function self(User $user, $ownerId)
+    public function self(User $user, User $owner)
     {
-        return ($user->id !== $ownerId)
+        return ($user->id != $owner->id)
             ? Response::allow()
             : Response::deny(__('validation.conversation.self_start'));
     }

@@ -20,7 +20,14 @@ class MessageController extends Controller
         if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
             return response()->json(['error' => __('validation.message.unauthorized')], 403);
         }
-        $perPage = (int) $request->input('per_page', 20);
+        $perPage = (int) $request->input('perpage', 20);
+
+        Message::withoutTimestamps(function () use ($conversation) {
+            $conversation->messages()
+                ->whereNull('read_at')
+                ->where('sender_id', '!=', auth()->id())
+                ->update(['read_at' => now()]);
+        });
 
         $messages = $conversation->messages()
             ->with('sender')
@@ -144,7 +151,10 @@ class MessageController extends Controller
             return response()->json(['error' => __('validation.message.cannot_mark_own')], 400);
         }
 
-        $message->update(['read_at' => now()]);
+        Message::withoutTimestamps(function () use ($message) {
+            $message->update(['read_at' => now()]);
+        });
+
         $message->load('sender');
 
         broadcast(new MessageRead($message))->toOthers();

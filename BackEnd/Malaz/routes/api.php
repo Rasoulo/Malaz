@@ -66,7 +66,7 @@ Route::prefix('conversations')->middleware(['auth:sanctum', 'role:ADMIN,USER'])-
     Route::post('/{user}', 'store')->name('conversations.store');
     Route::get('{conversation}', 'show')->name('conversations.show');
     Route::delete('{conversation}', 'destroy')->name('conversations.destroy');
-    Route::get('{conversation}/messages', 'showmessage')->name('conversations.messages');
+    // Route::get('{conversation}/messages', 'showmessage')->name('conversations.messages');
 });
 
 Route::prefix('conversations/{conversation}/messages')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(MessageController::class)->group(function () {

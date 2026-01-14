@@ -15,7 +15,7 @@ class RegisterRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|regex:/^\+?\d{9,15}$/|unique:users,phone',
+            'phone' => 'required|regex:/^\+?\d{8,15}$/|unique:users,phone',
             //'role' => 'required|string|in:RENTER,OWNER,ADMIN',
             'first_name' => 'required|string|max:31',
             'last_name' => 'required|string|max:31',

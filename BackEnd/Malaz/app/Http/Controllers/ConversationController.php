@@ -23,11 +23,11 @@ class ConversationController extends Controller
             ->orWhere('user_two_id', $user->id)
             ->with(['userOne', 'userTwo'])
             ->withCount([
-                'messages as unread_count' => function ($query) use ($user) {
-                    $query->whereNull('read_at')
-                        ->where('sender_id', '!=', $user->id);
-                }
-            ])
+                    'messages as unread_count' => function ($query) use ($user) {
+                        $query->whereNull('read_at')
+                            ->where('sender_id', '!=', $user->id);
+                    }
+                ])
             ->orderByDesc(
                 Message::select('created_at')
                     ->whereColumn('conversation_id', 'conversations.id')
@@ -62,11 +62,11 @@ class ConversationController extends Controller
         $owner = User::findOrFail($userId);
         $user = auth()->user();
 
-        $this->authorize('self', $owner->id);
+        // $this->authorize('self', $owner);
 
-        // if ($owner->id === $user->id) {
-        //     return response()->json(['error' => __('messages.conversation.self_start')], 400);
-        // }
+        if ($owner->id === $user->id) {
+            return response()->json(['error' => __('validation.conversation.unauthorized')], 403);
+        }
 
         $ids = [$user->id, $owner->id];
         sort($ids);
@@ -92,8 +92,11 @@ class ConversationController extends Controller
      */
     public function show(Conversation $conversation)
     {
-        $this->authorize('view', $conversation);
-
+        // $this->authorize('view', $conversation);
+        $user = auth()->user();
+        if ($conversation->user_one_id !== $user->id && $conversation->user_two_id !== $user->id)
+            return response()->json(['error' => __('validation.conversation.unauthorized')], 400);
+        // : Response::deny(__('validation.conversation.unauthorized'));
         return response()->json([
             'message' => __('validation.conversation.show'),
             'conversation' => $conversation,
@@ -104,16 +107,23 @@ class ConversationController extends Controller
 
     public function showmessage(Request $request, Conversation $conversation)
     {
-        $this->authorize('showMessage', $conversation);
+        return 1;
+        // $this->authorize('showMessage', $conversation);
+        $user = auth()->user();
+        if ($conversation->user_one_id !== $user->id || $conversation->user_two_id !== $user->id)
+            return response()->json(['error' => __('validation.conversation.unauthorized')], 400);
+
+        // ? Response::allow()
+        // : Response::deny(__('validation.conversation.unauthorized'));
 
         $conversation->messages()
             ->whereNull('read_at')
             ->where('sender_id', '!=', auth()->id())
-            ->update(['read_at' => now()]);
+            ->updateQuietly(['read_at' => now()]);
 
-        $perPage = (int) $request->input('per_page', 20);
+        $perPage = (int) $request->input('perpage', 20);
         $messages = $conversation->messages()->with('sender')->latest()->cursorPaginate($perPage);
-
+        
         return response()->json([
             'message' => __('validation.conversation.show'),
             'last_messages' => $messages,
@@ -147,11 +157,11 @@ class ConversationController extends Controller
      */
     public function destroy(Conversation $conversation)
     {
-        $this->authorize('delete', $conversation);
+        // $this->authorize('delete', $conversation);
 
-        // if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
-        //     return response()->json(['error' => __('validation.conversation.unauthorized')], 403);
-        // }
+        if ($conversation->user_one_id !== auth()->id() && $conversation->user_two_id !== auth()->id()) {
+            return response()->json(['error' => __('validation.conversation.unauthorized')], 403);
+        }
 
         $conversation->delete();
         return response()->json([
