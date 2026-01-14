@@ -35,10 +35,10 @@ class Filter {
 
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{};
-    if (minPrice != null) map['min_price'] = minPrice;
-    if (maxPrice != null) map['max_price'] = maxPrice;
-    if (minArea != null) map['min_area'] = minArea;
-    if (maxArea != null) map['max_area'] = maxArea;
+    if (minPrice != null) map['price_min'] = minPrice;
+    if (maxPrice != null) map['price_max'] = maxPrice;
+    if (minArea != null) map['area_min'] = minArea;
+    if (maxArea != null) map['area_max'] = maxArea;
     if (type != null) map['type'] = type;
 
     if (minRooms != null) map['rooms_min'] = minRooms;
@@ -51,9 +51,10 @@ class Filter {
     if (maxBathrooms != null) map['baths_max'] = maxBathrooms;
 
     if (lat != null && lng != null) {
+      map['map'] = 1;
       map['lat'] = lat;
       map['lng'] = lng;
-      map['radius'] = radiusInKm ?? 10;
+      map['radius_km'] = radiusInKm ?? 10;
     }
     return map;
   }

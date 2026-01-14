@@ -7,6 +7,7 @@ import 'package:malaz/presentation/cubits/location/location_cubit.dart';
 import 'package:malaz/l10n/app_localizations.dart';
 
 import '../../../domain/entities/filters/filters.dart';
+import '../pick_location/pick_location_screen.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});
@@ -74,7 +75,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     }
                   },
                   onMapLocationTap: () {
-                    /// TODO: open map :)
+                      _pickLocationFromMap();
                     setState(() {
                       _useMapLocation = !_useMapLocation;
                       _useCurrentLocation = false;
@@ -162,6 +163,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
       _selectedTypeKey = null;
       _useCurrentLocation = false;
+      _selectedLat = null;
+      _selectedLng = null;
       _useMapLocation = false;
     });
   }
@@ -178,6 +181,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     } else if (_useMapLocation) {
       lat = _selectedLat;
       lng = _selectedLng;
+      print('lat shit $lat and lng shit $lng');
     }
 
     final params = Filter(
@@ -199,6 +203,27 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
     context.read<HomeCubit>().loadApartments(newFilter: params);
     Navigator.pop(context);
+  }
+
+  Future<void> _pickLocationFromMap() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PickLocationScreen(
+          initialLat: _selectedLat,
+          initialLng: _selectedLng,
+        ),
+      ),
+    );
+
+    if (result != null && result is Map) {
+      setState(() {
+        _selectedLat = result['lat'];
+        _selectedLng = result['lng'];
+        _useMapLocation = true;
+        _useCurrentLocation = false;
+      });
+    }
   }
 }
 
@@ -295,6 +320,7 @@ class _BuildLocationSection extends StatelessWidget {
             onTap: onMapLocationTap,
           ),
         ),
+
       ],
     );
   }

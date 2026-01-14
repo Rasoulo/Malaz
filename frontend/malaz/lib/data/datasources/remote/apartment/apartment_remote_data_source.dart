@@ -45,6 +45,9 @@ class ApartmentRemoteDataSourceImpl implements ApartmentRemoteDataSource {
       queryParams.addAll(filter.toMap());
     }
 
+    queryParams.removeWhere((key, value) => value == null);
+    print('queryParams ? $queryParams');
+
     final response = await networkService.get(
       '/properties/all',
       queryParameters: queryParams,
