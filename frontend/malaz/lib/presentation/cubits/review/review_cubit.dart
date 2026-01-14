@@ -5,7 +5,6 @@ import 'package:malaz/core/errors/failures.dart';
 import '../../../domain/entities/review/review.dart';
 import '../../../domain/usecases/review/get_review_use_case.dart';
 
-// --- States ---
 abstract class ReviewsState extends Equatable {
   const ReviewsState();
   @override
@@ -20,62 +19,101 @@ class ReviewsLoaded extends ReviewsState {
   final List<Review> reviews;
   final bool hasReachedMax;
 
-  const ReviewsLoaded({required this.reviews, required this.hasReachedMax});
+  const ReviewsLoaded({
+    required this.reviews,
+    this.hasReachedMax = false,
+  });
 
   @override
   List<Object?> get props => [reviews, hasReachedMax];
+
+  ReviewsLoaded copyWith({
+    List<Review>? reviews,
+    bool? hasReachedMax,
+  }) {
+    return ReviewsLoaded(
+      reviews: reviews ?? this.reviews,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
 }
 
 class ReviewsError extends ReviewsState {
   final String message;
-  const ReviewsError(this.message);
+  const ReviewsError({required this.message});
+  @override
+  List<Object> get props => [message];
 }
 
 class ReviewsCubit extends Cubit<ReviewsState> {
   final GetReviewsUseCase getReviewsUseCase;
 
   String? _nextCursor;
-  bool _isFetchingMore = false;
-  final List<Review> _allReviews = [];
+  bool _isFetching = false;
 
   ReviewsCubit(this.getReviewsUseCase) : super(ReviewsInitial());
 
-  Future<void> loadReviews({required int propertyId, bool isRefresh = false}) async {
-    if (_isFetchingMore) return;
+  Future<void> loadReviews({
+    required int propertyId,
+    bool isRefresh = false,
+    bool loadNext = false,
+  }) async {
+    if (_isFetching) return;
+    _isFetching = true;
 
-    if (isRefresh) {
-      _nextCursor = null;
-      _allReviews.clear();
-      emit(ReviewsLoading());
-    } else {
-      if (state is ReviewsLoaded && (state as ReviewsLoaded).hasReachedMax) return;
-    }
+    try {
+      String? cursorToSend;
 
-    _isFetchingMore = true;
-
-    final result = await getReviewsUseCase.call(
-      propertyId: propertyId,
-      cursor: _nextCursor,
-    );
-
-    result.fold(
-          (failure) {
-        _isFetchingMore = false;
-        if (_allReviews.isEmpty) {
-          final String? message = failure is NetworkFailure ? AppConstants.networkFailureKey : failure.message;
-          emit(ReviewsError(message ?? "Unknown error"));
+      if (isRefresh) {
+        cursorToSend = null;
+        emit(ReviewsLoading());
+      } else if (loadNext) {
+        cursorToSend = _nextCursor;
+        if (cursorToSend == null) {
+          _isFetching = false;
+          return;
         }
-      },
-          (reviewsList) {
-        _isFetchingMore = false;
-        _nextCursor = reviewsList.nextCursor;
-        _allReviews.addAll(reviewsList.reviews);
+      } else {
+        if (state is! ReviewsLoaded) emit(ReviewsLoading());
+        cursorToSend = null;
+      }
 
-        emit(ReviewsLoaded(
-          reviews: List.from(_allReviews),
-          hasReachedMax: _nextCursor == null,
-        ));
-      },
-    );
+      final result = await getReviewsUseCase.call(
+        propertyId: propertyId,
+        cursor: cursorToSend,
+      );
+
+      result.fold(
+            (failure) {
+          String keyMessage = AppConstants.unknownFailureKey;
+          if (failure is NetworkFailure) {
+            keyMessage = AppConstants.networkFailureKey;
+          } else if (failure is ServerFailure) {
+            keyMessage = failure.message ?? AppConstants.cancelledFailureKey;
+          }
+          emit(ReviewsError(message: keyMessage));
+        },
+            (reviewsList) {
+          _nextCursor = reviewsList.nextCursor;
+
+          if (loadNext && state is ReviewsLoaded) {
+            final currentList = (state as ReviewsLoaded).reviews;
+            emit(ReviewsLoaded(
+              reviews: currentList + reviewsList.reviews,
+              hasReachedMax: _nextCursor == null,
+            ));
+          } else {
+            emit(ReviewsLoaded(
+              reviews: reviewsList.reviews,
+              hasReachedMax: _nextCursor == null,
+            ));
+          }
+        },
+      );
+
+    } catch (e) {
+      if (!isClosed) emit(const ReviewsError(message: "Unexpected Error"));
+    } finally {
+      _isFetching = false;
   }
 }

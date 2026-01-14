@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/core/config/color/app_color.dart';
@@ -24,8 +26,10 @@ class _ReviewsBottomSheetState extends State<ReviewsBottomSheet> {
   @override
   void initState() {
     super.initState();
-    context.read<ReviewsCubit>().loadReviews(propertyId: widget.propertyId, isRefresh: true);
     _scrollController.addListener(_onScroll);
+
+    final cubit = context.read<ReviewsCubit>();
+    cubit.loadReviews(propertyId: widget.propertyId, isRefresh: true);
   }
 
   @override
@@ -36,7 +40,10 @@ class _ReviewsBottomSheetState extends State<ReviewsBottomSheet> {
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<ReviewsCubit>().loadReviews(propertyId: widget.propertyId);
+      context.read<ReviewsCubit>().loadReviews(
+          propertyId: widget.propertyId,
+          loadNext: true
+      );
     }
   }
 
@@ -101,34 +108,42 @@ class _ReviewsBottomSheetState extends State<ReviewsBottomSheet> {
             child: BlocBuilder<ReviewsCubit, ReviewsState>(
               builder: (context, state) {
                 if (state is ReviewsLoading) {
-                  return _BuildReviewShimmer();
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (state is ReviewsError) {
-                  return BuildErrorView(message: state.message, onRetry: () {
-                    print('retried');
-                    context.read<ReviewsCubit>().loadReviews(propertyId: widget.propertyId, isRefresh: true);
-                  });
+                  return Center(child: Text(state.message));
                 }
 
                 if (state is ReviewsLoaded) {
                   if (state.reviews.isEmpty) {
-                    return _BuildEmptyState();
+                    return Center(child: Text(l10n.reviews_empty_subtitle));
                   }
 
-                  return ListView.builder(
+                  return ListView.separated(
                     controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(20),
+                    separatorBuilder: (context, index) => const SizedBox(height: 16),
+
                     itemCount: state.hasReachedMax
                         ? state.reviews.length
                         : state.reviews.length + 1,
+
                     itemBuilder: (context, index) {
                       if (index >= state.reviews.length) {
                         return const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Center(child: CircularProgressIndicator()),
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Center(
+                              child: SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(strokeWidth: 2)
+                              )
+                          ),
                         );
                       }
+
                       return ReviewCard(review: state.reviews[index]);
                     },
                   );

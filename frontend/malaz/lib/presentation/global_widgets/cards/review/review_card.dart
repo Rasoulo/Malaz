@@ -55,7 +55,7 @@ class ReviewCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      review.createdAt,
+                      review.createdAt.split('T')[0],
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: Colors.grey,
                       ),
@@ -63,7 +63,6 @@ class ReviewCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Stars
               _BuildRatingStars(rating: review.rating),
             ],
           ),
