@@ -195,7 +195,6 @@ class BookingController extends Controller
             ->map(function ($booking) {
                 return $this->updateBookingStatus($booking);
             });
-        Arr::sortByDesc($bookings, 'id');
         return response()->json(['bookings' => $bookings]);
     }
 
