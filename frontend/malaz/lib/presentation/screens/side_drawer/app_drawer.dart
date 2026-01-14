@@ -71,7 +71,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         child: Divider(color: colorScheme.outlineVariant.withOpacity(0.3), thickness: 0.5),
                       ),
                       _buildDrawerItem(context, Icons.apartment_rounded, tr.become_a_renter, () {}),
-                      _buildDrawerItem(context, Icons.settings_outlined, tr.settings, () => context.push('/settings')),
+                      _buildDrawerItem(context, Icons.settings_outlined, tr.settings,(){}),
                     ],
                   ),
                 ),

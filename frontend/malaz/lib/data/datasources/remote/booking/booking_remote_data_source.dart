@@ -82,12 +82,21 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
       "/bookings/user/$userId",
     );
     List<BookingModel> bookings = [];
+
     if (response.data != null) {
       print('Server Response Data: ${response.data}');
-      final List rawData = response.data as List;
-      if (rawData != null) {
-        bookings = rawData.map((e) => BookingModel.fromJson(e)).toList();
+
+      dynamic rawData = response.data;
+      List<dynamic> listData = [];
+
+      if (rawData is List) {
+        listData = rawData;
+      } else if (rawData is Map) {
+        listData = rawData.values.toList();
       }
+
+      bookings = listData.map((e) => BookingModel.fromJson(e)).toList();
+
     } else {
       print('No data found in response');
     }

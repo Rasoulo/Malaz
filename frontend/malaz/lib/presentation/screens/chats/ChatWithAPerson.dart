@@ -592,7 +592,7 @@ class ChatBubble extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (message.isEdited)
+                  if (message.isEdited || message.updatedAt != message.createdAt)
                     Padding(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(' ${tr.edited}   ', style: TextStyle(fontSize: 9, fontStyle: FontStyle.italic, color: Colors.white70)),
