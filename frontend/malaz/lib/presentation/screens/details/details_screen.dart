@@ -93,8 +93,7 @@ class _BuildSliverAppBar extends StatelessWidget {
 
     final List<String> galleryImages = [
       apartment.mainImageUrl,
-      apartment.mainImageUrl,
-      apartment.mainImageUrl,
+      ...apartment.images
     ];
 
     return SliverAppBar(

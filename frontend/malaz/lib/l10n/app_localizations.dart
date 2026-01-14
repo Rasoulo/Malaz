@@ -545,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @per_month.
   ///
   /// In en, this message translates to:
-  /// **'per month'**
+  /// **'per night'**
   String get per_month;
 
   /// No description provided for @book_now.
@@ -557,7 +557,7 @@ abstract class AppLocalizations {
   /// No description provided for @month.
   ///
   /// In en, this message translates to:
-  /// **'month'**
+  /// **'night'**
   String get month;
 
   /// No description provided for @new_.

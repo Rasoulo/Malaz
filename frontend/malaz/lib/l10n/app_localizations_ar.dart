@@ -229,13 +229,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get view_all => 'عرض الكل';
 
   @override
-  String get per_month => 'شهرياً';
+  String get per_month => 'في الليلة';
 
   @override
   String get book_now => 'احجز الآن';
 
   @override
-  String get month => 'شهر';
+  String get month => 'ليلة';
 
   @override
   String get new_ => 'جديد';

@@ -230,13 +230,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_all => 'View All';
 
   @override
-  String get per_month => 'per month';
+  String get per_month => 'per night';
 
   @override
   String get book_now => 'Book Now';
 
   @override
-  String get month => 'month';
+  String get month => 'night';
 
   @override
   String get new_ => 'New';

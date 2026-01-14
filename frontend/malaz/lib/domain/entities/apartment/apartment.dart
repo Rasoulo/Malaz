@@ -19,6 +19,7 @@ class Apartment {
   final num rating;
   final int numberOfReviews;
   final String mainImageUrl;
+  final List<String> images;
   final bool isFav;
   final double? latitude;
   final double? longitude;
@@ -42,11 +43,12 @@ class Apartment {
     required this.rating,
     required this.numberOfReviews,
     required this.mainImageUrl,
+    required this.images,
     this.isFav = false,
     this.latitude,
     this.longitude
   });
 
   @override
-  List<Object?> get props => [id,ownerId,status,title,price,city,governorate,address,description,type,rooms,bathrooms,bedrooms,area,rating,numberOfReviews,mainImageUrl,isFav];
+  List<Object?> get props => [id,ownerId,status,title,price,city,governorate,address,description,type,rooms,bathrooms,bedrooms,area,rating,numberOfReviews,mainImageUrl,isFav, images];
 }

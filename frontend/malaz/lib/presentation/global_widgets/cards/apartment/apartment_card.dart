@@ -80,8 +80,7 @@ class _BuildCardImageAreaState extends State<_BuildCardImageArea> {
   Widget build(BuildContext context) {
     final List<String> images = [
       widget.apartment.mainImageUrl,
-      widget.apartment.mainImageUrl,
-      widget.apartment.mainImageUrl,
+      ...widget.apartment.images
     ];
 
     return Stack(

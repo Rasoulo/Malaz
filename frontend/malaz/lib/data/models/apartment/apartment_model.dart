@@ -23,6 +23,7 @@ class ApartmentModel extends Apartment {
     required super.rating,
     required super.numberOfReviews,
     required super.mainImageUrl,
+    required super.images,
     super.isFav,
     super.latitude,
     super.longitude,
@@ -52,6 +53,10 @@ class ApartmentModel extends Apartment {
       numberOfReviews: (json['number_of_reviews'] as num?)?.toInt() ?? 0,
 
       mainImageUrl: json['main_image_url'] ?? '',
+
+      images: json['images'] != null
+          ? (json['images'] as List).map((e) => e['image_url'] as String).toList()
+          : [],
 
       isFav: json['is_favorite'] ?? false,
       latitude: json['latitude'] != null

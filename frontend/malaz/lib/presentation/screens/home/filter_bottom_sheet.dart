@@ -154,19 +154,21 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   void _resetFilters() {
     setState(() {
-      _priceRange = const RangeValues(0, 1000);
-      _areaRange = const RangeValues(50, 500);
-
+      _priceRange = const RangeValues(0, 5000);
+      _areaRange = const RangeValues(50, 10000);
       _roomsRange = const RangeValues(0, 100);
       _bedroomsRange = const RangeValues(0, 50);
       _bathroomsRange = const RangeValues(0, 50);
-
       _selectedTypeKey = null;
       _useCurrentLocation = false;
+      _useMapLocation = false;
       _selectedLat = null;
       _selectedLng = null;
-      _useMapLocation = false;
     });
+
+    context.read<HomeCubit>().clearFilter();
+
+    Navigator.pop(context);
   }
 
   void _applyFilters(BuildContext context) {
