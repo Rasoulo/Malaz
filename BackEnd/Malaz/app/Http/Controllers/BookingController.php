@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Arr;
 
 class BookingController extends Controller
 {
@@ -194,8 +195,8 @@ class BookingController extends Controller
             ->map(function ($booking) {
                 return $this->updateBookingStatus($booking);
             });
-
-        return response()->json(['bookings' => $bookings])->sortedByDesc('id');
+        Arr::sortByDesc($bookings, 'id');
+        return response()->json(['bookings' => $bookings]);
     }
 
     /**
