@@ -1,6 +1,6 @@
 class AppConstants {
-  static const baseurl = 'http://192.168.1.101:8000/api';
-  static const baseurlForPusher = 'http://192.168.1.101:8000/broadcasting/auth';
+  static const baseurl = 'http://192.168.137.226:8000/api';
+  static const baseurlForPusher = 'http://192.168.137.226:8000/broadcasting/auth';
 
   /// [SharedPreferences] Keys
   static const String themeKey = 'theme_mode';
@@ -23,7 +23,7 @@ class AppConstants {
 
   /// [Requesting] keys
   static const numberOfApartmentsEachRequest = 2;
-  static const numberOfReviewsEachRequest =  2;
+  static const numberOfReviewsEachRequest =  20;
   static const numberOfBookingEachRequest = 5;
 
   /// [Pusher] keys

@@ -317,7 +317,7 @@ class _BuildIconButton extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: color ?? (isDark ? Colors.grey[800] : Colors.white),
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(20 * 0.6),
             boxShadow: [
               BoxShadow(
                 color: theme.colorScheme.primary.withOpacity(0.25),

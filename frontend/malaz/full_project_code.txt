@@ -809,7 +809,9 @@ import '../../domain/usecases/apartment/my_apartment_use_case.dart';
 import '../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../domain/usecases/auth/verify_otp_usecase.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
+import '../../domain/usecases/booking/My_booking_usecase.dart';
 import '../../domain/usecases/booking/all_booking_use_case.dart';
+import '../../domain/usecases/booking/update_Booking_Date.dart';
 import '../../domain/usecases/favorites/add_favorites_use_case.dart';
 import '../../domain/usecases/favorites/delete_favorites_use_case.dart';
 import '../../domain/usecases/favorites/get_favorites_use_case.dart';
@@ -817,9 +819,11 @@ import '../../domain/usecases/home/apartments_use_case.dart';
 import '../../domain/usecases/location/get_current_location_usecase.dart';
 import '../../domain/usecases/location/load_saved_location_usecase.dart';
 import '../../domain/usecases/location/update_manual_location_usecase.dart';
+import '../../domain/usecases/review/add_review_usecase.dart';
 import '../../presentation/cubits/auth/auth_cubit.dart';
 import '../../presentation/cubits/booking/booking_cubit.dart';
 import '../../presentation/cubits/booking/manage_booking.dart';
+import '../../presentation/cubits/booking/my_booking.dart';
 import '../../presentation/cubits/chat/chat_cubit.dart';
 import '../../presentation/cubits/favorites/favorites_cubit.dart';
 import '../../presentation/cubits/home/home_cubit.dart';
@@ -875,7 +879,7 @@ Future<void> setUpServices() async {
 
 
   sl.registerLazySingleton<InternetConnectionChecker>(
-      () => InternetConnectionChecker());
+          () => InternetConnectionChecker());
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
@@ -884,13 +888,13 @@ Future<void> setUpServices() async {
   sl.registerFactory(() => LanguageCubit(sl()));
 
   sl.registerFactory(() => BookingCubit(sl<GetBookedDatesUseCase>(), sl<MakeBookUseCase>(),));
-  sl.registerFactory(() => ReviewsCubit(sl()));
+  sl.registerFactory(() => ReviewsCubit(sl(),sl()));
 
   sl.registerFactory(() => ManageBookingCubit(
     sl<GetUserBooking>(),
     sl<UpdateStatus>(),
   ));
-
+  sl.registerFactory(() => MyBookingCubit(sl<GetMyBooking>(),sl<UpdateBookingUseCase>(),sl<UpdateStatus>(),));
   sl.registerFactory(() => HomeCubit(getApartmentsUseCase: sl()));
   sl.registerLazySingleton(() => FavoritesCubit(getFavoritesUseCase: sl(),addFavoriteUseCase: sl(), deleteFavoriteUseCase: sl()));
 
@@ -899,6 +903,10 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => GetMyApartmentsUseCase(sl()));
 
   sl.registerLazySingleton(() => GetApartmentsUseCase(sl()));
+
+  sl.registerLazySingleton(() => UpdateBookingUseCase(sl()));
+
+  sl.registerLazySingleton(() => GetMyBooking(sl()));
 
   sl.registerLazySingleton<GetReviewsUseCase>(() => GetReviewsUseCase(sl()));
 
@@ -942,7 +950,7 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => GetUserBooking(sl()));
   sl.registerLazySingleton(() => UpdateStatus(sl()));
   sl.registerLazySingleton(() => AuthInterceptor(localDatasource: sl()));
-
+  sl.registerLazySingleton<AddReviewsUseCase>(() => AddReviewsUseCase(sl()));
   sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
     repository: sl<AuthRepository>(),
     loginUsecase: sl(),
@@ -1576,10 +1584,15 @@ abstract class BookingRemoteDataSource {
   Future<List<BookingModel>> getBookedDates(int propertyId);
   Future<BookingList> fetchAllBookings(int userId);
   Future<void> UpdateStatus(int propertyId,String status);
+  Future<BookingList> fetchMyBookings(int userId);
+  Future<void> updateBookingDate(int bookingId, String checkIn, String checkOut);
+
+
 }
 
 class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
   final NetworkService networkService;
+
   BookingRemoteDataSourceImpl({required this.networkService});
 
   @override
@@ -1604,6 +1617,7 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
     final List data = response.data['data'];
     return data.map((e) => BookingModel.fromJson(e)).toList();
   }
+
   @override
   Future<BookingList> fetchAllBookings(int userId) async {
     final response = await networkService.get(
@@ -1626,19 +1640,58 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
   }
 
   @override
-  Future<void> UpdateStatus(int propertyId,String status) async{
+  Future<void> UpdateStatus(int propertyId, String status) async {
     final response = await networkService.patch(
-      '/bookings/update/$propertyId',
+        '/bookings/update/$propertyId',
         queryParameters: {
-        'status':status
+          'status': status
         }
     );
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception(response.data['message'] ?? 'Failed to update status');
     }
     print('Update Status Success: ${response.data}');
+  }
 
+  Future<BookingList> fetchMyBookings(int userId) async {
+    final response = await networkService.get(
+      "/bookings/user/$userId",
+    );
+    List<BookingModel> bookings = [];
 
+    if (response.data != null) {
+      print('Server Response Data: ${response.data}');
+
+      dynamic rawData = response.data;
+      List<dynamic> listData = [];
+
+      if (rawData is List) {
+        listData = rawData;
+      } else if (rawData is Map) {
+        listData = rawData.values.toList();
+      }
+
+      bookings = listData.map((e) => BookingModel.fromJson(e)).toList();
+
+    } else {
+      print('No data found in response');
+    }
+
+    return BookingList(booking: bookings);
+  }
+
+  Future<void> updateBookingDate(int bookingId, String checkIn, String checkOut) async {
+    final response = await networkService.patch(
+      '/bookings/update/$bookingId',
+      queryParameters: {
+        'check_in': checkIn,
+        'check_out': checkOut,
+      },
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception(response.data['message'] ?? 'Failed to update booking date');
+    }
   }
 }
 // =======================================================
@@ -1852,6 +1905,8 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
 // FILE PATH: lib\data\datasources\remote\review\review_remote_data_source.dart
 // =======================================================
 
+import 'package:dartz/dartz.dart';
+
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/network/network_service.dart';
 import '../../../../domain/entities/review/review.dart';
@@ -1859,6 +1914,7 @@ import '../../../models/review/review_model.dart';
 
 abstract class ReviewsRemoteDataSource {
   Future<ReviewsList> getReviews({required int propertyId, String? cursor});
+  Future<Unit> AddReview({required int idProperty, required String rating, required String body});
 }
 
 class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
@@ -1894,6 +1950,19 @@ class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
       reviews: reviews,
       nextCursor: nextCursor,
     );
+  }
+
+  @override
+  Future<Unit> AddReview({required int idProperty, required String rating, required String body}) async{
+    await networkService.post(
+      '/reviews/properties/$idProperty',
+      data: {
+        'rating': rating,
+        'body': body,
+      },
+    );
+
+    return unit;
   }
 }
 
@@ -2717,11 +2786,12 @@ class BookingRepositoryImpl implements BookingRepository {
   BookingRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<Either<Failure, List<BookingModel>>> getBookedDates(int propertyId) async {
+  Future<Either<Failure, List<BookingModel>>> getBookedDates(
+      int propertyId) async {
     try {
       final response = await remoteDataSource.getBookedDates(propertyId);
       return Right(response);
-    } catch(e) {
+    } catch (e) {
       final failure = FailureMapper.map(e);
       return Left(failure);
     }
@@ -2732,7 +2802,7 @@ class BookingRepositoryImpl implements BookingRepository {
     try {
       final response = await remoteDataSource.makeBooking(booking);
       return Right(response);
-    } catch(e) {
+    } catch (e) {
       final failure = FailureMapper.map(e);
       return Left(failure);
     }
@@ -2750,13 +2820,42 @@ class BookingRepositoryImpl implements BookingRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateStatus(int propertyID, String status) async{
+  Future<Either<Failure, void>> updateStatus(int propertyID,
+      String status) async {
     try {
-      final response = await remoteDataSource.UpdateStatus(propertyID,status);
+      final response = await remoteDataSource.UpdateStatus(propertyID, status);
       return Right(response);
-    } catch(e) {
+    } catch (e) {
       final failure = FailureMapper.map(e);
       return Left(failure);
+    }
+  }
+
+
+  @override
+  Future<Either<Failure, BookingList>> getMyBookings(int userId) async {
+    try {
+      final response = await remoteDataSource.fetchMyBookings(userId);
+      return Right(response);
+
+    } catch (e) {
+      print("Error in Repository: $e");
+      final failure = FailureMapper.map(e);
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateBookingDates({
+    required int bookingId,
+    required String checkIn,
+    required String checkOut,
+  }) async {
+    try {
+      await remoteDataSource.updateBookingDate(bookingId, checkIn, checkOut);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 }
@@ -3019,6 +3118,29 @@ class ReviewsRepositoryImpl implements ReviewsRepository {
           cursor: cursor,
         );
         return Right(remoteReviews);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      } catch (e) {
+        return Left(ServerFailure(e.toString()));
+      }
+    } else {
+      return const Left(NetworkFailure());
+    }
+  }
+  @override
+  Future<Either<Failure, Unit>> addReview({
+    required String rating,
+    required String body,
+    required int idProperty,
+  }) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.AddReview(
+          idProperty: idProperty,
+          rating: rating,
+          body: body,
+        );
+        return const Right(unit);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
       } catch (e) {
@@ -3690,6 +3812,9 @@ abstract class BookingRepository {
   Future<Either<Failure, List<BookingModel>>> getBookedDates(int propertyId);
   Future<Either<Failure, BookingList>> getUserBookings(int userId);
   Future<Either<Failure,void>> updateStatus(int propertyID,String status);
+  Future<Either<Failure, BookingList>> getMyBookings(int userId);
+  Future<Either<Failure, void>> updateBookingDates({required int bookingId, required String checkIn, required String checkOut,});
+
 }
 // =======================================================
 // FILE PATH: lib\domain\repositories\chat\chat_repository.dart
@@ -3749,6 +3874,12 @@ abstract class ReviewsRepository {
   Future<Either<Failure, ReviewsList>> getReviews({
     required int propertyId,
     String? cursor,
+  });
+
+  Future<Either<Failure,Unit>> addReview({
+    required String rating,
+    required String body,
+    required int idProperty
   });
 }
 // =======================================================
@@ -4096,6 +4227,39 @@ class MakeBookUseCase {
 }
 
 // =======================================================
+// FILE PATH: lib\domain\usecases\booking\My_booking_usecase.dart
+// =======================================================
+
+import 'package:dartz/dartz.dart';
+import 'package:malaz/domain/entities/booking/booking_list.dart';
+import 'package:malaz/domain/repositories/booking/booking_repository.dart';
+import '../../../core/errors/failures.dart';
+
+class GetMyBooking {
+  BookingRepository repository;
+  GetMyBooking(this.repository);
+
+  Future<Either<Failure,BookingList>> call({required int userId}) async {
+    return await repository.getMyBookings(userId);
+  }
+}
+// =======================================================
+// FILE PATH: lib\domain\usecases\booking\update_Booking_Date.dart
+// =======================================================
+
+import 'package:dartz/dartz.dart';
+import '../../../../core/errors/failures.dart';
+import '../../repositories/booking/booking_repository.dart';
+
+class UpdateBookingUseCase {
+  final BookingRepository repository;
+
+  UpdateBookingUseCase(this.repository);
+  Future<Either<Failure, void>> call({required int bookingId, required String checkIn, required String checkOut,}) async {
+    return await repository.updateBookingDates(bookingId: bookingId, checkIn: checkIn, checkOut: checkOut,);
+  }
+}
+// =======================================================
 // FILE PATH: lib\domain\usecases\booking\update_status_use_case.dart
 // =======================================================
 
@@ -4231,6 +4395,28 @@ class UpdateManualLocationUseCase {
 
   Future<LocationEntity> call(double lat, double lng, String lang) async =>
       await repository.updateManualLocation(lat, lng, lang);
+}
+// =======================================================
+// FILE PATH: lib\domain\usecases\review\add_review_usecase.dart
+// =======================================================
+
+import 'package:dartz/dartz.dart';
+import 'package:malaz/core/errors/failures.dart';
+
+import '../../repositories/review/review_repository.dart';
+
+class AddReviewsUseCase {
+  final ReviewsRepository repository;
+
+  AddReviewsUseCase(this.repository);
+
+  Future<Either<Failure, Unit>> call({
+    required String rating,
+    required String body,
+    required int idProperty
+  }) async {
+    return await repository.addReview(rating: rating, body: body,idProperty: idProperty);
+  }
 }
 // =======================================================
 // FILE PATH: lib\domain\usecases\review\get_review_use_case.dart
@@ -9145,6 +9331,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:malaz/presentation/cubits/auth/auth_cubit.dart';
 import 'package:malaz/presentation/cubits/booking/booking_cubit.dart';
 import 'package:malaz/presentation/cubits/booking/manage_booking.dart';
+import 'package:malaz/presentation/cubits/booking/my_booking.dart';
 import 'package:malaz/presentation/cubits/favorites/favorites_cubit.dart';
 import 'package:malaz/presentation/cubits/chat/chat_cubit.dart';
 
@@ -9233,6 +9420,8 @@ class RentalApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<BookingCubit>()),
         BlocProvider(create: (context) => sl<LocationCubit>()..loadSavedLocation(),),
         BlocProvider(create: (context) => sl<ManageBookingCubit>()),
+        BlocProvider(create: (context) => sl<MyBookingCubit>()),
+        BlocProvider(create: (context) => sl<ManageBookingCubit>()),
         BlocProvider(create: (context) => sl<ReviewsCubit>()),
       ],
       child: const RentalAppView(),
@@ -9276,11 +9465,6 @@ class RentalAppView extends StatelessWidget {
     );
   }
 }
-
-/// 95100
-/// 341000
-/// 251000
-/// 291100
 
 // =======================================================
 // FILE PATH: lib\presentation\cubits\auth\auth_cubit.dart
@@ -9866,6 +10050,104 @@ class ManageBookingCubit extends Cubit<ManageBookingState> {
     );
   }
 }
+// =======================================================
+// FILE PATH: lib\presentation\cubits\booking\my_booking.dart
+// =======================================================
+
+
+// --- States ---
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../domain/entities/booking/booking.dart';
+import '../../../domain/usecases/booking/My_booking_usecase.dart';
+import '../../../domain/usecases/booking/update_Booking_Date.dart';
+import '../../../domain/usecases/booking/update_status_use_case.dart';
+
+abstract class MyBookingState extends Equatable {
+  const MyBookingState();
+  @override
+  List<Object?> get props => [];
+}
+
+class MyBookingInitial extends MyBookingState {}
+
+class MyBookingLoading extends MyBookingState {}
+
+class MyBookingLoaded extends MyBookingState {
+  final List<Booking> bookings;
+  const MyBookingLoaded(this.bookings);
+  @override
+  List<Object?> get props => [bookings];
+}
+
+class MyBookingCancelSuccess extends MyBookingState {}
+
+class MyBookingUpdateSuccess extends MyBookingState {}
+
+class MyBookingError extends MyBookingState {
+  final String message;
+  const MyBookingError(this.message);
+}
+
+
+// --- Cubit ---
+class MyBookingCubit extends Cubit<MyBookingState> {
+  final GetMyBooking getMyBookingUseCase;
+  final UpdateBookingUseCase updateBookingUseCase;
+  final UpdateStatus updateStatusUseCase;
+
+  MyBookingCubit(this.getMyBookingUseCase, this.updateBookingUseCase, this.updateStatusUseCase) : super(MyBookingInitial());
+
+  Future<void> fetchMyBookings(int userId) async {
+    emit(MyBookingLoading());
+    final response = await getMyBookingUseCase(userId: userId);
+
+    response.fold(
+          (failure) => emit(MyBookingError(failure.message ?? "حدث خطأ أثناء جلب الحجوزات")),
+          (bookingList) => emit(MyBookingLoaded(bookingList.booking)),
+    );
+  }
+  Future<void> updateBookingDates({
+    required int bookingId,
+    required DateTime checkIn,
+    required DateTime checkOut,
+    required int userId,
+  }) async {
+    emit(MyBookingLoading());
+
+    final String checkInStr = checkIn.toIso8601String().split('T')[0];
+    final String checkOutStr = checkOut.toIso8601String().split('T')[0];
+
+    final result = await updateBookingUseCase(
+      bookingId: bookingId,
+      checkIn: checkInStr,
+      checkOut: checkOutStr,
+    );
+
+    result.fold(
+          (failure) => emit(MyBookingError(failure.message ?? "فشل تحديث الحجز")),
+          (_) async {
+        emit(MyBookingUpdateSuccess());
+        await fetchMyBookings(userId);
+      },
+    );
+  }
+  Future<void> cancelBooking({required int propertyId, required int userId}) async {
+    emit(MyBookingLoading());
+
+    final result = await updateStatusUseCase(propertyId:propertyId , status: "cancelled");
+
+    result.fold(
+          (failure) => emit(MyBookingError(failure.message ?? "فشل إلغاء الحجز")),
+          (_) async {
+        emit(MyBookingCancelSuccess());
+        await fetchMyBookings(userId);
+      },
+    );
+  }
+}
+
 // =======================================================
 // FILE PATH: lib\presentation\cubits\chat\chat_cubit.dart
 // =======================================================
@@ -10759,10 +11041,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:malaz/core/constants/app_constants.dart';
 import 'package:malaz/core/errors/failures.dart';
+import 'package:malaz/domain/usecases/review/add_review_usecase.dart';
 import '../../../domain/entities/review/review.dart';
 import '../../../domain/usecases/review/get_review_use_case.dart';
 
-// --- States ---
 abstract class ReviewsState extends Equatable {
   const ReviewsState();
   @override
@@ -10777,63 +11059,130 @@ class ReviewsLoaded extends ReviewsState {
   final List<Review> reviews;
   final bool hasReachedMax;
 
-  const ReviewsLoaded({required this.reviews, required this.hasReachedMax});
+  const ReviewsLoaded({
+    required this.reviews,
+    this.hasReachedMax = false,
+  });
 
+}
+class AddReviewLoading extends ReviewsState {}
+
+class AddReviewSuccess extends ReviewsState {}
+
+class AddReviewError extends ReviewsState {
+  final String message;
+  const AddReviewError({required this.message});
   @override
-  List<Object?> get props => [reviews, hasReachedMax];
+  List<Object> get props => [message];
 }
 
 class ReviewsError extends ReviewsState {
   final String message;
-  const ReviewsError(this.message);
+  const ReviewsError({required this.message});
+  @override
+  List<Object> get props => [message];
 }
 
 class ReviewsCubit extends Cubit<ReviewsState> {
   final GetReviewsUseCase getReviewsUseCase;
-
+  final AddReviewsUseCase addReviewUseCase;
   String? _nextCursor;
-  bool _isFetchingMore = false;
-  final List<Review> _allReviews = [];
+  bool _isFetching = false;
 
-  ReviewsCubit(this.getReviewsUseCase) : super(ReviewsInitial());
+  ReviewsCubit(this.getReviewsUseCase, this.addReviewUseCase) : super(ReviewsInitial());
 
-  Future<void> loadReviews({required int propertyId, bool isRefresh = false}) async {
-    if (_isFetchingMore) return;
+  Future<void> loadReviews({
+    required int propertyId,
+    bool isRefresh = false,
+    bool loadNext = false,
+  }) async {
+    if (_isFetching) return;
+    _isFetching = true;
 
-    if (isRefresh) {
-      _nextCursor = null;
-      _allReviews.clear();
-      emit(ReviewsLoading());
-    } else {
-      if (state is ReviewsLoaded && (state as ReviewsLoaded).hasReachedMax) return;
+    try {
+      String? cursorToSend;
+
+      if (isRefresh) {
+        cursorToSend = null;
+        emit(ReviewsLoading());
+      } else if (loadNext) {
+        cursorToSend = _nextCursor;
+        if (cursorToSend == null) {
+          _isFetching = false;
+          return;
+        }
+      } else {
+        if (state is! ReviewsLoaded) emit(ReviewsLoading());
+        cursorToSend = null;
+      }
+
+      final result = await getReviewsUseCase.call(
+        propertyId: propertyId,
+        cursor: cursorToSend,
+      );
+
+      result.fold(
+            (failure) {
+          String keyMessage = AppConstants.unknownFailureKey;
+          if (failure is NetworkFailure) {
+            keyMessage = AppConstants.networkFailureKey;
+          } else if (failure is ServerFailure) {
+            keyMessage = failure.message ?? AppConstants.cancelledFailureKey;
+          }
+          emit(ReviewsError(message: keyMessage));
+        },
+            (reviewsList) {
+          _nextCursor = reviewsList.nextCursor;
+
+          if (loadNext && state is ReviewsLoaded) {
+            final currentList = (state as ReviewsLoaded).reviews;
+            emit(ReviewsLoaded(
+              reviews: currentList + reviewsList.reviews,
+              hasReachedMax: _nextCursor == null,
+            ));
+          } else {
+            emit(ReviewsLoaded(
+              reviews: reviewsList.reviews,
+              hasReachedMax: _nextCursor == null,
+            ));
+          }
+        },
+      );
+
+    } catch (e) {
+      if (!isClosed) emit(const ReviewsError(message: "Unexpected Error"));
+    } finally {
+      _isFetching = false;
     }
+  }
 
-    _isFetchingMore = true;
+  Future<void> addReview({
+    required int propertyId,
+    required double rating,
+    required String body,
+  }) async {
+    // لا نصدر حالة Loading كاملة لكي لا تختفي التقييمات الموجودة خلف الـ Dialog
+    // يمكن إظهار مؤشر تحميل داخل الـ Dialog نفسه أو SnackBar
 
-    final result = await getReviewsUseCase.call(
-      propertyId: propertyId,
-      cursor: _nextCursor,
+    final result = await addReviewUseCase.call(
+      idProperty: propertyId,
+      rating: rating.toString(),
+      body: body,
     );
 
     result.fold(
-          (failure) {
-        _isFetchingMore = false;
-        if (_allReviews.isEmpty) {
-          final String? message = failure is NetworkFailure ? AppConstants.networkFailureKey : failure.message;
-          emit(ReviewsError(message ?? "Unknown error"));
-        }
-      },
-          (reviewsList) {
-        _isFetchingMore = false;
-        _nextCursor = reviewsList.nextCursor;
-        _allReviews.addAll(reviewsList.reviews);
-
-        emit(ReviewsLoaded(
-          reviews: List.from(_allReviews),
-          hasReachedMax: _nextCursor == null,
-        ));
+          (failure) => emit(ReviewsError(message: failure.message ?? "Failed to add review")),
+          (success) {
+        // بعد النجاح: نعيد تحميل التقييمات لكي يظهر تقييم المستخدم الجديد فوراً
+        loadReviews(propertyId: propertyId, isRefresh: true);
       },
     );
+  }
+
+  String _mapFailureToMessage(Failure failure) {
+    if (failure is NetworkFailure) return AppConstants.networkFailureKey;
+    if (failure is ServerFailure) return failure.message ?? AppConstants.unknownFailureKey;
+    return AppConstants.unknownFailureKey;
   }
 }
 // =======================================================
@@ -11421,32 +11770,35 @@ class ApartmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _BuildCardImageArea(apartment: apartment),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _BuildCardImageArea(apartment: apartment),
 
-                _BuildCardDetails(apartment: apartment),
-              ],
+                  _BuildCardDetails(apartment: apartment),
+                ],
+              ),
             ),
           ),
         ),
@@ -11730,22 +12082,25 @@ class BuildShimmerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _BuildShimmerImageArea(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _BuildShimmerImageArea(),
 
-          SizedBox(height: 16),
+            SizedBox(height: 16),
 
-          _BuildShimmerDetailsArea(),
+            _BuildShimmerDetailsArea(),
 
-          SizedBox(height: 16),
-        ],
+            SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }
@@ -12040,7 +12395,7 @@ class ReviewCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      review.createdAt,
+                      review.createdAt.split('T')[0],
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: Colors.grey,
                       ),
@@ -12048,7 +12403,6 @@ class ReviewCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Stars
               _BuildRatingStars(rating: review.rating),
             ],
           ),
@@ -16704,14 +17058,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/config/color/app_color.dart';
+import '../../../core/service_locator/service_locator.dart';
 import '../../../data/datasources/local/auth/auth_local_data_source.dart';
 import '../../../data/models/chat/chat_message_model.dart';
-import '../../../core/service_locator/service_locator.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/chat/chat_cubit.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/chat/pusher_service/pusher_service.dart';
-import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../../global_widgets/user_profile_image/user_profile_image.dart';
 
 class ChatWithAPerson extends StatefulWidget {
@@ -16773,27 +17126,14 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
   }
 
   @override
+  @override
   void initState() {
     super.initState();
-
     final authState = context.read<AuthCubit>().state;
     if (authState is AuthAuthenticated) myId = authState.user.id;
 
-    final chatCubit = context.read<ChatCubit>();
-
-    int currentId = widget.conversationId;
-
-    if (chatCubit.state is ChatMessagesLoaded) {
-      currentId = (chatCubit.state as ChatMessagesLoaded).conversationId;
-    }
-
-    if (currentId > 0) {
-      log(">>>> Loading messages for ID: $currentId");
-      chatCubit.getMessages(currentId);
-      _connectToPusher();
-    } else {
-      chatCubit.emit(ChatMessagesLoaded(messages: [], conversationId: 0));
-    }
+    context.read<ChatCubit>().getMessages(widget.conversationId);
+    _connectToPusher();
   }
 
   void _connectToPusher() async {
@@ -16915,7 +17255,7 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
 
                             final channelName = "private-conversations.${state.conversationId}";
                             if (_currentSubscribedChannel != channelName) {
-                              log(">>>> New Conversation detected (${state.conversationId}), re-subscribing...");
+                              log("🔄 New Conversation detected (${state.conversationId}), re-subscribing...");
                               _subscribeToCurrentConversation(state.conversationId);
                             }
 
@@ -17006,12 +17346,12 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
             PositionedDirectional(
               top: -10,
               start: -20,
-              child: const BuildGlowingKey(size: 100,opacity:  0.12,rotation: -0.2),
+              child: _buildGlowingKey(100, 0.12, -0.2),
             ),
             PositionedDirectional(
               bottom: -10,
               end: 20,
-              child: const BuildGlowingKey(size: 80,opacity:  0.1,rotation:  0.5),
+              child: _buildGlowingKey(80, 0.1, 0.5),
             ),
 
             SafeArea(
@@ -17084,6 +17424,21 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
     );
   }
 
+  Widget _buildGlowingKey(double size, double opacity, double rotation) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.rotate(
+        angle: rotation,
+        child: Image.asset(
+          'assets/icons/key_logo.png',
+          width: size,
+          height: size,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
   Widget _buildMessageInput(BuildContext context, bool isDark, int myId, AppLocalizations tr) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 25),
@@ -17129,36 +17484,38 @@ class _ChatWithAPersonState extends State<ChatWithAPerson> {
                   final text = _messageController.text.trim();
                   if (text.isEmpty) return;
 
-                  final chatCubit = context.read<ChatCubit>();
-                  final myIdValue = _getMyId(context) ?? 0;
-
-                  if (myIdValue == 0) {
-                    log("Error: User ID is null or 0");
-                    return;
-                  }
-
                   if (_editingMessage != null) {
-                    chatCubit.editMessage(_editingMessage!.id, text);
+                    context.read<ChatCubit>().editMessage(_editingMessage!.id, text);
                     setState(() => _editingMessage = null);
                     _messageController.clear();
                   } else {
-                    int currentId = widget.conversationId;
+                    final myIdValue = myId ?? 0;
+                    final chatCubit = context.read<ChatCubit>();
+                    final text = _messageController.text.trim();
+
+                    if (text.isEmpty) return;
+
+                    int currentId = -1;
                     if (chatCubit.state is ChatMessagesLoaded) {
                       currentId = (chatCubit.state as ChatMessagesLoaded).conversationId;
                     }
 
-                    if (currentId <= 0) {
+                    if (currentId == -1) {
                       final newId = await chatCubit.saveNewConversation(widget.otherUserId);
 
-                      if (newId != null && newId > 0) {
+                      if (newId != null && newId != -1) {
                         _onSendMessage(context, myIdValue, overrideId: newId);
-
-                        _subscribeToCurrentConversation(newId);
                       } else {
-                        log("Failed to create conversation: newId is $newId");
+                        if (chatCubit.state is ChatMessagesLoaded) {
+                          final fallbackId = (chatCubit.state as ChatMessagesLoaded).conversationId;
+                          if (fallbackId != -1) {
+                            _onSendMessage(context, myIdValue, overrideId: fallbackId);
+                            return;
+                          }
+                        }
                       }
                     } else {
-                      _onSendMessage(context, myIdValue, overrideId: currentId);
+                      _onSendMessage(context, myIdValue);
                     }
                   }
                 },
@@ -17285,7 +17642,7 @@ class ChatBubble extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (message.isEdited)
+                  if (message.isEdited || message.updatedAt != message.createdAt)
                     Padding(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(' ${tr.edited}   ', style: TextStyle(fontSize: 9, fontStyle: FontStyle.italic, color: Colors.white70)),
@@ -17932,10 +18289,9 @@ class _BuildReviewSection extends StatelessWidget {
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
-                    isScrollControlled: true, // مهم جداً ليأخذ الارتفاع المحدد
+                    isScrollControlled: true,
                     backgroundColor: Colors.transparent,
                     builder: (context) => BlocProvider(
-                      // تأكد من حقن الـ Cubit هنا أو في مكان أعلى
                       create: (context) => sl<ReviewsCubit>(),
                       child: ReviewsBottomSheet(propertyId: id, rating: rating),
                     ),
@@ -19210,7 +19566,7 @@ class _BuildIconButton extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: color ?? (isDark ? Colors.grey[800] : Colors.white),
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(20 * 0.6),
             boxShadow: [
               BoxShadow(
                 color: theme.colorScheme.primary.withOpacity(0.25),
@@ -19501,29 +19857,16 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/config/color/app_color.dart';
+import '../../../domain/entities/apartment/apartment.dart';
+import '../../../domain/entities/booking/booking.dart';
+import '../../../domain/entities/booking/booking_list.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/booking/booking_cubit.dart';
+import '../../cubits/booking/my_booking.dart';
+import '../../cubits/review/review_cubit.dart';
 import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../review_apartment/apartment_review_dialog.dart';
-
-enum BookingStatus { pending, confirmed, completed, canceled, conflicted }
-
-class BookingModel {
-  final String id;
-  final String title;
-  final String location;
-  final DateTime checkIn;
-  final DateTime checkOut;
-  final double price;
-  final BookingStatus status;
-  final String imageUrl;
-
-  BookingModel({
-    required this.id, required this.title, required this.location,
-    required this.checkIn, required this.checkOut, required this.price,
-    required this.status, required this.imageUrl,
-  });
-}
 
 class ManageMyBookingsScreen extends StatefulWidget {
   const ManageMyBookingsScreen({super.key});
@@ -19533,111 +19876,99 @@ class ManageMyBookingsScreen extends StatefulWidget {
 }
 
 class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
-  BookingStatus? _selectedFilter;
-  final List<BookingModel> _mockBookings = [
-    BookingModel(
-      id: 'BK-001',
-      title: 'Luxury Villa Malaz',
-      location: 'Riyadh, Saudi Arabia',
-      checkIn: DateTime(2026, 1, 15),
-      checkOut: DateTime(2026, 1, 20),
-      price: 2500,
-      status: BookingStatus.pending,
-      imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500',
-    ),
+  String? _selectedFilter;
 
-    BookingModel(
-      id: 'BK-002',
-      title: 'Modern Downtown Studio',
-      location: 'Jeddah, Saudi Arabia',
-      checkIn: DateTime(2026, 2, 10),
-      checkOut: DateTime(2026, 2, 12),
-      price: 850,
-      status: BookingStatus.confirmed,
-      imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500',
-    ),
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialData();
+  }
 
-    BookingModel(
-      id: 'BK-003',
-      title: 'Ocean View Penthouse',
-      location: 'Al Khobar, Saudi Arabia',
-      checkIn: DateTime(2025, 12, 01),
-      checkOut: DateTime(2025, 12, 05),
-      price: 4200,
-      status: BookingStatus.completed,
-      imageUrl: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500',
-    ),
-
-    BookingModel(
-      id: 'BK-004',
-      title: 'Desert Rose Resort',
-      location: 'Al Ula, Saudi Arabia',
-      checkIn: DateTime(2026, 3, 20),
-      checkOut: DateTime(2026, 3, 25),
-      price: 5500,
-      status: BookingStatus.canceled,
-      imageUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500',
-    ),
-
-    BookingModel(
-      id: 'BK-005',
-      title: 'City Center Apartment',
-      location: 'Riyadh, Saudi Arabia',
-      checkIn: DateTime(2026, 4, 05),
-      checkOut: DateTime(2026, 4, 07),
-      price: 1200,
-      status: BookingStatus.conflicted,
-      imageUrl: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=500',
-    ),
-  ];
+  void _loadInitialData() {
+    final authState = context.read<AuthCubit>().state;
+    if (authState is AuthAuthenticated) {
+      context.read<MyBookingCubit>().fetchMyBookings(authState.user.id);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final filteredBookings = _selectedFilter == null
-        ? _mockBookings
-        : _mockBookings.where((b) => b.status == _selectedFilter).toList();
-
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          _buildPremiumAppBar(context, tr, colorScheme),
+        body: BlocListener<MyBookingCubit, MyBookingState>(
+    listener: (context, state) {
+    },
+      child:  RefreshIndicator(
+        onRefresh: () async {
+      _loadInitialData();
+      await Future.delayed(const Duration(seconds: 1));
+    },
+          color: colorScheme.primary,
+          child: BlocBuilder<MyBookingCubit, MyBookingState>(
+        builder: (context, state) {
+          BookingList myBookingList = BookingList(booking: []);
+          if (state is MyBookingLoaded) {
+            myBookingList = BookingList(booking: state.bookings);
+          }
+          final bookingsToDisplay = _selectedFilter == null
+              ? myBookingList.booking
+              : myBookingList.booking.where((b) =>
+          b.status?.toLowerCase() == _selectedFilter!.toLowerCase()
+          ).toList();
 
-          _buildActiveFilterIndicator(tr),
-
-          if (filteredBookings.isEmpty)
-            SliverFillRemaining(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.inventory_2_outlined, size: 80, color: Colors.grey[300]),
-                    const SizedBox(height: 16),
-                    Text("No bookings found", style: TextStyle(color: Colors.grey[400])),
-                  ],
-                ),
-              ),
-            )
-          else
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (context, index) => _PremiumBookingCard(
-                    booking: filteredBookings[index],
-                    onEdit: () => _handleEdit(context, filteredBookings[index]),
-                    onCancel: () => _handleCancel(context, filteredBookings[index]),
-                  ),
-                  childCount: filteredBookings.length,
-                ),
-              ),
+          return CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics(),
             ),
-        ],
+            slivers: [
+              _buildPremiumAppBar(context, tr, colorScheme),
+              _buildActiveFilterIndicator(tr),
+
+              if (state is MyBookingLoading)
+                const SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
+              else if (state is MyBookingError)
+                SliverFillRemaining(child: Center(child: Text(state.message)))
+
+              else if (bookingsToDisplay.isEmpty)
+                  _buildEmptyState(tr)
+
+                else
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                            (context, index) => _PremiumBookingCard(
+                          booking: bookingsToDisplay[index],
+                          onEdit: () => _handleEdit(context, bookingsToDisplay[index]),
+                          onCancel: () => _handleCancel(context, bookingsToDisplay[index]),
+                        ),
+                        childCount: bookingsToDisplay.length,
+                      ),
+                    ),
+                  ),
+            ],
+          );
+        },
+      ),)
+    ));
+  }
+
+  Widget _buildEmptyState(AppLocalizations tr) {
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.inventory_2_outlined, size: 80, color: Colors.grey[300]),
+            const SizedBox(height: 16),
+            Text("no_data_found" ?? "No bookings found",
+                style: TextStyle(color: Colors.grey[400])),
+          ],
+        ),
       ),
     );
   }
@@ -19657,11 +19988,13 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
       actions: [
         Padding(
           padding: const EdgeInsetsDirectional.only(end: 15, top: 10),
-          child: PopupMenuButton<BookingStatus?>(
+          child: PopupMenuButton<String?>(
             initialValue: _selectedFilter,
-            onSelected: (status) {
+            onSelected: (String? statusName) {
               HapticFeedback.mediumImpact();
-              setState(() => _selectedFilter = status);
+              setState(() {
+                _selectedFilter = statusName;
+              });
             },
             child: Container(
               padding: const EdgeInsets.all(10),
@@ -19675,10 +20008,10 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             itemBuilder: (context) => [
               _buildPopupItem(null, "All Bookings", Icons.all_inbox_rounded, colorScheme),
-              _buildPopupItem(BookingStatus.pending, tr.status_pending, Icons.timer_outlined, colorScheme),
-              _buildPopupItem(BookingStatus.confirmed, tr.status_confirmed, Icons.check_circle_outline, colorScheme),
-              _buildPopupItem(BookingStatus.completed, tr.status_completed, Icons.history_edu_rounded, colorScheme),
-              _buildPopupItem(BookingStatus.canceled, tr.status_canceled, Icons.block_flipped, colorScheme),
+              _buildPopupItem("pending", tr.status_pending, Icons.timer_outlined, colorScheme),
+              _buildPopupItem("confirmed", tr.status_confirmed, Icons.check_circle_outline, colorScheme),
+              _buildPopupItem("completed", tr.status_completed, Icons.history_edu_rounded, colorScheme),
+              _buildPopupItem("cancelled", tr.status_canceled, Icons.block_flipped, colorScheme),
             ],
           ),
         ),
@@ -19721,7 +20054,7 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
     );
   }
 
-  PopupMenuItem<BookingStatus?> _buildPopupItem(BookingStatus? status, String label, IconData icon, ColorScheme colorScheme) {
+  PopupMenuItem<String?> _buildPopupItem(String? status, String label, IconData icon, ColorScheme colorScheme) {
     return PopupMenuItem(
       value: status,
       child: Row(
@@ -19740,8 +20073,8 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
     );
   }
 
-  void _handleEdit(BuildContext context, BookingModel booking) {
-    context.read<BookingCubit>().loadBookedDates(int.parse(booking.id.split('-').last));
+  void _handleEdit(BuildContext context, Booking booking) {
+    context.read<BookingCubit>().loadBookedDates(booking.apartment!.id);
 
     showModalBottomSheet(
       context: context,
@@ -19751,7 +20084,7 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
     );
   }
 
-  void _handleCancel(BuildContext context, BookingModel booking) {
+  void _handleCancel(BuildContext context, Booking booking) {
     final theme = Theme.of(context);
     final tr = AppLocalizations.of(context)!;
 
@@ -19804,9 +20137,9 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
                     text: TextSpan(
                       style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 14, height: 1.6),
                       children: [
-                        TextSpan(text: tr.cancel_booking_msg(booking.title)),
+                        TextSpan(text: tr.cancel_booking_msg(booking.apartment!.title)),
                         TextSpan(
-                          text: "'${booking.title}'",
+                          text: "'${booking.apartment!.title}'",
                           style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                       ],
@@ -19833,10 +20166,14 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context);
-                            // TODO: Cubit
-                            // context.read<BookingCubit>().cancelBooking(booking.id);
-                            //_showSuccessCancellation(context);
+                            final authState = context.read<AuthCubit>().state;
+                            if (authState is AuthAuthenticated) {
+                              context.read<MyBookingCubit>().cancelBooking(
+                                propertyId: booking.id!,
+                                userId: authState.user.id,
+                              );
+                              Navigator.pop(context);
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: theme.colorScheme.error,
@@ -19892,7 +20229,7 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
             TextButton(
               onPressed: () {
                 HapticFeedback.lightImpact();
-                setState(() => _selectedFilter = null); // هذا سيعيد عرض All Bookings
+                setState(() => _selectedFilter = null);
               },
               child: Text(
                 "Clear All", // tr.clear_all
@@ -19905,20 +20242,22 @@ class _ManageBookingsScreenState extends State<ManageMyBookingsScreen> {
     );
   }
 
-  String _getStatusLabel(BookingStatus status, AppLocalizations tr) {
+  String _getStatusLabel(String status, AppLocalizations tr) {
     switch (status) {
-      case BookingStatus.pending: return tr.status_pending;
-      case BookingStatus.confirmed: return tr.status_confirmed;
-      case BookingStatus.completed: return tr.status_completed;
-      case BookingStatus.canceled: return tr.status_canceled;
-      case BookingStatus.conflicted: return tr.status_conflicted;
+      case "pending": return tr.status_pending;
+      case "confirmed": return tr.status_confirmed;
+      case "completed": return tr.status_completed;
+      case "cancelled": return tr.status_canceled;
+      case "conflicted": return tr.status_conflicted;
+      default :
+        return tr.status_pending;
     }
   }
 
 }
 
 class _EditBookingSheet extends StatefulWidget {
-  final BookingModel booking;
+  final Booking booking;
   const _EditBookingSheet({required this.booking});
 
   @override
@@ -19935,7 +20274,7 @@ class _EditBookingSheetState extends State<_EditBookingSheet> {
     super.initState();
     _rangeStart = widget.booking.checkIn;
     _rangeEnd = widget.booking.checkOut;
-    _focusedDay = widget.booking.checkIn;
+    _focusedDay = widget.booking.checkIn!;
   }
 
   @override
@@ -19967,7 +20306,7 @@ class _EditBookingSheetState extends State<_EditBookingSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(tr.modify_reservation, style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900)),
-                  Text(tr.changing_dates_for(widget.booking.title), style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                  Text(tr.changing_dates_for(widget.booking.apartment!.title), style: const TextStyle(color: Colors.grey, fontSize: 12)),
                 ],
               ),
             ],
@@ -20008,8 +20347,20 @@ class _EditBookingSheetState extends State<_EditBookingSheet> {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: (_rangeStart != null && _rangeEnd != null) ? () => Navigator.pop(context) : null,
-              style: ElevatedButton.styleFrom(
+              onPressed: (_rangeStart != null && _rangeEnd != null)
+                  ? () {
+                final authState = context.read<AuthCubit>().state;
+                if (authState is AuthAuthenticated) {
+                  context.read<MyBookingCubit>().updateBookingDates(
+                    bookingId: widget.booking.id!,
+                    checkIn: _rangeStart!,
+                    checkOut: _rangeEnd!,
+                    userId: authState.user.id,
+                  );
+                  Navigator.pop(context);
+                }
+              }
+                  : null,              style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -20025,7 +20376,7 @@ class _EditBookingSheetState extends State<_EditBookingSheet> {
 }
 
 class _PremiumBookingCard extends StatelessWidget {
-  final BookingModel booking;
+  final Booking booking;
   final VoidCallback onEdit;
   final VoidCallback onCancel;
 
@@ -20035,7 +20386,7 @@ class _PremiumBookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tr = AppLocalizations.of(context)!;
-    final config = _getStatusConfig(booking.status, tr);
+    final config = _getStatusConfig(booking.status!, tr);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 25),
@@ -20052,7 +20403,7 @@ class _PremiumBookingCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                child: Image.network(booking.imageUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
+                child: Image.network(booking.apartment!.mainImageUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
               ),
               Positioned(
                 top: 15, right: 15,
@@ -20067,7 +20418,7 @@ class _PremiumBookingCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(bottom: 12, left: 20, child: Text("\$${booking.price.toInt()}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 20))),
+              Positioned(bottom: 12, left: 20, child: Text("\$${booking.totalPrice}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 20))),
             ],
           ),
           Padding(
@@ -20075,15 +20426,15 @@ class _PremiumBookingCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(booking.title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
+                Text(booking.apartment!.title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
                 const SizedBox(height: 15),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildDateInfo(tr.check_in, booking.checkIn, theme: theme.colorScheme),
+                    _buildDateInfo(tr.check_in, booking.checkIn!, theme: theme.colorScheme),
                     Icon(Icons.swap_horiz_rounded, color: theme.primaryColor),
-                    _buildDateInfo(tr.check_out, booking.checkOut, isEnd: true, theme: theme.colorScheme),
+                    _buildDateInfo(tr.check_out, booking.checkOut!, isEnd: true, theme: theme.colorScheme),
                   ],
                 ),
 
@@ -20097,7 +20448,7 @@ class _PremiumBookingCard extends StatelessWidget {
                   children: [
                     _buildGlassStatus(config),
 
-                    if (booking.status == BookingStatus.pending)
+                    if (booking.status == "pending")
                       Row(
                         children: [
                           _buildActionBtn(Icons.edit_calendar_rounded, tr.edit, Colors.blueAccent, onEdit),
@@ -20105,7 +20456,7 @@ class _PremiumBookingCard extends StatelessWidget {
                           _buildActionBtn(Icons.close_rounded, tr.cancel, Colors.redAccent, onCancel),
                         ],
                       )
-                    else if (booking.status == BookingStatus.completed)
+                    else if (booking.status == "completed")
                       _buildPremiumRateButton(context, tr, booking)
                     else
                       _buildViewDetailsBtn(context, tr)
@@ -20129,7 +20480,7 @@ class _PremiumBookingCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: theme.primaryColor.withOpacity(0.05), // خلفية باهتة جداً
+          color: theme.primaryColor.withOpacity(0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: theme.primaryColor.withOpacity(0.2)),
         ),
@@ -20152,11 +20503,11 @@ class _PremiumBookingCard extends StatelessWidget {
     );
   }
 
-  Widget _buildPremiumRateButton(BuildContext context, AppLocalizations tr, BookingModel booking) {
+  Widget _buildPremiumRateButton(BuildContext context, AppLocalizations tr, Booking booking) {
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
-        _showReviewDialog(context, booking);
+        _showReviewDialog(context, booking.apartment!);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -20190,14 +20541,21 @@ class _PremiumBookingCard extends StatelessWidget {
     );
   }
 
-  void _showReviewDialog(BuildContext context, BookingModel booking) {
+  void _showReviewDialog(BuildContext context, Apartment apartment) {
     showDialog(
       context: context,
-      builder: (context) => ApartmentReviewDialog(
-        propertyName: booking.title,
+      builder: (dialogContext) => ApartmentReviewDialog(
+        propertyName: apartment.title,
         onSubmitted: (rating, comment) {
-          print("التقييم: $rating، التعليق: $comment");
-          /// TODO: REVIEW CUBIT...
+          context.read<ReviewsCubit>().addReview(
+            propertyId: apartment.id,
+            rating: rating,
+            body: comment,
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Submitting your review...")),
+          );
         },
       ),
     );
@@ -20235,9 +20593,9 @@ class _PremiumBookingCard extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.12), // خلفية شفافة قليلاً
+          color: color.withOpacity(0.12),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withOpacity(0.2), width: 1), // إطار خفيف جداً
+          border: Border.all(color: color.withOpacity(0.2), width: 1),
         ),
         child: Row(
           children: [
@@ -20258,13 +20616,15 @@ class _PremiumBookingCard extends StatelessWidget {
     );
   }
 
-  _StatusConfig _getStatusConfig(BookingStatus status, AppLocalizations tr) {
+  _StatusConfig _getStatusConfig(String status, AppLocalizations tr) {
     switch (status) {
-      case BookingStatus.pending: return _StatusConfig(tr.status_pending, Colors.orange, Icons.schedule);
-      case BookingStatus.confirmed: return _StatusConfig(tr.status_confirmed, Colors.green, Icons.verified);
-      case BookingStatus.completed: return _StatusConfig(tr.status_completed, Colors.blue, Icons.task_alt);
-      case BookingStatus.canceled: return _StatusConfig(tr.status_canceled, Colors.red, Icons.cancel_outlined);
-      case BookingStatus.conflicted: return _StatusConfig(tr.status_conflicted, Colors.purple, Icons.warning_amber_rounded);
+      case "confirmed": return _StatusConfig(tr.status_confirmed, Colors.green, Icons.verified);
+      case "completed": return _StatusConfig(tr.status_completed, Colors.blue, Icons.task_alt);
+      case "cancelled": return _StatusConfig(tr.status_canceled, Colors.red, Icons.cancel_outlined);
+      case "conflicted": return _StatusConfig(tr.status_conflicted, Colors.purple, Icons.warning_amber_rounded);
+      case "pending":
+      default:
+        return _StatusConfig(tr.status_pending, Colors.orange, Icons.schedule);
     }
   }
 }
@@ -20756,6 +21116,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../domain/entities/booking/booking.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/booking/manage_booking.dart';
@@ -20807,7 +21168,8 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
     context.read<MyApartmentsCubit>().fetchMyApartments(isRefresh: true);
     final authState = context.read<AuthCubit>().state;
     if (authState is AuthAuthenticated) {
-      context.read<ManageBookingCubit>().fetchAllBookings(authState.user.id);
+      final dynamic f= context.read<ManageBookingCubit>().fetchAllBookings(authState.user.id);
+      print(f);
     }
   }
 
@@ -20995,18 +21357,33 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
         }
 
         return BlocBuilder<ManageBookingCubit, ManageBookingState>(
-          buildWhen: (prev, curr) =>
-          curr is AllBookingLoading || curr is AllBookingsLoaded,
           builder: (context, state) {
             if (state is AllBookingLoading) {
               return const _BuildShimmerRequest();
             }
 
-            if (state is AllBookingsLoaded) {
-              final bookings = state.bookings.where((b) {
-                return (targetStatus == 'pending')
-                    ? b.status == 'pending'
-                    : b.status != 'pending';
+            if (state is AllBookingError) {
+              return Center(child: Text(state.message));
+            }
+
+            if (state is AllBookingsLoaded || state is UpdateStatusSuccess || state is UpdateStatusError) {
+
+              List<Booking> allBookings = [];
+              if (state is AllBookingsLoaded) {
+                allBookings = state.bookings;
+                print('><<<<${state.bookings.length}');
+              } else {
+                final currentState = context.read<ManageBookingCubit>().state;
+                if (currentState is AllBookingsLoaded) allBookings = currentState.bookings;
+              }
+
+              final bookings = allBookings.where((b) {
+                final status = b.status?.toLowerCase() ?? '';
+                if (targetStatus == 'pending') {
+                  return status == 'pending';
+                } else {
+                  return status != 'pending' && status.isNotEmpty;
+                }
               }).toList();
 
               return RefreshIndicator(
@@ -21019,7 +21396,14 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                   children: [
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.4,
-                      child: const Center(child: Text("No data found")),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.inbox_outlined, size: 60, color: Colors.grey),
+                          const SizedBox(height: 10),
+                          Text(targetStatus == 'pending' ? "No pending requests" : "No history found"),
+                        ],
+                      ),
                     ),
                   ],
                 )
@@ -21029,6 +21413,7 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                   itemCount: bookings.length,
                   itemBuilder: (context, index) {
                     return BookingCardWidget(
+                      key: ValueKey(bookings[index].id),
                       booking: bookings[index],
                       isPending: targetStatus == 'pending',
                       ownerId: authState.user.id,
@@ -21889,7 +22274,7 @@ class _PropertyFormInputField extends StatelessWidget {
               ),
             ),
           )
-               : null,
+              : null,
           hintText: hint,
           hintStyle: TextStyle(
             color: colorScheme.onSurface.withOpacity(0.4),
@@ -22237,6 +22622,8 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 // FILE PATH: lib\presentation\screens\reviews_bottom_sheet\reviews_bottom_sheet.dart
 // =======================================================
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malaz/core/config/color/app_color.dart';
@@ -22263,8 +22650,10 @@ class _ReviewsBottomSheetState extends State<ReviewsBottomSheet> {
   @override
   void initState() {
     super.initState();
-    context.read<ReviewsCubit>().loadReviews(propertyId: widget.propertyId, isRefresh: true);
     _scrollController.addListener(_onScroll);
+
+    final cubit = context.read<ReviewsCubit>();
+    cubit.loadReviews(propertyId: widget.propertyId, isRefresh: true);
   }
 
   @override
@@ -22275,7 +22664,10 @@ class _ReviewsBottomSheetState extends State<ReviewsBottomSheet> {
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<ReviewsCubit>().loadReviews(propertyId: widget.propertyId);
+      context.read<ReviewsCubit>().loadReviews(
+          propertyId: widget.propertyId,
+          loadNext: true
+      );
     }
   }
 
@@ -22340,34 +22732,40 @@ class _ReviewsBottomSheetState extends State<ReviewsBottomSheet> {
             child: BlocBuilder<ReviewsCubit, ReviewsState>(
               builder: (context, state) {
                 if (state is ReviewsLoading) {
-                  return _BuildReviewShimmer();
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (state is ReviewsError) {
-                  return BuildErrorView(message: state.message, onRetry: () {
-                    print('retried');
-                    context.read<ReviewsCubit>().loadReviews(propertyId: widget.propertyId, isRefresh: true);
-                  });
+                  return Center(child: Text(state.message));
                 }
 
                 if (state is ReviewsLoaded) {
                   if (state.reviews.isEmpty) {
-                    return _BuildEmptyState();
+                    return Center(child: Text(l10n.reviews_empty_subtitle));
                   }
 
-                  return ListView.builder(
+                  return ListView.separated(
                     controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(20),
-                    itemCount: state.hasReachedMax
-                        ? state.reviews.length
-                        : state.reviews.length + 1,
+                    separatorBuilder: (context, index) => const SizedBox(height: 16),
+
+                    itemCount: state.hasReachedMax ? state.reviews.length : state.reviews.length + 1,
+
                     itemBuilder: (context, index) {
                       if (index >= state.reviews.length) {
                         return const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Center(child: CircularProgressIndicator()),
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Center(
+                              child: SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(strokeWidth: 2)
+                              )
+                          ),
                         );
                       }
+
                       return ReviewCard(review: state.reviews[index]);
                     },
                   );
@@ -22866,7 +23264,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         child: Divider(color: colorScheme.outlineVariant.withOpacity(0.3), thickness: 0.5),
                       ),
                       _buildDrawerItem(context, Icons.apartment_rounded, tr.become_a_renter, () {}),
-                      _buildDrawerItem(context, Icons.settings_outlined, tr.settings, () => context.push('/settings')),
+                      _buildDrawerItem(context, Icons.settings_outlined, tr.settings,(){}),
                     ],
                   ),
                 ),

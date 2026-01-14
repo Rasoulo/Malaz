@@ -50,6 +50,7 @@ import '../../domain/usecases/home/apartments_use_case.dart';
 import '../../domain/usecases/location/get_current_location_usecase.dart';
 import '../../domain/usecases/location/load_saved_location_usecase.dart';
 import '../../domain/usecases/location/update_manual_location_usecase.dart';
+import '../../domain/usecases/review/add_review_usecase.dart';
 import '../../presentation/cubits/auth/auth_cubit.dart';
 import '../../presentation/cubits/booking/booking_cubit.dart';
 import '../../presentation/cubits/booking/manage_booking.dart';
@@ -109,7 +110,7 @@ Future<void> setUpServices() async {
 
 
   sl.registerLazySingleton<InternetConnectionChecker>(
-      () => InternetConnectionChecker());
+          () => InternetConnectionChecker());
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
@@ -118,7 +119,7 @@ Future<void> setUpServices() async {
   sl.registerFactory(() => LanguageCubit(sl()));
 
   sl.registerFactory(() => BookingCubit(sl<GetBookedDatesUseCase>(), sl<MakeBookUseCase>(),));
-  sl.registerFactory(() => ReviewsCubit(sl()));
+  sl.registerFactory(() => ReviewsCubit(sl(),sl()));
 
   sl.registerFactory(() => ManageBookingCubit(
     sl<GetUserBooking>(),
@@ -180,7 +181,7 @@ Future<void> setUpServices() async {
   sl.registerLazySingleton(() => GetUserBooking(sl()));
   sl.registerLazySingleton(() => UpdateStatus(sl()));
   sl.registerLazySingleton(() => AuthInterceptor(localDatasource: sl()));
-
+  sl.registerLazySingleton<AddReviewsUseCase>(() => AddReviewsUseCase(sl()));
   sl.registerLazySingleton<AuthCubit>(() => AuthCubit(
     repository: sl<AuthRepository>(),
     loginUsecase: sl(),

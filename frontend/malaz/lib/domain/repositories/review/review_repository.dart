@@ -8,4 +8,10 @@ abstract class ReviewsRepository {
     required int propertyId,
     String? cursor,
   });
+
+  Future<Either<Failure,Unit>> addReview({
+    required String rating,
+    required String body,
+    required int idProperty
+  });
 }

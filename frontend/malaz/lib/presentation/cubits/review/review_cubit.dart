@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:malaz/core/constants/app_constants.dart';
 import 'package:malaz/core/errors/failures.dart';
+import 'package:malaz/domain/usecases/review/add_review_usecase.dart';
 import '../../../domain/entities/review/review.dart';
 import '../../../domain/usecases/review/get_review_use_case.dart';
 
@@ -10,6 +11,8 @@ abstract class ReviewsState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+class AddReviewSuccess extends ReviewsState {}
 
 class ReviewsInitial extends ReviewsState {}
 
@@ -24,18 +27,14 @@ class ReviewsLoaded extends ReviewsState {
     this.hasReachedMax = false,
   });
 
-  @override
-  List<Object?> get props => [reviews, hasReachedMax];
+}
+class AddReviewLoading extends ReviewsState {}
 
-  ReviewsLoaded copyWith({
-    List<Review>? reviews,
-    bool? hasReachedMax,
-  }) {
-    return ReviewsLoaded(
-      reviews: reviews ?? this.reviews,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-    );
-  }
+class AddReviewError extends ReviewsState {
+  final String message;
+  const AddReviewError({required this.message});
+  @override
+  List<Object> get props => [message];
 }
 
 class ReviewsError extends ReviewsState {
@@ -47,11 +46,11 @@ class ReviewsError extends ReviewsState {
 
 class ReviewsCubit extends Cubit<ReviewsState> {
   final GetReviewsUseCase getReviewsUseCase;
-
+  final AddReviewsUseCase addReviewUseCase;
   String? _nextCursor;
-  bool _isFetching = false; // لمنع الطلبات المتكررة
+  bool _isFetching = false;
 
-  ReviewsCubit(this.getReviewsUseCase) : super(ReviewsInitial());
+  ReviewsCubit(this.getReviewsUseCase, this.addReviewUseCase) : super(ReviewsInitial());
 
   Future<void> loadReviews({
     required int propertyId,
@@ -116,5 +115,39 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     } finally {
       _isFetching = false;
     }
+  }
+
+  Future<void> addReview({
+    required int propertyId,
+    required double rating,
+    required String body,
+  }) async {
+    print('🚀 [CUBIT LOG] محاولة إرسال تقييم جديد: $rating نجوم');
+
+    emit(AddReviewLoading());
+
+    final result = await addReviewUseCase.call(
+      idProperty: propertyId,
+      rating: rating.toString(),
+      body: body,
+    );
+
+    result.fold(
+          (failure) {
+        print('❌ [CUBIT] فشل إضافة التقييم: ${failure.toString()}');
+        emit(AddReviewError(message: _mapFailureToMessage(failure)));
+      },
+          (success) {
+        print('✨ [CUBIT] تم إضافة التقييم بنجاح! جاري تحديث القائمة...');
+        emit(AddReviewSuccess());
+        loadReviews(propertyId: propertyId, isRefresh: true);
+      },
+    );
+  }
+
+  String _mapFailureToMessage(Failure failure) {
+    if (failure is NetworkFailure) return AppConstants.networkFailureKey;
+    if (failure is ServerFailure) return failure.message ?? AppConstants.unknownFailureKey;
+    return AppConstants.unknownFailureKey;
   }
 }

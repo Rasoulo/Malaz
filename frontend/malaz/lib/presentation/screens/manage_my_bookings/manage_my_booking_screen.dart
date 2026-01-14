@@ -6,12 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/config/color/app_color.dart';
+import '../../../domain/entities/apartment/apartment.dart';
 import '../../../domain/entities/booking/booking.dart';
 import '../../../domain/entities/booking/booking_list.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/booking/booking_cubit.dart';
 import '../../cubits/booking/my_booking.dart';
+import '../../cubits/review/review_cubit.dart';
 import '../../global_widgets/glowing_key/build_glowing_key.dart';
 import '../review_apartment/apartment_review_dialog.dart';
 
@@ -654,7 +656,7 @@ class _PremiumBookingCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
-        _showReviewDialog(context, booking);
+        _showReviewDialog(context, booking.apartment!);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -688,14 +690,21 @@ class _PremiumBookingCard extends StatelessWidget {
     );
   }
 
-  void _showReviewDialog(BuildContext context, Booking booking) {
+  void _showReviewDialog(BuildContext context, Apartment apartment) {
     showDialog(
       context: context,
-      builder: (context) => ApartmentReviewDialog(
-        propertyName: booking.apartment!.title,
+      builder: (dialogContext) => ApartmentReviewDialog(
+        propertyName: apartment.title,
         onSubmitted: (rating, comment) {
-          print("التقييم: $rating، التعليق: $comment");
-          /// TODO: REVIEW CUBIT...
+          context.read<ReviewsCubit>().addReview(
+            propertyId: apartment.id,
+            rating: rating,
+            body: comment,
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Submitting your review...")),
+          );
         },
       ),
     );

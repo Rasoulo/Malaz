@@ -36,4 +36,27 @@ class ReviewsRepositoryImpl implements ReviewsRepository {
       return const Left(NetworkFailure());
     }
   }
+  @override
+  Future<Either<Failure, Unit>> addReview({
+    required String rating,
+    required String body,
+    required int idProperty,
+  }) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.AddReview(
+          idProperty: idProperty,
+          rating: rating,
+          body: body,
+        );
+        return const Right(unit);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      } catch (e) {
+        return Left(ServerFailure(e.toString()));
+      }
+    } else {
+      return const Left(NetworkFailure());
+    }
+  }
 }

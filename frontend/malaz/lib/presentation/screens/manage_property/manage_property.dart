@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/config/color/app_color.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../domain/entities/booking/booking.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/auth/auth_cubit.dart';
 import '../../cubits/booking/manage_booking.dart';
@@ -55,7 +56,8 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
     context.read<MyApartmentsCubit>().fetchMyApartments(isRefresh: true);
     final authState = context.read<AuthCubit>().state;
     if (authState is AuthAuthenticated) {
-      context.read<ManageBookingCubit>().fetchAllBookings(authState.user.id);
+      final dynamic f= context.read<ManageBookingCubit>().fetchAllBookings(authState.user.id);
+      print(f);
     }
   }
 
@@ -243,18 +245,33 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
         }
 
         return BlocBuilder<ManageBookingCubit, ManageBookingState>(
-          buildWhen: (prev, curr) =>
-          curr is AllBookingLoading || curr is AllBookingsLoaded,
           builder: (context, state) {
             if (state is AllBookingLoading) {
               return const _BuildShimmerRequest();
             }
 
-            if (state is AllBookingsLoaded) {
-              final bookings = state.bookings.where((b) {
-                return (targetStatus == 'pending')
-                    ? b.status == 'pending'
-                    : b.status != 'pending';
+            if (state is AllBookingError) {
+              return Center(child: Text(state.message));
+            }
+
+            if (state is AllBookingsLoaded || state is UpdateStatusSuccess || state is UpdateStatusError) {
+
+              List<Booking> allBookings = [];
+              if (state is AllBookingsLoaded) {
+                allBookings = state.bookings;
+                print('><<<<${state.bookings.length}');
+              } else {
+                final currentState = context.read<ManageBookingCubit>().state;
+                if (currentState is AllBookingsLoaded) allBookings = currentState.bookings;
+              }
+
+              final bookings = allBookings.where((b) {
+                final status = b.status?.toLowerCase() ?? '';
+                if (targetStatus == 'pending') {
+                  return status == 'pending';
+                } else {
+                  return status != 'pending' && status.isNotEmpty;
+                }
               }).toList();
 
               return RefreshIndicator(
@@ -267,7 +284,14 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                   children: [
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.4,
-                      child: const Center(child: Text("No data found")),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.inbox_outlined, size: 60, color: Colors.grey),
+                          const SizedBox(height: 10),
+                          Text(targetStatus == 'pending' ? "No pending requests" : "No history found"),
+                        ],
+                      ),
                     ),
                   ],
                 )
@@ -277,6 +301,7 @@ class _ManagePropertiesScreenState extends State<ManagePropertiesScreen> {
                   itemCount: bookings.length,
                   itemBuilder: (context, index) {
                     return BookingCardWidget(
+                      key: ValueKey(bookings[index].id),
                       booking: bookings[index],
                       isPending: targetStatus == 'pending',
                       ownerId: authState.user.id,

@@ -614,10 +614,9 @@ class _BuildReviewSection extends StatelessWidget {
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
-                    isScrollControlled: true, // مهم جداً ليأخذ الارتفاع المحدد
+                    isScrollControlled: true,
                     backgroundColor: Colors.transparent,
                     builder: (context) => BlocProvider(
-                      // تأكد من حقن الـ Cubit هنا أو في مكان أعلى
                       create: (context) => sl<ReviewsCubit>(),
                       child: ReviewsBottomSheet(propertyId: id, rating: rating),
                     ),
