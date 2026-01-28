@@ -1224,6 +1224,12 @@
                   "value": "12345678",
                   "type": "text",
                   "uuid": "939415ab-9644-4951-b281-3164eeab39fa"
+                },
+                {
+                  "key": "fcm_token",
+                  "value": "some token",
+                  "type": "text",
+                  "uuid": "2e4363a9-3108-416b-b98a-d3c28d930dfd"
                 }
               ]
             },
