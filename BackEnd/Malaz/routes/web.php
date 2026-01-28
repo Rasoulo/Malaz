@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\BookingController;
 use Illuminate\Support\Facades\Route;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 // Routes for guests (not logged in)
 Route::middleware('guest:web')->group(function () {

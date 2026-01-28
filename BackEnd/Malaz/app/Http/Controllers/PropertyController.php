@@ -7,6 +7,9 @@ use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Kreait\Laravel\Firebase\Facades\Firebase;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 
 class PropertyController extends Controller
 {
@@ -164,6 +167,45 @@ class PropertyController extends Controller
         );
     }
 
+    public function search(Request $request)
+    {
+        $perPage = (int) $request->input('per_page', 20);
+
+        $query = Property::query()->where('status', 'approved')->with('user');
+
+        $query->where(function ($q) use ($request) {
+
+            $q->when($request->filled('title'), function ($subQ) use ($request) {
+                $subQ->where('title', 'LIKE', '%' . $request->input('title') . '%');
+            });
+
+            if ($request->filled('owner_first_name') || $request->filled('owner_last_name')) {
+                $q->orWhereHas('user', function ($userQ) use ($request) {
+                    $userQ->when($request->filled('owner_first_name'), function ($subUserQ) use ($request) {
+                        $subUserQ->where('first_name', 'LIKE', '%' . $request->input('owner_first_name') . '%');
+                    });
+
+                    $userQ->when($request->filled('owner_last_name'), function ($subUserQ) use ($request) {
+                        $subUserQ->orWhere('last_name', 'LIKE', '%' . $request->input('owner_last_name') . '%');
+                    });
+                });
+            }
+        });
+
+        $properties = $query->latest('id')->cursorPaginate($perPage);
+
+        return response()->json([
+            'data' => $properties->items(),
+            'meta' => [
+                'next_cursor' => $properties->nextCursor()?->encode(),
+                'prev_cursor' => $properties->previousCursor()?->encode(),
+                'per_page' => $properties->perPage(),
+            ],
+            'message' => __('validation.property.all_list'),
+            'status' => 200,
+        ], 200);
+    }
+
     public function all_booked_properties(Request $request, Property $property)
     {
         $perPage = (int) $request->input('per_page', 20);
@@ -183,7 +225,9 @@ class PropertyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -219,6 +263,30 @@ class PropertyController extends Controller
             // $property->save();
             // return 1;
         }
+
+        if ($user && $user->fcm_token) {
+        try {
+            $messaging = Firebase::messaging();
+
+            $notification = Notification::create(
+                'تم نشر عقارك! 🏠',
+                "تهانينا {$user->first_name}، تم نشر عقارك: {$property->title}" 
+            );
+
+            $message = CloudMessage::withTarget('token', $user->fcm_token)
+                ->withNotification($notification)
+                ->withData([ 
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                    'type' => 'property_approved',
+                    'property_id' => $property->id
+                ]);
+
+            $messaging->send($message);
+
+        } catch (\Exception $e) {
+            \Log::error('FCM Error: ' . $e->getMessage());
+        }
+    }
 
         return response()->json([
             'data' => $property,

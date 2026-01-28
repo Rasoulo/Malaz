@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
             $table->string('language', 5)->default('en');
+            $table->text('fcm_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -27,6 +27,7 @@ class RegisterRequest extends BaseFormRequest
                 'date',
                 'before:' . Carbon::now()->subYears(6)->toDateString(),
             ],
+            'fcm_token' => 'required|string',
         ];
     }
 

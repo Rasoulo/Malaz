@@ -19,6 +19,7 @@ class LoginRequest extends BaseFormRequest
         return [
             'phone' => 'required|regex:/^\+?\d{8,15}$/|exists:users,phone',
             'password' => 'required|string|min:6|max:40',
+            'fcm_token' => 'required|string',
         ];
     }
 

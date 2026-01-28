@@ -207,7 +207,6 @@ class UserController extends Controller
 
     public function register(RegisterRequest $request)
     {
-
         $locale = $request->header('Accept-Language', $request->input('language'));
 
         if (!in_array($locale, ['en', 'ar', 'fr', 'ru', 'tr'])) {
@@ -221,6 +220,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'date_of_birth' => $request->date_of_birth,
             'language' => $locale,
+            'fcm_token' => $request->fcm_token,
         ]);
         if ($request->hasFile('profile_image')) {
             try {
@@ -307,6 +307,8 @@ class UserController extends Controller
 
         try {
             $token = $user->createToken('api-token')->plainTextToken;
+            $user->fcm_token = $request->fcm_token;
+            $user->save();
         } catch (Exception $e) {
             return response()->json(['message' => __('validation.user.token_failed')], 500);
         }

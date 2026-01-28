@@ -59,6 +59,7 @@ Route::prefix('properties')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->co
     Route::post('/', 'store')->name('properties.store');
     Route::post('{property}', 'update')->name('properties.update');
     Route::delete('{property}', 'destroy')->name('properties.destroy');
+    Route::get('find/search', 'search')->name('property.search');
 });
 
 Route::prefix('conversations')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->controller(ConversationController::class)->group(function () {
@@ -94,7 +95,7 @@ Route::prefix('bookings')->middleware(['auth:sanctum', 'role:ADMIN,USER'])->cont
     Route::get('user/{userId}', 'userBookings')->name('bookings.by_user');
     Route::get('property/{propertyId}', 'propertyBookings')->name('bookings.by_property');
     Route::get('owner/{ownerId}', 'ownerBookings')->name('bookings.by_owner');
-    Route::post('store', 'store')->name('bookings.store');  
+    Route::post('store', 'store')->name('bookings.store');
     Route::get('show/{booking}', 'show')->name('bookings.show');
     Route::delete('cancel/{booking}', 'destroy')->name('bookings.cancel');
     Route::patch('update/{booking}', 'update')->name('bookings.update');
