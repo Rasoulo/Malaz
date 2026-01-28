@@ -48,13 +48,12 @@ class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
 
   @override
   Future<Unit> AddReview({required int idProperty, required String rating, required String body}) async {
-    print('🌐 [API] جاري إرسال التقييم للسيرفر...');
     final response = await networkService.post(
       '/reviews/properties/$idProperty',
       data: {'rating': double.parse(rating).toInt(), 'body': body},
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print('✅ [API] رد السيرفر على الإضافة: ${response.statusCode} - ${response.data}');
+      print('status: ${response.statusCode} - response: ${response.data}');
       return unit;
     } else {
       throw ServerException(message: response.data['message'] ?? "Validation Error");
