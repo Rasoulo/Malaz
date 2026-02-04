@@ -11,6 +11,7 @@ abstract class AuthRemoteDatasource {
   Future<Map<String, dynamic>> login({
     required String phone,
     required String password,
+    required String fcmToken,
   });
   Future<Map<String, dynamic>> registerUser({
     required String phone,
@@ -22,6 +23,7 @@ abstract class AuthRemoteDatasource {
     required String dateOfBirth,
     required XFile profileImage,
     required XFile identityImage,
+    required String fcmToken,
   });
   Future<void> logout();
   Future<void> sendOtp({required String phone});
@@ -51,6 +53,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     required String dateOfBirth,
     required XFile profileImage,
     required XFile identityImage,
+    required String fcmToken,
   }) async {
     final endpoint = '/users/register';
 
@@ -71,6 +74,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
           identityImage.path,
           filename: basename(identityImage.path),
         ),
+        'fcm_token': fcmToken,
       });
 
       final response = await networkService.post(
@@ -89,53 +93,46 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   Future<Map<String, dynamic>> login({
     required String phone,
     required String password,
+    required String fcmToken,
   }) async {
     final endpoint = '/users/login';
 
     final response = await networkService.post(
       endpoint,
-      data: {'phone': phone, 'password': password},
+      data: {
+        'phone': phone,
+        'password': password,
+        'fcm_token': fcmToken
+      },
     );
 
-    print('phone number : ${response.data['user']['phone']}');
-
     final data = response.data;
-    if(data == null) {
-      print('null data found');
-    } else {
-      print('tokem from data source ${data['access_token']}');
-      print('status code ${response.statusCode}');
+    if (data != null && data['user'] != null) {
+      print('Phone from server: ${data['user']['phone']}');
     }
     String? message = data is Map<String, dynamic> ? data['message']?.toString() : null;
 
-    if (response.statusCode == 200 && data['data'] != null) {
+    if (response.statusCode == 200 && (data['data'] != null || data['access_token'] != null)) {
       return data;
     }
 
-    /// TODO: merge to error handler
-    if (message != null && message.toLowerCase().contains('wait until')) {
-      throw PendingApprovalException(message);
-    }
+    if (message != null) {
+      final msgLower = message.toLowerCase();
 
-    if (data['access_token'] != null) {
-      print('i am in');
-      if(data == null) {
-        print('i am out');
-      } else {
-        print('not null');
+      if (msgLower.contains('wait until') || msgLower.contains('pending')) {
+        throw PendingApprovalException(message);
       }
-      return data;
+
+      if (msgLower.contains('does not exist') || msgLower.contains('not found')) {
+        throw PhoneNotFoundException(message);
+      }
+
+      if (msgLower.contains('invalid') || msgLower.contains('wrong password')) {
+        throw WrongPasswordException(message);
+      }
     }
 
-    if (message != null && message.toLowerCase().contains('does not exist')) {
-      throw PhoneNotFoundException(message);
-    }
-
-    if (message != null && message.toLowerCase().contains('invalid credentials')) {
-      throw WrongPasswordException(message);
-    }
-
-    return data;
+    throw ServerException(message: message ?? "حدث خطأ غير متوقع");
   }
 
   @override

@@ -1,6 +1,6 @@
 class AppConstants {
-  static const baseurl = 'http://10.78.179.92:8000/api';
-  static const baseurlForPusher = 'http://10.78.179.92:8000/broadcasting/auth';
+  static const baseurl = 'http://192.168.1.101:8000/api';
+  static const baseurlForPusher = 'http://192.168.1.101:8000/broadcasting/auth';
 
   /// [SharedPreferences] Keys
   static const String themeKey = 'theme_mode';

@@ -218,5 +218,11 @@
   "confirm_location": "konumu onaylayın",
   "confirm_post_property": "Emlak ilanının onaylanması",
   "confirm_post_property_message": "Mülke ait detaylar inceleme için gönderilecektir. Bilgilerin doğru olduğundan emin misiniz?",
-  "yes_post_it": "Evet, yayınlayın."
+  "yes_post_it": "Evet, yayınlayın.",
+  "errorInternalServer": "Sunucu hatası, lütfen daha sonra tekrar deneyin",
+  "errorPhoneNotFound": "Bu telefon numarası kayıtlı değil",
+  "errorWrongPassword": "Hatalı şifre, lütfen tekrar deneyin",
+  "errorInvalidCredentials": "Geçersiz giriş bilgileri",
+  "errorNoNetwork": "İnternet bağlantısı yok, lütfen ağınızı kontrol edin",
+  "errorUnexpected": "Üzgünüz, beklenmedik bir hata oluştu"
 }

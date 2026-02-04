@@ -223,5 +223,11 @@
   "confirm_location": "confirmer l'emplacement",
   "confirm_post_property": "Confirmation de l'annonce immobilière",
   "confirm_post_property_message": "Les détails du bien seront envoyés pour vérification. Êtes-vous sûr(e) que les informations sont correctes ?",
-  "yes_post_it": "Oui, publiez-le."
+  "yes_post_it": "Oui, publiez-le.",
+  "errorInternalServer": "Erreur serveur, veuillez réessayer plus tard",
+  "errorPhoneNotFound": "Ce numéro de téléphone n'est pas enregistré",
+  "errorWrongPassword": "Mot de passe incorrect, veuillez réessayer",
+  "errorInvalidCredentials": "Identifiants de connexion invalides",
+  "errorNoNetwork": "Pas de connexion internet, veuillez vérifier votre réseau",
+  "errorUnexpected": "Désolé, une erreur inattendue s'est produite"
 }

@@ -85,11 +85,13 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, UserEntity>> login({
     required String phoneNumber,
     required String password,
+    required String fcmToken
   }) async {
     try {
       final result = await authRemoteDatasource.login(
         phone: phoneNumber,
         password: password,
+        fcmToken: fcmToken
       );
 
       if (result['message'] == 'Wait until is approved by the officials') {
@@ -159,6 +161,7 @@ class AuthRepositoryImpl extends AuthRepository {
     required String dateOfBirth,
     required XFile profileImage,
     required XFile identityImage,
+    required String fcmToken
   }) async {
     try {
       final result = await authRemoteDatasource.registerUser(
@@ -171,6 +174,7 @@ class AuthRepositoryImpl extends AuthRepository {
         dateOfBirth: dateOfBirth,
         profileImage: profileImage,
         identityImage: identityImage,
+        fcmToken: fcmToken
       );
       print('SERVER RESPONSE: $result');
       final userMap = result['data'];

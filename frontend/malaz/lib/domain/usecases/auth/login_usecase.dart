@@ -12,7 +12,11 @@ class LoginUsecase implements UseCase<UserEntity,LoginParams>{
 
   @override
   Future<Either<Failure, UserEntity>> call(LoginParams params) async {
-    final res = await repository.login(phoneNumber: params.phoneNumber, password: params.password);
+    final res = await repository.login(
+        phoneNumber: params.phoneNumber,
+        password: params.password,
+        fcmToken: params.fcmToken,
+    );
     print('is right : ${res.isRight()}');
     return res;
   }
@@ -21,7 +25,11 @@ class LoginUsecase implements UseCase<UserEntity,LoginParams>{
 class LoginParams{
   final String phoneNumber;
   final String password;
+  final String fcmToken;
 
-  LoginParams({required this.phoneNumber, required this.password});
-
+  LoginParams({
+    required this.phoneNumber,
+    required this.password,
+    required this.fcmToken
+  });
 }

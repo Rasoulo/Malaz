@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "625242198737",
+    "project_id": "malaz-project",
+    "storage_bucket": "malaz-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625242198737:android:74fe02aa2c6ab4376debf0",
+        "android_client_info": {
+          "package_name": "com.example.malaz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl2oIWkUmtICf2Jj-ZWB4v4lDLRsWwB4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -224,5 +224,11 @@
   "confirm_location": "تأكيد الموقع",
   "confirm_post_property": "تأكيد نشر العقار",
   "confirm_post_property_message": "سيتم إرسال بيانات العقار للمراجعة، هل أنت متأكد من صحة المعلومات؟",
-  "yes_post_it": "نعم، أنشر"
+  "yes_post_it": "نعم، أنشر",
+  "errorInternalServer": "حدث خطأ في الخادم، يرجى المحاولة لاحقاً",
+  "errorPhoneNotFound": "رقم الهاتف هذا غير مسجل لدينا",
+  "errorWrongPassword": "كلمة المرور غير صحيحة، حاول مرة أخرى",
+  "errorInvalidCredentials": "بيانات الدخول غير صحيحة",
+  "errorNoNetwork": "لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة",
+  "errorUnexpected": "عذراً، حدث خطأ غير متوقع"
 }

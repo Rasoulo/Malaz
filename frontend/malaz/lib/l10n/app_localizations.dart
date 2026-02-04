@@ -1405,6 +1405,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yes, publish it.'**
   String get yes_post_it;
+
+  /// No description provided for @errorInternalServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error, please try again later'**
+  String get errorInternalServer;
+
+  /// No description provided for @errorPhoneNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number is not registered'**
+  String get errorPhoneNotFound;
+
+  /// No description provided for @errorWrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password, please try again'**
+  String get errorWrongPassword;
+
+  /// No description provided for @errorInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid login credentials'**
+  String get errorInvalidCredentials;
+
+  /// No description provided for @errorNoNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection, please check your network'**
+  String get errorNoNetwork;
+
+  /// No description provided for @errorUnexpected.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, an unexpected error occurred'**
+  String get errorUnexpected;
 }
 
 class _AppLocalizationsDelegate

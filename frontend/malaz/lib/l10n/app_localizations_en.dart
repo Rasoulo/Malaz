@@ -674,4 +674,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yes_post_it => 'Yes, publish it.';
+
+  @override
+  String get errorInternalServer => 'Server error, please try again later';
+
+  @override
+  String get errorPhoneNotFound => 'This phone number is not registered';
+
+  @override
+  String get errorWrongPassword => 'Incorrect password, please try again';
+
+  @override
+  String get errorInvalidCredentials => 'Invalid login credentials';
+
+  @override
+  String get errorNoNetwork =>
+      'No internet connection, please check your network';
+
+  @override
+  String get errorUnexpected => 'Sorry, an unexpected error occurred';
 }

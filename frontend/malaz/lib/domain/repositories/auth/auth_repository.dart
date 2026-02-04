@@ -11,6 +11,7 @@ abstract class AuthRepository {
   Future<Either<Failure,UserEntity>> login({
     required String phoneNumber,
     required String password,
+    required String fcmToken,
   });
 
   Future<Either<Failure, UserEntity>> register({
@@ -23,6 +24,7 @@ abstract class AuthRepository {
     required String dateOfBirth,
     required XFile profileImage,
     required XFile identityImage,
+    required String fcmToken,
   });
 
   Future<Either<Failure,void>> logout();

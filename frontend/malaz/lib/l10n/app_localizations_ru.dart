@@ -680,4 +680,24 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get yes_post_it => '«Да, опубликуйте это».';
+
+  @override
+  String get errorInternalServer =>
+      'Ошибка сервера, пожалуйста, попробуйте позже';
+
+  @override
+  String get errorPhoneNotFound => 'Этот номер телефона не зарегистрирован';
+
+  @override
+  String get errorWrongPassword =>
+      'Неверный пароль, пожалуйста, попробуйте еще раз';
+
+  @override
+  String get errorInvalidCredentials => 'Неверные данные для входа';
+
+  @override
+  String get errorNoNetwork => 'Нет подключения к интернету, проверьте сеть';
+
+  @override
+  String get errorUnexpected => 'К сожалению, произошла непредвиденная ошибка';
 }

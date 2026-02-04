@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:malaz/presentation/global_widgets/brand/build_branding.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../../../../core/errors/failure_message_handler.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
 import '../../../global_widgets/brand/build_branding.dart';
@@ -46,9 +47,16 @@ class _LoginScreenState extends State<LoginScreen> {
             context.go('/home');
           }
           if (state is AuthError) {
+            final message = state.failure.toMessage(context);
+
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                  content: Text(state.message), backgroundColor: Colors.red),
+                content: Text(message),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+                margin: const EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
             );
           }
         },

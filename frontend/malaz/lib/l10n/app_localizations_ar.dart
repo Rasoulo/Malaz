@@ -671,4 +671,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get yes_post_it => 'نعم، أنشر';
+
+  @override
+  String get errorInternalServer => 'حدث خطأ في الخادم، يرجى المحاولة لاحقاً';
+
+  @override
+  String get errorPhoneNotFound => 'رقم الهاتف هذا غير مسجل لدينا';
+
+  @override
+  String get errorWrongPassword => 'كلمة المرور غير صحيحة، حاول مرة أخرى';
+
+  @override
+  String get errorInvalidCredentials => 'بيانات الدخول غير صحيحة';
+
+  @override
+  String get errorNoNetwork => 'لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة';
+
+  @override
+  String get errorUnexpected => 'عذراً، حدث خطأ غير متوقع';
 }

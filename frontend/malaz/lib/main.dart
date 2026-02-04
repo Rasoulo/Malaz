@@ -1,4 +1,4 @@
-// main.dart
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,12 +20,12 @@ import 'package:malaz/presentation/screens/auth/login/login_screen.dart';
 import 'package:malaz/presentation/screens/auth/register/home_register_screen.dart';
 import 'package:malaz/presentation/screens/settings/settings_screen.dart';
 import 'package:malaz/presentation/screens/splash_screen/splash_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/config/routes/app_routes.dart';
 import 'core/config/theme/app_theme.dart';
 
 import 'core/service_locator/service_locator.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 
 
@@ -71,6 +71,9 @@ import 'l10n/app_localizations.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await setUpServices();
 
   runApp(const RentalApp());

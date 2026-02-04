@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -22,8 +22,6 @@ import '../../../domain/repositories/auth/auth_repository.dart';
 import '../../../domain/usecases/auth/register_usecase.dart';
 import '../../../domain/usecases/auth/send_otp_usecase.dart';
 import '../../../domain/usecases/auth/verify_otp_usecase.dart';
-
-// --- States --- //
 
 abstract class AuthState extends Equatable {
   @override
@@ -51,10 +49,10 @@ class AuthPending extends AuthState {
 }
 
 class AuthError extends AuthState {
-  final String message;
-  AuthError({required this.message});
+  final Failure failure;
+  AuthError({required this.failure});
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
 
 class OtpSending extends AuthState {}
@@ -80,7 +78,6 @@ class OtpSentSuccess extends AuthState {}
 class PasswordUpdatedSuccess extends AuthState {}
 
 // --- Cubit --- //
-
 class AuthCubit extends Cubit<AuthState> {
   final LoginUsecase loginUsecase;
   final LogoutUsecase logoutUsecase;
@@ -91,31 +88,43 @@ class AuthCubit extends Cubit<AuthState> {
   final VerifyOtpUsecase verifyOtpUsecase;
   final AuthRepository repository;
 
-  AuthCubit(
-      {required this.loginUsecase,
-      required this.logoutUsecase,
-      required this.getCurrentUserUsecase,
-      required this.checkAuthUsecase,
-      required this.registerUsecase,
-      required this.sendOtpUsecase,
-      required this.verifyOtpUsecase,
-      required this.repository}) : super(AuthInitial());
+  AuthCubit({
+    required this.loginUsecase,
+    required this.logoutUsecase,
+    required this.getCurrentUserUsecase,
+    required this.checkAuthUsecase,
+    required this.registerUsecase,
+    required this.sendOtpUsecase,
+    required this.verifyOtpUsecase,
+    required this.repository,
+  }) : super(AuthInitial());
+
+  Future<String> _getFcmToken() async {
+    try {
+      String? fcmToken = await FirebaseMessaging.instance.getToken().timeout(
+        const Duration(seconds: 10),
+      );
+      print('fcm_token is : $fcmToken');
+      return fcmToken ?? "";
+    } catch (_) {
+      return "dummy_token_device_offline";
+    }
+  }
+
+  Future<void> _saveCredentials(String phone, String password) async {
+    const storage = FlutterSecureStorage();
+    await storage.write(key: AppConstants.passwordUserKey, value: password);
+    await storage.write(key: AppConstants.phoneUserKey, value: phone);
+  }
 
   Future<void> checkAuth() async {
     final res = await checkAuthUsecase(NoParams());
-
     res.fold(
-          (_) {
-        if (state is AuthPending) return;
-        emit(AuthUnauthenticated());
-      },
+          (_) => state is AuthPending ? null : emit(AuthUnauthenticated()),
           (status) {
-        if (status.isPending && status.user != null) {
-          emit(AuthPending(status.user!));
-        } else if (status.isAuthenticated && status.user != null) {
-          emit(AuthAuthenticated(status.user!));
+        if (status.user != null) {
+          status.isPending ? emit(AuthPending(status.user!)) : emit(AuthAuthenticated(status.user!));
         } else {
-          if (state is AuthPending) return;
           emit(AuthUnauthenticated());
         }
       },
@@ -132,8 +141,8 @@ class AuthCubit extends Cubit<AuthState> {
     required XFile identityImage,
   }) async {
     emit(AuthLoading());
-
     try {
+      final fcmToken = await _getFcmToken();
       final res = await registerUsecase(RegisterParams(
         phone: phone,
         role: 'PENDING',
@@ -144,60 +153,37 @@ class AuthCubit extends Cubit<AuthState> {
         dateOfBirth: dateOfBirth,
         profileImage: profileImage,
         identityCardImage: identityImage,
+        fcmToken: fcmToken,
       ));
-      print('>>>> ${res}');
       res.fold(
-        (failure) {
-          emit(AuthError(message: _mapFailureToMessage(failure)));
-          emit(AuthUnauthenticated());
-        },
-        (user) async {
-          final storage = FlutterSecureStorage();
-          await storage.write(key: AppConstants.passwordUserKey, value: password);
-          await storage.write(key: AppConstants.phoneUserKey, value: phone);
-
-          final role = user.role.toLowerCase();
-          if (role == 'pending') {
-            emit(AuthPending(user));
-          } else {
-            emit(AuthAuthenticated(user));
-          }
+            (failure) => emit(AuthError(failure: failure)),
+            (user) async {
+          await _saveCredentials(phone, password);
+          user.role.toLowerCase() == 'pending' ? emit(AuthPending(user)) : emit(AuthAuthenticated(user));
         },
       );
     } catch (e) {
-      emit(AuthError(message: 'Error preparing images: $e'));
-      emit(AuthUnauthenticated());
+      emit(AuthError(failure: ServerFailure(e.toString())));
     }
   }
 
-  Future<void> login({required String phone, required String password,}) async {
+  Future<void> login({required String phone, required String password}) async {
     emit(AuthLoading());
-
-    final res = await loginUsecase(
-      LoginParams(phoneNumber: phone, password: password),
-    );
-
+    final fcmToken = await _getFcmToken();
+    final res = await loginUsecase(LoginParams(
+      phoneNumber: phone,
+      password: password,
+      fcmToken: fcmToken,
+    ));
     res.fold(
           (failure) {
-        if (failure is PendingApprovalFailure) {
-          emit(AuthPending(
-            UserEntity.emptyPending(),
-          ));
-        } else if (failure is PhoneNotFoundFailure) {
-          emit(AuthError(
-            message: 'This phone number does not exist in our records.',
-          ));
-        } else if (failure is WrongPasswordFailure) {
-          emit(AuthError(message: 'Invalid credentials'));
-        } else {
-          emit(AuthError(message: _mapFailureToMessage(failure)));
-        }
+        failure is PendingApprovalFailure
+            ? emit(AuthPending(UserEntity.emptyPending()))
+            : emit(AuthError(failure: failure));
       },
           (user) async {
         if (user.role.toUpperCase() == 'PENDING') {
-          final storage = FlutterSecureStorage();
-          await storage.write(key: AppConstants.passwordUserKey, value: password);
-          await storage.write(key: AppConstants.phoneUserKey, value: phone);
+          await _saveCredentials(phone, password);
           emit(AuthPending(user));
         } else {
           emit(AuthAuthenticated(user));
@@ -209,12 +195,9 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(AuthLoading());
     final result = await logoutUsecase(NoParams());
-
     result.fold(
-          (failure) => emit(AuthError(message:failure.message ?? "Logout Failed")),
-          (_) {
-        emit(AuthUnauthenticated());
-      },
+          (failure) => emit(AuthError(failure: failure)),
+          (_) => emit(AuthUnauthenticated()),
     );
   }
 
@@ -222,8 +205,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(OtpSending());
     final res = await sendOtpUsecase(SendOtpParams(phone));
     res.fold(
-      (failure) => emit(OtpSendError(_mapFailureToMessage(failure))),
-      (_) => emit(OtpSent()),
+          (failure) => emit(AuthError(failure: failure)),
+          (_) => emit(OtpSent()),
     );
   }
 
@@ -231,71 +214,53 @@ class AuthCubit extends Cubit<AuthState> {
     emit(OtpVerifying());
     final res = await verifyOtpUsecase(VerifyOtpParams(phone: phone, otp: otp));
     res.fold(
-      (failure) => emit(OtpVerifyError(_mapFailureToMessage(failure))),
-      (success) {
-        if (success)
-          emit(OtpVerified());
-        else
-          emit(OtpVerifyError('Invalid code'));
-      },
+          (failure) => emit(AuthError(failure: failure)),
+          (success) => success ? emit(OtpVerified()) : emit(AuthError(failure: ServerFailure('Invalid code'))),
     );
   }
 
   Future<void> sendPasswordResetOtp(String phone) async {
     emit(AuthLoading());
-
     final result = await repository.sendPasswordResetOtp(phone);
-
     result.fold(
-          (failure) => emit(AuthError(message: failure.message.toString())),
-          (message) => emit(OtpSentSuccess()),
+          (failure) => emit(AuthError(failure: failure)),
+          (_) => emit(OtpSentSuccess()),
     );
   }
 
   Future<void> checkRoleUsingLogin({required String phone, required String password}) async {
     emit(AuthLoading());
-
-    final res = await loginUsecase(
-      LoginParams(phoneNumber: phone, password: password),
-    );
-
+    final fcmToken = await _getFcmToken();
+    final res = await loginUsecase(LoginParams(
+      phoneNumber: phone,
+      password: password,
+      fcmToken: fcmToken,
+    ));
     res.fold(
-      (failure) {
-        emit(AuthError(message: _mapFailureToMessage(failure)));
-      },
-      (user) {
-        if (user.role == 'PENDING') {
-          emit(AuthPending(user));
-        } else if (user.role == 'USER') {
-          emit(AuthAuthenticated(user));
-        } else {
-          emit(AuthUnauthenticated());
-        }
+          (failure) => emit(AuthError(failure: failure)),
+          (user) {
+        if (user.role == 'PENDING') emit(AuthPending(user));
+        else if (user.role == 'USER') emit(AuthAuthenticated(user));
+        else emit(AuthUnauthenticated());
       },
     );
   }
 
   Future<void> silentRoleCheck() async {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     final password = await storage.read(key: AppConstants.passwordUserKey);
     final phone = await storage.read(key: AppConstants.phoneUserKey);
-
-    log(password ?? 'null');
-    log(phone ?? 'null');
-    final res = await loginUsecase(
-      LoginParams(phoneNumber: phone.toString(), password: password.toString()),
-    );
-
+    if (password == null || phone == null) return;
+    final fcmToken = await _getFcmToken();
+    final res = await loginUsecase(LoginParams(
+      phoneNumber: phone,
+      password: password,
+      fcmToken: fcmToken,
+    ));
     res.fold(
-          (failure) {
-        debugPrint("Silent check failed: ${_mapFailureToMessage(failure)}");
-      },
+          (_) => null,
           (user) {
-        if (user.role == 'USER') {
-          emit(AuthAuthenticated(user));
-        } else if (user.role == 'PENDING') {
-          emit(AuthPending(user));
-        }
+        user.role == 'USER' ? emit(AuthAuthenticated(user)) : emit(AuthPending(user));
       },
     );
   }
@@ -303,9 +268,11 @@ class AuthCubit extends Cubit<AuthState> {
   Future<bool> verifyPasswordSilently(String password) async {
     final currentState = state;
     if (currentState is AuthAuthenticated) {
+      final fcmToken = await _getFcmToken();
       final result = await loginUsecase(LoginParams(
         phoneNumber: currentState.user.phone,
         password: password,
+        fcmToken: fcmToken,
       ));
       return result.isRight();
     }
@@ -318,16 +285,14 @@ class AuthCubit extends Cubit<AuthState> {
     required String newPassword,
   }) async {
     emit(AuthLoading());
-
     final result = await repository.updatePassword(
       phone: phone,
       otp: otp,
       newPassword: newPassword,
     );
-
     result.fold(
-          (failure) => emit(AuthError(message: failure.message.toString())),
-          (message) => emit(PasswordUpdatedSuccess()), // حالة نجاح جديدة
+          (failure) => emit(AuthError(failure: failure)),
+          (_) => emit(PasswordUpdatedSuccess()),
     );
   }
 
@@ -343,77 +308,47 @@ class AuthCubit extends Cubit<AuthState> {
         "first_name": firstName,
         "last_name": lastName,
       });
-
       if (imagePath != null && imagePath.isNotEmpty) {
-        formData.files.add(MapEntry(
-          "profile_image",
-          await MultipartFile.fromFile(imagePath, filename: "new_profile.jpg"),
-        ));
+        formData.files.add(MapEntry("profile_image", await MultipartFile.fromFile(imagePath, filename: "profile.jpg")));
       } else if (existingImageUrl != null) {
-        final File? tempFile = await _downloadFile(existingImageUrl);
+        final tempFile = await _downloadFile(existingImageUrl);
         if (tempFile != null) {
-          formData.files.add(MapEntry(
-            "profile_image",
-            await MultipartFile.fromFile(tempFile.path, filename: "existing_profile.jpg"),
-          ));
+          formData.files.add(MapEntry("profile_image", await MultipartFile.fromFile(tempFile.path, filename: "profile.jpg")));
         }
       }
-
-      print("Final Check - Files count: ${formData.files.length}");
-
       if (formData.files.isEmpty) {
-        emit(AuthError(message: "Profile image is required by the server."));
+        emit(AuthError(failure: ServerFailure("Profile image is required")));
         return;
       }
-
       final result = await repository.updateProfile(formData);
-
       result.fold(
-            (failure) => emit(AuthError(message: failure.message.toString())),
+            (failure) => emit(AuthError(failure: failure)),
             (user) {
           sl<AuthLocalDatasource>().cacheUser(user);
           emit(AuthAuthenticated(user));
         },
       );
     } catch (e) {
-      emit(AuthError(message: "Update Error: ${e.toString()}"));
+      emit(AuthError(failure: ServerFailure(e.toString())));
     }
   }
 
   Future<File?> _downloadFile(String url) async {
     try {
       final token = await sl<AuthLocalDatasource>().getCachedToken();
-
       final response = await Dio().get(
         url,
         options: Options(
           responseType: ResponseType.bytes,
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
-          },
+          headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
         ),
       );
-
       final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/temp_profile_${DateTime.now().millisecondsSinceEpoch}.jpg');
+      final file = File('${tempDir.path}/temp_${DateTime.now().millisecondsSinceEpoch}.jpg');
       await file.writeAsBytes(response.data);
-
-      print("Download Success. File size: ${await file.length()} bytes");
       return file;
-    } catch (e) {
-      print("Download error in _downloadFile: $e");
+    } catch (_) {
       return null;
     }
-  }
-
-  String _mapFailureToMessage(Failure f) {
-    if (f is PhoneNotFoundFailure)
-      return 'This phone number does not exist in our records.';
-    if (f is WrongPasswordFailure) return 'Incorrect Password';
-    if (f is InvalidCredentialsFailure) return 'Invalid credentials';
-    if (f is ServerFailure) return (f.message ?? 'Server error');
-    if (f is NetworkFailure) return 'Check your internet connection';
-    return 'An unexpected error occurred';
   }
 }

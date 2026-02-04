@@ -22,6 +22,7 @@ class RegisterUsecase implements UseCase<UserEntity, RegisterParams> {
       dateOfBirth: params.dateOfBirth,
       profileImage: params.profileImage,
       identityImage: params.identityCardImage,
+      fcmToken: params.fcmToken
     );
   }
 }
@@ -36,6 +37,7 @@ class RegisterParams {
   final String dateOfBirth;
   final XFile profileImage;
   final XFile identityCardImage;
+  final String fcmToken;
 
   RegisterParams({
     required this.phone,
@@ -47,5 +49,6 @@ class RegisterParams {
     required this.dateOfBirth,
     required this.profileImage,
     required this.identityCardImage,
+    required this.fcmToken
   });
 }

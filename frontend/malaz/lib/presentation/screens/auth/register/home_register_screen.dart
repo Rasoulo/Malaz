@@ -10,6 +10,7 @@ import 'package:malaz/presentation/screens/auth/register/register_screen5.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../core/config/color/app_color.dart';
+import '../../../../core/errors/failure_message_handler.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
 import '../shared_widgets/shared_widgets.dart';
@@ -146,12 +147,15 @@ class _HomeRegisterScreenState extends State<HomeRegisterScreen> {
         } else if (state is AuthAuthenticated) {
           context.go('/home');
         } else if (state is AuthError) {
+          final message = state.failure.toMessage(context);
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-                behavior: SnackBarBehavior.floating,
-              )
+            SnackBar(
+              content: Text(message),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              margin: const EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
           );
         }
       },

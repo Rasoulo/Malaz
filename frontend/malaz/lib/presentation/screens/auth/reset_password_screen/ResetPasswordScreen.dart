@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/config/color/app_color.dart';
+import '../../../../core/errors/failure_message_handler.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../cubits/auth/auth_cubit.dart';
 
@@ -53,9 +54,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           _showSuccessSheet(tr, isDark, textColor);
         }
         if (state is AuthError) {
+          final message = state.failure.toMessage(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.message),
+              content: Text(message),
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
               margin: const EdgeInsets.all(20),

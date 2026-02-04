@@ -677,4 +677,24 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get yes_post_it => 'Evet, yayınlayın.';
+
+  @override
+  String get errorInternalServer =>
+      'Sunucu hatası, lütfen daha sonra tekrar deneyin';
+
+  @override
+  String get errorPhoneNotFound => 'Bu telefon numarası kayıtlı değil';
+
+  @override
+  String get errorWrongPassword => 'Hatalı şifre, lütfen tekrar deneyin';
+
+  @override
+  String get errorInvalidCredentials => 'Geçersiz giriş bilgileri';
+
+  @override
+  String get errorNoNetwork =>
+      'İnternet bağlantısı yok, lütfen ağınızı kontrol edin';
+
+  @override
+  String get errorUnexpected => 'Üzgünüz, beklenmedik bir hata oluştu';
 }

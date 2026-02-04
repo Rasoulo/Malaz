@@ -223,5 +223,11 @@
   "confirm_location": "Confirm Location",
   "confirm_post_property": "Property listing confirmation",
   "confirm_post_property_message": "The property details will be sent for review. Are you sure the information is correct?",
-  "yes_post_it": "Yes, publish it."
+  "yes_post_it": "Yes, publish it.",
+  "errorInternalServer": "Server error, please try again later",
+  "errorPhoneNotFound": "This phone number is not registered",
+  "errorWrongPassword": "Incorrect password, please try again",
+  "errorInvalidCredentials": "Invalid login credentials",
+  "errorNoNetwork": "No internet connection, please check your network",
+  "errorUnexpected": "Sorry, an unexpected error occurred"
 }
