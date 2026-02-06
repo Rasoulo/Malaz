@@ -196,12 +196,12 @@ return [
              */
 
             'http_client_options' => [
+                'verify' => false,
 
                 /*
                  * Use a proxy that all API requests should be passed through.
                  * (default: none)
                  */
-
                 'proxy' => env('FIREBASE_HTTP_CLIENT_PROXY'),
 
                 /*
