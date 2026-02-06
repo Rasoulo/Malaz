@@ -43,3 +43,12 @@ Route::middleware(['auth:web', 'role:ADMIN'])->name('admin.')->group(function ()
         Route::get('/{booking}', [BookingController::class, 'show'])->name('show');
     });
 });
+
+Route::get('/debug-ssl', function () {
+    return [
+        'php_ini_path' => php_ini_loaded_file(),
+        'curl_cainfo' => ini_get('curl.cainfo'),
+        'openssl_cafile' => ini_get('openssl.cafile'),
+        'file_exists' => file_exists(ini_get('curl.cainfo')),
+    ];
+});
