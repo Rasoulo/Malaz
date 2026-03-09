@@ -104,7 +104,7 @@
   "otp_verified_success": "OTP verified successfully",
   "booking_request_sent": "Booking Request Sent To The Owner",
   "nights": "nights",
-  "confirm_booking": "Confirm Booking",
+  "confirm_booking": "Book",
   "reviews_count": "({count} reviews)",
   "@reviews_count": {
     "placeholders": {

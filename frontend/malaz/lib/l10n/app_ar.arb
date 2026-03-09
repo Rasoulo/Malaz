@@ -104,7 +104,7 @@
   "otp_verified_success": "تم التحقق من الرمز بنجاح",
   "booking_request_sent": "تم إرسال طلب الحجز إلى المالك",
   "nights": "ليالي",
-  "confirm_booking": "تأكيد الحجز",
+  "confirm_booking": "احجز",
   "reviews_count": "({count} تقييم)",
   "@reviews_count": {
     "placeholders": {

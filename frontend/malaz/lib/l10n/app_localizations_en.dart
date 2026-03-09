@@ -328,7 +328,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nights => 'nights';
 
   @override
-  String get confirm_booking => 'Confirm Booking';
+  String get confirm_booking => 'Book';
 
   @override
   String reviews_count(int count) {

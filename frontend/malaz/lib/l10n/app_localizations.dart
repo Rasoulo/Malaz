@@ -737,7 +737,7 @@ abstract class AppLocalizations {
   /// No description provided for @confirm_booking.
   ///
   /// In en, this message translates to:
-  /// **'Confirm Booking'**
+  /// **'Book'**
   String get confirm_booking;
 
   /// No description provided for @reviews_count.

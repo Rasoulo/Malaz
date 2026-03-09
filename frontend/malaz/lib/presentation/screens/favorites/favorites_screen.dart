@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubits/favorites/favorites_cubit.dart';
 import '../../global_widgets/cards/apartment/apartment_card.dart';
@@ -94,14 +95,7 @@ class _BuildEmptyFavorites extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(Icons.favorite_border_rounded, size: 60, color: Theme.of(context).colorScheme.tertiary),
-          ),
+          Lottie.asset('assets/lottie/nodata.json'),
           const SizedBox(height: 20),
           Text(
             l10n.no_favorites_yet,
