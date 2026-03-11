@@ -30,7 +30,7 @@ import 'core/config/routes/app_routes.dart';
 import 'core/config/theme/app_theme.dart';
 
 import 'core/service_locator/service_locator.dart';
-// import 'firebase_options.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 
 
@@ -99,7 +99,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
