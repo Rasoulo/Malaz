@@ -34,45 +34,64 @@ import 'core/service_locator/service_locator.dart';
 import 'l10n/app_localizations.dart';
 
 
+/// --- [GLOBAL] ---
+///
+/// [messengerKey]
+/// A global key used to access the [ScaffoldMessengerState] from anywhere in the app.
+/// This is helpful for showing SnackBars or alerts without needing to pass a [BuildContext].
+/// ----------------------------------------------------------------------------
+///
+/// ---[FUNCTION] ---
+///
 /// [main]
+/// The main entry point of the Flutter application.
 ///
-/// - `WidgetsFlutterBinding.ensureInitialized():` Ensures that the Flutter framework is initialized.
-///   This is required before calling native Flutter functions (like [runApp]).
+/// - `WidgetsFlutterBinding.ensureInitialized()`: Ensures that the Flutter framework is fully initialized before calling native features.
+/// - `await Firebase.initializeApp()`: Initializes Firebase services for the application.
+/// - `FirebaseMessaging.onBackgroundMessage(...)`: Registers [_firebaseMessagingBackgroundHandler] to listen for background notifications.
+/// - `await setUpServices()`: Asynchronously initializes dependency injection and core services using [get_it].
+/// - `await NotificationService.requestPermission()`: Asks the user for permission to display notifications.
+/// - `_fetchFCMToken()`: Retrieves the Firebase Cloud Messaging device token.
+/// - `runApp(const RentalApp())`: Starts the application and displays the root widget [RentalApp].
 ///
-/// - `await setUpServices()`: Calls an asynchronous function to set up and initialize
-///   the application's services, such as dependency injection using [get_it].
+/// [_fetchFCMToken]
+/// An asynchronous function that waits for 2 seconds and then retrieves the Firebase Cloud Messaging (FCM) device token.
+/// If successful, it prints the token to the console. This token is required to send targeted notifications to this specific device.
 ///
-/// - `runApp(const RentalApp())`: Starts the application by displaying the root widget [RentalApp].
+/// [_firebaseMessagingBackgroundHandler]
+/// A background message handler for FCM.
+/// It must be a top-level function annotated with `@pragma('vm:entry-point')` to ensure it executes correctly even when the app is terminated or running in the background.
 ///
-/// [RentalApp] is a StatelessWidget that serves as the application's root.
+/// [setupFirebaseListeners]
+/// Configures event listeners for Firebase Cloud Messaging when the application is actively running:
+/// - `FirebaseMessaging.onMessage.listen`: Handles notifications received while the app is in the foreground.
+/// - `FirebaseMessaging.onMessageOpenedApp.listen`: Handles the event when a user taps on a notification to open the app.
+/// ----------------------------------------------------------------------------
+/// --- [CLASSES] ---
 ///
-/// - [MultiBlocProvider]: Provides multiple BLoC states to the widget tree.
-///   This allows descendant widgets to access [ThemeCubit], [LanguageCubit], and [HomeCubit].
-///   Each Cubit is created using `sl<T>()`, which fetches the registered service instance
-///   from the service locator.
+/// [RentalApp]
+/// A [StatelessWidget] that acts as the root dependency provider of the application.
 ///
-/// - `child: const RentalAppView()`: Renders [RentalAppView] as its child widget.
+/// - [MultiBlocProvider]: Provides all the necessary BLoC (Business Logic Component) states to the widget tree.
+///   This includes cubits like [ThemeCubit], [LanguageCubit], [HomeCubit], [AuthCubit], and many others related to features like bookings and properties.
+///   Each Cubit is created using `sl<T>()`, which retrieves the registered instance from the service locator.
+/// - `child: const RentalAppView()`: Renders the [RentalAppView] which contains the actual UI configuration.
 ///
-/// [RentalAppView] is a StatelessWidget that builds the main UI of the app.
+/// [router]
+/// A global instance of the application's routing configuration. It uses `buildAppRouter()` to define the navigation paths and screens.
 ///
-/// - `context.watch<ThemeCubit>().state` & `context.watch<LanguageCubit>().state`:
-///   These lines listen for changes in [ThemeCubit] and [LanguageCubit].
-///   When the state of either cubit changes, Flutter rebuilds this widget.
+/// [RentalAppView]
+/// A [StatelessWidget] that builds the main [MaterialApp] and configures global UI settings.
 ///
-/// - [MaterialApp]: The main widget that wraps a number of widgets required for
-///   Material Design applications.
-///   - [title]: The app title used by the operating system.
-///   - [debugShowCheckedModeBanner]: Hides the "Debug" banner in the top-right corner.
-///   - [theme] & [darkTheme]: Define the light and dark themes for the app.
-///   - [themeMode]: Controls which theme to use (light, dark, or system) based on the [ThemeCubit]'s state.
-///   - [locale]: Sets the app's current language based on the [LanguageCubit]'s state.
-///   - [supportedLocales]: A list of languages supported by the app.
-///   - [localizationsDelegates]: Provides translations and localized content for the app.
-///   - [localeResolutionCallback]: Logic to determine the best supported locale based on the device's locale.
-///   - [routes]: Defines the named navigation routes in the app, allowing navigation to screens
-///     like [LoginScreen], [HomeRegisterScreen], and [SettingsScreen].
-///   - [home]: The widget displayed when the app starts, which is [SplashScreen] here.
-///
+/// - `WidgetsBinding.instance.addPostFrameCallback`: Ensures that the [NotificationService] is initialized immediately after the first frame renders.
+/// - `context.watch<ThemeCubit>().state` & `context.watch<LanguageCubit>().state`: Listens to changes in theme and language. The widget rebuilds whenever these states change.
+/// - [MaterialApp.router]: The main application shell using router-based navigation.
+///   - [scaffoldMessengerKey]: Attaches the global [messengerKey] for displaying SnackBars.
+///   - [theme], [darkTheme], [themeMode]: Applies the current theme based on the user's choice.
+///   - [locale], [supportedLocales], [localizationsDelegates]: Configures the app's language and translations.
+///   - [localeResolutionCallback]: Determines the best matching language for the user's device.
+///   - [routerConfig]: Applies the [router] for navigating between screens.
+///   --------------------------------------------------------------------------
 
 final GlobalKey<ScaffoldMessengerState> messengerKey = GlobalKey<ScaffoldMessengerState>();
 
